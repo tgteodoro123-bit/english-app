@@ -1,121 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English App - Lesson 1</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background: #f7f7f7;
-        }
+<meta charset="UTF-8">
+<title>English App - Chapter 1</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        line-height: 1.6;
+    }
 
-        .container {
-            max-width: 700px;
-            margin: auto;
-            padding: 20px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        }
+    h2 { color: #333; }
 
-        h1 {
-            text-align: center;
-        }
+    .vocab, .phrase {
+        padding: 10px;
+        border: 1px solid #ddd;
+        margin-bottom: 10px;
+        border-radius: 8px;
+    }
 
-        .phrase-box {
-            margin-bottom: 25px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background: #fafafa;
-        }
+    button {
+        padding: 6px 12px;
+        margin-top: 5px;
+        cursor: pointer;
+    }
 
-        button {
-            margin-top: 10px;
-            padding: 10px 18px;
-            font-size: 15px;
-            cursor: pointer;
-            border-radius: 8px;
-            border: none;
-        }
-
-        .female-btn {
-            background: #5a8dee;
-            color: white;
-        }
-
-        .male-btn {
-            background: #4caf50;
-            color: white;
-        }
-    </style>
+    .exercise {
+        background: #f7f7f7;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+</style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Lesson 1 – Basic Phrases</h1>
+<h1>Chapter 1 — Greetings & Introductions</h1>
 
-    <div class="phrase-box">
-        <p><strong>“Hello, how are you?”</strong></p>
-        <button class="female-btn" onclick="speak('Hello, how are you?', 'female')">Voz Feminina</button>
-        <button class="male-btn" onclick="speak('Hello, how are you?', 'male')">Voz Masculina</button>
-    </div>
+<h2>Vocabulary</h2>
 
-    <div class="phrase-box">
-        <p><strong>“Nice to meet you.”</strong></p>
-        <button class="female-btn" onclick="speak('Nice to meet you.', 'female')">Voz Feminina</button>
-        <button class="male-btn" onclick="speak('Nice to meet you.', 'male')">Voz Masculina</button>
-    </div>
+<div class="vocab">Hello — Olá <br>
+<button onclick="speak('Hello')">🔊 Play</button></div>
 
-    <div class="phrase-box">
-        <p><strong>“I am learning English.”</strong></p>
-        <button class="female-btn" onclick="speak('I am learning English.', 'female')">Voz Feminina</button>
-        <button class="male-btn" onclick="speak('I am learning English.', 'male')">Voz Masculina</button>
-    </div>
+<div class="vocab">Good morning — Bom dia <br>
+<button onclick="speak('Good morning')">🔊 Play</button></div>
 
+<div class="vocab">Good evening — Boa noite (chegada) <br>
+<button onclick="speak('Good evening')">🔊 Play</button></div>
+
+<h2>Essential Phrases</h2>
+
+<div class="phrase">Hello! How are you?<br>
+<button onclick="speak('Hello! How are you?')">🔊 Play</button></div>
+
+<div class="phrase">Nice to meet you!<br>
+<button onclick="speak('Nice to meet you!')">🔊 Play</button></div>
+
+<h2>Mini Dialogue</h2>
+<div class="phrase">
+A: Hello! My name is Anna. <br>
+<button onclick="speak('Hello! My name is Anna.')">🔊 Play</button><br><br>
+
+B: Hi Anna! I’m Thiago. <br>
+<button onclick="speak('Hi Anna! I am Thiago.')">🔊 Play</button><br><br>
+
+A: Nice to meet you, Thiago! <br>
+<button onclick="speak('Nice to meet you, Thiago!')">🔊 Play</button><br><br>
+
+B: Nice to meet you too! <br>
+<button onclick="speak('Nice to meet you too!')">🔊 Play</button>
 </div>
 
+<h2>Exercise — Fill in the blanks</h2>
+<div class="exercise">
+<p>1. Good ______</p>
+<p>2. Nice to ______ you</p>
+<p>3. My ______ is Thiago</p>
+</div>
+
+<h2>Pronunciation Practice</h2>
+<button onclick="startRecognition()">🎤 Practice Speaking</button>
+<p id="result"></p>
 
 <script>
-    let voices = [];
+function speak(text) {
+    const msg = new SpeechSynthesisUtterance(text);
+    msg.lang = "en-US";
+    msg.rate = 1;
+    
+    // Attempt to pick a male US voice
+    const voices = speechSynthesis.getVoices();
+    const selectedVoice = voices.find(v => v.name.includes("Male") || v.name.includes("Guy"));
+    if (selectedVoice) msg.voice = selectedVoice;
 
-    function loadVoices() {
-        voices = speechSynthesis.getVoices();
-    }
+    speechSynthesis.speak(msg);
+}
 
-    speechSynthesis.onvoiceschanged = loadVoices;
+function startRecognition() {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = "en-US";
 
-    function speak(text, gender) {
-        let msg = new SpeechSynthesisUtterance(text);
+    recognition.onresult = function(event) {
+        document.getElementById("result").innerText =
+          "You said: " + event.results[0][0].transcript;
+    };
 
-        let voice = null;
-
-        // ---- FILTRAR VOZES AMERICANAS ----
-        if (gender === "female") {
-            voice = voices.find(v =>
-                v.lang === "en-US" &&
-                (v.name.includes("Female") || v.name.includes("Samantha") || v.name.includes("Zira"))
-            );
-        } else {
-            voice = voices.find(v =>
-                v.lang === "en-US" &&
-                (v.name.includes("Male") || v.name.includes("John") || v.name.includes("Guy"))
-            );
-        }
-
-        if (!voice) {
-            // fallback caso não encontre
-            voice = voices.find(v => v.lang === "en-US");
-        }
-
-        msg.voice = voice;
-        msg.rate = 1;   // velocidade normal
-        msg.pitch = 1;  // tom normal
-
-        speechSynthesis.speak(msg);
-    }
+    recognition.start();
+}
 </script>
 
 </body>
