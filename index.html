@@ -27,10 +27,8 @@
         border-bottom: 1px solid #e0e0e0; 
         padding-top: 10px; 
         
-        /* AJUSTE 1: Aumenta o padding-bottom para afastar a linha do texto "Beginner" */
+        /* AJUSTE FINAL DE SPACING: Linha longe do texto e perto dos cards */
         padding-bottom: 25px; 
-        
-        /* AJUSTE 2: Diminui a margin-bottom para aproximar a linha dos cards */
         margin-bottom: 15px; 
         
         font-size: 2.2em; 
@@ -282,122 +280,132 @@
 
     // 1. DADOS DAS QUESTÕES (10 Perguntas para Confidence 1)
     const QUESTIONS = [
+        // Q1: Números e Contagem
         {
             id: 1,
-            question: "Look and Answer: What is this?",
+            question: "Look and Answer: What kind of content is usually found in a list that goes '1, 2, 3...'?",
             image: "numeros.jpg", 
             options: {
                 A: "The Alphabet",
-                B: "English",
+                B: "Colors",
                 C: "Numbers"
             },
             correctAnswer: 'C', 
             chapter: 1
         },
+        // Q2: Saudação (Tarde)
         {
             id: 2,
-            question: "Selecione a saudação para a noite (ao chegar em um lugar):",
+            question: "Choose the correct greeting for the time after 12:00 PM (midday):",
             image: "", 
             options: {
-                A: "Good night",
-                B: "Good morning",
+                A: "Good morning",
+                B: "Good afternoon",
                 C: "Good evening"
             },
-            correctAnswer: 'C',
+            correctAnswer: 'B',
             chapter: 1
         },
+        // Q3: Pronome (Plural)
         {
             id: 3,
-            question: "How do you say \"Bom dia\" in English?",
+            question: "How do you say the pronoun 'Eles' or 'Elas' in English?",
             image: "", 
             options: {
-                A: "Good afternoon",
-                B: "Good morning",
-                C: "Good evening"
+                A: "He",
+                B: "She",
+                C: "They"
             },
-            correctAnswer: 'B',
+            correctAnswer: 'C',
             chapter: 1
         },
+        // Q4: Verbo TO BE (Perguntas)
         {
             id: 4,
-            question: "Which word is the possessive pronoun for 'ele'?",
+            question: "Complete the simple question: '____ you happy?'",
             image: "", 
             options: {
-                A: "My",
-                B: "Her",
-                C: "His"
+                A: "Is",
+                B: "Am",
+                C: "Are"
             },
             correctAnswer: 'C',
             chapter: 1
         },
+        // Q5: Artigo Indefinido
         {
             id: 5,
-            question: "What is the plural of 'child'?",
+            question: "Do you use 'A' or 'An' before the word 'Orange'?",
             image: "", 
             options: {
-                A: "Childs",
-                B: "Children",
-                C: "Childes"
-            },
-            correctAnswer: 'B',
-            chapter: 1
-        },
-        {
-            id: 6,
-            question: "Conjugue o verbo \"to eat\" no presente simples para \"eu\":",
-            image: "", 
-            options: {
-                A: "I eats",
-                B: "I eating",
-                C: "I eat"
+                A: "A orange",
+                B: "The orange",
+                C: "An orange"
             },
             correctAnswer: 'C',
             chapter: 1
         },
+        // Q6: Self-Introduction
+        {
+            id: 6,
+            question: "If someone tells you 'Nice to meet you,' what is the best response?",
+            image: "", 
+            options: {
+                A: "Goodbye",
+                B: "Nice to meet you too",
+                C: "See you later"
+            },
+            correctAnswer: 'B',
+            chapter: 1
+        },
+        // Q7: Números (Matemática simples)
         {
             id: 7,
-            question: "Traduza \"Eu sou um estudante\":",
+            question: "What is the result of 'one plus one' (1 + 1)?",
             image: "", 
             options: {
-                A: "You are a student",
-                B: "I am a student",
-                C: "We are students"
+                A: "Three",
+                B: "One",
+                C: "Two"
             },
-            correctAnswer: 'B',
+            correctAnswer: 'C',
             chapter: 1
         },
+        // Q8: Cor (Identificação)
         {
             id: 8,
-            question: "Qual é a contração correta para \"she is\"?",
+            question: "The sun is typically which color?",
             image: "", 
             options: {
-                A: "She's",
-                B: "Sheis",
-                C: "Shes'"
+                A: "Blue",
+                B: "Green",
+                C: "Yellow"
             },
-            correctAnswer: 'A',
+            correctAnswer: 'C',
             chapter: 1
         },
+        // Q9: Contração
         {
             id: 9,
-            question: "Traduza a cor \"Azul\":",
+            question: "Choose the contracted form of 'It is':",
             image: "", 
             options: {
-                A: "Red",
-                B: "Blue",
-                C: "Green"
+                A: "Its",
+                B: "It's",
+                C: "Is it"
             },
             correctAnswer: 'B',
             chapter: 1
         },
+        // Q10: Despedida
         {
             id: 10,
-            question: "Complete: ______ is sunny today.",
+            question: "Which word is commonly used to say 'Tchau' or 'Até logo'?",
             image: "", 
             options: {
-                A: "I",
-                B: "It",
-                C: "We"
+                A: "Hello",
+                B: "Goodbye",
+                C: "Thank you"
             },
             correctAnswer: 'B',
             chapter: 1
@@ -418,7 +426,15 @@
     const chapterGrid = document.querySelector('.chapter-grid');
     for (let i = 1; i <= 24; i++) {
         const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
-
+        
+        // NOVO CÓDIGO: Define o texto detalhado apenas para o Confidence 1
+        let subTopicText = `Tópico Principal da Confiança ${i}`;
+        
+        if (i === 1) {
+            subTopicText = 'Saudações (4 tipos), Pronomes Pessoais, Números 1-10, Verbo To Be, e Artigos A/AN.';
+        }
+        // FIM DO NOVO CÓDIGO
+        
         chapterGrid.innerHTML += `
             <div class="chapter-card" id="card-${i}">
                  
@@ -429,7 +445,7 @@
                 <div class="card-text-area">
                     <div class="text-content-wrapper">
                         <h3>Confidence ${i}</h3>
-                        <p>Tópico Principal da Confiança ${i}</p>
+                        <p>${subTopicText}</p> 
                     </div>
                     <button class="start-button" onclick="startLesson(${i}); event.stopPropagation();">Start</button>
                 </div>
