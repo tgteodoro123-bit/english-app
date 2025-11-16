@@ -329,7 +329,7 @@
 </div>
 
 <script>
-    // 🚀 LINK BASE: PRECISA ESTAR NA BRANCH ONDE ESTÃO index.html, /audio E /images
+    // LINK BASE: APONTA PARA A RAIZ, ONDE ESTÃO TODOS OS ARQUIVOS SOLTOS.
     const GITHUB_RAW_BASE_URL = "https://raw.githubusercontent.com/tgteodoro123-bit/english-app/main/"; 
     
     // ARRAY DE IMAGENS DE FUNDO
@@ -344,11 +344,11 @@
 
     // 1. DADOS DAS QUESTÕES (Beginner 1)
     const QUESTIONS = [
-        // Q1: IMAGEM (CAMINHO CORRIGIDO)
+        // Q1: IMAGEM (CORRIGIDO: APENAS O NOME DO ARQUIVO)
         {
             id: 1,
             question: "What do you see in the image?", 
-            image: "images/numeros.jpg", // Assumindo pasta images/ na raiz da main
+            image: "numeros.jpg", // ARQUIVO NA RAIZ
             options: {
                 A: "The Alphabet",
                 B: "Colors",
@@ -357,11 +357,11 @@
             correctAnswer: 'C', 
             chapter: 1
         },
-        // Q2: IMAGEM (CAMINHO CORRIGIDO)
+        // Q2: IMAGEM (CORRIGIDO: APENAS O NOME DO ARQUIVO)
         {
             id: 2,
             question: "Complete the self-introduction: 'Hello, ____ Marcus.'", 
-            image: "images/cumprimento.jpg", // Assumindo pasta images/ na raiz da main
+            image: "cumprimento.jpg", // ARQUIVO NA RAIZ
             options: {
                 A: "I is",
                 B: "I am",
@@ -389,21 +389,21 @@
             correctAnswer: 'INFO', 
             chapter: 1
         },
-        // Q4: PRONÚNCIA
+        // Q4: PRONÚNCIA (CORRIGIDO: APENAS O NOME DO ARQUIVO)
         {
             id: 4,
             question: "PRONUNCIATION PRACTICE: Click the play button (▶️) to hear each word.", 
             options: {
-                "Address number": "audio/addressnumber.mp3", 
-                "American": "audio/american.mp3",
-                "Friend": "audio/friend.mp3",
-                "Great": "audio/great.mp3", 
-                "Nationality": "audio/nationality.mp3",
-                "New": "audio/new.mp3",
-                "Phone number": "audio/phonenumber.mp3",
-                "Student": "audio/student.mp3",
-                "Teacher": "audio/teacher.mp3",
-                "Years old": "audio/yearsold.mp3" 
+                "Address number": "addressnumber.mp3", 
+                "American": "American.mp3", // USANDO AMERICAN.MP3 NA RAIZ
+                "Friend": "friend.mp3",
+                "Great": "great.mp3", 
+                "Nationality": "nationality.mp3",
+                "New": "new.mp3",
+                "Phone number": "phonenumber.mp3",
+                "Student": "sudent.mp3", // ATENÇÃO: Se o nome do seu arquivo na raiz for 'sudent.mp3', manteremos o erro aqui
+                "Teacher": "teacher.mp3",
+                "Years old": "yearsold.mp3" 
             },
             correctAnswer: 'PRONUNCIATION_SET', 
             chapter: 1
@@ -421,7 +421,7 @@
             correctAnswer: 'B', 
             chapter: 1
         },
-        // Q6: NOVO TÓPICO - CORES E OBJETOS (ADICIONADO)
+        // Q6: NOVO TÓPICO - CORES E OBJETOS
         {
             id: 6,
             question: "What is the color of the sky on a sunny day?", 
@@ -451,7 +451,7 @@
         {
             id: 8,
             question: "Identify the color of the object in the image:", 
-            image: "images/apple.jpg", // Precisará de uma imagem de maçã vermelha (apple.jpg) na pasta images/
+            image: "apple.jpg", // ARQUIVO NA RAIZ
             options: {
                 A: "Green",
                 B: "Red",
@@ -511,7 +511,6 @@
     for (let i = 1; i <= 24; i++) {
         const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
         
-        // Agora, se o Módulo 1 estiver completo (10 tópicos), mostramos isso
         let cardTopicName = i === 1 ? 'Basic Foundations (10 Topics Ready!)' : `Module ${i} Content`;
         
         chapterGrid.innerHTML += `
@@ -572,7 +571,7 @@
         questionText.innerHTML = q.question; 
         
         if (q.image) {
-            // Lógica de carregamento da imagem usando o link base RAW
+            // Lógica de carregamento da imagem usando o link base RAW (APENAS NOME DO ARQUIVO)
             questionImage.src = GITHUB_RAW_BASE_URL + q.image; 
             questionImage.style.display = 'block';
         } else {
@@ -671,6 +670,7 @@
     
     // Função para tocar um áudio específico
     function playWordAudio(audioPath) {
+        // Lógica de carregamento do áudio usando o link base RAW (APENAS NOME DO ARQUIVO)
         audioPlayer.src = GITHUB_RAW_BASE_URL + audioPath;
         audioPlayer.play();
     }
