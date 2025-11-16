@@ -33,6 +33,7 @@
         display: grid;
         grid-template-columns: repeat(4, 1fr); 
         gap: 30px; 
+        padding: 0;
     }
     
     @media (max-width: 1024px) {
@@ -41,7 +42,7 @@
         }
     }
 
-    /* 3. Card de Confidence - LAYOUT ESTÁVEL (Flexbox) */
+    /* 3. Card de Confidence - LAYOUT MÍNIMO E ESTÁVEL */
     .chapter-card {
         background-color: #f7f7f7; 
         border-radius: 6px; 
@@ -66,7 +67,7 @@
         background-position: center;
     }
 
-    /* Área de Texto Inferior (30%) - CONTAINER PRINCIPAL DO TEXTO */
+    /* Área de Texto Inferior (30%) */
     .card-text-area {
         height: 30%; 
         width: 100%;
@@ -79,23 +80,8 @@
         justify-content: center;
         align-items: center;
         text-align: center;
-        transition: background-color 0.3s ease;
     }
-
-    .chapter-card:hover .card-text-area {
-        background-color: #f0f0f0; 
-    }
-
-    /* EFEITO DE SUBIR - Aplica-se ao CONTEÚDO dentro da área de texto */
-    .text-content-wrapper {
-        transition: transform 0.3s ease;
-        text-align: center;
-    }
-
-    .chapter-card:hover .text-content-wrapper {
-        transform: translateY(-5px); /* Efeito de subir */
-    }
-
+    
     /* Estilos de Texto - COR PRETA */
     .chapter-card h3 {
         margin-top: 0;
@@ -123,25 +109,20 @@
         margin-top: 10px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         
-        /* Oculto inicialmente, aparece no hover do card */
-        opacity: 0; 
-        transform: scale(0.9); 
-        transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
+        /* O botão fica visível o tempo todo neste layout estável, sem efeitos de hover */
+        opacity: 1; 
+        transform: scale(1); 
+        transition: background-color 0.2s ease;
     }
 
-    .chapter-card:hover .start-button {
-        opacity: 1; 
-        transform: scale(1);
-    }
-    
     .start-button:hover {
         background-color: #004c99; 
     }
     
-    /* Escondendo elementos que não usamos neste layout */
-    .status {
-        display: none; 
-    }
+    .status, .text-content-wrapper { 
+        /* Elementos que causavam complexidade ou não são necessários neste layout mínimo */
+        /* Removido o text-content-wrapper e o efeito de subir */
+    } 
     
     /* 4. Tela de Quiz/Lição (mantido) */
     #lesson-screen {
@@ -278,10 +259,103 @@
     const questionText = document.getElementById('question-text');
     const questionImage = document.getElementById('question-image');
 
-    // 2. GERAÇÃO DOS 24 CARDS (Com novo wrapper para o efeito de subir)
+    // 2. GERAÇÃO DOS 24 CARDS
     const chapterGrid = document.querySelector('.chapter-grid');
     for (let i = 1; i <= 24; i++) {
         const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
 
         chapterGrid.innerHTML += `
-            <div class="chapter-
+            <div class="chapter-card" id="card-${i}">
+                 
+                <div class="card-background-image"
+                     style="background-image: url('${bgUrl}');">
+                </div>
+                
+                <div class="card-text-area">
+                    <h3>Confidence ${i}</h3>
+                    <p>Tópico Principal da Confiança ${i}</p>
+                    <button class="start-button" onclick="startLesson(${i}); event.stopPropagation();">START</button>
+                </div>
+            </div>
+        `;
+    }
+
+    // 3. NAVEGAÇÃO E LÓGICA (Mantida)
+    let currentChapter = 0;
+    let lessonQuestions = [];
+
+    function startLesson(chapterNumber) {
+        currentChapter = chapterNumber;
+        lessonQuestions = QUESTIONS.filter(q => q.chapter === chapterNumber);
+
+        if (lessonQuestions.length === 0) {
+            alert(`O nível Confidence ${chapterNumber} ainda não tem perguntas.`);
+            return;
+        }
+
+        homeScreen.style.display = 'none';
+        lessonScreen.style.display = 'block';
+        
+        lessonTitle.textContent = `Confidence ${chapterNumber}: Exercícios`;
+        
+        currentQuestionIndex = 0;
+        loadQuestion(lessonQuestions[currentQuestionIndex]);
+    }
+
+    function goHome() {
+        homeScreen.style.display = 'block';
+        lessonScreen.style.display = 'none';
+    }
+
+    function loadQuestion(q) {
+        feedback.innerHTML = '';
+        optionsContainer.innerHTML = '';
+        nextBtn.disabled = true; 
+        
+        questionText.textContent = q.question;
+        questionImage.src = q.image || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+        questionImage.style.display = q.image ? 'block' : 'none';
+        
+        for (const key in q.options) {
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'option';
+            optionDiv.textContent = `${key}: ${q.options[key]}`;
+            optionDiv.setAttribute('data-answer', key);
+            optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer);
+            optionsContainer.appendChild(optionDiv);
+        }
+    }
+
+    function checkAnswer(selectedDiv, selectedKey, correctKey) {
+        const allOptions = optionsContainer.querySelectorAll('.option');
+        allOptions.forEach(opt => opt.onclick = null);
+
+        if (selectedKey === correctKey) {
+            selectedDiv.classList.add('correct');
+            feedback.innerHTML = '✅ Resposta Correta!';
+        } else {
+            selectedDiv.classList.add('incorrect');
+            allOptions.forEach(opt => {
+                if (opt.getAttribute('data-answer') === correctKey) {
+                    opt.classList.add('correct');
+                }
+            });
+            feedback.innerHTML = `❌ Resposta Incorreta. A correta era ${correctKey}.`;
+        }
+
+        nextBtn.disabled = false; 
+    }
+
+    function goNext() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < lessonQuestions.length) {
+            loadQuestion(lessonQuestions[currentQuestionIndex]);
+        } else {
+            alert(`Parabéns! Você completou o Confidence ${currentChapter}!`);
+            goHome();
+        }
+    }
+</script>
+
+</body>
+</html>
