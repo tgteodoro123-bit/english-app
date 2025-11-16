@@ -134,10 +134,164 @@
 <div id="home-screen">
     <h2>Selecione um Capítulo</h2>
     <div class="chapter-grid">
-        <script>
-            const chapterGrid = document.querySelector('.chapter-grid');
-            for (let i = 1; i <= 24; i++) {
-                chapterGrid.innerHTML += `
-                    <div class="chapter-card" onclick="startLesson(${i})">
-                        <h3>Capítulo ${i}</h3>
-                        <p>Tópico Principal do Capítulo ${i}</
+    </div>
+</div>
+
+<div id="lesson-screen">
+    <h2 id="lesson-title">Capítulo X</h2>
+    
+    <div class="quiz-question">
+        <p id="question-text">Look and Answer:</p>
+        <img id="question-image" src="https://via.placeholder.com/300x150?text=IMAGEM+DO+DADO" alt="Question Image"> 
+        <p style="font-style: italic;">Clique em uma opção abaixo.</p>
+    </div>
+
+    <div id="options-container">
+        </div>
+    <p id="feedback" style="font-weight: bold; margin-top: 15px; text-align: center;"></p>
+
+    <div class="nav-buttons">
+        <button id="back-btn" onclick="goHome()">Voltar</button>
+        <button id="next-btn" onclick="goNext()">Próximo</button>
+    </div>
+</div>
+
+<script>
+    // 1. DADOS DAS QUESTÕES
+    const QUESTIONS = [
+        {
+            id: 1,
+            question: "Look and Answer: What is this?",
+            image: "https://via.placeholder.com/300x150?text=IMAGEM+DO+DADO", // TROQUE PELA SUA IMAGEM
+            options: {
+                A: "The Alphabet",
+                B: "English",
+                C: "Numbers"
+            },
+            correctAnswer: 'C', // Resposta C: Numbers (Números)
+            chapter: 1
+        },
+        {
+            id: 2,
+            question: "Selecione a saudação para a noite (ao chegar em um lugar):",
+            image: "", // Sem imagem para esta pergunta
+            options: {
+                A: "Good night",
+                B: "Good morning",
+                C: "Good evening"
+            },
+            correctAnswer: 'C', // Resposta C: Good evening
+            chapter: 1
+        }
+        // Adicione aqui mais questões originais com chapter: 1, chapter: 2, etc.
+    ];
+
+    let currentQuestionIndex = 0;
+    const homeScreen = document.getElementById('home-screen');
+    const lessonScreen = document.getElementById('lesson-screen');
+    const optionsContainer = document.getElementById('options-container');
+    const feedback = document.getElementById('feedback');
+    const nextBtn = document.getElementById('next-btn');
+    const lessonTitle = document.getElementById('lesson-title');
+    const questionText = document.getElementById('question-text');
+    const questionImage = document.getElementById('question-image');
+
+    // 2. GERAÇÃO DOS 24 CARDS (AGORA ESTÁ AQUI, ONDE DEVE FICAR)
+    const chapterGrid = document.querySelector('.chapter-grid');
+    for (let i = 1; i <= 24; i++) {
+        chapterGrid.innerHTML += `
+            <div class="chapter-card" onclick="startLesson(${i})">
+                <h3>Capítulo ${i}</h3>
+                <p>Tópico Principal do Capítulo ${i}</p>
+                <p style="font-weight: bold; color: #6c757d;">Não Iniciado</p>
+            </div>
+        `;
+    }
+
+    // 3. NAVEGAÇÃO ENTRE TELAS
+    let currentChapter = 0; // Armazena o capítulo atual
+    let lessonQuestions = []; // Armazena as perguntas filtradas para a lição
+
+    function startLesson(chapterNumber) {
+        currentChapter = chapterNumber;
+        // Filtra APENAS as perguntas que pertencem a este capítulo
+        lessonQuestions = QUESTIONS.filter(q => q.chapter === chapterNumber);
+
+        if (lessonQuestions.length === 0) {
+            alert(`O Capítulo ${chapterNumber} ainda não tem perguntas. Adicione-as ao array 'QUESTIONS'!`);
+            return;
+        }
+
+        // Esconde a Home e mostra a Lição
+        homeScreen.style.display = 'none';
+        lessonScreen.style.display = 'block';
+        lessonTitle.textContent = `Capítulo ${chapterNumber}: Quiz Pré-Aula`;
+        currentQuestionIndex = 0;
+        loadQuestion(lessonQuestions[currentQuestionIndex]);
+    }
+
+    function goHome() {
+        homeScreen.style.display = 'block';
+        lessonScreen.style.display = 'none';
+    }
+
+    // 4. CARREGAR PERGUNTA E OPÇÕES
+    function loadQuestion(q) {
+        // Reseta o feedback visual e de texto
+        feedback.innerHTML = '';
+        optionsContainer.innerHTML = '';
+        nextBtn.disabled = true; // Desabilita o "Próximo" até responder
+        
+        // Atualiza a imagem e o texto da pergunta
+        questionText.textContent = q.question;
+        questionImage.src = q.image || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="; // Imagem em branco se não houver
+        questionImage.style.display = q.image ? 'block' : 'none'; // Esconde a imagem se não houver URL
+        
+        // Cria as opções de resposta A, B, C
+        for (const key in q.options) {
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'option';
+            optionDiv.textContent = `${key}: ${q.options[key]}`;
+            optionDiv.setAttribute('data-answer', key);
+            optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer);
+            optionsContainer.appendChild(optionDiv);
+        }
+    }
+
+    // 5. VERIFICAR RESPOSTA (Feedback Verde/Vermelho)
+    function checkAnswer(selectedDiv, selectedKey, correctKey) {
+        // Desabilita os cliques depois de uma resposta
+        const allOptions = optionsContainer.querySelectorAll('.option');
+        allOptions.forEach(opt => opt.onclick = null);
+
+        if (selectedKey === correctKey) {
+            selectedDiv.classList.add('correct');
+            feedback.innerHTML = '✅ Resposta Correta!';
+        } else {
+            selectedDiv.classList.add('incorrect');
+            // Mostra a correta
+            allOptions.forEach(opt => {
+                if (opt.getAttribute('data-answer') === correctKey) {
+                    opt.classList.add('correct');
+                }
+            });
+            feedback.innerHTML = `❌ Resposta Incorreta. A correta era ${correctKey}.`;
+        }
+
+        nextBtn.disabled = false; // Habilita o "Próximo"
+    }
+
+    // 6. PRÓXIMA PERGUNTA
+    function goNext() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < lessonQuestions.length) {
+            loadQuestion(lessonQuestions[currentQuestionIndex]);
+        } else {
+            alert(`Parabéns! Você completou o Capítulo ${currentChapter}!`);
+            goHome();
+        }
+    }
+</script>
+
+</body>
+</html>
