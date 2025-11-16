@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Curso de Inglês</title>
+<title>Curso de Inglês - Protótipo</title>
 <style>
 body {
     font-family: Arial, sans-serif;
@@ -84,13 +84,11 @@ input[type="text"] {
 
 <h1>Curso de Inglês</h1>
 
-<!-- Tela inicial -->
+<!-- Menu de capítulos -->
 <div id="menu">
     <div class="chapter-grid">
         <div class="chapter-card" onclick="startChapter(1)">Capítulo 1</div>
-        <div class="chapter-card" onclick="startChapter(2)">Capítulo 2</div>
-        <div class="chapter-card" onclick="startChapter(3)">Capítulo 3</div>
-        <!-- Pode adicionar até Capítulo 24 -->
+        <!-- Pode adicionar mais capítulos aqui -->
     </div>
 </div>
 
@@ -115,19 +113,12 @@ input[type="text"] {
 let currentChapter = 1;
 let currentTopic = 0;
 
-// Estrutura do Capítulo 1 (simplificada, pode expandir)
+// Tópicos do Capítulo 1 (simplificado com 3 tópicos para testar)
 const chapters = {
     1: [
-        {title:"Números", text:"Selecione o número 3:", img:"https://via.placeholder.com/200x100?text=3", options:["1","3","5"], answer:"3", type:"options"},
-        {title:"Cores", text:"Clique na cor correta da bola:", img:"https://via.placeholder.com/150x150/ff0000/ffffff?text=Ball", options:["Red","Blue","Green"], answer:"Red", type:"options"},
+        {title:"Números", text:"Selecione o número 2:", img:"https://via.placeholder.com/200x100?text=2", options:["1","2","3"], answer:"2", type:"options"},
+        {title:"Cores", text:"Clique na cor correta da bola:", img:"https://via.placeholder.com/150x150/00ff00/ffffff?text=Ball", options:["Red","Green","Blue"], answer:"Green", type:"options"},
         {title:"Família", text:"Digite o nome desta pessoa:", img:"https://via.placeholder.com/200x150?text=Mother", answer:"mother", type:"input"},
-        {title:"Apresentação", text:"Escolha a frase correta para a imagem:", img:"https://via.placeholder.com/200x150?text=Girl", options:["I am Anna","I is Anna","I are Anna"], answer:"I am Anna", type:"options"},
-        {title:"Objetos", text:"Clique no objeto correto:", img:"https://via.placeholder.com/200x150?text=Book", options:["Book","Pen","Chair"], answer:"Book", type:"options"},
-        {title:"Animais", text:"Digite o nome do animal:", img:"https://via.placeholder.com/200x150?text=Dog", answer:"dog", type:"input"},
-        {title:"Idade", text:"Selecione a idade correta:", options:["5","7","3"], answer:"5", type:"options"},
-        {title:"Verbo To Be", text:"Escolha a frase correta:", options:["I am a student","I is a student","I are a student"], answer:"I am a student", type:"options"},
-        {title:"Cumprimentos", text:"Clique na saudação correta:", img:"https://via.placeholder.com/200x150?text=Hi", options:["Hi","Bye","Good morning"], answer:"Hi", type:"options"},
-        {title:"Revisão", text:"Digite o objeto correto:", img:"https://via.placeholder.com/200x150?text=Chair", answer:"chair", type:"input"},
     ]
 };
 
@@ -183,12 +174,16 @@ function nextTopic(){
     if(currentTopic < chapters[currentChapter].length-1){
         currentTopic++;
         showTopic();
+    } else {
+        alert("Você chegou ao último tópico deste capítulo!");
     }
 }
 function prevTopic(){
     if(currentTopic > 0){
         currentTopic--;
         showTopic();
+    } else {
+        alert("Você está no primeiro tópico!");
     }
 }
 
