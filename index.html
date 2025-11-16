@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Inglês Básico</title>
 <style>
-    /* 1. Estilos Gerais - Fundo Branco e Fonte Limpa */
+    /* 1. Estilos Gerais - Fundo Branco */
     body {
         font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         margin: 0;
@@ -14,7 +14,7 @@
         color: #333;
     }
 
-    /* REMOVIDO H1 PARA MAIOR FOCO */
+    /* REMOVIDO H1 (Inglês Básico) */
 
     /* 2. Layout da Grade de Cards */
     #home-screen {
@@ -22,21 +22,22 @@
         margin: 40px auto;
         padding: 0 20px;
     }
-    /* NOVO TÍTULO E LINHA FINA */
+    
+    /* NOVO TÍTULO "BEGINNER" E LINHA FINA */
     h2 {
-        color: #003366;
-        border-bottom: 1px solid #003366; /* LINHA MUITO FINA */
+        color: black; /* Letras Pretas */
+        border-bottom: 1px solid #003366; /* Linha fina */
         padding-bottom: 8px; 
         margin-bottom: 30px;
         font-size: 1.8em;
     }
     .chapter-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Grid ajustado */
         gap: 30px; 
     }
     
-    /* 3. Card de Confidence - LAYOUT IMAGEM NO TOPO */
+    /* 3. Card de Confidence - LAYOUT IMAGEM TOPO E EFEITO HOVER */
     .chapter-card {
         background-color: #f7f7f7; 
         padding: 0; 
@@ -46,7 +47,8 @@
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         overflow: hidden; 
         
-        height: 250px; /* Aumenta a altura para imagem e texto */
+        height: 200px; /* CARTÃO MENOR */
+        position: relative; /* ESSENCIAL para o efeito de slide */
         display: block;
     }
     
@@ -62,44 +64,76 @@
         background-size: cover;
         background-position: center;
         border-radius: 12px 12px 0 0; 
+        transition: height 0.3s ease; /* Transição para suavizar a mudança de altura */
     }
 
     /* Metade do Texto (50% da Altura - Baixo) */
     .card-text-bottom {
         height: 50%;
+        width: 100%;
         padding: 15px;
         background-color: white; 
+        position: absolute; /* Posicionamento absoluto para o slide */
+        bottom: 0;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         text-align: center;
-        color: #333;
+        border-radius: 0 0 12px 12px;
     }
 
+    /* EFEITO SLIDE-UP: A parte branca sobe 50px no hover */
+    .chapter-card:hover .card-text-bottom {
+        transform: translateY(-50px); 
+        background-color: #f7f7f7; /* Fundo mais claro no hover */
+    }
+    
     .chapter-card h3 {
         color: #003366; 
         margin-top: 0;
         font-size: 1.4em;
-        margin-bottom: 5px;
+        margin-bottom: 3px;
     }
 
     .chapter-card p {
         margin: 0;
-        font-size: 0.9em;
+        font-size: 0.8em;
         color: #666;
     }
 
     /* Estilo para o texto "Não Iniciado" */
     .chapter-card .status {
         font-weight: bold; 
-        color: #007bff; /* Azul primário para status */
+        color: #007bff; 
         padding: 3px 0;
         margin-top: 5px;
-        font-size: 0.9em;
+        font-size: 0.8em;
     }
 
-    /* 4. Tela de Quiz/Lição - Clean */
+    /* ESTILO DO BOTÃO START */
+    .start-button {
+        background-color: #28a745; /* Verde para Ação */
+        color: white;
+        padding: 6px 15px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 10px;
+        opacity: 0; /* Começa invisível */
+        transition: opacity 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* O BOTÃO APARECE NO HOVER */
+    .chapter-card:hover .start-button {
+        opacity: 1; 
+    }
+
+    /* 4. Tela de Quiz/Lição (mantido) */
     #lesson-screen {
         max-width: 650px;
         margin: 40px auto;
@@ -109,6 +143,7 @@
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); 
         display: none; 
     }
+    /* ... (Estilos das perguntas, opções e botões mantidos) ... */
     .quiz-question {
         padding: 20px;
         border: 1px solid #eee;
@@ -117,14 +152,6 @@
         text-align: center;
         background-color: #fcfcfc;
     }
-    .quiz-question img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 8px;
-        margin-bottom: 15px;
-    }
-
-    /* 5. Estilo das Opções de Resposta */
     .option {
         padding: 15px;
         margin: 12px 0;
@@ -148,13 +175,6 @@
         border-color: #dc3545 !important; 
         font-weight: bold;
     }
-
-    /* 6. Botões de Navegação */
-    .nav-buttons {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 30px;
-    }
     .nav-buttons button {
         padding: 12px 25px;
         border: none;
@@ -163,18 +183,14 @@
         font-weight: bold;
         color: white;
     }
-    #back-btn {
-        background-color: #6c757d; 
-    }
-    #next-btn {
-        background-color: #007bff; 
-    }
+    #back-btn { background-color: #6c757d; }
+    #next-btn { background-color: #007bff; }
 </style>
 </head>
 <body>
 
 <div id="home-screen">
-    <h2>Inglês Básico: Sua Jornada de Confidence</h2>
+    <h2>BEGINNER</h2>
     <div class="chapter-grid">
     </div>
 </div>
@@ -206,150 +222,4 @@
         "https://images.pexels.com/photos/6684742/pexels-photo-6684742.jpeg?auto=compress&cs=tinysrgb&w=800", // 3
         "https://images.pexels.com/photos/4144294/pexels-photo-4144294.jpeg?auto=compress&cs=tinysrgb&w=800", // 4
         "https://images.pexels.com/photos/1481005/pexels-photo-1481005.jpeg?auto=compress&cs=tinysrgb&w=800", // 5
-        "https://images.pexels.com/photos/3401403/pexels-photo-3401403.jpeg?auto=compress&cs=tinysrgb&w=800", // 6
-        // Adicione aqui as URLs ou caminhos para as suas 24 imagens (ex: "confidence1.jpg")
-    ];
-
-    // 1. DADOS DAS QUESTÕES
-    const QUESTIONS = [
-        {
-            id: 1,
-            question: "Look and Answer: What is this?",
-            image: "numeros.jpg", 
-            options: {
-                A: "The Alphabet",
-                B: "English",
-                C: "Numbers"
-            },
-            correctAnswer: 'C', 
-            chapter: 1
-        },
-        {
-            id: 2,
-            question: "Selecione a saudação para a noite (ao chegar em um lugar):",
-            image: "", 
-            options: {
-                A: "Good night",
-                B: "Good morning",
-                C: "Good evening"
-            },
-            correctAnswer: 'C',
-            chapter: 1
-        }
-        // ... (próximas perguntas)
-    ];
-
-    let currentQuestionIndex = 0;
-    const homeScreen = document.getElementById('home-screen');
-    const lessonScreen = document.getElementById('lesson-screen');
-    const optionsContainer = document.getElementById('options-container');
-    const feedback = document.getElementById('feedback');
-    const nextBtn = document.getElementById('next-btn');
-    const lessonTitle = document.getElementById('lesson-title');
-    const questionText = document.getElementById('question-text');
-    const questionImage = document.getElementById('question-image');
-
-    // 2. GERAÇÃO DOS 24 CARDS
-    const chapterGrid = document.querySelector('.chapter-grid');
-    for (let i = 1; i <= 24; i++) {
-        const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
-
-        chapterGrid.innerHTML += `
-            <div class="chapter-card" 
-                 onclick="startLesson(${i})">
-                 
-                <div class="card-image-top"
-                     style="background-image: url('${bgUrl}');">
-                </div>
-                
-                <div class="card-text-bottom">
-                    <h3>Confidence ${i}</h3>
-                    <p>Tópico Principal da Confiança ${i}</p>
-                    <p class="status">Status: Não Iniciado</p>
-                </div>
-            </div>
-        `;
-    }
-
-    // 3. NAVEGAÇÃO ENTRE TELAS
-    let currentChapter = 0;
-    let lessonQuestions = [];
-
-    function startLesson(chapterNumber) {
-        currentChapter = chapterNumber;
-        lessonQuestions = QUESTIONS.filter(q => q.chapter === chapterNumber);
-
-        if (lessonQuestions.length === 0) {
-            alert(`O nível Confidence ${chapterNumber} ainda não tem perguntas.`);
-            return;
-        }
-
-        homeScreen.style.display = 'none';
-        lessonScreen.style.display = 'block';
-        
-        lessonTitle.textContent = `Confidence ${chapterNumber}: Exercícios`;
-        
-        currentQuestionIndex = 0;
-        loadQuestion(lessonQuestions[currentQuestionIndex]);
-    }
-
-    function goHome() {
-        homeScreen.style.display = 'block';
-        lessonScreen.style.display = 'none';
-    }
-
-    // 4. CARREGAR PERGUNTA E OPÇÕES
-    function loadQuestion(q) {
-        feedback.innerHTML = '';
-        optionsContainer.innerHTML = '';
-        nextBtn.disabled = true; 
-        
-        questionText.textContent = q.question;
-        questionImage.src = q.image || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
-        questionImage.style.display = q.image ? 'block' : 'none';
-        
-        for (const key in q.options) {
-            const optionDiv = document.createElement('div');
-            optionDiv.className = 'option';
-            optionDiv.textContent = `${key}: ${q.options[key]}`;
-            optionDiv.setAttribute('data-answer', key);
-            optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer);
-            optionsContainer.appendChild(optionDiv);
-        }
-    }
-
-    // 5. VERIFICAR RESPOSTA (Feedback Verde/Vermelho)
-    function checkAnswer(selectedDiv, selectedKey, correctKey) {
-        const allOptions = optionsContainer.querySelectorAll('.option');
-        allOptions.forEach(opt => opt.onclick = null);
-
-        if (selectedKey === correctKey) {
-            selectedDiv.classList.add('correct');
-            feedback.innerHTML = '✅ Resposta Correta!';
-        } else {
-            selectedDiv.classList.add('incorrect');
-            allOptions.forEach(opt => {
-                if (opt.getAttribute('data-answer') === correctKey) {
-                    opt.classList.add('correct');
-                }
-            });
-            feedback.innerHTML = `❌ Resposta Incorreta. A correta era ${correctKey}.`;
-        }
-
-        nextBtn.disabled = false; 
-    }
-
-    // 6. PRÓXIMA PERGUNTA
-    function goNext() {
-        currentQuestionIndex++;
-        if (currentQuestionIndex < lessonQuestions.length) {
-            loadQuestion(lessonQuestions[currentQuestionIndex]);
-        } else {
-            alert(`Parabéns! Você completou o Confidence ${currentChapter}!`);
-            goHome();
-        }
-    }
-</script>
-
-</body>
-</html>
+        "
