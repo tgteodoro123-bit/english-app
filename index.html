@@ -5,119 +5,116 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Inglês Básico</title>
 <style>
-    /* 1. Estilos Gerais - Fundo Branco e Fonte Limpa */
+    /* 1. Estilos Gerais */
     body {
         font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #ffffff; /* Fundo Branco Puro */
+        background-color: #ffffff; 
         color: #333;
     }
 
-    /* 2. Cabeçalho - Clean e com Sombra Leve */
+    /* 2. Cabeçalho */
     h1 {
-        background-color: #003366; /* Azul Marinho Profissional */
+        background-color: #003366; 
         color: white;
-        padding: 25px 20px; /* Reduz o padding vertical */
+        padding: 25px 20px; 
         margin-top: 0;
         text-align: center;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra mais sutil */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
         font-size: 2em;
-        /* Removemos o 'border-radius' para um visual moderno */
     }
 
     /* 3. Layout da Grade de Cards */
     #home-screen {
-        max-width: 1100px; /* Mais largo */
+        max-width: 1100px; 
         margin: 40px auto;
         padding: 0 20px;
     }
     h2 {
         color: #003366;
-        border-bottom: 2px solid #003366; /* Linha de destaque para subtítulo */
+        border-bottom: 2px solid #003366; 
         padding-bottom: 10px;
         margin-bottom: 30px;
     }
     .chapter-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-        gap: 30px; /* Mais espaço entre os cards */
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+        gap: 30px; 
     }
     
-    /* 4. Card de Confidence - Clean com Imagem de Fundo e Efeito 3D */
+    /* 4. Card de Confidence - NOVO LAYOUT 50/50 */
     .chapter-card {
-        background-color: #f7f7f7; /* Fundo levemente cinza para contraste */
-        padding: 0; /* Remove padding externo */
-        border-radius: 12px; /* Cantos arredondados suaves */
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Sombra flutuante e suave */
-        text-align: center;
+        background-color: #f7f7f7; 
+        padding: 0; 
+        border-radius: 12px; 
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); 
         cursor: pointer;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
-        overflow: hidden; /* Garante que a imagem fique dentro do border-radius */
+        overflow: hidden; 
         
-        height: 220px; /* Aumenta a altura para destacar a imagem */
-        color: white; 
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end; /* Texto na parte de baixo */
+        height: 150px; /* Altura do card */
+        display: flex; /* Habilita a divisão 50/50 */
+        text-align: left;
     }
     
     .chapter-card:hover {
-        transform: translateY(-8px); /* Efeito de elevação maior no hover */
+        transform: translateY(-8px); 
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); 
     }
     
-    /* Estilo da Imagem de Fundo e Overlay de Texto */
-    .card-content {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
+    /* Metade da Imagem (50% da Largura) */
+    .card-image-half {
+        width: 50%;
         height: 100%;
+        background-size: cover;
+        background-position: center;
+    }
+
+    /* Metade do Texto (50% da Largura, Fundo Branco) */
+    .card-text-half {
+        width: 50%;
         padding: 20px;
+        background-color: white; /* Fundo branco limpo */
         display: flex;
         flex-direction: column;
-        justify-content: flex-end;
-        
-        /* Gradient para melhorar o contraste do texto (escurece a parte inferior) */
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 50%);
-        color: white;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: flex-start;
+        color: #333;
     }
 
     .chapter-card h3 {
-        color: white;
+        color: #003366; /* Título volta para azul marinho */
         margin-top: 0;
-        font-size: 1.5em;
+        font-size: 1.2em;
         margin-bottom: 5px;
+        line-height: 1.2;
     }
 
     .chapter-card p {
         margin: 0;
-        font-size: 0.9em;
+        font-size: 0.8em;
+        color: #666;
     }
 
-    /* Estilo para o texto "Não Iniciado" (Usando a cor principal da marca) */
+    /* Estilo para o texto "Não Iniciado" */
     .chapter-card .status {
         font-weight: bold; 
-        color: #ffffff; 
-        background-color: #007bff; /* Azul primário para destaque */
-        padding: 3px 8px;
-        border-radius: 6px;
-        display: inline-block;
-        margin-top: 10px;
+        color: #003366; 
+        padding: 3px 0;
+        margin-top: 5px;
         font-size: 0.8em;
+        /* Removemos o fundo para um visual mais clean no painel branco */
     }
 
-    /* 5. Tela de Quiz/Lição - Clean */
+    /* 5. Tela de Quiz/Lição - Clean (mantido) */
     #lesson-screen {
         max-width: 650px;
         margin: 40px auto;
         padding: 30px;
         background-color: white;
         border-radius: 12px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); /* Sombra muito leve */
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); 
         display: none; 
     }
     .quiz-question {
@@ -135,7 +132,7 @@
         margin-bottom: 15px;
     }
 
-    /* 6. Estilo das Opções de Resposta - Limpo e Azul de Destaque */
+    /* 6. Estilo das Opções de Resposta (mantido) */
     .option {
         padding: 15px;
         margin: 12px 0;
@@ -146,30 +143,39 @@
         text-align: left;
     }
     .option:hover {
-        background-color: #e9f7ff; /* Azul muito claro no hover */
-        border-color: #007bff; /* Borda azul de marca */
+        background-color: #e9f7ff; 
+        border-color: #007bff; 
     }
     .correct {
-        background-color: #e6ffed !important; /* Verde mais suave */
+        background-color: #e6ffed !important; 
         border-color: #28a745 !important; 
         font-weight: bold;
     }
     .incorrect {
-        background-color: #ffe6e6 !important; /* Vermelho mais suave */
+        background-color: #ffe6e6 !important; 
         border-color: #dc3545 !important; 
         font-weight: bold;
     }
 
-    /* 7. Botões de Navegação */
+    /* 7. Botões de Navegação (mantido) */
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+    }
     .nav-buttons button {
         padding: 12px 25px;
+        border: none;
         border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        color: white;
     }
     #back-btn {
         background-color: #6c757d; 
     }
     #next-btn {
-        background-color: #007bff; /* Azul Vibrante */
+        background-color: #007bff; 
     }
 </style>
 </head>
@@ -260,10 +266,13 @@
 
         chapterGrid.innerHTML += `
             <div class="chapter-card" 
-                 onclick="startLesson(${i})"
-                 style="background-image: url('${bgUrl}'); background-size: cover; background-position: center;">
+                 onclick="startLesson(${i})">
                  
-                <div class="card-content">
+                <div class="card-image-half"
+                     style="background-image: url('${bgUrl}');">
+                </div>
+                
+                <div class="card-text-half">
                     <h3>Confidence ${i}</h3>
                     <p>Tópico Principal da Confiança ${i}</p>
                     <p class="status">Não Iniciado</p>
