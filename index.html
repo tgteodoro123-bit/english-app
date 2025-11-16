@@ -1,4 +1,20 @@
-/* 2. Layout da Grade de Cards e Spacing */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inglês Básico</title>
+<style>
+    /* 1. Estilos Gerais */
+    body {
+        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff; 
+        color: #333;
+    }
+
+    /* 2. Layout da Grade de Cards e Spacing */
     #home-screen {
         max-width: 1200px; 
         margin: 80px auto 50px; 
@@ -17,7 +33,7 @@
         display: grid;
         grid-template-columns: repeat(4, 1fr); 
         gap: 30px; 
-        /* TESTE: Cor amarela forte para ver se o grid aparece */
+        /* TESTE: Fundo Amarelo para garantir que a área da grade apareça */
         background-color: yellow; 
         padding: 10px;
     }
@@ -30,17 +46,17 @@
 
     /* 3. Card de Confidence - CARD EXTREMAMENTE SIMPLES (VERMELHO) */
     .chapter-card {
-        background-color: red; /* TESTE: Cor vermelha para ver o card */
+        background-color: red; /* TESTE: Cor Vermelha para garantir que o card apareça */
         color: white;
         padding: 20px;
         border-radius: 6px; 
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); 
         cursor: pointer;
-        /* Remove a altura fixa e flexbox */
+        /* Removido todos os layouts e alturas complexas */
         height: auto; 
     }
     
-    /* Remove todos os outros estilos complexos do card para este teste */
+    /* Escondemos todos os elementos complexos para este teste */
     .card-background-image, .card-text-area, .start-button, .status {
         display: none !important; 
     }
@@ -56,4 +72,228 @@
     }
     
     /* 4. Tela de Quiz/Lição (mantido) */
-    /* ... (MANTENHA O RESTANTE DO CSS ORIGINAL DA LIÇÃO) ... */
+    #lesson-screen {
+        max-width: 650px;
+        margin: 40px auto;
+        padding: 30px;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); 
+        display: none; 
+    }
+    
+    .quiz-question {
+        padding: 20px;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        text-align: center;
+        background-color: #fcfcfc;
+    }
+    .option {
+        padding: 15px;
+        margin: 12px 0;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        transition: background-color 0.2s, border-color 0.2s;
+        text-align: left;
+    }
+    .option:hover {
+        background-color: #e9f7ff; 
+        border-color: #007bff; 
+    }
+    .correct {
+        background-color: #e6ffed !important; 
+        border-color: #28a745 !important; 
+        font-weight: bold;
+    }
+    .incorrect {
+        background-color: #ffe6e6 !important; 
+        border-color: #dc3545 !important; 
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+    }
+    .nav-buttons button {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        color: white;
+    }
+    #back-btn { background-color: #6c757d; }
+    #next-btn { background-color: #007bff; }
+</style>
+</head>
+<body>
+
+<div id="home-screen">
+    <h2>Beginner</h2>
+    <div class="chapter-grid">
+        </div>
+</div>
+
+<div id="lesson-screen">
+    <h2 id="lesson-title">Confidence X</h2>
+    
+    <div class="quiz-question">
+        <p id="question-text">Look and Answer:</p>
+        <img id="question-image" src="https://via.placeholder.com/300x150?text=IMAGEM" alt="Question Image"> 
+        <p style="font-style: italic;">Clique em uma opção abaixo.</p>
+    </div>
+
+    <div id="options-container">
+        </div>
+    <p id="feedback" style="font-weight: bold; margin-top: 15px; text-align: center;"></p>
+
+    <div class="nav-buttons">
+        <button id="back-btn" onclick="goHome()">Voltar</button>
+        <button id="next-btn" onclick="goNext()">Próximo</button>
+    </div>
+</div>
+
+<script>
+    // ARRAY DE IMAGENS DE FUNDO (Apenas exemplos)
+    const BACKGROUND_IMAGES = [
+        "https://images.pexels.com/photos/1036321/pexels-photo-1036321.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/2076011/pexels-photo-2076011.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/6684742/pexels-photo-6684742.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/4144294/pexels-photo-4144294.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/1481005/pexels-photo-1481005.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/3401403/pexels-photo-3401403.jpeg?auto=compress&cs=tinysrgb&w=800",
+    ];
+
+    // 1. DADOS DAS QUESTÕES
+    const QUESTIONS = [
+        {
+            id: 1,
+            question: "Look and Answer: What is this?",
+            image: "numeros.jpg", 
+            options: {
+                A: "The Alphabet",
+                B: "English",
+                C: "Numbers"
+            },
+            correctAnswer: 'C', 
+            chapter: 1
+        },
+        {
+            id: 2,
+            question: "Selecione a saudação para a noite (ao chegar em um lugar):",
+            image: "", 
+            options: {
+                A: "Good night",
+                B: "Good morning",
+                C: "Good evening"
+            },
+            correctAnswer: 'C',
+            chapter: 1
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    const homeScreen = document.getElementById('home-screen');
+    const lessonScreen = document.getElementById('lesson-screen');
+    const optionsContainer = document.getElementById('options-container');
+    const feedback = document.getElementById('feedback');
+    const nextBtn = document.getElementById('next-btn');
+    const lessonTitle = document.getElementById('lesson-title');
+    const questionText = document.getElementById('question-text');
+    const questionImage = document.getElementById('question-image');
+
+    // 2. GERAÇÃO DOS 24 CARDS (Apenas texto simples para o teste)
+    const chapterGrid = document.querySelector('.chapter-grid');
+    for (let i = 1; i <= 24; i++) {
+        // Ignoramos a imagem e criamos um card simples com texto
+        chapterGrid.innerHTML += `
+            <div class="chapter-card" onclick="startLesson(${i})">
+                <h3>Confidence ${i}</h3>
+                <p>Card de Teste</p>
+            </div>
+        `;
+    }
+
+    // 3. NAVEGAÇÃO E LÓGICA (Mantida)
+    let currentChapter = 0;
+    let lessonQuestions = [];
+
+    function startLesson(chapterNumber) {
+        currentChapter = chapterNumber;
+        lessonQuestions = QUESTIONS.filter(q => q.chapter === chapterNumber);
+
+        if (lessonQuestions.length === 0) {
+            alert(`O nível Confidence ${chapterNumber} ainda não tem perguntas.`);
+            return;
+        }
+
+        homeScreen.style.display = 'none';
+        lessonScreen.style.display = 'block';
+        
+        lessonTitle.textContent = `Confidence ${chapterNumber}: Exercícios`;
+        
+        currentQuestionIndex = 0;
+        loadQuestion(lessonQuestions[currentQuestionIndex]);
+    }
+
+    function goHome() {
+        homeScreen.style.display = 'block';
+        lessonScreen.style.display = 'none';
+    }
+
+    function loadQuestion(q) {
+        feedback.innerHTML = '';
+        optionsContainer.innerHTML = '';
+        nextBtn.disabled = true; 
+        
+        questionText.textContent = q.question;
+        questionImage.src = q.image || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+        questionImage.style.display = q.image ? 'block' : 'none';
+        
+        for (const key in q.options) {
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'option';
+            optionDiv.textContent = `${key}: ${q.options[key]}`;
+            optionDiv.setAttribute('data-answer', key);
+            optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer);
+            optionsContainer.appendChild(optionDiv);
+        }
+    }
+
+    function checkAnswer(selectedDiv, selectedKey, correctKey) {
+        const allOptions = optionsContainer.querySelectorAll('.option');
+        allOptions.forEach(opt => opt.onclick = null);
+
+        if (selectedKey === correctKey) {
+            selectedDiv.classList.add('correct');
+            feedback.innerHTML = '✅ Resposta Correta!';
+        } else {
+            selectedDiv.classList.add('incorrect');
+            allOptions.forEach(opt => {
+                if (opt.getAttribute('data-answer') === correctKey) {
+                    opt.classList.add('correct');
+                }
+            });
+            feedback.innerHTML = `❌ Resposta Incorreta. A correta era ${correctKey}.`;
+        }
+
+        nextBtn.disabled = false; 
+    }
+
+    function goNext() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < lessonQuestions.length) {
+            loadQuestion(lessonQuestions[currentQuestionIndex]);
+        } else {
+            alert(`Parabéns! Você completou o Confidence ${currentChapter}!`);
+            goHome();
+        }
+    }
+</script>
+
+</body>
+</html>
