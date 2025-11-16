@@ -362,11 +362,11 @@
 
     // 1. DADOS DAS QUESTÕES (Beginner 1)
     const QUESTIONS = [
-        // Q1: CONFIRMADA (Números/Imagem)
+        // Q1: CONFIRMADA (Números/Imagem) - CAMINHO NA RAIZ
         {
             id: 1,
             question: "What do you see in the image?", 
-            image: "imagens/numeros.jpg", // Caminho Corrigido
+            image: "numeros.jpg", 
             options: {
                 A: "The Alphabet",
                 B: "Colors",
@@ -375,11 +375,11 @@
             correctAnswer: 'C', 
             chapter: 1
         },
-        // Q2: AUTOAPRESENTAÇÃO (I am) - IMAGEM CORRIGIDA PARA O NOVO CAMINHO
+        // Q2: AUTOAPRESENTAÇÃO (I am) - CAMINHO NA RAIZ
         {
             id: 2,
             question: "Complete the self-introduction: 'Hello, ____ John.'", 
-            image: "imagens/cumprimento.jpg", // Caminho Corrigido
+            image: "cumprimento.jpg", 
             options: {
                 A: "I is",
                 B: "I am",
@@ -421,7 +421,20 @@
             correctAnswer: 'PRONUNCIATION_SET', 
             chapter: 1
         },
-        // --- COLOQUE AQUI OS SEUS PRÓXIMOS 6 TÓPICOS/PERGUNTAS (ID 5 ao 10) ---
+        // Q5: NOVO TÓPICO (Dias da Semana) - Quiz Múltipla Escolha
+        {
+            id: 5,
+            question: "Which day comes after Tuesday?", 
+            image: "", 
+            options: {
+                A: "Monday",
+                B: "Wednesday",
+                C: "Thursday"
+            },
+            correctAnswer: 'B', 
+            chapter: 1
+        },
+        // --- COLOQUE AQUI OS SEUS PRÓXIMOS 5 TÓPICOS/PERGUNTAS (ID 6 ao 10) ---
         
     ];
 
@@ -512,13 +525,13 @@
         feedback.innerHTML = '';
         optionsContainer.innerHTML = '';
         
-        // CORREÇÃO ESSENCIAL: Garante que Next e Back estão ativos (exceto onde a lógica proíbe, como Pronunciation)
+        // Garante que Next e Back estão ativos (exceto onde a lógica proíbe)
         nextBtn.disabled = false; 
         backBtn.disabled = false; 
 
         questionText.textContent = q.question; 
         
-        // Define o source da imagem
+        // Define o source da imagem (usando caminho na raiz)
         if (q.image) {
             questionImage.src = q.image;
             questionImage.style.display = 'block';
