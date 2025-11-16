@@ -240,7 +240,7 @@
     #next-btn { background-color: #007bff; }
 
 
-    /* 5. Estilos para o Tópico de Pronúncia */
+    /* 5. Estilos para o Tópico de Pronúncia - SIMPLIFICADO */
     #pronunciation-container {
         display: flex;
         flex-direction: column;
@@ -251,66 +251,42 @@
         border-radius: 10px;
     }
     .word-to-practice {
-        font-size: 3em;
+        font-size: 1.2em; 
         font-weight: 700;
         margin-bottom: 20px;
-        color: #003366;
+        color: #333;
     }
     
-    /* Estilos do player de áudio HTML5 padrão */
-    .audio-player {
-        width: 100%;
-        max-width: 400px;
-        margin: 15px auto 30px; 
-    }
-
-    /* Botões */
-    .pronunciation-buttons button {
-        padding: 15px 30px;
-        font-size: 1.1em;
-        margin: 0 10px;
-        border: none;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: background-color 0.2s, transform 0.1s;
-    }
-    .practice-btn {
-        background-color: #007bff; 
-        color: white;
-    }
-    .practice-btn:hover {
-        background-color: #0056b3; 
-    }
-    
-    /* Lista de Palavras */
+    /* Lista de Palavras (Centro da Interação) */
     #pronunciation-list {
         list-style: none;
         padding: 0;
-        margin-top: 30px;
+        margin-top: 15px;
         width: 100%;
         max-width: 400px;
         text-align: left;
     }
     #pronunciation-list li {
-        padding: 10px 0;
-        border-bottom: 1px dotted #eee;
+        padding: 10px;
+        border-bottom: 1px dotted #e0e0e0;
         display: flex;
         justify-content: space-between;
         align-items: center;
         font-size: 1.1em;
     }
-    .word-status {
-        font-weight: bold;
-        font-size: 0.9em;
-    }
-    .word-status.pending {
-        color: #6c757d;
-    }
-    .word-status.completed {
-        color: #28a745;
-    }
-    .word-status.current {
+    
+    /* Botão Play da Lista */
+    .play-button {
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
         color: #007bff;
+        margin-left: 10px;
+        transition: color 0.1s;
+    }
+    .play-button:hover {
+        color: #0056b3;
     }
 </style>
 </head>
@@ -327,22 +303,21 @@
     
     <div class="quiz-question">
         <p id="question-text"></p> 
-        <img id="question-image" src="" alt="Question Image"> 
+        <img id="question-image" src="" alt="Imagem da Lição"> 
     </div>
 
     <div id="options-container">
         </div>
     
     <div id="pronunciation-container" style="display: none;">
-        <div class="word-to-practice" id="current-word">Word</div>
         
-        <audio id="audio-player" class="audio-player" controls preload="auto"></audio>
+        <p class="word-to-practice" id="current-instruction">Clique no ▶️ para ouvir a pronúncia de cada palavra quantas vezes desejar.</p>
         
-        <div class="pronunciation-buttons">
-            <button class="practice-btn" id="practice-button" onclick="handlePractice()">🗣️ Praticar</button>
-        </div>
+        <audio id="audio-player" preload="auto"></audio>
+        
         <ul id="pronunciation-list">
             </ul>
+        
     </div>
     
     <p id="feedback" style="font-weight: bold; margin-top: 15px; text-align: center;"></p>
@@ -354,9 +329,8 @@
 </div>
 
 <script>
-    // ⚠️ IMPORTANTE: SUBSTITUA ESTE LINK RAW COM O LINK BASE DO SEU REPOSITÓRIO
-    // EX: https://raw.githubusercontent.com/SEU_USUARIO/SEU_REPOSITORIO/main/
-    const GITHUB_RAW_BASE_URL = "SUA_URL_RAW_DO_GITHUB_AQUI"; 
+    // 🚀 LINK BASE CORRIGIDO AUTOMATICAMENTE COM BASE NO SEU REPOSITÓRIO:
+    const GITHUB_RAW_BASE_URL = "https://raw.githubusercontent.com/tgteodoro123-bit/english-app/main/"; 
     
     // ARRAY DE IMAGENS DE FUNDO
     const BACKGROUND_IMAGES = [
@@ -370,11 +344,11 @@
 
     // 1. DADOS DAS QUESTÕES (Beginner 1)
     const QUESTIONS = [
-        // Q1: IMAGEM ATUALIZADA
+        // Q1: IMAGEM
         {
             id: 1,
             question: "What do you see in the image?", 
-            image: "images/topico1/numeros.jpg", // NOVO CAMINHO
+            image: "images/topico1/numeros.jpg", 
             options: {
                 A: "The Alphabet",
                 B: "Colors",
@@ -383,11 +357,11 @@
             correctAnswer: 'C', 
             chapter: 1
         },
-        // Q2: IMAGEM ATUALIZADA
+        // Q2: IMAGEM
         {
             id: 2,
             question: "Complete the self-introduction: 'Hello, ____ Marcus.'", 
-            image: "images/topico2/cumprimento.jpg", // NOVO CAMINHO
+            image: "images/topico2/cumprimento.jpg", 
             options: {
                 A: "I is",
                 B: "I am",
@@ -415,12 +389,12 @@
             correctAnswer: 'INFO', 
             chapter: 1
         },
-        // Q4: PRONÚNCIA (AGORA COM NOMES DE ARQUIVO MP3 SEM ESPAÇO)
+        // Q4: PRONÚNCIA (AGORA APENAS COM PLAY BUTTON)
         {
             id: 4,
-            question: "PRONUNCIATION PRACTICE: Use the player to hear the word, then click 'Praticar' to confirm you practiced.", 
+            question: "PRONUNCIATION PRACTICE: Click the play button (▶️) to hear each word.", 
             options: {
-                "Address number": "audio/addressnumber.mp3", // Sem espaço
+                "Address number": "audio/addressnumber.mp3", 
                 "American": "audio/american.mp3",
                 "Friend": "audio/friend.mp3",
                 "Great": "audio/great.mp3", 
@@ -429,7 +403,7 @@
                 "Phone number": "audio/phonenumber.mp3",
                 "Student": "audio/student.mp3",
                 "Teacher": "audio/teacher.mp3",
-                "Years old": "audio/yearsold.mp3" // Sem espaço
+                "Years old": "audio/yearsold.mp3" 
             },
             correctAnswer: 'PRONUNCIATION_SET', 
             chapter: 1
@@ -464,9 +438,9 @@
 
     let answerChecked = false;
 
-    // VARIÁVEIS GLOBAIS PARA PRONÚNCIA
+    // VARIÁVEL GLOBAL PARA PRONÚNCIA
     let pronunciationWords = [];
-    let currentPronunciationIndex = 0;
+    const audioPlayer = document.getElementById('audio-player'); 
 
     // 2. GERAÇÃO DOS 24 CARDS (MANTIDO)
     const chapterGrid = document.querySelector('.chapter-grid');
@@ -513,19 +487,11 @@
         
         lessonTitle.textContent = `BEGINNER`; 
         
-        // Limpa o estado da Pronúncia ao iniciar
-        pronunciationWords = [];
-        currentPronunciationIndex = 0;
-        
         currentQuestionIndex = 0;
         loadQuestion(lessonQuestions[currentQuestionIndex]);
     }
 
     function goHome() {
-        // Limpa o estado da Pronúncia ao voltar para Home
-        pronunciationWords = [];
-        currentPronunciationIndex = 0;
-        
         homeScreen.style.display = 'block';
         lessonScreen.style.display = 'none';
     }
@@ -535,27 +501,23 @@
         feedback.innerHTML = '';
         optionsContainer.innerHTML = '';
         
-        // Garante que Next e Back estão ativos (exceto onde a lógica proíbe)
         nextBtn.disabled = false; 
         backBtn.disabled = false; 
 
-        // Usa innerHTML para permitir o título customizado em Q3 (e o negrito em Q4)
         questionText.innerHTML = q.question; 
         
-        // Define o source da imagem (usando o link RAW do GitHub)
         if (q.image) {
-            questionImage.src = GITHUB_RAW_BASE_URL + q.image; // Usando GITHUB_RAW_BASE_URL
+            // Lógica de carregamento da imagem usando o link base RAW
+            questionImage.src = GITHUB_RAW_BASE_URL + q.image; 
             questionImage.style.display = 'block';
         } else {
             questionImage.src = '';
             questionImage.style.display = 'none';
         }
         
-        // Esconde todos os containers customizados
         optionsContainer.style.display = 'none';
         document.getElementById('pronunciation-container').style.display = 'none';
 
-        // --- TRATAMENTO PARA TELAS DE INFORMAÇÃO (Não-Quiz: Q3) ---
         if (q.correctAnswer === 'INFO') {
             optionsContainer.style.display = 'block'; 
             optionsContainer.style.backgroundColor = '#f4f4f4'; 
@@ -564,7 +526,6 @@
             
             let htmlContent = '<ul style="list-style-type: none; padding: 0;">';
             for (const key in q.options) {
-                // Aqui o conteúdo já tem o estilo span com a cor azul
                 htmlContent += `<li style="margin: 10px 0; font-size: 1.1em; border-bottom: 1px dashed #ddd; padding-bottom: 5px;">
                                     <strong>${key}:</strong> ${q.options[key]}
                                 </li>`;
@@ -577,7 +538,7 @@
             renderPronunciationPractice(q);
         }
         else {
-            // Se for um Quiz normal (Q1, Q2, Q5)
+            // Se for um Quiz normal
             optionsContainer.style.display = 'block';
             optionsContainer.style.backgroundColor = 'transparent'; 
             optionsContainer.style.padding = '0';
@@ -599,7 +560,6 @@
         answerChecked = true;
         
         const allOptions = optionsContainer.querySelectorAll('.option');
-        // Desativa a interação após o clique
         allOptions.forEach(opt => opt.onclick = null);
 
         let feedbackMessage = '';
@@ -619,23 +579,11 @@
 
         feedback.innerHTML = feedbackMessage;
         
-        // Garante que o botão Next esteja ativo mesmo após a resposta
         nextBtn.disabled = false;
     }
     
-    // FUNÇÃO AVANÇAR (Não obriga a responder Quiz)
+    // FUNÇÃO AVANÇAR
     function goNext() {
-        const currentQ = lessonQuestions[currentQuestionIndex];
-
-        // 1. CHECAGEM para TÓPICO DE PRONÚNCIA
-        if (currentQ.correctAnswer === 'PRONUNCIATION_SET') {
-            if (!pronunciationWords.every(w => w.status === 'completed')) {
-                alert('Você deve clicar em "Praticar" para todas as 10 palavras antes de continuar.');
-                return;
-            }
-        }
-        
-        // 2. AVANÇA
         currentQuestionIndex++;
         if (currentQuestionIndex < lessonQuestions.length) {
             loadQuestion(lessonQuestions[currentQuestionIndex]);
@@ -653,90 +601,44 @@
             goHome();
         }
     }
-
-    // --- LÓGICA DE PRONÚNCIA (Real) ---
+    
+    // --- LÓGICA DE PRONÚNCIA ---
+    
+    // Função para tocar um áudio específico
+    function playWordAudio(audioPath) {
+        audioPlayer.src = GITHUB_RAW_BASE_URL + audioPath;
+        audioPlayer.play();
+    }
     
     function renderPronunciationPractice(q) {
         const pronContainer = document.getElementById('pronunciation-container');
         pronContainer.style.display = 'flex';
         questionImage.style.display = 'none'; 
+        feedback.innerHTML = ``; 
 
-        // Inicializa o set de palavras se for a primeira vez
-        if (pronunciationWords.length === 0) {
-            pronunciationWords = Object.keys(q.options).map((word, index) => ({
-                word: word,
-                audioPath: q.options[word], // O caminho relativo agora
-                id: index,
-                status: 'pending' 
-            }));
-            currentPronunciationIndex = 0;
-        }
+        pronunciationWords = Object.keys(q.options).map((word) => ({
+            word: word,
+            audioPath: q.options[word]
+        }));
         
         updatePronunciationUI();
     }
 
     function updatePronunciationUI() {
         const wordListElement = document.getElementById('pronunciation-list');
-        const currentWordData = pronunciationWords[currentPronunciationIndex];
-        const audioPlayer = document.getElementById('audio-player');
-        
-        // O botão Next só é ativado se todas as palavras forem completadas
-        nextBtn.disabled = !pronunciationWords.every(w => w.status === 'completed');
-
-        if (currentWordData) {
-            document.getElementById('current-word').textContent = currentWordData.word;
-            
-            // Define o source do player de áudio usando o Link RAW + caminho
-            audioPlayer.src = GITHUB_RAW_BASE_URL + currentWordData.audioPath;
-            audioPlayer.style.display = 'block';
-            
-            // Limpa o feedback quando avança para uma nova palavra
-            feedback.innerHTML = ``;
-            
-            document.getElementById('practice-button').disabled = false;
-            
-        } else {
-            document.getElementById('current-word').textContent = "Set Completed!";
-            audioPlayer.style.display = 'none';
-            feedback.innerHTML = '✅ **Todas as 10 palavras foram praticadas! Clique em Próximo.**';
-            document.getElementById('practice-button').disabled = true;
-            nextBtn.disabled = false;
-        }
 
         wordListElement.innerHTML = '';
-        pronunciationWords.forEach((item, index) => {
-            let statusText = 'Pendente';
-            let statusClass = 'pending';
-            
-            if (item.status === 'completed') {
-                statusText = 'Praticado';
-                statusClass = 'completed';
-            } else if (index === currentPronunciationIndex) {
-                statusText = 'Atual';
-                statusClass = 'current';
-            }
-
+        pronunciationWords.forEach((item) => {
+            // Esta é a estrutura que precisa estar perfeita para o clique funcionar.
             wordListElement.innerHTML += `
                 <li>
                     <span>${item.word}</span>
-                    <span class="word-status ${statusClass}">${statusText}</span>
+                    <div>
+                         <button class="play-button" onclick="playWordAudio('${item.audioPath}')">▶️</button>
+                    </div>
                 </li>
             `;
         });
-    }
-
-    function handlePractice() {
-        const currentWordData = pronunciationWords[currentPronunciationIndex];
-
-        if (!currentWordData) return;
-
-        // SIMULA SUCESSO E AVANÇA
-        currentWordData.status = 'completed';
-        feedback.innerHTML = `🟢 **Sucesso!** Prática de *${currentWordData.word}* concluída.`;
-        
-        // Avança para a próxima palavra
-        currentPronunciationIndex++;
-        updatePronunciationUI();
     }
 </script>
 
