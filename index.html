@@ -366,7 +366,7 @@
         {
             id: 1,
             question: "What do you see in the image?", 
-            image: "numeros.jpg", // Lembre-se de substituir esta imagem por uma real com números!
+            image: "numeros.jpg", 
             options: {
                 A: "The Alphabet",
                 B: "Colors",
@@ -375,11 +375,11 @@
             correctAnswer: 'C', 
             chapter: 1
         },
-        // Q2: AUTOAPRESENTAÇÃO (I am)
+        // Q2: AUTOAPRESENTAÇÃO (I am) - IMAGEM CORRIGIDA
         {
             id: 2,
             question: "Complete the self-introduction: 'Hello, ____ John.'", 
-            image: "apresentacao.jpg", // Sugestão: Imagem de um cumprimento.
+            image: "cumprimento.jpg", 
             options: {
                 A: "I is",
                 B: "I am",
@@ -399,7 +399,7 @@
                 "TEACHER": "Professor/a",
                 "NATIONALITY": "Nacionalidade"
             },
-            correctAnswer: 'INFO', // CHAVE PARA IDENTIFICAR TELA INFORMATIVA
+            correctAnswer: 'INFO', 
             chapter: 1
         },
         // Q4: PRONÚNCIA (Simulação de 10 Palavras)
@@ -418,7 +418,7 @@
                 "New": "audio_new.mp3",
                 "Friend": "audio_friend.mp3"
             },
-            correctAnswer: 'PRONUNCIATION_SET', // CHAVE PARA IDENTIFICAR O SET DE PRONÚNCIA
+            correctAnswer: 'PRONUNCIATION_SET', 
             chapter: 1
         },
         // --- COLOQUE AQUI OS SEUS PRÓXIMOS 6 TÓPICOS/PERGUNTAS (ID 5 ao 10) ---
@@ -438,7 +438,7 @@
 
     let answerChecked = false;
 
-    // NOVAS VARIÁVEIS GLOBAIS PARA PRONÚNCIA
+    // VARIÁVEIS GLOBAIS PARA PRONÚNCIA
     let pronunciationWords = [];
     let currentPronunciationIndex = 0;
     let isRecording = false; 
@@ -482,7 +482,7 @@
             return;
         }
 
-        goHome(); // Garante que a tela inicial está visível antes de esconder
+        goHome(); 
         homeScreen.style.display = 'none';
         lessonScreen.style.display = 'block';
         
@@ -523,16 +523,15 @@
         optionsContainer.style.display = 'none';
         document.getElementById('pronunciation-container').style.display = 'none';
 
-        // --- NOVO TRATAMENTO PARA TELAS DE INFORMAÇÃO (Não-Quiz) ---
+        // --- TRATAMENTO PARA TELAS DE INFORMAÇÃO (Não-Quiz) ---
         if (q.correctAnswer === 'INFO') {
-            optionsContainer.style.display = 'block'; // Mostrar o container
-            optionsContainer.style.backgroundColor = '#f4f4f4'; // Cor de fundo para destacar o vocabulário
+            optionsContainer.style.display = 'block'; 
+            optionsContainer.style.backgroundColor = '#f4f4f4'; 
             optionsContainer.style.padding = '20px';
             optionsContainer.style.borderRadius = '8px';
             
             let htmlContent = '<ul style="list-style-type: none; padding: 0;">';
             for (const key in q.options) {
-                // Formato mais limpo para exibição do vocabulário
                 htmlContent += `<li style="margin: 10px 0; font-size: 1.1em; border-bottom: 1px dashed #ddd; padding-bottom: 5px;">
                                     <strong>${key}:</strong> ${q.options[key]}
                                 </li>`;
@@ -543,7 +542,7 @@
             feedback.innerHTML = '👉 **Click Next to continue the course.**'; 
             
         } else if (q.correctAnswer === 'PRONUNCIATION_SET') {
-            // --- NOVO TRATAMENTO PARA PRONÚNCIA ---
+            // --- TRATAMENTO PARA PRONÚNCIA ---
             renderPronunciationPractice(q);
         }
         else {
@@ -563,7 +562,7 @@
         }
     }
 
-    // LÓGICA DO QUIZ (MANTIDO)
+    // LÓGICA DO QUIZ
     function checkAnswer(selectedDiv, selectedKey, correctKey) {
         if (answerChecked) return; 
         answerChecked = true;
@@ -589,19 +588,22 @@
         feedback.innerHTML = feedbackMessage;
     }
     
+    // FUNÇÃO AVANÇAR (MODIFICADA: Não obriga a responder Quiz)
     function goNext() {
-        // Se for um set de pronúncia, garante que esteja concluído
-        if (lessonQuestions[currentQuestionIndex].correctAnswer === 'PRONUNCIATION_SET') {
+        const currentQ = lessonQuestions[currentQuestionIndex];
+
+        // 1. CHECAGEM para TÓPICOS DE QUIZ (Q1, Q2, Q5, etc.)
+        // Não há obrigatoriedade de responder. O usuário pode clicar em 'Next' a qualquer momento.
+        
+        // 2. CHECAGEM para TÓPICO DE PRONÚNCIA (Q4)
+        if (currentQ.correctAnswer === 'PRONUNCIATION_SET') {
             if (!pronunciationWords.every(w => w.status === 'completed')) {
                 alert('You must complete all 10 words before proceeding.');
                 return;
             }
-        } else if (lessonQuestions[currentQuestionIndex].correctAnswer !== 'INFO' && !answerChecked) {
-             // Garante que o usuário respondeu, a menos que seja tela INFO
-            alert('Please select an option before proceeding.');
-            return;
         }
-
+        
+        // 3. AVANÇA
         currentQuestionIndex++;
         if (currentQuestionIndex < lessonQuestions.length) {
             loadQuestion(lessonQuestions[currentQuestionIndex]);
@@ -620,11 +622,11 @@
         }
     }
 
-    // --- LÓGICA DE PRONÚNCIA (NOVO) ---
+    // --- LÓGICA DE PRONÚNCIA ---
     
     function renderPronunciationPractice(q) {
         document.getElementById('pronunciation-container').style.display = 'flex';
-        questionImage.style.display = 'none'; // Sem imagem no quiz
+        questionImage.style.display = 'none'; 
 
         // Inicializa o set de palavras se for a primeira vez
         if (pronunciationWords.length === 0) {
@@ -632,12 +634,11 @@
                 word: word,
                 audio: q.options[word],
                 id: index,
-                status: 'pending' // pending, current, completed
+                status: 'pending' 
             }));
             currentPronunciationIndex = 0;
         }
         
-        // Renderiza a interface
         updatePronunciationUI();
     }
 
@@ -647,7 +648,6 @@
         const recordButton = document.getElementById('record-button');
         const listenButton = document.querySelector('.listen-btn');
         
-        // Lógica de desativação do botão Next
         nextBtn.disabled = !pronunciationWords.every(w => w.status === 'completed');
 
         if (currentWordData) {
@@ -658,7 +658,6 @@
             recordButton.classList.remove('recording-active');
             isRecording = false;
         } else {
-            // Set concluído
             document.getElementById('current-word').textContent = "Set Completed!";
             recordButton.disabled = true;
             listenButton.disabled = true;
@@ -666,7 +665,6 @@
             nextBtn.disabled = false;
         }
 
-        // Renderiza a lista de progresso
         wordListElement.innerHTML = '';
         pronunciationWords.forEach((item, index) => {
             let statusText = 'Pending';
@@ -689,7 +687,6 @@
         });
     }
 
-    // FUNÇÃO SIMULADA DE OUVIR
     function handleListen() {
         const currentWord = pronunciationWords[currentPronunciationIndex]?.word;
         if (currentWord) {
@@ -697,7 +694,6 @@
         }
     }
 
-    // FUNÇÃO SIMULADA DE GRAVAR
     function handleRecord() {
         const recordButton = document.getElementById('record-button');
         const currentWordData = pronunciationWords[currentPronunciationIndex];
