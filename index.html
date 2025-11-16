@@ -362,7 +362,7 @@
 
     // 1. DADOS DAS QUESTÕES (Beginner 1)
     const QUESTIONS = [
-        // Q1: CONFIRMADA (Números/Imagem) - CAMINHO NA RAIZ
+        // Q1: CONFIRMADA (Números/Imagem)
         {
             id: 1,
             question: "What do you see in the image?", 
@@ -375,10 +375,10 @@
             correctAnswer: 'C', 
             chapter: 1
         },
-        // Q2: AUTOAPRESENTAÇÃO (I am) - CAMINHO NA RAIZ
+        // Q2: AUTOAPRESENTAÇÃO (I am) - NOME ALTERADO PARA "Marcus"
         {
             id: 2,
-            question: "Complete the self-introduction: 'Hello, ____ John.'", 
+            question: "Complete the self-introduction: 'Hello, ____ Marcus.'", 
             image: "cumprimento.jpg", 
             options: {
                 A: "I is",
@@ -388,16 +388,21 @@
             correctAnswer: 'B', 
             chapter: 1
         },
-        // Q3: VOCABULÁRIO (TELA INFORMATIVA)
+        // Q3: NOVA TELA DE EXEMPLOS (10 SENTENÇAS)
         {
             id: 3,
-            question: "ESSENTIAL VOCABULARY:", 
+            question: "PRACTICE SENTENCES (10 Examples):", 
             options: {
-                "ADDRESS NUMBER": "Número do Endereço",
-                "FRIEND": "Amigo/a",
-                "NEW STUDENT": "Novo Aluno/a",
-                "TEACHER": "Professor/a",
-                "NATIONALITY": "Nacionalidade"
+                "1.": "My **address number** is 501.",
+                "2.": "I am a **new student**.",
+                "3.": "Sofia is my new **friend**, Alexia.",
+                "4.": "Mr. David is a great **teacher**.",
+                "5.": "My **phone number** is: (987) 654-1234.",
+                "6.": "She is **Japanese**.",
+                "7.": "I love my English **teacher**.",
+                "8.": "Lucas is a **new student**, too.",
+                "9.": "I am **21 years old**.",
+                "10.": "My **nationality**? I'm **Brazilian**."
             },
             correctAnswer: 'INFO', 
             chapter: 1
@@ -421,7 +426,7 @@
             correctAnswer: 'PRONUNCIATION_SET', 
             chapter: 1
         },
-        // Q5: NOVO TÓPICO (Dias da Semana) - Quiz Múltipla Escolha
+        // Q5: DIAS DA SEMANA
         {
             id: 5,
             question: "Which day comes after Tuesday?", 
@@ -551,6 +556,7 @@
             optionsContainer.style.padding = '20px';
             optionsContainer.style.borderRadius = '8px';
             
+            // Adicionado um pequeno título para a tela de exemplos
             let htmlContent = '<ul style="list-style-type: none; padding: 0;">';
             for (const key in q.options) {
                 htmlContent += `<li style="margin: 10px 0; font-size: 1.1em; border-bottom: 1px dashed #ddd; padding-bottom: 5px;">
