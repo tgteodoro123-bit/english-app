@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My English App - Capítulos</title>
+<title>Inglês Essencial</title>
 <style>
     /* 1. Estilos Gerais */
     body {
@@ -129,7 +129,7 @@
 </head>
 <body>
 
-<h1>Meu Curso de Inglês Básico - App de Venda</h1>
+<h1>Inglês Essencial</h1>
 
 <div id="home-screen">
     <h2>Selecione um Capítulo</h2>
@@ -142,7 +142,7 @@
     
     <div class="quiz-question">
         <p id="question-text">Look and Answer:</p>
-        <img id="question-image" src="https://via.placeholder.com/300x150?text=IMAGEM+DO+DADO" alt="Question Image"> 
+        <img id="question-image" src="https://via.placeholder.com/300x150?text=IMAGEM" alt="Question Image"> 
         <p style="font-style: italic;">Clique em uma opção abaixo.</p>
     </div>
 
@@ -162,28 +162,29 @@
         {
             id: 1,
             question: "Look and Answer: What is this?",
-            image: "https://via.placeholder.com/300x150?text=IMAGEM+DO+DADO", // TROQUE PELA SUA IMAGEM
+            // CAMINHO DA SUA IMAGEM: certifique-se que ela está na pasta img/
+            image: "img/numeros.jpg", 
             options: {
                 A: "The Alphabet",
                 B: "English",
                 C: "Numbers"
             },
-            correctAnswer: 'C', // Resposta C: Numbers (Números)
+            correctAnswer: 'C', 
             chapter: 1
         },
         {
             id: 2,
             question: "Selecione a saudação para a noite (ao chegar em um lugar):",
-            image: "", // Sem imagem para esta pergunta
+            image: "", 
             options: {
                 A: "Good night",
                 B: "Good morning",
                 C: "Good evening"
             },
-            correctAnswer: 'C', // Resposta C: Good evening
+            correctAnswer: 'C',
             chapter: 1
         }
-        // Adicione aqui mais questões originais com chapter: 1, chapter: 2, etc.
+        // ADICIONE AQUI AS PRÓXIMAS PERGUNTAS DO CAPÍTULO 1 (e mude o 'chapter' para 2, 3, etc.)
     ];
 
     let currentQuestionIndex = 0;
@@ -196,11 +197,15 @@
     const questionText = document.getElementById('question-text');
     const questionImage = document.getElementById('question-image');
 
-    // 2. GERAÇÃO DOS 24 CARDS (AGORA ESTÁ AQUI, ONDE DEVE FICAR)
+    // 2. GERAÇÃO DOS 24 CARDS
     const chapterGrid = document.querySelector('.chapter-grid');
     for (let i = 1; i <= 24; i++) {
+        // Você pode trocar o URL do placeholder por uma imagem real do capítulo
+        const chapterImage = `https://via.placeholder.com/100x70?text=CAP.+${i}`; 
+
         chapterGrid.innerHTML += `
             <div class="chapter-card" onclick="startLesson(${i})">
+                <img src="${chapterImage}" alt="Capítulo ${i}" style="width:100px; height:70px; object-fit:cover; border-radius: 8px; margin-bottom: 10px;">
                 <h3>Capítulo ${i}</h3>
                 <p>Tópico Principal do Capítulo ${i}</p>
                 <p style="font-weight: bold; color: #6c757d;">Não Iniciado</p>
@@ -209,12 +214,11 @@
     }
 
     // 3. NAVEGAÇÃO ENTRE TELAS
-    let currentChapter = 0; // Armazena o capítulo atual
-    let lessonQuestions = []; // Armazena as perguntas filtradas para a lição
+    let currentChapter = 0;
+    let lessonQuestions = [];
 
     function startLesson(chapterNumber) {
         currentChapter = chapterNumber;
-        // Filtra APENAS as perguntas que pertencem a este capítulo
         lessonQuestions = QUESTIONS.filter(q => q.chapter === chapterNumber);
 
         if (lessonQuestions.length === 0) {
@@ -222,10 +226,12 @@
             return;
         }
 
-        // Esconde a Home e mostra a Lição
         homeScreen.style.display = 'none';
         lessonScreen.style.display = 'block';
-        lessonTitle.textContent = `Capítulo ${chapterNumber}: Quiz Pré-Aula`;
+        
+        // TÍTULO CORRIGIDO (sem "Pré-Aula")
+        lessonTitle.textContent = `Capítulo ${chapterNumber}: Exercícios`;
+        
         currentQuestionIndex = 0;
         loadQuestion(lessonQuestions[currentQuestionIndex]);
     }
@@ -237,17 +243,17 @@
 
     // 4. CARREGAR PERGUNTA E OPÇÕES
     function loadQuestion(q) {
-        // Reseta o feedback visual e de texto
+        // Reseta o feedback
         feedback.innerHTML = '';
         optionsContainer.innerHTML = '';
-        nextBtn.disabled = true; // Desabilita o "Próximo" até responder
+        nextBtn.disabled = true; 
         
-        // Atualiza a imagem e o texto da pergunta
+        // Atualiza a imagem e o texto
         questionText.textContent = q.question;
-        questionImage.src = q.image || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="; // Imagem em branco se não houver
-        questionImage.style.display = q.image ? 'block' : 'none'; // Esconde a imagem se não houver URL
+        questionImage.src = q.image || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+        questionImage.style.display = q.image ? 'block' : 'none';
         
-        // Cria as opções de resposta A, B, C
+        // Cria as opções de resposta
         for (const key in q.options) {
             const optionDiv = document.createElement('div');
             optionDiv.className = 'option';
@@ -260,7 +266,6 @@
 
     // 5. VERIFICAR RESPOSTA (Feedback Verde/Vermelho)
     function checkAnswer(selectedDiv, selectedKey, correctKey) {
-        // Desabilita os cliques depois de uma resposta
         const allOptions = optionsContainer.querySelectorAll('.option');
         allOptions.forEach(opt => opt.onclick = null);
 
@@ -269,7 +274,6 @@
             feedback.innerHTML = '✅ Resposta Correta!';
         } else {
             selectedDiv.classList.add('incorrect');
-            // Mostra a correta
             allOptions.forEach(opt => {
                 if (opt.getAttribute('data-answer') === correctKey) {
                     opt.classList.add('correct');
@@ -278,7 +282,7 @@
             feedback.innerHTML = `❌ Resposta Incorreta. A correta era ${correctKey}.`;
         }
 
-        nextBtn.disabled = false; // Habilita o "Próximo"
+        nextBtn.disabled = false; 
     }
 
     // 6. PRÓXIMA PERGUNTA
