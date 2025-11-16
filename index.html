@@ -329,7 +329,7 @@
 </div>
 
 <script>
-    // 🚀 LINK BASE CORRIGIDO AUTOMATICAMENTE COM BASE NO SEU REPOSITÓRIO:
+    // 🚀 LINK BASE: PRECISA ESTAR NA BRANCH ONDE ESTÃO index.html, /audio E /images
     const GITHUB_RAW_BASE_URL = "https://raw.githubusercontent.com/tgteodoro123-bit/english-app/main/"; 
     
     // ARRAY DE IMAGENS DE FUNDO
@@ -348,7 +348,7 @@
         {
             id: 1,
             question: "What do you see in the image?", 
-            image: "images/numeros.jpg", // CORRIGIDO: Removido /topico1
+            image: "images/numeros.jpg", // Assumindo pasta images/ na raiz da main
             options: {
                 A: "The Alphabet",
                 B: "Colors",
@@ -361,7 +361,7 @@
         {
             id: 2,
             question: "Complete the self-introduction: 'Hello, ____ Marcus.'", 
-            image: "images/cumprimento.jpg", // CORRIGIDO: Removido /topico2
+            image: "images/cumprimento.jpg", // Assumindo pasta images/ na raiz da main
             options: {
                 A: "I is",
                 B: "I am",
@@ -389,7 +389,7 @@
             correctAnswer: 'INFO', 
             chapter: 1
         },
-        // Q4: PRONÚNCIA (CORRIGIDO NOME DO ARQUIVO SUDENT -> STUDENT)
+        // Q4: PRONÚNCIA
         {
             id: 4,
             question: "PRONUNCIATION PRACTICE: Click the play button (▶️) to hear each word.", 
@@ -401,7 +401,7 @@
                 "Nationality": "audio/nationality.mp3",
                 "New": "audio/new.mp3",
                 "Phone number": "audio/phonenumber.mp3",
-                "Student": "audio/student.mp3", // CORRIGIDO: Era sudent.mp3
+                "Student": "audio/student.mp3",
                 "Teacher": "audio/teacher.mp3",
                 "Years old": "audio/yearsold.mp3" 
             },
@@ -421,7 +421,71 @@
             correctAnswer: 'B', 
             chapter: 1
         },
-        // --- COLOQUE AQUI OS SEUS PRÓXIMOS 5 TÓPICOS/PERGUNTAS (ID 6 ao 10) ---
+        // Q6: NOVO TÓPICO - CORES E OBJETOS (ADICIONADO)
+        {
+            id: 6,
+            question: "What is the color of the sky on a sunny day?", 
+            image: "", 
+            options: {
+                A: "Red",
+                B: "Yellow",
+                C: "Blue"
+            },
+            correctAnswer: 'C', 
+            chapter: 1
+        },
+        // Q7: NOVO TÓPICO - PERGUNTA SIMPLES
+        {
+            id: 7,
+            question: "What is the English word for 'cadeira'?", 
+            image: "", 
+            options: {
+                A: "Book",
+                B: "Chair",
+                C: "Table"
+            },
+            correctAnswer: 'B', 
+            chapter: 1
+        },
+        // Q8: NOVO TÓPICO - CORES COM IMAGEM
+        {
+            id: 8,
+            question: "Identify the color of the object in the image:", 
+            image: "images/apple.jpg", // Precisará de uma imagem de maçã vermelha (apple.jpg) na pasta images/
+            options: {
+                A: "Green",
+                B: "Red",
+                C: "Orange"
+            },
+            correctAnswer: 'B', 
+            chapter: 1
+        },
+        // Q9: NOVO TÓPICO - INTRODUÇÃO À PERGUNTA
+        {
+            id: 9,
+            question: "How do you ask 'Where are you from?'", 
+            image: "", 
+            options: {
+                A: "What your name is?",
+                B: "Where from you are?",
+                C: "Where are you from?"
+            },
+            correctAnswer: 'C', 
+            chapter: 1
+        },
+        // Q10: NOVO TÓPICO - ARTIGOS
+        {
+            id: 10,
+            question: "Complete the sentence: 'I want ___ apple.'", 
+            image: "", 
+            options: {
+                A: "a",
+                B: "an",
+                C: "the"
+            },
+            correctAnswer: 'B', 
+            chapter: 1
+        },
         
     ];
 
@@ -447,7 +511,8 @@
     for (let i = 1; i <= 24; i++) {
         const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
         
-        let cardTopicName = i === 1 ? 'Basic Foundations' : `Module ${i} Content`;
+        // Agora, se o Módulo 1 estiver completo (10 tópicos), mostramos isso
+        let cardTopicName = i === 1 ? 'Basic Foundations (10 Topics Ready!)' : `Module ${i} Content`;
         
         chapterGrid.innerHTML += `
             <div class="chapter-card" id="card-${i}">
