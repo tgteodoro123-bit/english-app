@@ -1,50 +1,208 @@
-/* 3. Card de Confidence - LAYOUT ESTRUTURAL (TESTE) */
-.chapter-card {
-    background-color: #f7f7f7; 
-    border-radius: 6px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); 
-    cursor: pointer;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inglês Básico</title>
+<style>
+    /* 1. Estilos Gerais */
+    body {
+        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff; 
+        color: #333;
+    }
+
+    /* 2. Layout da Grade de Cards e Spacing */
+    #home-screen {
+        max-width: 1200px; 
+        margin: 80px auto 50px; 
+        padding: 0 30px;
+    }
     
-    height: 240px; 
-    display: flex;
-    flex-direction: column;
-}
-
-.chapter-card:hover {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
-
-/* Imagem no topo, usando 70% da altura */
-.card-background-image {
-    height: 70%;
-    width: 100%;
-    background-size: cover;
-    background-position: center;
-    border-radius: 6px 6px 0 0;
-}
-
-/* Área de Texto Inferior, usando 30% da altura */
-.card-text-area {
-    height: 30%; 
-    width: 100%;
-    padding: 10px;
-    background-color: white; 
-    color: #333; 
+    h2 {
+        color: black; 
+        border-bottom: 1px solid #e0e0e0; 
+        padding-top: 20px; 
+        padding-bottom: 8px; 
+        margin-bottom: 60px; 
+        font-size: 1.8em;
+    }
+    .chapter-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); 
+        gap: 30px; 
+    }
     
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    border-radius: 0 0 6px 6px;
-    transition: background-color 0.3s ease;
-}
+    @media (max-width: 1024px) {
+        .chapter-grid {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+    }
 
-.chapter-card:hover .card-text-area {
-    background-color: #f0f0f0; /* Fundo levemente cinza no hover */
-}
+    /* 3. Card de Confidence - LAYOUT ESTRUTURAL SIMPLIFICADO E ESTÁVEL */
+    .chapter-card {
+        background-color: #f7f7f7; 
+        border-radius: 6px; 
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); 
+        cursor: pointer;
+        
+        height: 240px; 
+        /* FLEXBOX SIMPLES PARA VISIBILIDADE */
+        display: flex; 
+        flex-direction: column;
+        transition: box-shadow 0.2s ease;
+    }
+    .chapter-card:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+    }
+    
+    /* Imagem no topo (70%) */
+    .card-background-image {
+        height: 70%;
+        width: 100%;
+        background-size: cover;
+        background-position: center;
+        border-radius: 6px 6px 0 0;
+    }
 
-/* Botão Start (Invisível no layout estrutural para não causar problemas) */
-.start-button {
-    display: none; 
-}
+    /* Área de Texto Inferior (30%) */
+    .card-text-area {
+        height: 30%; 
+        width: 100%;
+        padding: 10px;
+        background-color: white; 
+        color: #333; 
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        border-radius: 0 0 6px 6px;
+        transition: background-color 0.3s ease;
+    }
+
+    .chapter-card:hover .card-text-area {
+        background-color: #f0f0f0; 
+    }
+
+    /* Estilos de Texto */
+    .chapter-card h3 {
+        margin-top: 0;
+        font-size: 1.3em;
+        margin-bottom: 5px;
+        color: #003366; 
+    }
+
+    .chapter-card p {
+        margin: 0;
+        font-size: 0.8em;
+        color: #666; 
+    }
+
+    .chapter-card .status {
+        display: none; 
+    }
+
+    /* Botão Start escondido neste layout estrutural */
+    .start-button {
+        display: none; 
+    }
+    
+    /* 4. Tela de Quiz/Lição (mantido) */
+    #lesson-screen {
+        max-width: 650px;
+        margin: 40px auto;
+        padding: 30px;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); 
+        display: none; 
+    }
+    
+    .quiz-question {
+        padding: 20px;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        text-align: center;
+        background-color: #fcfcfc;
+    }
+    .option {
+        padding: 15px;
+        margin: 12px 0;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        transition: background-color 0.2s, border-color 0.2s;
+        text-align: left;
+    }
+    .option:hover {
+        background-color: #e9f7ff; 
+        border-color: #007bff; 
+    }
+    .correct {
+        background-color: #e6ffed !important; 
+        border-color: #28a745 !important; 
+        font-weight: bold;
+    }
+    .incorrect {
+        background-color: #ffe6e6 !important; 
+        border-color: #dc3545 !important; 
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+    }
+    .nav-buttons button {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        color: white;
+    }
+    #back-btn { background-color: #6c757d; }
+    #next-btn { background-color: #007bff; }
+</style>
+</head>
+<body>
+
+<div id="home-screen">
+    <h2>Beginner</h2>
+    <div class="chapter-grid">
+    </div>
+</div>
+
+<div id="lesson-screen">
+    <h2 id="lesson-title">Confidence X</h2>
+    
+    <div class="quiz-question">
+        <p id="question-text">Look and Answer:</p>
+        <img id="question-image" src="https://via.placeholder.com/300x150?text=IMAGEM" alt="Question Image"> 
+        <p style="font-style: italic;">Clique em uma opção abaixo.</p>
+    </div>
+
+    <div id="options-container">
+        </div>
+    <p id="feedback" style="font-weight: bold; margin-top: 15px; text-align: center;"></p>
+
+    <div class="nav-buttons">
+        <button id="back-btn" onclick="goHome()">Voltar</button>
+        <button id="next-btn" onclick="goNext()">Próximo</button>
+    </div>
+</div>
+
+<script>
+    // ARRAY DE IMAGENS DE FUNDO
+    const BACKGROUND_IMAGES = [
+        "https://images.pexels.com/photos/1036321/pexels-photo-1036321.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/2076011/pexels-photo-2076011.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/6684742/pexels-photo-6684742.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/4144294/pexels-photo-4144294.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/1481005/pexels-photo-1481005.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/3401403/pexels-photo-3401403.
