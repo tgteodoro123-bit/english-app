@@ -240,7 +240,7 @@
     #next-btn { background-color: #007bff; }
 
 
-    /* 5. Estilos para o Tópico de Pronúncia - REVISADO */
+    /* 5. Estilos para o Tópico de Pronúncia - SIMPLIFICADO */
     #pronunciation-container {
         display: flex;
         flex-direction: column;
@@ -251,7 +251,7 @@
         border-radius: 10px;
     }
     .word-to-practice {
-        font-size: 1.2em; /* Reduzido o tamanho */
+        font-size: 1.2em; 
         font-weight: 700;
         margin-bottom: 20px;
         color: #333;
@@ -275,22 +275,6 @@
         font-size: 1.1em;
     }
     
-    .word-status {
-        font-weight: bold;
-        font-size: 0.9em;
-        width: 80px; /* Fixa largura para alinhamento */
-        text-align: right;
-    }
-    .word-status.pending {
-        color: #6c757d;
-    }
-    .word-status.completed {
-        color: #28a745;
-    }
-    .word-status.current {
-        color: #007bff;
-    }
-    
     /* Botão Play da Lista */
     .play-button {
         background: none;
@@ -304,30 +288,6 @@
     .play-button:hover {
         color: #0056b3;
     }
-    
-    /* Container do botão Praticar */
-    .practice-action-area {
-        margin-top: 20px;
-        padding-top: 15px;
-        border-top: 1px solid #eee;
-        width: 100%;
-        text-align: center;
-    }
-    .practice-btn {
-        background-color: #007bff; 
-        color: white;
-        padding: 15px 30px;
-        font-size: 1.1em;
-        border: none;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: background-color 0.2s, transform 0.1s;
-    }
-    .practice-btn:hover {
-        background-color: #0056b3; 
-    }
-    
-    
 </style>
 </head>
 <body>
@@ -351,16 +311,12 @@
     
     <div id="pronunciation-container" style="display: none;">
         
-        <p class="word-to-practice" id="current-instruction">Clique no botão ▶️ para ouvir cada palavra, depois clique em Praticar para avançar.</p>
+        <p class="word-to-practice" id="current-instruction">Clique no ▶️ para ouvir a pronúncia de cada palavra quantas vezes desejar.</p>
         
         <audio id="audio-player" preload="auto"></audio>
         
         <ul id="pronunciation-list">
             </ul>
-        
-        <div class="practice-action-area">
-            <button class="practice-btn" id="practice-button" onclick="handlePractice()">🗣️ Praticar Próxima Palavra</button>
-        </div>
         
     </div>
     
@@ -433,10 +389,10 @@
             correctAnswer: 'INFO', 
             chapter: 1
         },
-        // Q4: PRONÚNCIA (COM PLAYER REAL) - REVISADO
+        // Q4: PRONÚNCIA (AGORA APENAS COM PLAY BUTTON)
         {
             id: 4,
-            question: "PRONUNCIATION PRACTICE: Use the play button (▶️) on the list below to hear each word.", 
+            question: "PRONUNCIATION PRACTICE: Click the play button (▶️) to hear each word.", 
             options: {
                 "Address number": "audio/addressnumber.mp3", 
                 "American": "audio/american.mp3",
@@ -482,9 +438,8 @@
 
     let answerChecked = false;
 
-    // VARIÁVEIS GLOBAIS PARA PRONÚNCIA
+    // VARIÁVEL GLOBAL PARA PRONÚNCIA
     let pronunciationWords = [];
-    let currentPronunciationIndex = 0;
     const audioPlayer = document.getElementById('audio-player'); // O player oculto
 
     // 2. GERAÇÃO DOS 24 CARDS (MANTIDO)
@@ -532,19 +487,11 @@
         
         lessonTitle.textContent = `BEGINNER`; 
         
-        // Limpa o estado da Pronúncia ao iniciar
-        pronunciationWords = [];
-        currentPronunciationIndex = 0;
-        
         currentQuestionIndex = 0;
         loadQuestion(lessonQuestions[currentQuestionIndex]);
     }
 
     function goHome() {
-        // Limpa o estado da Pronúncia ao voltar para Home
-        pronunciationWords = [];
-        currentPronunciationIndex = 0;
-        
         homeScreen.style.display = 'block';
         lessonScreen.style.display = 'none';
     }
@@ -554,27 +501,23 @@
         feedback.innerHTML = '';
         optionsContainer.innerHTML = '';
         
-        // Garante que Next e Back estão ativos (exceto onde a lógica proíbe)
+        // Next e Back estão ativos por padrão
         nextBtn.disabled = false; 
         backBtn.disabled = false; 
 
-        // Usa innerHTML para permitir o título customizado em Q3 (e o negrito em Q4)
         questionText.innerHTML = q.question; 
         
-        // Define o source da imagem (usando o link RAW do GitHub)
         if (q.image) {
-            questionImage.src = GITHUB_RAW_BASE_URL + q.image; // Usando GITHUB_RAW_BASE_URL
+            questionImage.src = GITHUB_RAW_BASE_URL + q.image; 
             questionImage.style.display = 'block';
         } else {
             questionImage.src = '';
             questionImage.style.display = 'none';
         }
         
-        // Esconde todos os containers customizados
         optionsContainer.style.display = 'none';
         document.getElementById('pronunciation-container').style.display = 'none';
 
-        // --- TRATAMENTO PARA TELAS DE INFORMAÇÃO (Não-Quiz: Q3) ---
         if (q.correctAnswer === 'INFO') {
             optionsContainer.style.display = 'block'; 
             optionsContainer.style.backgroundColor = '#f4f4f4'; 
@@ -583,7 +526,6 @@
             
             let htmlContent = '<ul style="list-style-type: none; padding: 0;">';
             for (const key in q.options) {
-                // Aqui o conteúdo já tem o estilo span com a cor azul
                 htmlContent += `<li style="margin: 10px 0; font-size: 1.1em; border-bottom: 1px dashed #ddd; padding-bottom: 5px;">
                                     <strong>${key}:</strong> ${q.options[key]}
                                 </li>`;
@@ -596,7 +538,7 @@
             renderPronunciationPractice(q);
         }
         else {
-            // Se for um Quiz normal (Q1, Q2, Q5)
+            // Se for um Quiz normal
             optionsContainer.style.display = 'block';
             optionsContainer.style.backgroundColor = 'transparent'; 
             optionsContainer.style.padding = '0';
@@ -618,7 +560,6 @@
         answerChecked = true;
         
         const allOptions = optionsContainer.querySelectorAll('.option');
-        // Desativa a interação após o clique
         allOptions.forEach(opt => opt.onclick = null);
 
         let feedbackMessage = '';
@@ -638,23 +579,11 @@
 
         feedback.innerHTML = feedbackMessage;
         
-        // Garante que o botão Next esteja ativo mesmo após a resposta
         nextBtn.disabled = false;
     }
     
-    // FUNÇÃO AVANÇAR (Não obriga a responder Quiz)
+    // FUNÇÃO AVANÇAR (SEM CHECAGEM DE PRONÚNCIA)
     function goNext() {
-        const currentQ = lessonQuestions[currentQuestionIndex];
-
-        // 1. CHECAGEM para TÓPICO DE PRONÚNCIA
-        if (currentQ.correctAnswer === 'PRONUNCIATION_SET') {
-            if (!pronunciationWords.every(w => w.status === 'completed')) {
-                alert('Você deve clicar em "Praticar Próxima Palavra" para todas as 10 palavras antes de continuar.');
-                return;
-            }
-        }
-        
-        // 2. AVANÇA
         currentQuestionIndex++;
         if (currentQuestionIndex < lessonQuestions.length) {
             loadQuestion(lessonQuestions[currentQuestionIndex]);
@@ -673,10 +602,12 @@
         }
     }
     
-    // --- LÓGICA DE PRONÚNCIA (Real) - REVISADA ---
+    // --- LÓGICA DE PRONÚNCIA (SIMPLIFICADA) ---
     
-    // NOVO: Função para tocar um áudio específico
+    // Função para tocar um áudio específico
     function playWordAudio(audioPath) {
+        // Isso tentará carregar e tocar o áudio do seu repositório:
+        // https://raw.githubusercontent.com/tgteodoro123-bit/english-app/main/audio/nome_do_arquivo.mp3
         audioPlayer.src = GITHUB_RAW_BASE_URL + audioPath;
         audioPlayer.play();
     }
@@ -685,80 +616,35 @@
         const pronContainer = document.getElementById('pronunciation-container');
         pronContainer.style.display = 'flex';
         questionImage.style.display = 'none'; 
+        feedback.innerHTML = ``; 
 
-        // Inicializa o set de palavras se for a primeira vez
-        if (pronunciationWords.length === 0) {
-            pronunciationWords = Object.keys(q.options).map((word, index) => ({
-                word: word,
-                audioPath: q.options[word], // O caminho relativo
-                id: index,
-                status: 'pending' 
-            }));
-            currentPronunciationIndex = 0;
-            feedback.innerHTML = ``; // Limpa o feedback inicial
-        }
+        // Inicializa a lista de palavras (sem rastreamento de status)
+        pronunciationWords = Object.keys(q.options).map((word) => ({
+            word: word,
+            audioPath: q.options[word]
+        }));
         
         updatePronunciationUI();
     }
 
     function updatePronunciationUI() {
         const wordListElement = document.getElementById('pronunciation-list');
-        const currentWordData = pronunciationWords[currentPronunciationIndex];
-        const practiceButton = document.getElementById('practice-button');
-        
-        // O botão Next só é ativado se todas as palavras forem completadas
-        const allCompleted = pronunciationWords.every(w => w.status === 'completed');
-        nextBtn.disabled = !allCompleted;
-
-        if (allCompleted) {
-            practiceButton.textContent = "✅ Set Completo!";
-            practiceButton.disabled = true;
-            feedback.innerHTML = 'Parabéns! Todas as 10 palavras foram praticadas. Você pode clicar em Próximo.';
-        } else if (currentWordData) {
-            practiceButton.textContent = `🗣️ Praticar: "${currentWordData.word}"`;
-            practiceButton.disabled = false;
-        }
-
 
         wordListElement.innerHTML = '';
-        pronunciationWords.forEach((item, index) => {
-            let statusText = 'Pendente';
-            let statusClass = 'pending';
-            
-            if (item.status === 'completed') {
-                statusText = 'Praticado';
-                statusClass = 'completed';
-            } else if (index === currentPronunciationIndex) {
-                statusText = 'Atual';
-                statusClass = 'current';
-            }
-            
-            // Adiciona o botão de play no item da lista
+        pronunciationWords.forEach((item) => {
+            // Cria apenas a palavra e o botão Play
             wordListElement.innerHTML += `
                 <li>
                     <span>${item.word}</span>
                     <div>
                          <button class="play-button" onclick="playWordAudio('${item.audioPath}')">▶️</button>
-                         <span class="word-status ${statusClass}">${statusText}</span>
                     </div>
                 </li>
             `;
         });
     }
-
-    function handlePractice() {
-        const currentWordData = pronunciationWords[currentPronunciationIndex];
-
-        if (!currentWordData) return;
-
-        // MARCA COMO SUCESSO E AVANÇA
-        currentWordData.status = 'completed';
-        feedback.innerHTML = `🟢 **Sucesso!** Prática de *${currentWordData.word}* concluída.`;
-        
-        // Avança para a próxima palavra
-        currentPronunciationIndex++;
-        updatePronunciationUI();
-    }
+    
+    // A função handlePractice() foi removida.
 </script>
 
 </body>
