@@ -17,24 +17,26 @@
     /* 2. Layout da Grade de Cards e Spacing */
     #home-screen {
         max-width: 1200px; 
-        margin: 80px auto 50px; 
+        margin: 60px auto 50px; 
         padding: 0 30px;
     }
     
     h2 {
-        color: #000; 
+        /* AJUSTE 1: Tom de preto mais suave */
+        color: #333; 
         border-bottom: 1px solid #e0e0e0; 
-        padding-top: 20px; 
+        padding-top: 10px; 
         padding-bottom: 8px; 
-        /* AJUSTE 1: Reduz a margem para aproximar a linha dos cards */
-        margin-bottom: 30px; 
-        font-size: 1.8em;
+        margin-bottom: 20px; 
+        /* AJUSTE 2: Tamanho da fonte maior */
+        font-size: 2.2em; /* Um pouco maior que 1.8em */
+        /* AJUSTE 3: Peso da fonte mais fina */
+        font-weight: 300; /* Mais fina */
     }
     .chapter-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr); 
-        /* AJUSTE 3: Reduz o espaço entre os cards */
-        gap: 20px; 
+        gap: 15px; 
     }
     
     @media (max-width: 1024px) {
@@ -97,10 +99,9 @@
         height: 50%; 
         background: #FFFFFF; 
         
-        /* Ajuste para jogar o texto no topo esquerdo e o botão no inferior esquerdo */
-        justify-content: space-between; /* Empurra o primeiro (texto) para o topo, o último (botão) para baixo */
+        justify-content: space-between; 
         padding: 15px; 
-        align-items: flex-start; /* Alinha o conteúdo à esquerda */
+        align-items: flex-start; 
     }
     
     /* Wrapper para o Efeito de Subir (Informação) */
@@ -153,8 +154,6 @@
         transform: scale(0.9); 
         transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
         
-        /* AJUSTE 2: Garantir alinhamento total à esquerda. 
-           O align-items: flex-start no pai já faz isso, mas garantimos que não haja margens extras. */
         align-self: flex-start; 
     }
 
