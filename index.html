@@ -1,333 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inglês Básico</title>
-<style>
-    /* 1. Estilos Gerais */
-    body {
-        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #ffffff; 
-        color: #333;
-    }
-
-    /* 2. Layout da Grade de Cards e Spacing */
-    #home-screen {
-        max-width: 1200px; 
-        margin: 80px auto 50px; 
-        padding: 0 30px;
-    }
+/* 3. Card de Confidence - LAYOUT ESTRUTURAL (TESTE) */
+.chapter-card {
+    background-color: #f7f7f7; 
+    border-radius: 6px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); 
+    cursor: pointer;
     
-    h2 {
-        color: black; 
-        border-bottom: 1px solid #e0e0e0; 
-        padding-top: 20px; 
-        padding-bottom: 8px; 
-        margin-bottom: 60px; 
-        font-size: 1.8em;
-    }
-    .chapter-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr); 
-        gap: 30px; 
-    }
+    height: 240px; 
+    display: flex;
+    flex-direction: column;
+}
+
+.chapter-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Imagem no topo, usando 70% da altura */
+.card-background-image {
+    height: 70%;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    border-radius: 6px 6px 0 0;
+}
+
+/* Área de Texto Inferior, usando 30% da altura */
+.card-text-area {
+    height: 30%; 
+    width: 100%;
+    padding: 10px;
+    background-color: white; 
+    color: #333; 
     
-    @media (max-width: 1024px) {
-        .chapter-grid {
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        }
-    }
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 0 0 6px 6px;
+    transition: background-color 0.3s ease;
+}
 
-    /* 3. Card de Confidence - AJUSTES DE TAMANHO E BORDA */
-    .chapter-card {
-        background-color: #f7f7f7; 
-        padding: 0; 
-        border-radius: 6px; /* MENOS REDONDO */
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); 
-        cursor: pointer;
-        overflow: hidden; 
-        
-        height: 240px; /* CARTÃO MENOR */
-        position: relative; 
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end; 
-        transition: box-shadow 0.2s ease;
-    }
-    .chapter-card:hover {
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Sombra mais destacada no hover */
-    }
-    
-    .card-background-image {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: center;
-        z-index: 1; 
-    }
+.chapter-card:hover .card-text-area {
+    background-color: #f0f0f0; /* Fundo levemente cinza no hover */
+}
 
-    /* Área de Texto Inferior (se expande) - MAIS CLEAN */
-    .card-text-area {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 30%; 
-        padding: 15px;
-        /* Gradiente mais suave, menos preto */
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%); 
-        color: white; 
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); 
-        z-index: 2; 
-        transition: height 0.3s ease, background 0.3s ease;
-        border-radius: 0 0 6px 6px;
-        
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-    }
-
-    /* EFEITO EXPANDIR NO HOVER - FUNDO BRANCO PURO E CLEAN */
-    .chapter-card:hover .card-text-area {
-        height: 60%; 
-        background-color: #ffffff; /* BRANCO PURO E CLEAN */
-        color: #333; 
-        text-shadow: none; 
-    }
-
-    .chapter-card h3 {
-        margin-top: 0;
-        font-size: 1.3em;
-        margin-bottom: 5px;
-        color: inherit; 
-    }
-
-    .chapter-card p {
-        margin: 0;
-        font-size: 0.8em;
-        color: inherit; 
-    }
-
-    .chapter-card .status {
-        font-weight: bold; 
-        padding: 3px 0;
-        margin-top: 5px;
-        font-size: 0.7em;
-        color: inherit; 
-    }
-
-    /* ESTILO DO BOTÃO START (TEXTO) - FUNCIONAL E AZUL ESCURO */
-    .start-button {
-        background-color: #003366; 
-        color: white;
-        padding: 8px 20px; 
-        border: none;
-        border-radius: 4px; /* Mais quadrado */
-        cursor: pointer;
-        font-weight: bold;
-        font-size: 0.9em;
-        margin-top: 15px;
-        opacity: 0; 
-        transform: translateY(20px); 
-        transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        z-index: 3; 
-        position: relative; 
-    }
-
-    /* O BOTÃO APARECE E MUDA DE TOM NO HOVER */
-    .chapter-card:hover .start-button {
-        opacity: 1; 
-        transform: translateY(0); 
-    }
-    
-    .start-button:hover {
-        background-color: #004c99; /* TOM MAIS CLARO PARA FEEDBACK DE CLIQUE */
-    }
-
-    /* 4. Tela de Quiz/Lição (mantido) */
-    #lesson-screen {
-        max-width: 650px;
-        margin: 40px auto;
-        padding: 30px;
-        background-color: white;
-        border-radius: 12px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); 
-        display: none; 
-    }
-    /* ... estilos de lição mantidos ... */
-    .quiz-question {
-        padding: 20px;
-        border: 1px solid #eee;
-        border-radius: 10px;
-        margin-bottom: 25px;
-        text-align: center;
-        background-color: #fcfcfc;
-    }
-    .option {
-        padding: 15px;
-        margin: 12px 0;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-        cursor: pointer;
-        transition: background-color 0.2s, border-color 0.2s;
-        text-align: left;
-    }
-    .option:hover {
-        background-color: #e9f7ff; 
-        border-color: #007bff; 
-    }
-    .correct {
-        background-color: #e6ffed !important; 
-        border-color: #28a745 !important; 
-        font-weight: bold;
-    }
-    .incorrect {
-        background-color: #ffe6e6 !important; 
-        border-color: #dc3545 !important; 
-        font-weight: bold;
-    }
-    .nav-buttons {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 30px;
-    }
-    .nav-buttons button {
-        padding: 12px 25px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-        color: white;
-    }
-    #back-btn { background-color: #6c757d; }
-    #next-btn { background-color: #007bff; }
-</style>
-</head>
-<body>
-
-<div id="home-screen">
-    <h2>Beginner</h2>
-    <div class="chapter-grid">
-    </div>
-</div>
-
-<div id="lesson-screen">
-    <h2 id="lesson-title">Confidence X</h2>
-    
-    <div class="quiz-question">
-        <p id="question-text">Look and Answer:</p>
-        <img id="question-image" src="https://via.placeholder.com/300x150?text=IMAGEM" alt="Question Image"> 
-        <p style="font-style: italic;">Clique em uma opção abaixo.</p>
-    </div>
-
-    <div id="options-container">
-        </div>
-    <p id="feedback" style="font-weight: bold; margin-top: 15px; text-align: center;"></p>
-
-    <div class="nav-buttons">
-        <button id="back-btn" onclick="goHome()">Voltar</button>
-        <button id="next-btn" onclick="goNext()">Próximo</button>
-    </div>
-</div>
-
-<script>
-    // ARRAY DE IMAGENS DE FUNDO
-    const BACKGROUND_IMAGES = [
-        "https://images.pexels.com/photos/1036321/pexels-photo-1036321.jpeg?auto=compress&cs=tinysrgb&w=800", // 1
-        "https://images.pexels.com/photos/2076011/pexels-photo-2076011.jpeg?auto=compress&cs=tinysrgb&w=800", // 2
-        "https://images.pexels.com/photos/6684742/pexels-photo-6684742.jpeg?auto=compress&cs=tinysrgb&w=800", // 3
-        "https://images.pexels.com/photos/4144294/pexels-photo-4144294.jpeg?auto=compress&cs=tinysrgb&w=800", // 4
-        "https://images.pexels.com/photos/1481005/pexels-photo-1481005.jpeg?auto=compress&cs=tinysrgb&w=800", // 5
-        "https://images.pexels.com/photos/3401403/pexels-photo-3401403.jpeg?auto=compress&cs=tinysrgb&w=800", // 6
-    ];
-
-    // 1. DADOS DAS QUESTÕES
-    const QUESTIONS = [
-        {
-            id: 1,
-            question: "Look and Answer: What is this?",
-            image: "numeros.jpg", 
-            options: {
-                A: "The Alphabet",
-                B: "English",
-                C: "Numbers"
-            },
-            correctAnswer: 'C', 
-            chapter: 1
-        },
-        {
-            id: 2,
-            question: "Selecione a saudação para a noite (ao chegar em um lugar):",
-            image: "", 
-            options: {
-                A: "Good night",
-                B: "Good morning",
-                C: "Good evening"
-            },
-            correctAnswer: 'C',
-            chapter: 1
-        }
-        // ... (próximas perguntas)
-    ];
-
-    let currentQuestionIndex = 0;
-    const homeScreen = document.getElementById('home-screen');
-    const lessonScreen = document.getElementById('lesson-screen');
-    const optionsContainer = document.getElementById('options-container');
-    const feedback = document.getElementById('feedback');
-    const nextBtn = document.getElementById('next-btn');
-    const lessonTitle = document.getElementById('lesson-title');
-    const questionText = document.getElementById('question-text');
-    const questionImage = document.getElementById('question-image');
-
-    // 2. GERAÇÃO DOS 24 CARDS
-    const chapterGrid = document.querySelector('.chapter-grid');
-    for (let i = 1; i <= 24; i++) {
-        const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
-
-        chapterGrid.innerHTML += `
-            <div class="chapter-card" id="card-${i}">
-                 
-                <div class="card-background-image"
-                     style="background-image: url('${bgUrl}');">
-                </div>
-                
-                <div class="card-text-area">
-                    <h3>Confidence ${i}</h3>
-                    <p>Tópico Principal da Confiança ${i}</p>
-                    <p class="status">Status: Não Iniciado</p>
-                    <button class="start-button" onclick="startLesson(${i}); event.stopPropagation();">START</button>
-                </div>
-            </div>
-        `;
-    }
-
-    // 3. NAVEGAÇÃO ENTRE TELAS E LÓGICA DO START (MANTIDA)
-    let currentChapter = 0;
-    let lessonQuestions = [];
-
-    function startLesson(chapterNumber) {
-        currentChapter = chapterNumber;
-        lessonQuestions = QUESTIONS.filter(q => q.chapter === chapterNumber);
-
-        if (lessonQuestions.length === 0) {
-            alert(`O nível Confidence ${chapterNumber} ainda não tem perguntas.`);
-            return;
-        }
-
-        homeScreen.style.display = 'none';
-        lessonScreen.style.display = 'block';
-        
-        lessonTitle.textContent = `Confidence ${chapterNumber}: Exercícios`;
-        
-        currentQuestionIndex = 0;
-        loadQuestion(lesson
+/* Botão Start (Invisível no layout estrutural para não causar problemas) */
+.start-button {
+    display: none; 
+}
