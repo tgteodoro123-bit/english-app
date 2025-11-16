@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Inglês Básico</title>
 <style>
-    /* 1. Estilos Gerais */
+    /* 1. Estilos Gerais - Fundo Branco e Fonte Limpa */
     body {
         font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         margin: 0;
@@ -14,28 +14,21 @@
         color: #333;
     }
 
-    /* 2. Cabeçalho */
-    h1 {
-        background-color: #003366; 
-        color: white;
-        padding: 25px 20px; 
-        margin-top: 0;
-        text-align: center;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
-        font-size: 2em;
-    }
+    /* REMOVIDO H1 PARA MAIOR FOCO */
 
-    /* 3. Layout da Grade de Cards */
+    /* 2. Layout da Grade de Cards */
     #home-screen {
         max-width: 1100px; 
         margin: 40px auto;
         padding: 0 20px;
     }
+    /* NOVO TÍTULO E LINHA FINA */
     h2 {
         color: #003366;
-        border-bottom: 2px solid #003366; 
-        padding-bottom: 10px;
+        border-bottom: 1px solid #003366; /* LINHA MUITO FINA */
+        padding-bottom: 8px; 
         margin-bottom: 30px;
+        font-size: 1.8em;
     }
     .chapter-grid {
         display: grid;
@@ -43,7 +36,7 @@
         gap: 30px; 
     }
     
-    /* 4. Card de Confidence - NOVO LAYOUT 50/50 */
+    /* 3. Card de Confidence - LAYOUT IMAGEM NO TOPO */
     .chapter-card {
         background-color: #f7f7f7; 
         padding: 0; 
@@ -53,9 +46,8 @@
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         overflow: hidden; 
         
-        height: 150px; /* Altura do card */
-        display: flex; /* Habilita a divisão 50/50 */
-        text-align: left;
+        height: 250px; /* Aumenta a altura para imagem e texto */
+        display: block;
     }
     
     .chapter-card:hover {
@@ -63,51 +55,51 @@
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); 
     }
     
-    /* Metade da Imagem (50% da Largura) */
-    .card-image-half {
-        width: 50%;
-        height: 100%;
+    /* Metade da Imagem (50% da Altura - Topo) */
+    .card-image-top {
+        height: 50%;
+        width: 100%;
         background-size: cover;
         background-position: center;
+        border-radius: 12px 12px 0 0; 
     }
 
-    /* Metade do Texto (50% da Largura, Fundo Branco) */
-    .card-text-half {
-        width: 50%;
-        padding: 20px;
-        background-color: white; /* Fundo branco limpo */
+    /* Metade do Texto (50% da Altura - Baixo) */
+    .card-text-bottom {
+        height: 50%;
+        padding: 15px;
+        background-color: white; 
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: flex-start;
+        align-items: center;
+        text-align: center;
         color: #333;
     }
 
     .chapter-card h3 {
-        color: #003366; /* Título volta para azul marinho */
+        color: #003366; 
         margin-top: 0;
-        font-size: 1.2em;
+        font-size: 1.4em;
         margin-bottom: 5px;
-        line-height: 1.2;
     }
 
     .chapter-card p {
         margin: 0;
-        font-size: 0.8em;
+        font-size: 0.9em;
         color: #666;
     }
 
     /* Estilo para o texto "Não Iniciado" */
     .chapter-card .status {
         font-weight: bold; 
-        color: #003366; 
+        color: #007bff; /* Azul primário para status */
         padding: 3px 0;
         margin-top: 5px;
-        font-size: 0.8em;
-        /* Removemos o fundo para um visual mais clean no painel branco */
+        font-size: 0.9em;
     }
 
-    /* 5. Tela de Quiz/Lição - Clean (mantido) */
+    /* 4. Tela de Quiz/Lição - Clean */
     #lesson-screen {
         max-width: 650px;
         margin: 40px auto;
@@ -132,7 +124,7 @@
         margin-bottom: 15px;
     }
 
-    /* 6. Estilo das Opções de Resposta (mantido) */
+    /* 5. Estilo das Opções de Resposta */
     .option {
         padding: 15px;
         margin: 12px 0;
@@ -157,7 +149,7 @@
         font-weight: bold;
     }
 
-    /* 7. Botões de Navegação (mantido) */
+    /* 6. Botões de Navegação */
     .nav-buttons {
         display: flex;
         justify-content: space-between;
@@ -181,10 +173,8 @@
 </head>
 <body>
 
-<h1>Inglês Básico</h1>
-
 <div id="home-screen">
-    <h2>Selecione seu Nível de Confidence</h2>
+    <h2>Inglês Básico: Sua Jornada de Confidence</h2>
     <div class="chapter-grid">
     </div>
 </div>
@@ -268,14 +258,14 @@
             <div class="chapter-card" 
                  onclick="startLesson(${i})">
                  
-                <div class="card-image-half"
+                <div class="card-image-top"
                      style="background-image: url('${bgUrl}');">
                 </div>
                 
-                <div class="card-text-half">
+                <div class="card-text-bottom">
                     <h3>Confidence ${i}</h3>
                     <p>Tópico Principal da Confiança ${i}</p>
-                    <p class="status">Não Iniciado</p>
+                    <p class="status">Status: Não Iniciado</p>
                 </div>
             </div>
         `;
