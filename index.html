@@ -254,7 +254,7 @@
     <div class="quiz-question">
         <p id="question-text">Look and Answer:</p>
         <img id="question-image" src="https://via.placeholder.com/300x150?text=IMAGEM" alt="Question Image"> 
-        </div>
+    </div>
 
     <div id="options-container">
     </div>
@@ -282,7 +282,6 @@
         // Q1: Alterada
         {
             id: 1,
-            // Mudar para um estilo mais direto, como "What do you see?" ou "Name the content."
             question: "What do you see in the image?", 
             image: "numeros.jpg", 
             options: {
@@ -472,7 +471,6 @@
         homeScreen.style.display = 'none';
         lessonScreen.style.display = 'block';
         
-        // Título simplificado para BEGINNER
         lessonTitle.textContent = `BEGINNER`; 
         
         currentQuestionIndex = 0;
@@ -490,10 +488,10 @@
         optionsContainer.innerHTML = '';
         
         nextBtn.disabled = false; 
-        backBtn.disabled = currentQuestionIndex === 0;
+        backBtn.disabled = false; // O Back agora está sempre habilitado para voltar à home ou à questão anterior
 
-        // Atualiza o texto da questão, usando "Question X: "
-        questionText.textContent = `Question ${currentQuestionIndex + 1}: ${q.question}`;
+        // REMOÇÃO DA CONTAGEM: Apenas o texto da questão.
+        questionText.textContent = q.question; 
         questionImage.src = q.image || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
         questionImage.style.display = q.image ? 'block' : 'none';
         
@@ -542,11 +540,13 @@
         }
     }
     
+    // NOVO COMPORTAMENTO DO BACK: Volta para a questão anterior, ou para a Home se for a primeira
     function backQuestion() {
         if (currentQuestionIndex > 0) {
             currentQuestionIndex--;
             loadQuestion(lessonQuestions[currentQuestionIndex]);
         } else {
+            // Se estiver na primeira questão, retorna para a tela de capítulos
             goHome();
         }
     }
