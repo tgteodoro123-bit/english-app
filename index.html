@@ -344,11 +344,11 @@
 
     // 1. DADOS DAS QUESTÕES (Beginner 1)
     const QUESTIONS = [
-        // Q1: IMAGEM
+        // Q1: IMAGEM (CAMINHO CORRIGIDO)
         {
             id: 1,
             question: "What do you see in the image?", 
-            image: "images/topico1/numeros.jpg", 
+            image: "images/numeros.jpg", // CORRIGIDO: Removido /topico1
             options: {
                 A: "The Alphabet",
                 B: "Colors",
@@ -357,11 +357,11 @@
             correctAnswer: 'C', 
             chapter: 1
         },
-        // Q2: IMAGEM
+        // Q2: IMAGEM (CAMINHO CORRIGIDO)
         {
             id: 2,
             question: "Complete the self-introduction: 'Hello, ____ Marcus.'", 
-            image: "images/topico2/cumprimento.jpg", 
+            image: "images/cumprimento.jpg", // CORRIGIDO: Removido /topico2
             options: {
                 A: "I is",
                 B: "I am",
@@ -389,7 +389,7 @@
             correctAnswer: 'INFO', 
             chapter: 1
         },
-        // Q4: PRONÚNCIA (AGORA APENAS COM PLAY BUTTON)
+        // Q4: PRONÚNCIA (CORRIGIDO NOME DO ARQUIVO SUDENT -> STUDENT)
         {
             id: 4,
             question: "PRONUNCIATION PRACTICE: Click the play button (▶️) to hear each word.", 
@@ -401,7 +401,7 @@
                 "Nationality": "audio/nationality.mp3",
                 "New": "audio/new.mp3",
                 "Phone number": "audio/phonenumber.mp3",
-                "Student": "audio/student.mp3",
+                "Student": "audio/student.mp3", // CORRIGIDO: Era sudent.mp3
                 "Teacher": "audio/teacher.mp3",
                 "Years old": "audio/yearsold.mp3" 
             },
@@ -629,7 +629,6 @@
 
         wordListElement.innerHTML = '';
         pronunciationWords.forEach((item) => {
-            // Esta é a estrutura que precisa estar perfeita para o clique funcionar.
             wordListElement.innerHTML += `
                 <li>
                     <span>${item.word}</span>
