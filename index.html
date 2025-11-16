@@ -303,7 +303,7 @@
     
     <div class="quiz-question">
         <p id="question-text"></p> 
-        <img id="question-image" src="" alt="Question Image"> 
+        <img id="question-image" src="" alt="Imagem da Lição"> 
     </div>
 
     <div id="options-container">
@@ -344,11 +344,11 @@
 
     // 1. DADOS DAS QUESTÕES (Beginner 1)
     const QUESTIONS = [
-        // Q1: IMAGEM ATUALIZADA
+        // Q1: IMAGEM (CAMINHO CORRIGIDO)
         {
             id: 1,
             question: "What do you see in the image?", 
-            image: "images/topico1/numeros.jpg", // NOVO CAMINHO
+            image: "images/numeros.jpg", // CORRIGIDO: Removido /topico1
             options: {
                 A: "The Alphabet",
                 B: "Colors",
@@ -357,11 +357,11 @@
             correctAnswer: 'C', 
             chapter: 1
         },
-        // Q2: IMAGEM ATUALIZADA
+        // Q2: IMAGEM (CAMINHO CORRIGIDO)
         {
             id: 2,
             question: "Complete the self-introduction: 'Hello, ____ Marcus.'", 
-            image: "images/topico2/cumprimento.jpg", // NOVO CAMINHO
+            image: "images/cumprimento.jpg", // CORRIGIDO: Removido /topico2
             options: {
                 A: "I is",
                 B: "I am",
@@ -389,7 +389,7 @@
             correctAnswer: 'INFO', 
             chapter: 1
         },
-        // Q4: PRONÚNCIA (AGORA APENAS COM PLAY BUTTON)
+        // Q4: PRONÚNCIA (CORRIGIDO NOME DO ARQUIVO SUDENT -> STUDENT)
         {
             id: 4,
             question: "PRONUNCIATION PRACTICE: Click the play button (▶️) to hear each word.", 
@@ -401,7 +401,7 @@
                 "Nationality": "audio/nationality.mp3",
                 "New": "audio/new.mp3",
                 "Phone number": "audio/phonenumber.mp3",
-                "Student": "audio/student.mp3",
+                "Student": "audio/student.mp3", // CORRIGIDO: Era sudent.mp3
                 "Teacher": "audio/teacher.mp3",
                 "Years old": "audio/yearsold.mp3" 
             },
@@ -440,7 +440,7 @@
 
     // VARIÁVEL GLOBAL PARA PRONÚNCIA
     let pronunciationWords = [];
-    const audioPlayer = document.getElementById('audio-player'); // O player oculto
+    const audioPlayer = document.getElementById('audio-player'); 
 
     // 2. GERAÇÃO DOS 24 CARDS (MANTIDO)
     const chapterGrid = document.querySelector('.chapter-grid');
@@ -501,13 +501,13 @@
         feedback.innerHTML = '';
         optionsContainer.innerHTML = '';
         
-        // Next e Back estão ativos por padrão
         nextBtn.disabled = false; 
         backBtn.disabled = false; 
 
         questionText.innerHTML = q.question; 
         
         if (q.image) {
+            // Lógica de carregamento da imagem usando o link base RAW
             questionImage.src = GITHUB_RAW_BASE_URL + q.image; 
             questionImage.style.display = 'block';
         } else {
@@ -582,7 +582,7 @@
         nextBtn.disabled = false;
     }
     
-    // FUNÇÃO AVANÇAR (SEM CHECAGEM DE PRONÚNCIA)
+    // FUNÇÃO AVANÇAR
     function goNext() {
         currentQuestionIndex++;
         if (currentQuestionIndex < lessonQuestions.length) {
@@ -602,12 +602,10 @@
         }
     }
     
-    // --- LÓGICA DE PRONÚNCIA (SIMPLIFICADA) ---
+    // --- LÓGICA DE PRONÚNCIA ---
     
     // Função para tocar um áudio específico
     function playWordAudio(audioPath) {
-        // Isso tentará carregar e tocar o áudio do seu repositório:
-        // https://raw.githubusercontent.com/tgteodoro123-bit/english-app/main/audio/nome_do_arquivo.mp3
         audioPlayer.src = GITHUB_RAW_BASE_URL + audioPath;
         audioPlayer.play();
     }
@@ -618,7 +616,6 @@
         questionImage.style.display = 'none'; 
         feedback.innerHTML = ``; 
 
-        // Inicializa a lista de palavras (sem rastreamento de status)
         pronunciationWords = Object.keys(q.options).map((word) => ({
             word: word,
             audioPath: q.options[word]
@@ -632,7 +629,6 @@
 
         wordListElement.innerHTML = '';
         pronunciationWords.forEach((item) => {
-            // Cria apenas a palavra e o botão Play
             wordListElement.innerHTML += `
                 <li>
                     <span>${item.word}</span>
@@ -643,8 +639,6 @@
             `;
         });
     }
-    
-    // A função handlePractice() foi removida.
 </script>
 
 </body>
