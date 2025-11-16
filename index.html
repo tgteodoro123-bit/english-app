@@ -324,7 +324,7 @@
     <h2 id="lesson-title">BEGINNER</h2> 
     
     <div class="quiz-question">
-        <p id="question-text"></p>
+        <p id="question-text"></p> 
         <img id="question-image" src="" alt="Question Image"> 
     </div>
 
@@ -388,19 +388,20 @@
             correctAnswer: 'B', 
             chapter: 1
         },
-        // Q3: NOVA TELA DE EXEMPLOS (10 SENTENÇAS) - COM DESTAQUE AZUL REVISADO FINAL
+        // Q3: NOVA TELA DE EXEMPLOS (10 SENTENÇAS) - TÍTULO CUSTOMIZADO AGORA
         {
             id: 3,
-            question: "PRACTICE SENTENCES (10 Examples):", 
+            // Título Vocabulary: em azul e maior, substituindo o texto PRACTICE SENTENCES
+            question: `<h3 style="color: #007bff; font-size: 1.5em; margin-bottom: 20px;">Vocabulary:</h3>`, 
             options: {
                 "1.": `My <span style="color: #007bff;">address number</span> is 34.`, // address number em azul
                 "2.": `I am a <span style="color: #007bff;">student</span>.`, // student em azul
-                "3.": `He is my new <span style="color: #007bff;">friend</span>, David.`, // friend em azul (nome masculino adicionado)
+                "3.": `He is my new <span style="color: #007bff;">friend</span>, David.`, // friend em azul
                 "4.": `Mr. David is a <span style="color: #007bff;">great</span> teacher.`, // great em azul
                 "5.": `My <span style="color: #007bff;">phone number</span> is: (987) 654-1234.`, // phone number em azul
                 "6.": `Sofia is <span style="color: #007bff;">American</span>.`, // American em azul
                 "7.": `I love my English <span style="color: #007bff;">teacher</span>.`, // teacher em azul
-                "8.": `Lucas is a <span style="color: #007bff;">new</span> student, too.`, // new em azul (student sem azul)
+                "8.": `Lucas is a <span style="color: #007bff;">new</span> student, too.`, // new em azul
                 "9.": `I am 18 <span style="color: #007bff;">years old</span>.`, // years old em azul
                 "10.": `My nationality? I'm <span style="color: #007bff;">Brazilian</span>.` // Brazilian em azul
             },
@@ -534,7 +535,8 @@
         nextBtn.disabled = false; 
         backBtn.disabled = false; 
 
-        questionText.textContent = q.question; 
+        // Agora usa innerHTML para permitir o título customizado em Q3
+        questionText.innerHTML = q.question; 
         
         // Define o source da imagem (usando caminho na raiz)
         if (q.image) {
@@ -566,7 +568,7 @@
             htmlContent += '</ul>';
             optionsContainer.innerHTML = htmlContent;
             
-            feedback.innerHTML = '👉 **Click Next to continue the course.**'; 
+            // feedback.innerHTML = '👉 **Click Next to continue the course.**'; // LINHA REMOVIDA
             
         } else if (q.correctAnswer === 'PRONUNCIATION_SET') {
             // --- TRATAMENTO PARA PRONÚNCIA ---
