@@ -49,7 +49,7 @@
         cursor: pointer;
         
         height: 240px; 
-        position: relative; /* ESSENCIAL para o posicionamento absoluto */
+        position: relative; 
         overflow: hidden; 
         transition: box-shadow 0.2s ease;
     }
@@ -78,7 +78,7 @@
         height: 30%; /* Altura inicial */
         padding: 15px;
         z-index: 2; /* Camada 2: Painel de Texto */
-        transition: height 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+        transition: height 0.3s ease, background 0.3s ease, color 0.3s ease; /* Transição para background */
         
         /* Gradiente inicial sobre a imagem */
         background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%); 
@@ -92,8 +92,8 @@
 
     /* EFEITO DE HOVER: EXPANSÃO DE 60% E FUNDO BRANCO CLEAN */
     .chapter-card:hover .card-text-area {
-        height: 60%; /* EXPANSÃO SOLICITADA */
-        background-color: #FFFFFF; /* BRANCO PURO! */
+        height: 60%; 
+        background: #FFFFFF; /* FORÇA A COR BRANCA SÓLIDA, SUBSTITUINDO O GRADIENTE */
     }
     
     /* Wrapper para o Efeito de Subir (Informação) */
@@ -350,7 +350,7 @@
         nextBtn.disabled = true; 
         
         questionText.textContent = q.question;
-        questionImage.src = q.image || "data:image/gif;base64,R0GhpDlhAQABAAD/ACwAAAAAAQABAAACADs=";
+        questionImage.src = q.image || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
         questionImage.style.display = q.image ? 'block' : 'none';
         
         for (const key in q.options) {
