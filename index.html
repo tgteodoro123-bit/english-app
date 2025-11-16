@@ -2,111 +2,188 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>English App - Chapter 1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Course - Chapter 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
     body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        line-height: 1.6;
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f9f9f9;
+        color: #333;
     }
 
-    h2 { color: #333; }
-
-    .vocab, .phrase {
-        padding: 10px;
-        border: 1px solid #ddd;
-        margin-bottom: 10px;
-        border-radius: 8px;
+    header {
+        background-color: #4CAF50;
+        color: white;
+        padding: 20px;
+        text-align: center;
     }
 
-    button {
-        padding: 6px 12px;
-        margin-top: 5px;
+    nav {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    nav button {
+        margin: 0 10px;
+        padding: 10px 20px;
+        border: none;
+        background-color: #333;
+        color: white;
         cursor: pointer;
+        border-radius: 5px;
+        transition: 0.3s;
     }
 
-    .exercise {
-        background: #f7f7f7;
-        padding: 15px;
-        border-radius: 8px;
+    nav button:hover {
+        background-color: #555;
+    }
+
+    .chapter {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 20px;
+    }
+
+    .lesson-card {
+        background: white;
+        padding: 20px;
         margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .lesson-card h3 {
+        margin-top: 0;
+        color: #4CAF50;
+    }
+
+    .lesson-card p {
+        font-size: 18px;
+        line-height: 1.5;
+    }
+
+    .audio-buttons {
+        margin-top: 10px;
+    }
+
+    .audio-buttons button {
+        margin-right: 10px;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .audio-buttons button:hover {
+        background-color: #45a049;
+    }
+
+    footer {
+        text-align: center;
+        padding: 20px;
+        background: #333;
+        color: white;
+        margin-top: 40px;
+    }
+
+    @media (max-width: 600px) {
+        .lesson-card p {
+            font-size: 16px;
+        }
+
+        nav {
+            flex-direction: column;
+        }
+
+        nav button {
+            margin: 5px 0;
+        }
     }
 </style>
 </head>
 <body>
 
-<h1>Chapter 1 — Greetings & Introductions</h1>
+<header>
+    <h1>English Course</h1>
+    <p>Chapter 1 - Basics</p>
+</header>
 
-<h2>Vocabulary</h2>
+<nav>
+    <button onclick="prevChapter()">Previous Chapter</button>
+    <button onclick="nextChapter()">Next Chapter</button>
+</nav>
 
-<div class="vocab">Hello — Olá <br>
-<button onclick="speak('Hello')">🔊 Play</button></div>
+<div class="chapter">
+    <div class="lesson-card">
+        <h3>Lesson 1: Greetings</h3>
+        <p>Hello! My name is John. Nice to meet you.</p>
+        <div class="audio-buttons">
+            <button onclick="speakText(this.previousElementSibling.innerText, 'male')">Ouvir (Masculino)</button>
+            <button onclick="speakText(this.previousElementSibling.innerText, 'female')">Ouvir (Feminino)</button>
+        </div>
+    </div>
 
-<div class="vocab">Good morning — Bom dia <br>
-<button onclick="speak('Good morning')">🔊 Play</button></div>
+    <div class="lesson-card">
+        <h3>Lesson 2: Introductions</h3>
+        <p>How are you today? I hope you are fine.</p>
+        <div class="audio-buttons">
+            <button onclick="speakText(this.previousElementSibling.innerText, 'male')">Ouvir (Masculino)</button>
+            <button onclick="speakText(this.previousElementSibling.innerText, 'female')">Ouvir (Feminino)</button>
+        </div>
+    </div>
 
-<div class="vocab">Good evening — Boa noite (chegada) <br>
-<button onclick="speak('Good evening')">🔊 Play</button></div>
-
-<h2>Essential Phrases</h2>
-
-<div class="phrase">Hello! How are you?<br>
-<button onclick="speak('Hello! How are you?')">🔊 Play</button></div>
-
-<div class="phrase">Nice to meet you!<br>
-<button onclick="speak('Nice to meet you!')">🔊 Play</button></div>
-
-<h2>Mini Dialogue</h2>
-<div class="phrase">
-A: Hello! My name is Anna. <br>
-<button onclick="speak('Hello! My name is Anna.')">🔊 Play</button><br><br>
-
-B: Hi Anna! I’m Thiago. <br>
-<button onclick="speak('Hi Anna! I am Thiago.')">🔊 Play</button><br><br>
-
-A: Nice to meet you, Thiago! <br>
-<button onclick="speak('Nice to meet you, Thiago!')">🔊 Play</button><br><br>
-
-B: Nice to meet you too! <br>
-<button onclick="speak('Nice to meet you too!')">🔊 Play</button>
+    <div class="lesson-card">
+        <h3>Lesson 3: Daily Phrases</h3>
+        <p>Good morning! Have a nice day!</p>
+        <div class="audio-buttons">
+            <button onclick="speakText(this.previousElementSibling.innerText, 'male')">Ouvir (Masculino)</button>
+            <button onclick="speakText(this.previousElementSibling.innerText, 'female')">Ouvir (Feminino)</button>
+        </div>
+    </div>
 </div>
 
-<h2>Exercise — Fill in the blanks</h2>
-<div class="exercise">
-<p>1. Good ______</p>
-<p>2. Nice to ______ you</p>
-<p>3. My ______ is Thiago</p>
-</div>
-
-<h2>Pronunciation Practice</h2>
-<button onclick="startRecognition()">🎤 Practice Speaking</button>
-<p id="result"></p>
+<footer>
+    <p>&copy; 2025 English Course</p>
+</footer>
 
 <script>
-function speak(text) {
-    const msg = new SpeechSynthesisUtterance(text);
-    msg.lang = "en-US";
-    msg.rate = 1;
-    
-    // Attempt to pick a male US voice
+function speakText(text, gender) {
+    if (!('speechSynthesis' in window)) {
+        alert("Desculpe, seu navegador não suporta Speech Synthesis.");
+        return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
     const voices = speechSynthesis.getVoices();
-    const selectedVoice = voices.find(v => v.name.includes("Male") || v.name.includes("Guy"));
-    if (selectedVoice) msg.voice = selectedVoice;
+    
+    if (voices.length > 0) {
+        // Escolhe voz masculina ou feminina
+        let selectedVoice = voices.find(v => gender === 'male' ? v.name.includes('Male') : v.name.includes('Female'));
+        if (!selectedVoice) selectedVoice = voices[0]; // fallback
+        utterance.voice = selectedVoice;
+    }
 
-    speechSynthesis.speak(msg);
+    utterance.lang = 'en-US';
+    speechSynthesis.speak(utterance);
 }
 
-function startRecognition() {
-    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    recognition.lang = "en-US";
-
-    recognition.onresult = function(event) {
-        document.getElementById("result").innerText =
-          "You said: " + event.results[0][0].transcript;
-    };
-
-    recognition.start();
+function prevChapter() {
+    alert("Próxima função: navegar para o capítulo anterior.");
 }
+
+function nextChapter() {
+    alert("Próxima função: navegar para o próximo capítulo.");
+}
+
+// Atualiza a lista de vozes (necessário para alguns navegadores)
+speechSynthesis.onvoiceschanged = () => { speechSynthesis.getVoices(); };
 </script>
 
 </body>
