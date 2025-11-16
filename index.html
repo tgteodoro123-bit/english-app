@@ -249,13 +249,12 @@
 </div>
 
 <div id="lesson-screen">
-    <h2 id="lesson-title">Confidence X</h2>
+    <h2 id="lesson-title">BEGINNER</h2> 
     
     <div class="quiz-question">
         <p id="question-text">Look and Answer:</p>
         <img id="question-image" src="https://via.placeholder.com/300x150?text=IMAGEM" alt="Question Image"> 
-        <p id="instruction" style="font-style: italic;">Select an option below.</p>
-    </div>
+        </div>
 
     <div id="options-container">
     </div>
@@ -280,10 +279,11 @@
 
     // 1. DADOS DAS QUESTÕES (Confidence 1)
     const QUESTIONS = [
-        // Q1: Números e Contagem
+        // Q1: Alterada
         {
             id: 1,
-            question: "Look and Answer: What kind of content is usually found in a list that goes '1, 2, 3...'?",
+            // Mudar para um estilo mais direto, como "What do you see?" ou "Name the content."
+            question: "What do you see in the image?", 
             image: "numeros.jpg", 
             options: {
                 A: "The Alphabet",
@@ -423,7 +423,6 @@
     const questionText = document.getElementById('question-text');
     const questionImage = document.getElementById('question-image');
 
-    // Estado da resposta, para que a navegação saiba se já foi checado
     let answerChecked = false;
 
 
@@ -457,6 +456,7 @@
     }
 
     // 3. NAVEGAÇÃO E LÓGICA
+
     let currentChapter = 0;
     let lessonQuestions = [];
 
@@ -472,7 +472,8 @@
         homeScreen.style.display = 'none';
         lessonScreen.style.display = 'block';
         
-        lessonTitle.textContent = `Confidence ${chapterNumber}: Exercises`;
+        // Título simplificado para BEGINNER
+        lessonTitle.textContent = `BEGINNER`; 
         
         currentQuestionIndex = 0;
         loadQuestion(lessonQuestions[currentQuestionIndex]);
@@ -484,37 +485,33 @@
     }
 
     function loadQuestion(q) {
-        answerChecked = false; // Reseta o estado
+        answerChecked = false;
         feedback.innerHTML = '';
         optionsContainer.innerHTML = '';
         
-        // Habilita Next e Back por padrão, mas Back pode ser desabilitado se for a primeira questão
         nextBtn.disabled = false; 
         backBtn.disabled = currentQuestionIndex === 0;
 
-        // Atualiza o texto da questão
+        // Atualiza o texto da questão, usando "Question X: "
         questionText.textContent = `Question ${currentQuestionIndex + 1}: ${q.question}`;
         questionImage.src = q.image || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
         questionImage.style.display = q.image ? 'block' : 'none';
         
-        // Renderiza as opções
         for (const key in q.options) {
             const optionDiv = document.createElement('div');
             optionDiv.className = 'option';
             optionDiv.textContent = `${key}: ${q.options[key]}`;
             optionDiv.setAttribute('data-answer', key);
-            // Ao clicar, checa a resposta e desabilita o clique para as demais opções
             optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer);
             optionsContainer.appendChild(optionDiv);
         }
     }
 
     function checkAnswer(selectedDiv, selectedKey, correctKey) {
-        if (answerChecked) return; // Se já checado, ignora
+        if (answerChecked) return; 
         answerChecked = true;
         
         const allOptions = optionsContainer.querySelectorAll('.option');
-        // Remove o onclick de todas as opções para evitar mudança de resposta
         allOptions.forEach(opt => opt.onclick = null);
 
         let feedbackMessage = '';
@@ -533,10 +530,8 @@
         }
 
         feedback.innerHTML = feedbackMessage;
-        // O botão Next permanece habilitado, conforme solicitado
     }
     
-    // NOVO: Navegar para a próxima pergunta OU finalizar o quiz
     function goNext() {
         currentQuestionIndex++;
         if (currentQuestionIndex < lessonQuestions.length) {
@@ -547,13 +542,11 @@
         }
     }
     
-    // NOVO: Voltar para a pergunta anterior ou para a home screen
     function backQuestion() {
         if (currentQuestionIndex > 0) {
             currentQuestionIndex--;
             loadQuestion(lessonQuestions[currentQuestionIndex]);
         } else {
-            // Se estiver na primeira questão, volta para a tela inicial
             goHome();
         }
     }
