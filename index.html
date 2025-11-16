@@ -388,11 +388,11 @@
             correctAnswer: 'B', 
             chapter: 1
         },
-        // Q3: NOVA TELA DE EXEMPLOS (10 SENTENÇAS) - TÍTULO CUSTOMIZADO AGORA
+        // Q3: NOVA TELA DE EXEMPLOS (10 SENTENÇAS) - TÍTULO CUSTOMIZADO FINAL
         {
             id: 3,
-            // Título Vocabulary: em azul e maior, substituindo o texto PRACTICE SENTENCES
-            question: `<h3 style="color: #007bff; font-size: 1.5em; margin-bottom: 20px;">Vocabulary:</h3>`, 
+            // Título Vocabulary: em azul e maior (2em)
+            question: `<h3 style="color: #007bff; font-size: 2em; margin-bottom: 20px;">Vocabulary:</h3>`, 
             options: {
                 "1.": `My <span style="color: #007bff;">address number</span> is 34.`, // address number em azul
                 "2.": `I am a <span style="color: #007bff;">student</span>.`, // student em azul
@@ -403,7 +403,7 @@
                 "7.": `I love my English <span style="color: #007bff;">teacher</span>.`, // teacher em azul
                 "8.": `Lucas is a <span style="color: #007bff;">new</span> student, too.`, // new em azul
                 "9.": `I am 18 <span style="color: #007bff;">years old</span>.`, // years old em azul
-                "10.": `My nationality? I'm <span style="color: #007bff;">Brazilian</span>.` // Brazilian em azul
+                "10.": `My <span style="color: #007bff;">nationality</span>? I'm French.`, // nationality em azul, trocado para French
             },
             correctAnswer: 'INFO', 
             chapter: 1
@@ -567,8 +567,6 @@
             }
             htmlContent += '</ul>';
             optionsContainer.innerHTML = htmlContent;
-            
-            // feedback.innerHTML = '👉 **Click Next to continue the course.**'; // LINHA REMOVIDA
             
         } else if (q.correctAnswer === 'PRONUNCIATION_SET') {
             // --- TRATAMENTO PARA PRONÚNCIA ---
