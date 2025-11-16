@@ -90,19 +90,22 @@
         text-align: center;
     }
 
-    /* EFEITO DE HOVER: EXPANSÃO DE 60% E FUNDO BRANCO CLEAN */
+    /* EFEITO DE HOVER: EXPANSÃO DE 50% E FUNDO BRANCO CLEAN */
     .chapter-card:hover .card-text-area {
-        height: 60%; 
+        height: 50%; /* ALTERADO PARA 50% */
         background: #FFFFFF; 
-        justify-content: flex-start; 
-        padding-top: 20px; 
-        align-items: flex-start; 
+        
+        /* Ajuste para CENTRALIZAR as infos no topo e empurrar o botão para baixo */
+        justify-content: space-between; /* Distribui o espaço entre o wrapper e o botão */
+        padding-top: 15px; 
+        padding-bottom: 15px; 
+        align-items: center; /* Centraliza o conteúdo horizontalmente */
     }
     
     /* Wrapper para o Efeito de Subir (Informação) */
     .text-content-wrapper {
         transition: transform 0.3s ease;
-        text-align: left; 
+        text-align: center; /* Centraliza o texto */
         width: 100%; 
         padding: 0 15px; 
         box-sizing: border-box; 
@@ -134,7 +137,7 @@
         color: #000; 
     }
 
-    /* Estilo do Botão START - NOVO POSICIONAMENTO E TAMANHO */
+    /* Estilo do Botão START - AGORA É UM ITEM FLEX SEPARADO */
     .start-button {
         background-color: #003366; 
         color: white;
@@ -144,7 +147,6 @@
         cursor: pointer;
         font-weight: bold;
         font-size: 0.9em; 
-        margin-top: 15px; 
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         
         opacity: 0; 
@@ -174,6 +176,16 @@
         border-radius: 12px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); 
         display: none; 
+    }
+
+    /* FIX para a imagem gigante */
+    .quiz-question img {
+        max-width: 100%; /* Garante que a imagem se ajuste ao container */
+        height: auto; 
+        display: block;
+        margin: 15px auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     
     .quiz-question {
@@ -246,8 +258,8 @@
     <p id="feedback" style="font-weight: bold; margin-top: 15px; text-align: center;"></p>
 
     <div class="nav-buttons">
-        <button id="back-btn" onclick="goHome()">Voltar</button>
-        <button id="next-btn" onclick="goNext()">Próximo</button>
+        <button id="back-btn" onclick="goHome()">BACK</button>
+        <button id="next-btn" onclick="goNext()">NEXT</button>
     </div>
 </div>
 
@@ -262,7 +274,7 @@
         "https://images.pexels.com/photos/3401403/pexels-photo-3401403.jpeg?auto=compress&cs=tinysrgb&w=800",
     ];
 
-    // 1. DADOS DAS QUESTÕES
+    // 1. DADOS DAS QUESTÕES (10 Perguntas para Confidence 1)
     const QUESTIONS = [
         {
             id: 1,
@@ -412,8 +424,8 @@
                     <div class="text-content-wrapper">
                         <h3>Confidence ${i}</h3>
                         <p>Tópico Principal da Confiança ${i}</p>
-                        <button class="start-button" onclick="startLesson(${i}); event.stopPropagation();">START</button>
                     </div>
+                    <button class="start-button" onclick="startLesson(${i}); event.stopPropagation();">START</button>
                 </div>
             </div>
         `;
@@ -428,14 +440,14 @@
         lessonQuestions = QUESTIONS.filter(q => q.chapter === chapterNumber);
 
         if (lessonQuestions.length === 0) {
-            alert(`O nível Confidence ${chapterNumber} ainda não tem perguntas.`);
+            alert(`The Confidence ${chapterNumber} level does not have questions yet.`);
             return;
         }
 
         homeScreen.style.display = 'none';
         lessonScreen.style.display = 'block';
         
-        lessonTitle.textContent = `Confidence ${chapterNumber}: Exercícios`;
+        lessonTitle.textContent = `Confidence ${chapterNumber}: Exercises`;
         
         currentQuestionIndex = 0;
         loadQuestion(lessonQuestions[currentQuestionIndex]);
@@ -469,9 +481,11 @@
         const allOptions = optionsContainer.querySelectorAll('.option');
         allOptions.forEach(opt => opt.onclick = null);
 
+        let feedbackMessage = '';
+
         if (selectedKey === correctKey) {
             selectedDiv.classList.add('correct');
-            feedback.innerHTML = '✅ Resposta Correta!';
+            feedbackMessage = '✅ Correct Answer!';
         } else {
             selectedDiv.classList.add('incorrect');
             allOptions.forEach(opt => {
@@ -479,9 +493,11 @@
                     opt.classList.add('correct');
                 }
             });
-            feedback.innerHTML = `❌ Resposta Incorreta. A correta era ${correctKey}.`;
+            // Correção de Inglês no Feedback
+            feedbackMessage = `❌ Incorrect Answer. The correct one was ${correctKey}.`; 
         }
 
+        feedback.innerHTML = feedbackMessage;
         nextBtn.disabled = false; 
     }
 
@@ -490,7 +506,7 @@
         if (currentQuestionIndex < lessonQuestions.length) {
             loadQuestion(lessonQuestions[currentQuestionIndex]);
         } else {
-            alert(`Parabéns! Você completou o Confidence ${currentChapter}!`);
+            alert(`Congratulations! You completed Confidence ${currentChapter}!`);
             goHome();
         }
     }
