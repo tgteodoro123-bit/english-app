@@ -325,7 +325,7 @@
     
     <div class="quiz-question">
         <p id="question-text"></p>
-        <img id="question-image" src="https://via.placeholder.com/300x150?text=IMAGEM" alt="Question Image"> 
+        <img id="question-image" src="" alt="Question Image"> 
     </div>
 
     <div id="options-container">
@@ -366,7 +366,7 @@
         {
             id: 1,
             question: "What do you see in the image?", 
-            image: "numeros.jpg", 
+            image: "imagens/numeros.jpg", // Caminho Corrigido
             options: {
                 A: "The Alphabet",
                 B: "Colors",
@@ -375,11 +375,11 @@
             correctAnswer: 'C', 
             chapter: 1
         },
-        // Q2: AUTOAPRESENTAÇÃO (I am) - IMAGEM CORRIGIDA
+        // Q2: AUTOAPRESENTAÇÃO (I am) - IMAGEM CORRIGIDA PARA O NOVO CAMINHO
         {
             id: 2,
             question: "Complete the self-introduction: 'Hello, ____ John.'", 
-            image: "cumprimento.jpg", 
+            image: "imagens/cumprimento.jpg", // Caminho Corrigido
             options: {
                 A: "I is",
                 B: "I am",
@@ -512,12 +512,20 @@
         feedback.innerHTML = '';
         optionsContainer.innerHTML = '';
         
+        // CORREÇÃO ESSENCIAL: Garante que Next e Back estão ativos (exceto onde a lógica proíbe, como Pronunciation)
         nextBtn.disabled = false; 
         backBtn.disabled = false; 
 
         questionText.textContent = q.question; 
-        questionImage.src = q.image || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
-        questionImage.style.display = q.image ? 'block' : 'none';
+        
+        // Define o source da imagem
+        if (q.image) {
+            questionImage.src = q.image;
+            questionImage.style.display = 'block';
+        } else {
+            questionImage.src = '';
+            questionImage.style.display = 'none';
+        }
         
         // Esconde todos os containers customizados
         optionsContainer.style.display = 'none';
@@ -568,6 +576,7 @@
         answerChecked = true;
         
         const allOptions = optionsContainer.querySelectorAll('.option');
+        // Desativa a interação após o clique
         allOptions.forEach(opt => opt.onclick = null);
 
         let feedbackMessage = '';
@@ -586,16 +595,16 @@
         }
 
         feedback.innerHTML = feedbackMessage;
+        
+        // Garante que o botão Next esteja ativo mesmo após a resposta
+        nextBtn.disabled = false;
     }
     
-    // FUNÇÃO AVANÇAR (MODIFICADA: Não obriga a responder Quiz)
+    // FUNÇÃO AVANÇAR (Não obriga a responder Quiz)
     function goNext() {
         const currentQ = lessonQuestions[currentQuestionIndex];
 
-        // 1. CHECAGEM para TÓPICOS DE QUIZ (Q1, Q2, Q5, etc.)
-        // Não há obrigatoriedade de responder. O usuário pode clicar em 'Next' a qualquer momento.
-        
-        // 2. CHECAGEM para TÓPICO DE PRONÚNCIA (Q4)
+        // 1. CHECAGEM para TÓPICO DE PRONÚNCIA (Q4)
         if (currentQ.correctAnswer === 'PRONUNCIATION_SET') {
             if (!pronunciationWords.every(w => w.status === 'completed')) {
                 alert('You must complete all 10 words before proceeding.');
@@ -603,7 +612,7 @@
             }
         }
         
-        // 3. AVANÇA
+        // 2. AVANÇA
         currentQuestionIndex++;
         if (currentQuestionIndex < lessonQuestions.length) {
             loadQuestion(lessonQuestions[currentQuestionIndex]);
@@ -648,6 +657,7 @@
         const recordButton = document.getElementById('record-button');
         const listenButton = document.querySelector('.listen-btn');
         
+        // O botão Next só é ativado se todas as palavras forem completadas
         nextBtn.disabled = !pronunciationWords.every(w => w.status === 'completed');
 
         if (currentWordData) {
