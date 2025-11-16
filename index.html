@@ -35,7 +35,7 @@
         gap: 30px; 
     }
     
-    /* 3. Card de Confidence - LAYOUT FIXO E HOVER ESTÁVEL */
+    /* 3. Card de Confidence - LAYOUT FIXO E ESTÁVEL (USANDO FLEXBOX) */
     .chapter-card {
         background-color: #f7f7f7; 
         padding: 0; 
@@ -43,11 +43,13 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); 
         cursor: pointer;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
-        overflow: hidden; 
         
-        height: 200px; /* Cartão menor */
+        height: 200px; /* Altura do cartão */
         position: relative; 
-        display: block;
+        
+        /* SOLUÇÃO DO BUG: FORÇAR LAYOUT VERTICAL COM FLEX */
+        display: flex; 
+        flex-direction: column;
     }
     
     .chapter-card:hover {
@@ -57,7 +59,7 @@
     
     /* Metade da Imagem (50% da Altura - Topo) */
     .card-image-top {
-        height: 50%;
+        height: 50%; /* OBRIGA a ocupar 50% da altura do flex-container */
         width: 100%;
         background-size: cover;
         background-position: center;
@@ -66,11 +68,11 @@
 
     /* Metade do Texto (50% da Altura - Baixo) */
     .card-text-bottom {
-        height: 50%;
+        height: 50%; /* OBRIGA a ocupar 50% da altura do flex-container */
         width: 100%;
         padding: 15px;
         background-color: white; 
-        transition: background-color 0.3s ease; /* Transição simples */
+        transition: background-color 0.3s ease; 
         
         display: flex;
         flex-direction: column;
@@ -82,7 +84,7 @@
 
     /* EFEITO HOVER SIMPLES E ESTÁVEL */
     .chapter-card:hover .card-text-bottom {
-        background-color: #f0f0f0; /* Fundo mais claro no hover */
+        background-color: #f0f0f0; 
     }
     
     .chapter-card h3 {
@@ -308,3 +310,62 @@
     }
 
     function goHome() {
+        homeScreen.style.display = 'block';
+        lessonScreen.style.display = 'none';
+    }
+
+    // 4. CARREGAR PERGUNTA E OPÇÕES (MANTIDO)
+    function loadQuestion(q) {
+        feedback.innerHTML = '';
+        optionsContainer.innerHTML = '';
+        nextBtn.disabled = true; 
+        
+        questionText.textContent = q.question;
+        questionImage.src = q.image || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+        questionImage.style.display = q.image ? 'block' : 'none';
+        
+        for (const key in q.options) {
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'option';
+            optionDiv.textContent = `${key}: ${q.options[key]}`;
+            optionDiv.setAttribute('data-answer', key);
+            optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer);
+            optionsContainer.appendChild(optionDiv);
+        }
+    }
+
+    // 5. VERIFICAR RESPOSTA (MANTIDO)
+    function checkAnswer(selectedDiv, selectedKey, correctKey) {
+        const allOptions = optionsContainer.querySelectorAll('.option');
+        allOptions.forEach(opt => opt.onclick = null);
+
+        if (selectedKey === correctKey) {
+            selectedDiv.classList.add('correct');
+            feedback.innerHTML = '✅ Resposta Correta!';
+        } else {
+            selectedDiv.classList.add('incorrect');
+            allOptions.forEach(opt => {
+                if (opt.getAttribute('data-answer') === correctKey) {
+                    opt.classList.add('correct');
+                }
+            });
+            feedback.innerHTML = `❌ Resposta Incorreta. A correta era ${correctKey}.`;
+        }
+
+        nextBtn.disabled = false; 
+    }
+
+    // 6. PRÓXIMA PERGUNTA (MANTIDO)
+    function goNext() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < lessonQuestions.length) {
+            loadQuestion(lessonQuestions[currentQuestionIndex]);
+        } else {
+            alert(`Parabéns! Você completou o Confidence ${currentChapter}!`);
+            goHome();
+        }
+    }
+</script>
+
+</body>
+</html>
