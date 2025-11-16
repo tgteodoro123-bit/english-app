@@ -22,15 +22,12 @@
     }
     
     h2 {
-        /* Título "Beginner" - Cor suave, maior e mais largo */
+        /* Título "Beginner" */
         color: #333; 
         border-bottom: 1px solid #e0e0e0; 
         padding-top: 10px; 
-        
-        /* AJUSTE FINAL DE SPACING: Linha longe do texto e perto dos cards */
         padding-bottom: 25px; 
         margin-bottom: 15px; 
-        
         font-size: 2.2em; 
         font-weight: 500; 
     }
@@ -46,13 +43,12 @@
         }
     }
 
-    /* 3. Card de Confidence - COM POSICIONAMENTO ABSOLUTO PARA SOBREPOSIÇÃO */
+    /* 3. Card de Confidence */
     .chapter-card {
         background-color: #f7f7f7; 
         border-radius: 6px; 
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); 
         cursor: pointer;
-        
         height: 240px; 
         position: relative; 
         overflow: hidden; 
@@ -62,7 +58,7 @@
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
     }
     
-    /* Imagem (Fica no fundo) */
+    /* Imagem */
     .card-background-image {
         position: absolute;
         top: 0;
@@ -74,7 +70,7 @@
         z-index: 1; 
     }
 
-    /* Área de Texto (Expande e Sobrepõe) */
+    /* Área de Texto */
     .card-text-area {
         position: absolute;
         bottom: 0;
@@ -84,28 +80,23 @@
         padding: 15px;
         z-index: 2; 
         transition: height 0.3s ease, background 0.3s ease, color 0.3s ease; 
-        
-        /* Gradiente inicial sobre a imagem */
         background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%); 
-        
         display: flex;
         flex-direction: column;
-        justify-content: center; /* Centered in the 30% area */
+        justify-content: center; 
         align-items: center;
         text-align: center;
     }
 
-    /* EFEITO DE HOVER: EXPANSÃO DE 50% E FUNDO BRANCO CLEAN */
+    /* EFEITO DE HOVER */
     .chapter-card:hover .card-text-area {
         height: 50%; 
         background: #FFFFFF; 
-        
         justify-content: space-between; 
         padding: 15px; 
         align-items: flex-start; 
     }
     
-    /* Wrapper para o Efeito de Subir (Informação) */
     .text-content-wrapper {
         transition: transform 0.3s ease;
         text-align: left; 
@@ -117,7 +108,7 @@
         transform: translateY(-5px); 
     }
 
-    /* Estilos de Texto - Cores */
+    /* Estilos de Texto */
     .chapter-card h3 {
         margin-top: 0;
         font-size: 1.3em;
@@ -150,11 +141,9 @@
         font-weight: bold;
         font-size: 1em; 
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        
         opacity: 0; 
         transform: scale(0.9); 
         transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
-        
         align-self: flex-start; 
     }
 
@@ -167,11 +156,7 @@
         background-color: #004c99; 
     }
     
-    .status {
-        display: none; 
-    }
-    
-    /* 4. Tela de Quiz/Lição (mantido) */
+    /* 4. Tela de Quiz/Lição */
     #lesson-screen {
         max-width: 650px;
         margin: 40px auto;
@@ -182,7 +167,7 @@
         display: none; 
     }
 
-    /* FIX para a imagem gigante */
+    /* FIX para a imagem */
     .quiz-question img {
         max-width: 100%; 
         height: auto; 
@@ -208,10 +193,6 @@
         cursor: pointer;
         transition: background-color 0.2s, border-color 0.2s;
         text-align: left;
-    }
-    .option:hover {
-        background-color: #e9f7ff; 
-        border-color: #007bff; 
     }
     .correct {
         background-color: #e6ffed !important; 
@@ -240,7 +221,7 @@
     #next-btn { background-color: #007bff; }
 
 
-    /* 5. Estilos para o Tópico de Pronúncia - SIMPLIFICADO */
+    /* 5. Estilos para o Tópico de Pronúncia */
     #pronunciation-container {
         display: flex;
         flex-direction: column;
@@ -257,7 +238,7 @@
         color: #333;
     }
     
-    /* Lista de Palavras (Centro da Interação) */
+    /* Lista de Palavras */
     #pronunciation-list {
         list-style: none;
         padding: 0;
@@ -303,7 +284,7 @@
     
     <div class="quiz-question">
         <p id="question-text"></p> 
-        <img id="question-image" src="" alt="Imagem da Lição"> 
+        <img id="question-image" src="" alt="Lesson Image"> 
     </div>
 
     <div id="options-container">
@@ -311,7 +292,7 @@
     
     <div id="pronunciation-container" style="display: none;">
         
-        <p class="word-to-practice" id="current-instruction">Clique no ▶️ para ouvir a pronúncia de cada palavra quantas vezes desejar.</p>
+        <p class="word-to-practice" id="current-instruction">Click the play button (▶️) to hear each word.</p>
         
         <audio id="audio-player" preload="auto"></audio>
         
@@ -323,13 +304,13 @@
     <p id="feedback" style="font-weight: bold; margin-top: 15px; text-align: center;"></p>
 
     <div class="nav-buttons">
-        <button id="back-btn" onclick="backQuestion()">Voltar</button>
-        <button id="next-btn" onclick="goNext()">Próximo</button>
+        <button id="back-btn" onclick="backQuestion()">Back</button>
+        <button id="next-btn" onclick="goNext()">Next</button>
     </div>
 </div>
 
 <script>
-    // LINK BASE: APONTA PARA A RAIZ, ONDE ESTÃO TODOS OS ARQUIVOS SOLTOS.
+    // LINK BASE: APONTA PARA A RAIZ DO REPOSITÓRIO ONDE SEUS ARQUIVOS ESTÃO SOLTOS
     const GITHUB_RAW_BASE_URL = "https://raw.githubusercontent.com/tgteodoro123-bit/english-app/main/"; 
     
     // ARRAY DE IMAGENS DE FUNDO
@@ -344,11 +325,11 @@
 
     // 1. DADOS DAS QUESTÕES (Beginner 1)
     const QUESTIONS = [
-        // Q1: IMAGEM (CORRIGIDO: APENAS O NOME DO ARQUIVO)
+        // Q1: IMAGEM - Caminho corrigido
         {
             id: 1,
             question: "What do you see in the image?", 
-            image: "numeros.jpg", // ARQUIVO NA RAIZ
+            image: "numeros.jpg", 
             options: {
                 A: "The Alphabet",
                 B: "Colors",
@@ -357,11 +338,11 @@
             correctAnswer: 'C', 
             chapter: 1
         },
-        // Q2: IMAGEM (CORRIGIDO: APENAS O NOME DO ARQUIVO)
+        // Q2: IMAGEM - Caminho corrigido
         {
             id: 2,
             question: "Complete the self-introduction: 'Hello, ____ Marcus.'", 
-            image: "cumprimento.jpg", // ARQUIVO NA RAIZ
+            image: "cumprimento.jpg", 
             options: {
                 A: "I is",
                 B: "I am",
@@ -370,7 +351,7 @@
             correctAnswer: 'B', 
             chapter: 1
         },
-        // Q3: TELA DE EXEMPLOS (10 SENTENÇAS)
+        // Q3: TELA DE EXEMPLOS
         {
             id: 3,
             question: `<h3 style="color: #007bff; font-size: 2em; margin-bottom: 20px;">Vocabulary:</h3>`, 
@@ -389,19 +370,19 @@
             correctAnswer: 'INFO', 
             chapter: 1
         },
-        // Q4: PRONÚNCIA (CORRIGIDO: APENAS O NOME DO ARQUIVO)
+        // Q4: PRONÚNCIA - Caminhos corrigidos
         {
             id: 4,
             question: "PRONUNCIATION PRACTICE: Click the play button (▶️) to hear each word.", 
             options: {
                 "Address number": "addressnumber.mp3", 
-                "American": "American.mp3", // USANDO AMERICAN.MP3 NA RAIZ
+                "American": "American.mp3",
                 "Friend": "friend.mp3",
                 "Great": "great.mp3", 
                 "Nationality": "nationality.mp3",
                 "New": "new.mp3",
                 "Phone number": "phonenumber.mp3",
-                "Student": "sudent.mp3", // ATENÇÃO: Se o nome do seu arquivo na raiz for 'sudent.mp3', manteremos o erro aqui
+                "Student": "student.mp3", 
                 "Teacher": "teacher.mp3",
                 "Years old": "yearsold.mp3" 
             },
@@ -421,7 +402,7 @@
             correctAnswer: 'B', 
             chapter: 1
         },
-        // Q6: NOVO TÓPICO - CORES E OBJETOS
+        // Q6: CORES
         {
             id: 6,
             question: "What is the color of the sky on a sunny day?", 
@@ -434,7 +415,7 @@
             correctAnswer: 'C', 
             chapter: 1
         },
-        // Q7: NOVO TÓPICO - PERGUNTA SIMPLES
+        // Q7: PERGUNTA SIMPLES
         {
             id: 7,
             question: "What is the English word for 'cadeira'?", 
@@ -447,11 +428,11 @@
             correctAnswer: 'B', 
             chapter: 1
         },
-        // Q8: NOVO TÓPICO - CORES COM IMAGEM
+        // Q8: CORES COM IMAGEM 
         {
             id: 8,
             question: "Identify the color of the object in the image:", 
-            image: "apple.jpg", // ARQUIVO NA RAIZ
+            image: "apple.jpg", 
             options: {
                 A: "Green",
                 B: "Red",
@@ -460,7 +441,7 @@
             correctAnswer: 'B', 
             chapter: 1
         },
-        // Q9: NOVO TÓPICO - INTRODUÇÃO À PERGUNTA
+        // Q9: INTRODUÇÃO À PERGUNTA
         {
             id: 9,
             question: "How do you ask 'Where are you from?'", 
@@ -473,7 +454,7 @@
             correctAnswer: 'C', 
             chapter: 1
         },
-        // Q10: NOVO TÓPICO - ARTIGOS
+        // Q10: ARTIGOS
         {
             id: 10,
             question: "Complete the sentence: 'I want ___ apple.'", 
@@ -506,7 +487,7 @@
     let pronunciationWords = [];
     const audioPlayer = document.getElementById('audio-player'); 
 
-    // 2. GERAÇÃO DOS 24 CARDS (MANTIDO)
+    // 2. GERAÇÃO DOS 24 CARDS 
     const chapterGrid = document.querySelector('.chapter-grid');
     for (let i = 1; i <= 24; i++) {
         const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
@@ -531,7 +512,7 @@
         `;
     }
 
-    // 3. NAVEGAÇÃO E LÓGICA (MODIFICADA)
+    // 3. NAVEGAÇÃO E LÓGICA 
 
     let currentChapter = 0;
     let lessonQuestions = [];
@@ -571,7 +552,6 @@
         questionText.innerHTML = q.question; 
         
         if (q.image) {
-            // Lógica de carregamento da imagem usando o link base RAW (APENAS NOME DO ARQUIVO)
             questionImage.src = GITHUB_RAW_BASE_URL + q.image; 
             questionImage.style.display = 'block';
         } else {
@@ -629,16 +609,16 @@
         let feedbackMessage = '';
 
         if (selectedKey === correctKey) {
-            selectedDiv.classList.add('correct');
             feedbackMessage = '✅ Resposta Correta!';
+            selectedDiv.classList.add('correct');
         } else {
+            feedbackMessage = `❌ Resposta Incorreta. A correta era ${correctKey}.`; 
             selectedDiv.classList.add('incorrect');
             allOptions.forEach(opt => {
                 if (opt.getAttribute('data-answer') === correctKey) {
                     opt.classList.add('correct');
                 }
             });
-            feedbackMessage = `❌ Resposta Incorreta. A correta era ${correctKey}.`; 
         }
 
         feedback.innerHTML = feedbackMessage;
@@ -666,13 +646,30 @@
         }
     }
     
-    // --- LÓGICA DE PRONÚNCIA ---
+    // --- LÓGICA DE PRONÚNCIA (FIX CELULAR) ---
     
-    // Função para tocar um áudio específico
     function playWordAudio(audioPath) {
-        // Lógica de carregamento do áudio usando o link base RAW (APENAS NOME DO ARQUIVO)
+        const audioPlayer = document.getElementById('audio-player');
+        
+        // 1. Limpa qualquer evento anterior
+        audioPlayer.oncanplaythrough = null;
+        
+        // 2. Define a fonte do áudio
         audioPlayer.src = GITHUB_RAW_BASE_URL + audioPath;
-        audioPlayer.play();
+
+        // 3. Adiciona um Listener: espera que o áudio possa ser reproduzido
+        audioPlayer.oncanplaythrough = function() {
+            // Tenta reproduzir, usando catch para promessas de navegadores rigorosos
+            audioPlayer.play().catch(error => {
+                console.error("Audio playback blocked by browser:", error);
+            });
+            
+            // Remove o evento para evitar múltiplos disparos
+            audioPlayer.oncanplaythrough = null; 
+        };
+        
+        // 4. Força o carregamento do novo arquivo de áudio
+        audioPlayer.load();
     }
     
     function renderPronunciationPractice(q) {
