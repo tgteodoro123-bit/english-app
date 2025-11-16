@@ -3,92 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Curso de Inglês - Protótipo</title>
+<title>Curso de Inglês - Teste</title>
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: #f5f5f5;
-    margin: 0;
-    padding: 20px;
-}
+body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
 h1 { text-align: center; color: #333; }
-.chapter-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 15px;
-    max-width: 800px;
-    margin: 0 auto 20px auto;
-}
-.chapter-card {
-    background: #2980b9;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.3s;
-}
+.chapter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; max-width: 400px; margin: 0 auto 20px auto; }
+.chapter-card { background: #2980b9; color: white; padding: 20px; text-align: center; border-radius: 10px; cursor: pointer; }
 .chapter-card:hover { background: #3498db; }
-.card {
-    display: none;
-    background: white;
-    max-width: 700px;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
+.card { display: none; background: white; max-width: 500px; margin: 20px auto; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
 .card h2 { color: #333; }
-.options button {
-    display: block;
-    width: 100%;
-    margin: 10px 0;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background: #2980b9;
-    color: white;
-    cursor: pointer;
-    transition: 0.3s;
-}
+.options button { display: block; width: 100%; margin: 10px 0; padding: 10px; border: none; border-radius: 5px; background: #2980b9; color: white; cursor: pointer; }
 .options button:hover { background: #3498db; }
-.nav-btn {
-    padding: 8px 15px;
-    margin: 5px;
-    border: none;
-    border-radius: 5px;
-    background: #8e44ad;
-    color: white;
-    cursor: pointer;
-}
+.nav-btn { padding: 8px 15px; margin: 5px; border: none; border-radius: 5px; background: #8e44ad; color: white; cursor: pointer; }
 .nav-btn:hover { background: #9b59b6; }
-input[type="text"] {
-    width: 100%;
-    padding: 8px;
-    margin: 5px 0;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-.check-btn {
-    margin-top: 10px;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    background-color: #27ae60;
-    color: white;
-    cursor: pointer;
-}
+input[type="text"] { width: 100%; padding: 8px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; }
+.check-btn { margin-top: 10px; padding: 8px 15px; border: none; border-radius: 5px; background-color: #27ae60; color: white; cursor: pointer; }
 </style>
 </head>
 <body>
 
-<h1>Curso de Inglês</h1>
+<h1>Curso de Inglês - Teste</h1>
 
 <!-- Menu de capítulos -->
 <div id="menu">
     <div class="chapter-grid">
         <div class="chapter-card" onclick="startChapter(1)">Capítulo 1</div>
-        <!-- Pode adicionar mais capítulos aqui -->
     </div>
 </div>
 
@@ -97,7 +36,6 @@ input[type="text"] {
     <div id="topicCard" class="card">
         <h2 id="topicTitle"></h2>
         <p id="topicText"></p>
-        <img id="topicImg" src="" alt="" style="width:100%;border-radius:8px;display:none;">
         <div id="topicOptions" class="options"></div>
         <input type="text" id="topicInput" placeholder="Digite aqui..." style="display:none;">
         <button class="check-btn" id="checkBtn" onclick="checkInput()" style="display:none;">Check</button>
@@ -113,16 +51,14 @@ input[type="text"] {
 let currentChapter = 1;
 let currentTopic = 0;
 
-// Tópicos do Capítulo 1 (simplificado com 3 tópicos para testar)
 const chapters = {
     1: [
-        {title:"Números", text:"Selecione o número 2:", img:"https://via.placeholder.com/200x100?text=2", options:["1","2","3"], answer:"2", type:"options"},
-        {title:"Cores", text:"Clique na cor correta da bola:", img:"https://via.placeholder.com/150x150/00ff00/ffffff?text=Ball", options:["Red","Green","Blue"], answer:"Green", type:"options"},
-        {title:"Família", text:"Digite o nome desta pessoa:", img:"https://via.placeholder.com/200x150?text=Mother", answer:"mother", type:"input"},
+        {title:"Números", text:"Selecione o número 2:", options:["1","2","3"], answer:"2", type:"options"},
+        {title:"Cores", text:"Selecione a cor verde:", options:["Red","Green","Blue"], answer:"Green", type:"options"},
+        {title:"Família", text:"Digite o nome desta pessoa (mother):", answer:"mother", type:"input"}
     ]
 };
 
-// Inicializa capítulo
 function startChapter(chapter){
     currentChapter = chapter;
     currentTopic = 0;
@@ -131,31 +67,22 @@ function startChapter(chapter){
     showTopic();
 }
 
-// Volta ao menu
 function goMenu(){
     document.getElementById("chapterContent").style.display = "none";
     document.getElementById("menu").style.display = "block";
 }
 
-// Mostrar tópico
 function showTopic(){
     const topic = chapters[currentChapter][currentTopic];
     document.getElementById("topicTitle").textContent = topic.title;
     document.getElementById("topicText").textContent = topic.text;
-    
-    if(topic.img){
-        document.getElementById("topicImg").src = topic.img;
-        document.getElementById("topicImg").style.display = "block";
-    } else {
-        document.getElementById("topicImg").style.display = "none";
-    }
 
     if(topic.type === "options"){
         document.getElementById("topicOptions").innerHTML = "";
         topic.options.forEach(opt=>{
             const btn = document.createElement("button");
             btn.textContent = opt;
-            btn.onclick = ()=>checkAnswer(btn,topic.answer);
+            btn.onclick = ()=>checkAnswer(btn, topic.answer);
             document.getElementById("topicOptions").appendChild(btn);
         });
         document.getElementById("topicOptions").style.display = "block";
@@ -169,48 +96,8 @@ function showTopic(){
     }
 }
 
-// Navegação
 function nextTopic(){
     if(currentTopic < chapters[currentChapter].length-1){
         currentTopic++;
         showTopic();
     } else {
-        alert("Você chegou ao último tópico deste capítulo!");
-    }
-}
-function prevTopic(){
-    if(currentTopic > 0){
-        currentTopic--;
-        showTopic();
-    } else {
-        alert("Você está no primeiro tópico!");
-    }
-}
-
-// Verificação
-function checkAnswer(button, correct){
-    const allButtons = button.parentNode.querySelectorAll('button');
-    allButtons.forEach(btn=>btn.disabled=true);
-    if(button.textContent === correct){
-        button.classList.add('correct');
-    } else {
-        button.classList.add('incorrect');
-        allButtons.forEach(btn=>{
-            if(btn.textContent === correct) btn.classList.add('correct');
-        });
-    }
-}
-
-function checkInput(){
-    const topic = chapters[currentChapter][currentTopic];
-    const input = document.getElementById("topicInput");
-    if(input.value.trim().toLowerCase() === topic.answer.toLowerCase()){
-        input.style.border = "2px solid green";
-    } else {
-        input.style.border = "2px solid red";
-    }
-}
-</script>
-
-</body>
-</html>
