@@ -22,7 +22,7 @@
     }
     
     h2 {
-        color: black; 
+        color: black; /* O preto puro de "Beginner" */
         border-bottom: 1px solid #e0e0e0; 
         padding-top: 20px; 
         padding-bottom: 8px; 
@@ -33,7 +33,6 @@
         display: grid;
         grid-template-columns: repeat(4, 1fr); 
         gap: 30px; 
-        padding: 0;
     }
     
     @media (max-width: 1024px) {
@@ -42,7 +41,7 @@
         }
     }
 
-    /* 3. Card de Confidence - LAYOUT MÍNIMO E ESTÁVEL */
+    /* 3. Card de Confidence - COM POSICIONAMENTO ABSOLUTO PARA SOBREPOSIÇÃO */
     .chapter-card {
         background-color: #f7f7f7; 
         border-radius: 6px; 
@@ -50,30 +49,39 @@
         cursor: pointer;
         
         height: 240px; 
-        display: flex; 
-        flex-direction: column;
+        position: relative; /* ESSENCIAL para o posicionamento absoluto */
+        overflow: hidden; /* Limpa as bordas */
         transition: box-shadow 0.2s ease;
-        overflow: hidden; 
     }
     .chapter-card:hover {
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
     }
     
-    /* Imagem no topo (70%) */
+    /* Imagem (Fica no fundo) */
     .card-background-image {
-        height: 70%;
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
+        height: 100%;
         background-size: cover;
         background-position: center;
+        z-index: 1; /* Camada 1: Imagem */
     }
 
-    /* Área de Texto Inferior (30%) */
+    /* Área de Texto (Expande e Sobrepõe) */
     .card-text-area {
-        height: 30%; 
+        position: absolute;
+        bottom: 0;
+        left: 0;
         width: 100%;
-        padding: 10px;
-        background-color: white; 
-        color: #333; 
+        height: 30%; /* Altura inicial */
+        padding: 15px;
+        z-index: 2; /* Camada 2: Painel de Texto */
+        transition: height 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+        
+        /* Gradiente inicial sobre a imagem */
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%); 
         
         display: flex;
         flex-direction: column;
@@ -81,21 +89,46 @@
         align-items: center;
         text-align: center;
     }
+
+    /* EFEITO DE HOVER: EXPANSÃO DE 60% E FUNDO BRANCO CLEAN */
+    .chapter-card:hover .card-text-area {
+        height: 60%; /* EXPANSÃO SOLICITADA */
+        background-color: #ffffff; /* BRANCO CLEAN */
+        box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil para destacar */
+    }
     
-    /* Estilos de Texto - COR PRETA */
+    /* Wrapper para o Efeito de Subir (Informação) */
+    .text-content-wrapper {
+        transition: transform 0.3s ease;
+        text-align: center;
+    }
+    .chapter-card:hover .text-content-wrapper {
+        transform: translateY(-5px); /* Efeito de subir sutil */
+    }
+
+
+    /* Estilos de Texto - Cores */
     .chapter-card h3 {
         margin-top: 0;
         font-size: 1.3em;
         margin-bottom: 5px;
-        color: #333; /* PRETO */
+        color: white; /* Branco sobre o gradiente inicial */
+        transition: color 0.3s ease;
     }
 
     .chapter-card p {
         margin: 0;
         font-size: 0.8em;
-        color: #333; /* PRETO */
+        color: #ddd; /* Cinza claro sobre o gradiente inicial */
+        transition: color 0.3s ease;
     }
     
+    /* CORES PRETAS (PRETÃO) NO HOVER */
+    .chapter-card:hover .card-text-area h3,
+    .chapter-card:hover .card-text-area p {
+        color: #000; /* PRETO IGUAL AO BEGINNER */
+    }
+
     /* Estilo do Botão START */
     .start-button {
         background-color: #003366; 
@@ -109,20 +142,23 @@
         margin-top: 10px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         
-        /* O botão fica visível o tempo todo neste layout estável, sem efeitos de hover */
-        opacity: 1; 
-        transform: scale(1); 
-        transition: background-color 0.2s ease;
+        opacity: 0; /* Oculto inicialmente */
+        transform: scale(0.9); 
+        transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
     }
 
+    .chapter-card:hover .start-button {
+        opacity: 1; 
+        transform: scale(1);
+    }
+    
     .start-button:hover {
         background-color: #004c99; 
     }
     
-    .status, .text-content-wrapper { 
-        /* Elementos que causavam complexidade ou não são necessários neste layout mínimo */
-        /* Removido o text-content-wrapper e o efeito de subir */
-    } 
+    .status {
+        display: none; 
+    }
     
     /* 4. Tela de Quiz/Lição (mantido) */
     #lesson-screen {
@@ -272,9 +308,11 @@
                 </div>
                 
                 <div class="card-text-area">
-                    <h3>Confidence ${i}</h3>
-                    <p>Tópico Principal da Confiança ${i}</p>
-                    <button class="start-button" onclick="startLesson(${i}); event.stopPropagation();">START</button>
+                    <div class="text-content-wrapper">
+                        <h3>Confidence ${i}</h3>
+                        <p>Tópico Principal da Confiança ${i}</p>
+                        <button class="start-button" onclick="startLesson(${i}); event.stopPropagation();">START</button>
+                    </div>
                 </div>
             </div>
         `;
