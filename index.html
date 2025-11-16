@@ -133,7 +133,7 @@
         transition: color 0.3s ease;
     }
     
-    /* CORES PRETAS (PRETÃO) NO HOVER */
+    /* CORES PRETOS NO HOVER */
     .chapter-card:hover .card-text-area h3,
     .chapter-card:hover .card-text-area p {
         color: #000; 
@@ -375,7 +375,7 @@
             correctAnswer: 'C', 
             chapter: 1
         },
-        // Q2: AUTOAPRESENTAÇÃO (I am) - NOME ALTERADO PARA "Marcus"
+        // Q2: AUTOAPRESENTAÇÃO (I am) - Nome "Marcus"
         {
             id: 2,
             question: "Complete the self-introduction: 'Hello, ____ Marcus.'", 
@@ -388,21 +388,21 @@
             correctAnswer: 'B', 
             chapter: 1
         },
-        // Q3: NOVA TELA DE EXEMPLOS (10 SENTENÇAS)
+        // Q3: NOVA TELA DE EXEMPLOS (10 SENTENÇAS) - COM DESTAQUE AZUL E NÚMEROS SIMPLES
         {
             id: 3,
             question: "PRACTICE SENTENCES (10 Examples):", 
             options: {
-                "1.": "My **address number** is 501.",
-                "2.": "I am a **new student**.",
-                "3.": "Sofia is my new **friend**, Alexia.",
-                "4.": "Mr. David is a great **teacher**.",
-                "5.": "My **phone number** is: (987) 654-1234.",
-                "6.": "She is **Japanese**.",
-                "7.": "I love my English **teacher**.",
-                "8.": "Lucas is a **new student**, too.",
-                "9.": "I am **21 years old**.",
-                "10.": "My **nationality**? I'm **Brazilian**."
+                "1.": `My <span style="color: #007bff;">address number</span> is 34.`, // Número simplificado
+                "2.": `I am a <span style="color: #007bff;">new student</span>.`,
+                "3.": `Sofia is my <span style="color: #007bff;">new friend</span>, Alexia.`,
+                "4.": `Mr. David is a great <span style="color: #007bff;">teacher</span>.`,
+                "5.": `My <span style="color: #007bff;">phone number</span> is: (987) 654-1234.`,
+                "6.": `She is <span style="color: #007bff;">Japanese</span>.`,
+                "7.": `I love my English <span style="color: #007bff;">teacher</span>.`,
+                "8.": `Lucas is a <span style="color: #007bff;">new student</span>, too.`,
+                "9.": `I am <span style="color: #007bff;">18 years old</span>.`, // Idade simplificada
+                "10.": `My <span style="color: #007bff;">nationality</span>? I'm <span style="color: #007bff;">Brazilian</span>.`
             },
             correctAnswer: 'INFO', 
             chapter: 1
@@ -556,9 +556,9 @@
             optionsContainer.style.padding = '20px';
             optionsContainer.style.borderRadius = '8px';
             
-            // Adicionado um pequeno título para a tela de exemplos
             let htmlContent = '<ul style="list-style-type: none; padding: 0;">';
             for (const key in q.options) {
+                // Aqui o conteúdo já tem o estilo span com a cor azul
                 htmlContent += `<li style="margin: 10px 0; font-size: 1.1em; border-bottom: 1px dashed #ddd; padding-bottom: 5px;">
                                     <strong>${key}:</strong> ${q.options[key]}
                                 </li>`;
