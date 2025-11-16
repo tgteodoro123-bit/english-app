@@ -19,23 +19,22 @@
 
     /* 2. Layout da Grade de Cards */
     #home-screen {
-        max-width: 1200px; /* Aumento para caber 4 colunas */
-        margin: 60px auto 40px; /* MAIS ESPAÇO ACIMA */
+        max-width: 1200px; 
+        margin: 80px auto 50px; /* MAIS ESPAÇO ACIMA E ABAIXO */
         padding: 0 30px;
     }
     
-    /* Título "Beginner" com mais espaço */
+    /* Título "Beginner" com linha cinza fina */
     h2 {
         color: black; 
-        border-bottom: 1px solid #003366; 
-        padding-top: 15px; /* Espaço acima do texto, na área de espaçamento */
+        border-bottom: 1px solid #e0e0e0; /* CINZA CLARO E FINO */
+        padding-top: 20px; /* MAIS ESPAÇO ACIMA DO TEXTO */
         padding-bottom: 8px; 
-        margin-bottom: 50px; /* MAIS ESPAÇO ABAIXO DO BEGINNER */
+        margin-bottom: 60px; /* MAIS ESPAÇO ABAIXO DO TÍTULO */
         font-size: 1.8em;
     }
     .chapter-grid {
         display: grid;
-        /* FORÇAR 4 COLUNAS */
         grid-template-columns: repeat(4, 1fr); 
         gap: 30px; 
     }
@@ -43,7 +42,6 @@
     /* Media Query para garantir que em telas menores o layout continue responsivo */
     @media (max-width: 1024px) {
         .chapter-grid {
-            /* Volta para 3 ou 2 colunas em telas médias/pequenas */
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         }
     }
@@ -55,6 +53,7 @@
         border-radius: 12px; 
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); 
         cursor: pointer;
+        /* MOVIMENTO REMOVIDO */
         overflow: hidden; 
         
         height: 280px; 
@@ -73,7 +72,7 @@
         background-size: cover;
         background-position: center;
         z-index: 1; 
-        transition: transform 0.3s ease; 
+        /* MOVIMENTO DA IMAGEM REMOVIDO */
     }
 
     /* Área de Texto Inferior (se expande) */
@@ -82,7 +81,7 @@
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 30%; /* Altura inicial: 30% */
+        height: 30%; 
         padding: 15px;
         background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%); 
         color: white; 
@@ -98,17 +97,18 @@
         text-align: center;
     }
 
-    /* EFEITO EXPANDIR NO HOVER */
+    /* EFEITO EXPANDIR NO HOVER - FUNDO BRANCO PURO */
     .chapter-card:hover .card-text-area {
-        height: 60%; /* Expande para 60% */
-        background-color: white; 
+        height: 60%; 
+        background-color: #ffffff; /* BRANCO PURO */
         color: #333; 
         text-shadow: none; 
     }
     
-    .chapter-card:hover .card-background-image {
+    /* MOVIMENTO DA IMAGEM REMOVIDO */
+    /* .chapter-card:hover .card-background-image {
         transform: scale(1.03); 
-    }
+    } */
 
     .chapter-card h3 {
         margin-top: 0;
@@ -132,9 +132,9 @@
         color: inherit; 
     }
 
-    /* ESTILO DO BOTÃO PLAY (Ícone) */
+    /* ESTILO DO BOTÃO PLAY (Ícone) - AZUL ESCURO */
     .play-button {
-        background-color: #28a745; 
+        background-color: #003366; /* AZUL ESCURO */
         color: white;
         padding: 10px 15px; 
         border: none;
@@ -146,13 +146,15 @@
         transform: translateY(20px); 
         transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 3; /* Garante que o botão fique acima de tudo */
+        position: relative; /* Para garantir o z-index */
     }
 
-    /* O BOTÃO APARECE E MUDA DE COR NO HOVER */
+    /* O BOTÃO APARECE E MUDA DE TOM NO HOVER */
     .chapter-card:hover .play-button {
         opacity: 1; 
         transform: translateY(0); 
-        background-color: #218838; /* Cor mais escura para o efeito de seleção */
+        background-color: #004c99; /* TOM MAIS CLARO NO HOVER (Seleção) */
     }
     
     /* 4. Tela de Quiz/Lição (mantido) */
