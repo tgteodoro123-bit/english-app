@@ -22,16 +22,14 @@
     }
     
     h2 {
-        /* AJUSTE 1: Tom de preto mais suave */
+        /* Título "Beginner" - Cor suave, maior e mais largo */
         color: #333; 
         border-bottom: 1px solid #e0e0e0; 
         padding-top: 10px; 
-        padding-bottom: 8px; 
-        margin-bottom: 20px; 
-        /* AJUSTE 2: Tamanho da fonte maior */
-        font-size: 2.2em; /* Um pouco maior que 1.8em */
-        /* AJUSTE 3: Peso da fonte mais fina */
-        font-weight: 300; /* Mais fina */
+        padding-bottom: 4px; 
+        margin-bottom: 30px; 
+        font-size: 2.2em; 
+        font-weight: 500; 
     }
     .chapter-grid {
         display: grid;
@@ -138,7 +136,7 @@
         color: #000; 
     }
 
-    /* Estilo do Botão START - MAIOR E ALINHANDO À ESQUERDA INFERIOR */
+    /* Estilo do Botão Start */
     .start-button {
         background-color: #003366; 
         color: white;
@@ -261,8 +259,8 @@
     <p id="feedback" style="font-weight: bold; margin-top: 15px; text-align: center;"></p>
 
     <div class="nav-buttons">
-        <button id="back-btn" onclick="goHome()">BACK</button>
-        <button id="next-btn" onclick="goNext()">NEXT</button>
+        <button id="back-btn" onclick="goHome()">Back</button>
+        <button id="next-btn" onclick="goNext()">Next</button>
     </div>
 </div>
 
@@ -428,7 +426,7 @@
                         <h3>Confidence ${i}</h3>
                         <p>Tópico Principal da Confiança ${i}</p>
                     </div>
-                    <button class="start-button" onclick="startLesson(${i}); event.stopPropagation();">START</button>
+                    <button class="start-button" onclick="startLesson(${i}); event.stopPropagation();">Start</button>
                 </div>
             </div>
         `;
