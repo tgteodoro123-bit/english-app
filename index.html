@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Inglês Básico</title>
 <style>
-    /* 1. Estilos Gerais - Fundo Branco */
+    /* 1. Estilos Gerais */
     body {
         font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         margin: 0;
@@ -14,23 +14,19 @@
         color: #333;
     }
 
-    /* Adicionado fonte de ícones para o botão "Play" */
-    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
-
-    /* 2. Layout da Grade de Cards */
+    /* 2. Layout da Grade de Cards e Spacing */
     #home-screen {
         max-width: 1200px; 
-        margin: 80px auto 50px; /* MAIS ESPAÇO ACIMA E ABAIXO */
+        margin: 80px auto 50px; 
         padding: 0 30px;
     }
     
-    /* Título "Beginner" com linha cinza fina */
     h2 {
         color: black; 
-        border-bottom: 1px solid #e0e0e0; /* CINZA CLARO E FINO */
-        padding-top: 20px; /* MAIS ESPAÇO ACIMA DO TEXTO */
+        border-bottom: 1px solid #e0e0e0; 
+        padding-top: 20px; 
         padding-bottom: 8px; 
-        margin-bottom: 60px; /* MAIS ESPAÇO ABAIXO DO TÍTULO */
+        margin-bottom: 60px; 
         font-size: 1.8em;
     }
     .chapter-grid {
@@ -39,28 +35,30 @@
         gap: 30px; 
     }
     
-    /* Media Query para garantir que em telas menores o layout continue responsivo */
     @media (max-width: 1024px) {
         .chapter-grid {
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         }
     }
 
-    /* 3. Card de Confidence - IMAGEM PREDOMINANTE COM EFEITO EXPANDIR */
+    /* 3. Card de Confidence - AJUSTES DE TAMANHO E BORDA */
     .chapter-card {
         background-color: #f7f7f7; 
         padding: 0; 
-        border-radius: 12px; 
+        border-radius: 6px; /* MENOS REDONDO */
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); 
         cursor: pointer;
-        /* MOVIMENTO REMOVIDO */
         overflow: hidden; 
         
-        height: 280px; 
+        height: 240px; /* CARTÃO MENOR */
         position: relative; 
         display: flex;
         flex-direction: column;
         justify-content: flex-end; 
+        transition: box-shadow 0.2s ease;
+    }
+    .chapter-card:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Sombra mais destacada no hover */
     }
     
     .card-background-image {
@@ -72,10 +70,9 @@
         background-size: cover;
         background-position: center;
         z-index: 1; 
-        /* MOVIMENTO DA IMAGEM REMOVIDO */
     }
 
-    /* Área de Texto Inferior (se expande) */
+    /* Área de Texto Inferior (se expande) - MAIS CLEAN */
     .card-text-area {
         position: absolute;
         bottom: 0;
@@ -83,12 +80,13 @@
         width: 100%;
         height: 30%; 
         padding: 15px;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%); 
+        /* Gradiente mais suave, menos preto */
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%); 
         color: white; 
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); 
         z-index: 2; 
-        transition: height 0.3s ease, background 0.3s ease, color 0.3s ease;
-        border-radius: 0 0 12px 12px;
+        transition: height 0.3s ease, background 0.3s ease;
+        border-radius: 0 0 6px 6px;
         
         display: flex;
         flex-direction: column;
@@ -97,66 +95,64 @@
         text-align: center;
     }
 
-    /* EFEITO EXPANDIR NO HOVER - FUNDO BRANCO PURO */
+    /* EFEITO EXPANDIR NO HOVER - FUNDO BRANCO PURO E CLEAN */
     .chapter-card:hover .card-text-area {
         height: 60%; 
-        background-color: #ffffff; /* BRANCO PURO */
+        background-color: #ffffff; /* BRANCO PURO E CLEAN */
         color: #333; 
         text-shadow: none; 
     }
-    
-    /* MOVIMENTO DA IMAGEM REMOVIDO */
-    /* .chapter-card:hover .card-background-image {
-        transform: scale(1.03); 
-    } */
 
     .chapter-card h3 {
         margin-top: 0;
-        font-size: 1.4em;
+        font-size: 1.3em;
         margin-bottom: 5px;
         color: inherit; 
     }
 
     .chapter-card p {
         margin: 0;
-        font-size: 0.9em;
-        color: inherit; 
-    }
-
-    /* Estilo para o texto "Status" */
-    .chapter-card .status {
-        font-weight: bold; 
-        padding: 3px 0;
-        margin-top: 5px;
         font-size: 0.8em;
         color: inherit; 
     }
 
-    /* ESTILO DO BOTÃO PLAY (Ícone) - AZUL ESCURO */
-    .play-button {
-        background-color: #003366; /* AZUL ESCURO */
+    .chapter-card .status {
+        font-weight: bold; 
+        padding: 3px 0;
+        margin-top: 5px;
+        font-size: 0.7em;
+        color: inherit; 
+    }
+
+    /* ESTILO DO BOTÃO START (TEXTO) - FUNCIONAL E AZUL ESCURO */
+    .start-button {
+        background-color: #003366; 
         color: white;
-        padding: 10px 15px; 
+        padding: 8px 20px; 
         border: none;
-        border-radius: 50%; 
+        border-radius: 4px; /* Mais quadrado */
         cursor: pointer;
-        font-size: 1.5em; 
+        font-weight: bold;
+        font-size: 0.9em;
         margin-top: 15px;
         opacity: 0; 
         transform: translateY(20px); 
         transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        z-index: 3; /* Garante que o botão fique acima de tudo */
-        position: relative; /* Para garantir o z-index */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 3; 
+        position: relative; 
     }
 
     /* O BOTÃO APARECE E MUDA DE TOM NO HOVER */
-    .chapter-card:hover .play-button {
+    .chapter-card:hover .start-button {
         opacity: 1; 
         transform: translateY(0); 
-        background-color: #004c99; /* TOM MAIS CLARO NO HOVER (Seleção) */
     }
     
+    .start-button:hover {
+        background-color: #004c99; /* TOM MAIS CLARO PARA FEEDBACK DE CLIQUE */
+    }
+
     /* 4. Tela de Quiz/Lição (mantido) */
     #lesson-screen {
         max-width: 650px;
@@ -167,6 +163,7 @@
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); 
         display: none; 
     }
+    /* ... estilos de lição mantidos ... */
     .quiz-question {
         padding: 20px;
         border: 1px solid #eee;
@@ -251,7 +248,6 @@
         "https://images.pexels.com/photos/4144294/pexels-photo-4144294.jpeg?auto=compress&cs=tinysrgb&w=800", // 4
         "https://images.pexels.com/photos/1481005/pexels-photo-1481005.jpeg?auto=compress&cs=tinysrgb&w=800", // 5
         "https://images.pexels.com/photos/3401403/pexels-photo-3401403.jpeg?auto=compress&cs=tinysrgb&w=800", // 6
-        // Adicione aqui as URLs ou caminhos para as suas 24 imagens (ex: "confidence1.jpg")
     ];
 
     // 1. DADOS DAS QUESTÕES
@@ -299,8 +295,7 @@
         const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
 
         chapterGrid.innerHTML += `
-            <div class="chapter-card" 
-                 onclick="startLesson(${i})">
+            <div class="chapter-card" id="card-${i}">
                  
                 <div class="card-background-image"
                      style="background-image: url('${bgUrl}');">
@@ -310,13 +305,13 @@
                     <h3>Confidence ${i}</h3>
                     <p>Tópico Principal da Confiança ${i}</p>
                     <p class="status">Status: Não Iniciado</p>
-                    <button class="play-button"><i class="fas fa-play"></i></button>
+                    <button class="start-button" onclick="startLesson(${i}); event.stopPropagation();">START</button>
                 </div>
             </div>
         `;
     }
 
-    // 3. NAVEGAÇÃO ENTRE TELAS (MANTIDO)
+    // 3. NAVEGAÇÃO ENTRE TELAS E LÓGICA DO START (MANTIDA)
     let currentChapter = 0;
     let lessonQuestions = [];
 
@@ -335,66 +330,4 @@
         lessonTitle.textContent = `Confidence ${chapterNumber}: Exercícios`;
         
         currentQuestionIndex = 0;
-        loadQuestion(lessonQuestions[currentQuestionIndex]);
-    }
-
-    function goHome() {
-        homeScreen.style.display = 'block';
-        lessonScreen.style.display = 'none';
-    }
-
-    // 4. CARREGAR PERGUNTA E OPÇÕES (MANTIDO)
-    function loadQuestion(q) {
-        feedback.innerHTML = '';
-        optionsContainer.innerHTML = '';
-        nextBtn.disabled = true; 
-        
-        questionText.textContent = q.question;
-        questionImage.src = q.image || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
-        questionImage.style.display = q.image ? 'block' : 'none';
-        
-        for (const key in q.options) {
-            const optionDiv = document.createElement('div');
-            optionDiv.className = 'option';
-            optionDiv.textContent = `${key}: ${q.options[key]}`;
-            optionDiv.setAttribute('data-answer', key);
-            optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer);
-            optionsContainer.appendChild(optionDiv);
-        }
-    }
-
-    // 5. VERIFICAR RESPOSTA (MANTIDO)
-    function checkAnswer(selectedDiv, selectedKey, correctKey) {
-        const allOptions = optionsContainer.querySelectorAll('.option');
-        allOptions.forEach(opt => opt.onclick = null);
-
-        if (selectedKey === correctKey) {
-            selectedDiv.classList.add('correct');
-            feedback.innerHTML = '✅ Resposta Correta!';
-        } else {
-            selectedDiv.classList.add('incorrect');
-            allOptions.forEach(opt => {
-                if (opt.getAttribute('data-answer') === correctKey) {
-                    opt.classList.add('correct');
-                }
-            });
-            feedback.innerHTML = `❌ Resposta Incorreta. A correta era ${correctKey}.`;
-        }
-
-        nextBtn.disabled = false; 
-    }
-
-    // 6. PRÓXIMA PERGUNTA (MANTIDO)
-    function goNext() {
-        currentQuestionIndex++;
-        if (currentQuestionIndex < lessonQuestions.length) {
-            loadQuestion(lessonQuestions[currentQuestionIndex]);
-        } else {
-            alert(`Parabéns! Você completou o Confidence ${currentChapter}!`);
-            goHome();
-        }
-    }
-</script>
-
-</body>
-</html>
+        loadQuestion(lesson
