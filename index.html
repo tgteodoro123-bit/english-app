@@ -254,7 +254,7 @@
     <div class="quiz-question">
         <p id="question-text">Look and Answer:</p>
         <img id="question-image" src="https://via.placeholder.com/300x150?text=IMAGEM" alt="Question Image"> 
-        <p style="font-style: italic;">Clique em uma opção abaixo.</p>
+        <p id="instruction" style="font-style: italic;">Select an option below.</p>
     </div>
 
     <div id="options-container">
@@ -262,7 +262,7 @@
     <p id="feedback" style="font-weight: bold; margin-top: 15px; text-align: center;"></p>
 
     <div class="nav-buttons">
-        <button id="back-btn" onclick="goHome()">Back</button>
+        <button id="back-btn" onclick="backQuestion()">Back</button>
         <button id="next-btn" onclick="goNext()">Next</button>
     </div>
 </div>
@@ -278,7 +278,7 @@
         "https://images.pexels.com/photos/3401403/pexels-photo-3401403.jpeg?auto=compress&cs=tinysrgb&w=800",
     ];
 
-    // 1. DADOS DAS QUESTÕES (10 Perguntas para Confidence 1)
+    // 1. DADOS DAS QUESTÕES (Confidence 1)
     const QUESTIONS = [
         // Q1: Números e Contagem
         {
@@ -418,22 +418,25 @@
     const optionsContainer = document.getElementById('options-container');
     const feedback = document.getElementById('feedback');
     const nextBtn = document.getElementById('next-btn');
+    const backBtn = document.getElementById('back-btn');
     const lessonTitle = document.getElementById('lesson-title');
     const questionText = document.getElementById('question-text');
     const questionImage = document.getElementById('question-image');
+
+    // Estado da resposta, para que a navegação saiba se já foi checado
+    let answerChecked = false;
+
 
     // 2. GERAÇÃO DOS 24 CARDS
     const chapterGrid = document.querySelector('.chapter-grid');
     for (let i = 1; i <= 24; i++) {
         const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
         
-        // NOVO CÓDIGO: Define o texto detalhado apenas para o Confidence 1
-        let subTopicText = `Tópico Principal da Confiança ${i}`;
+        let subTopicText = `Main Topic for Confidence ${i}`;
         
         if (i === 1) {
-            subTopicText = 'Saudações (4 tipos), Pronomes Pessoais, Números 1-10, Verbo To Be, e Artigos A/AN.';
+            subTopicText = 'Greetings (4 types), Personal Pronouns, Numbers 1-10, Verb To Be, and Articles A/AN.';
         }
-        // FIM DO NOVO CÓDIGO
         
         chapterGrid.innerHTML += `
             <div class="chapter-card" id="card-${i}">
@@ -453,7 +456,7 @@
         `;
     }
 
-    // 3. NAVEGAÇÃO E LÓGICA (Mantida)
+    // 3. NAVEGAÇÃO E LÓGICA
     let currentChapter = 0;
     let lessonQuestions = [];
 
@@ -481,26 +484,37 @@
     }
 
     function loadQuestion(q) {
+        answerChecked = false; // Reseta o estado
         feedback.innerHTML = '';
         optionsContainer.innerHTML = '';
-        nextBtn.disabled = true; 
         
-        questionText.textContent = q.question;
+        // Habilita Next e Back por padrão, mas Back pode ser desabilitado se for a primeira questão
+        nextBtn.disabled = false; 
+        backBtn.disabled = currentQuestionIndex === 0;
+
+        // Atualiza o texto da questão
+        questionText.textContent = `Question ${currentQuestionIndex + 1}: ${q.question}`;
         questionImage.src = q.image || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
         questionImage.style.display = q.image ? 'block' : 'none';
         
+        // Renderiza as opções
         for (const key in q.options) {
             const optionDiv = document.createElement('div');
             optionDiv.className = 'option';
             optionDiv.textContent = `${key}: ${q.options[key]}`;
             optionDiv.setAttribute('data-answer', key);
+            // Ao clicar, checa a resposta e desabilita o clique para as demais opções
             optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer);
             optionsContainer.appendChild(optionDiv);
         }
     }
 
     function checkAnswer(selectedDiv, selectedKey, correctKey) {
+        if (answerChecked) return; // Se já checado, ignora
+        answerChecked = true;
+        
         const allOptions = optionsContainer.querySelectorAll('.option');
+        // Remove o onclick de todas as opções para evitar mudança de resposta
         allOptions.forEach(opt => opt.onclick = null);
 
         let feedbackMessage = '';
@@ -519,15 +533,27 @@
         }
 
         feedback.innerHTML = feedbackMessage;
-        nextBtn.disabled = false; 
+        // O botão Next permanece habilitado, conforme solicitado
     }
-
+    
+    // NOVO: Navegar para a próxima pergunta OU finalizar o quiz
     function goNext() {
         currentQuestionIndex++;
         if (currentQuestionIndex < lessonQuestions.length) {
             loadQuestion(lessonQuestions[currentQuestionIndex]);
         } else {
             alert(`Congratulations! You completed Confidence ${currentChapter}!`);
+            goHome();
+        }
+    }
+    
+    // NOVO: Voltar para a pergunta anterior ou para a home screen
+    function backQuestion() {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            loadQuestion(lessonQuestions[currentQuestionIndex]);
+        } else {
+            // Se estiver na primeira questão, volta para a tela inicial
             goHome();
         }
     }
