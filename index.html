@@ -277,13 +277,13 @@
         "https://images.pexels.com/photos/3401403/pexels-photo-3401403.jpeg?auto=compress&cs=tinysrgb&w=800",
     ];
 
-    // 1. DADOS DAS QUESTÕES (Confidence 1)
+    // 1. DADOS DAS QUESTÕES (Beginner 1)
     const QUESTIONS = [
-        // Q1:
+        // Q1: CONFIRMADA (Números/Imagem)
         {
             id: 1,
             question: "What do you see in the image?", 
-            image: "numeros.jpg", 
+            image: "numeros.jpg", // Lembre-se de substituir esta imagem por uma real com números!
             options: {
                 A: "The Alphabet",
                 B: "Colors",
@@ -292,123 +292,21 @@
             correctAnswer: 'C', 
             chapter: 1
         },
-        // Q2:
+        // Q2: AUTOAPRESENTAÇÃO (I am)
         {
             id: 2,
-            question: "Choose the correct greeting for the time after 12:00 PM (midday):",
-            image: "", 
+            question: "Complete the self-introduction: 'Hello, ____ John.'", 
+            image: "apresentacao.jpg", // Sugestão: Imagem de um cumprimento.
             options: {
-                A: "Good morning",
-                B: "Good afternoon",
-                C: "Good evening"
+                A: "I is",
+                B: "I am",
+                C: "I are"
             },
-            correctAnswer: 'B',
+            correctAnswer: 'B', 
             chapter: 1
         },
-        // Q3:
-        {
-            id: 3,
-            question: "How do you say the pronoun 'Eles' or 'Elas' in English?",
-            image: "", 
-            options: {
-                A: "He",
-                B: "She",
-                C: "They"
-            },
-            correctAnswer: 'C',
-            chapter: 1
-        },
-        // Q4:
-        {
-            id: 4,
-            question: "Complete the simple question: '____ you happy?'",
-            image: "", 
-            options: {
-                A: "Is",
-                B: "Am",
-                C: "Are"
-            },
-            correctAnswer: 'C',
-            chapter: 1
-        },
-        // Q5:
-        {
-            id: 5,
-            question: "Do you use 'A' or 'An' before the word 'Orange'?",
-            image: "", 
-            options: {
-                A: "A orange",
-                B: "The orange",
-                C: "An orange"
-            },
-            correctAnswer: 'C',
-            chapter: 1
-        },
-        // Q6:
-        {
-            id: 6,
-            question: "If someone tells you 'Nice to meet you,' what is the best response?",
-            image: "", 
-            options: {
-                A: "Goodbye",
-                B: "Nice to meet you too",
-                C: "See you later"
-            },
-            correctAnswer: 'B',
-            chapter: 1
-        },
-        // Q7:
-        {
-            id: 7,
-            question: "What is the result of 'one plus one' (1 + 1)?",
-            image: "", 
-            options: {
-                A: "Three",
-                B: "One",
-                C: "Two"
-            },
-            correctAnswer: 'C',
-            chapter: 1
-        },
-        // Q8:
-        {
-            id: 8,
-            question: "The sun is typically which color?",
-            image: "", 
-            options: {
-                A: "Blue",
-                B: "Green",
-                C: "Yellow"
-            },
-            correctAnswer: 'C',
-            chapter: 1
-        },
-        // Q9:
-        {
-            id: 9,
-            question: "Choose the contracted form of 'It is':",
-            image: "", 
-            options: {
-                A: "Its",
-                B: "It's",
-                C: "Is it"
-            },
-            correctAnswer: 'B',
-            chapter: 1
-        },
-        // Q10:
-        {
-            id: 10,
-            question: "Which word is commonly used to say 'Tchau' or 'Até logo'?",
-            image: "", 
-            options: {
-                A: "Hello",
-                B: "Goodbye",
-                C: "Thank you"
-            },
-            correctAnswer: 'B',
-            chapter: 1
-        }
+        // --- COLOQUE AQUI OS SEUS PRÓXIMOS 8 TÓPICOS/PERGUNTAS (ID 3 ao 10) ---
+        
     ];
 
     let currentQuestionIndex = 0;
@@ -430,7 +328,6 @@
     for (let i = 1; i <= 24; i++) {
         const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
         
-        // Simples nome de tópico para o parágrafo
         let cardTopicName = i === 1 ? 'Basic Foundations' : `Module ${i} Content`;
         
         chapterGrid.innerHTML += `
@@ -487,7 +384,7 @@
         nextBtn.disabled = false; 
         backBtn.disabled = false; 
 
-        // REMOÇÃO DA PALAVRA 'QUESTION': Apenas o texto da lição.
+        // Título da pergunta agora é só o texto
         questionText.textContent = q.question; 
         questionImage.src = q.image || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
         questionImage.style.display = q.image ? 'block' : 'none';
@@ -542,6 +439,7 @@
             currentQuestionIndex--;
             loadQuestion(lessonQuestions[currentQuestionIndex]);
         } else {
+            // Volta para a tela de Home/Capítulos
             goHome();
         }
     }
