@@ -22,7 +22,7 @@
     }
     
     h2 {
-        /* Título "BEGINNER" */
+        /* Título "BEGINNER" (Apenas na Home Screen) */
         color: #333; 
         border-bottom: 1px solid #e0e0e0; 
         padding-top: 10px; 
@@ -153,7 +153,8 @@
     /* 4. Tela de Quiz/Lição */
     #lesson-screen {
         max-width: 650px;
-        margin: 40px auto;
+        /* Aumentei um pouco o top margin para compensar a remoção do h2 */
+        margin: 70px auto 40px; 
         padding: 30px;
         background-color: #FFFFFF; 
         border-radius: 12px;
@@ -250,8 +251,6 @@
 </div>
 
 <div id="lesson-screen">
-    <h2 id="lesson-title">BEGINNER</h2> 
-    
     <div class="quiz-question">
         <p id="question-text"></p> 
         <img id="question-image" src="" alt="Lesson Image"> 
@@ -306,7 +305,7 @@
     const feedback = document.getElementById('feedback');
     const nextBtn = document.getElementById('next-btn');
     const backBtn = document.getElementById('back-btn');
-    const lessonTitle = document.getElementById('lesson-title');
+    // REMOVIDO: const lessonTitle = document.getElementById('lesson-title');
     const questionText = document.getElementById('question-text');
     const questionImage = document.getElementById('question-image');
 
@@ -347,7 +346,7 @@
         lessonScreen.style.display = 'block';
         navButtonsContainer.style.display = 'flex'; 
         
-        lessonTitle.textContent = `BEGINNER`; 
+        // REMOVIDO: lessonTitle.textContent = `BEGINNER`; 
         currentQuestionIndex = 0;
         loadQuestion(lessonQuestions[currentQuestionIndex]);
     }
