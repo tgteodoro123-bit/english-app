@@ -57,8 +57,6 @@
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
     }
     
-    /* ... (Estilos de Card Omitidos para concisão, são os mesmos) ... */
-
     .card-background-image {
         position: absolute;
         top: 0;
@@ -171,7 +169,7 @@
         z-index: 1000; 
         display: none; 
         gap: 10px; 
-        align-items: center; /* Alinha o indicador de progresso */
+        align-items: center; 
     }
     
     .nav-buttons button {
@@ -207,10 +205,10 @@
         top: 20px;
         left: 20px;
         z-index: 1001;
-        display: none; /* Inicia oculto */
+        display: none; 
     }
 
-    /* NOVO: Menu Lateral */
+    /* NOVO: Menu Lateral (CLEAN DESIGN) */
     .side-menu {
         height: 100%;
         width: 0;
@@ -218,25 +216,27 @@
         z-index: 1002;
         top: 0;
         left: 0;
-        background-color: #003366;
+        background-color: #f8f8f8; /* Fundo mais claro */
         overflow-x: hidden;
         transition: 0.5s;
         padding-top: 60px;
-        box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1); /* Sombra mais suave */
+        max-width: 250px; /* Largura reduzida para clean design */
     }
 
     .side-menu a {
         padding: 15px 8px 15px 32px;
         text-decoration: none;
-        font-size: 1.2em;
-        color: #f1f1f1;
+        font-size: 1.1em;
+        color: #333; /* Cor do texto mais escura */
         display: block;
         transition: 0.3s;
+        border-bottom: 1px solid #eee;
     }
 
     .side-menu a:hover {
-        color: #818181;
-        background-color: #004c99;
+        color: #007bff; /* Hover azul */
+        background-color: #e9e9e9; 
     }
 
     .side-menu .closebtn {
@@ -246,6 +246,7 @@
         font-size: 36px;
         margin-left: 50px;
         padding: 10px;
+        color: #333; /* Cor do X */
     }
 
     
@@ -317,7 +318,7 @@
         max-width: 400px;
         border-collapse: collapse;
         margin: 20px auto;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombra mais clean */
     }
     .comparison-table th, .comparison-table td {
         border: 1px solid #ddd;
@@ -326,14 +327,16 @@
         font-size: 1.1em;
     }
     .comparison-table th {
-        background-color: #007bff;
-        color: white;
+        background-color: #f2f2f2; /* Fundo mais claro para th */
+        color: #333;
     }
     .comparison-table tr:nth-child(even) {
-        background-color: #f9f9f9;
+        background-color: #fff; /* Linhas brancas */
     }
-
-
+    .comparison-table tr:nth-child(odd) {
+        background-color: #f9f9f9; /* Linhas cinza claro */
+    }
+    
     /* Hotspots e Modal (Omitidos para concisão, são os mesmos) */
 
     .hotspot {
@@ -500,9 +503,9 @@
         // Tópico 5: MODO INTERATIVO DE BINGO
         { id: 5, question: "Click on the '+' signs to review the number groups.", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1, title: "5. Interactive Bingo Review" },
         
-        // TÓPICO 6: PRONÚNCIA TEEN vs TY (ÁUDIO ÚNICO + TABELA)
+        // TÓPICO 6: PRONÚNCIA TEEN vs TY (Texto da Pergunta ajustado)
         { id: 6, 
-            question: "Listen and notice the difference. Don't confuse 'Teen' with 'Ty'.", 
+            question: "Listen and notice the difference.", 
             options: { 
                 "13: (Thirteen) – 30 (Thirty)": "teenety.mp3"
             }, 
@@ -556,7 +559,7 @@
     // --- FIM DOS DADOS DE BINGO ---
     
     let currentQuestionIndex = 0;
-    let lessonQuestions = []; // Inicializado em startLesson
+    let lessonQuestions = []; 
     
     const homeScreen = document.getElementById('home-screen');
     const lessonScreen = document.getElementById('lesson-screen');
@@ -612,7 +615,6 @@
         menuContent.innerHTML = '';
         lessonQuestions.forEach((q, index) => {
             const link = document.createElement('a');
-            // Usamos q.title para o nome do tópico
             link.textContent = q.title; 
             link.href = `javascript:void(0)`;
             link.onclick = () => loadQuestionFromMenu(index);
@@ -635,7 +637,6 @@
         navButtonsContainer.style.display = 'flex'; 
         menuToggle.style.display = 'block'; 
         
-        // Popula o menu lateral uma vez
         populateMenu(); 
         
         currentQuestionIndex = 0;
@@ -657,17 +658,14 @@
         // Atualiza o indicador de progresso
         progressIndicator.textContent = `(${currentQuestionIndex + 1}/${lessonQuestions.length})`;
         
-        // Esconde/mostra botões de navegação e garante que o texto da pergunta aparece, exceto para o BINGO
         nextBtn.style.display = 'block';
         backBtn.style.display = 'block';
         questionText.style.display = 'block'; 
 
-        // Oculta todos os elementos de áudio/tabela de pronúncia/hotspots por padrão
         document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'none'); 
         document.getElementById('pronunciation-container').style.display = 'none';
         document.getElementById('comparison-table-container').innerHTML = '';
         
-        // Reinicia o player de áudio para a nova questão
         const audioControls = document.getElementById('audio-player-controls');
         audioControls.style.display = 'none';
         audioControls.src = ''; 
@@ -702,13 +700,11 @@
         } else if (q.correctAnswer === 'PRONUNCIATION_SET') {
             renderPronunciationPractice(q);
         } else if (q.correctAnswer === 'INTERACTIVE_BINGO') {
-            // Lógica para a questão de BINGO
             optionsContainer.innerHTML = '';
             questionText.style.display = 'block'; 
-            document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex'); // Exibe os hotspots
+            document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex'); 
         }
         else {
-            // Lógica para questões de múltipla escolha
             optionsContainer.style.display = 'block';
             optionsContainer.style.backgroundColor = 'transparent'; 
             optionsContainer.style.padding = '0';
@@ -716,7 +712,6 @@
             for (const key in q.options) {
                 const optionDiv = document.createElement('div');
                 optionDiv.className = 'option';
-                // Mostra a letra e o texto
                 optionDiv.textContent = `${key}: ${q.options[key]}`; 
                 optionDiv.setAttribute('data-answer', key);
                 optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer, q); 
@@ -795,7 +790,7 @@
             teenTyData.forEach(item => {
                 tableHTML += `<tr><td>${item.teen}</td><td>${item.ty}</td></tr>`;
             });
-            tableHTML += `<tr><td colspan="2" style="font-weight:bold; background-color: #ffe6e6;">Don't confuse Teen with Ty.</td></tr>`;
+            tableHTML += `<tr><td colspan="2" style="font-weight:bold; background-color: #f7f7f7; font-size: 0.9em;">Don't confuse Teen with Ty.</td></tr>`;
             tableHTML += '</tbody></table>';
             
             tableContainer.innerHTML = tableHTML;
@@ -803,20 +798,18 @@
 
 
         } else if (q.id === 4) {
-            // Tópico 4: Palavras individuais (Volta ao formato com vários botões de play)
+            // Tópico 4: Palavras individuais (Formato com vários botões de play)
             audioControls.style.display = 'none'; 
             document.getElementById('current-instruction').textContent = q.question;
             
             pronunciationWords = Object.keys(q.options).map((word) => ({ word: word, audioPath: q.options[word] }));
-            updatePronunciationUI(); // Usa a lista de botões
+            updatePronunciationUI(); 
         }
     }
 
     function updatePronunciationUI() {
         const wordListElement = document.getElementById('pronunciation-list');
         wordListElement.innerHTML = '';
-        // Note: A função playWordAudio precisa ser adaptada para usar um player sem controles se for usada aqui. 
-        // No momento, ela usa o player antigo. Vou criar uma função temporária.
         
         pronunciationWords.forEach((item) => {
             wordListElement.innerHTML += `
@@ -830,9 +823,7 @@
         });
     }
     
-    // Função auxiliar para reproduzir áudios separados (Questão 4)
     function playSeparateAudio(audioPath) {
-        // Usa um novo objeto Audio para não interferir no player principal
         const tempAudio = new Audio(GITHUB_RAW_BASE_URL + audioPath);
         tempAudio.play().catch(error => { console.error("Audio playback blocked:", error); });
     }
