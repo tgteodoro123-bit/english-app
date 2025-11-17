@@ -17,7 +17,6 @@
     /* 2. Layout da Grade de Cards e Spacing */
     #home-screen {
         max-width: 1200px; 
-        /* Ajuste para acomodar o hambúrguer: */
         margin: 60px auto 50px; 
         padding: 0 30px;
     }
@@ -162,27 +161,29 @@
         position: relative; 
     }
     
-    /* Hotspot para o Tópico 5 (O círculo com o +) */
+    /* Hotspot para o Tópico 5 (O círculo com o +) - CORREÇÃO DE ESTILO */
     .hotspot {
         position: absolute;
-        width: 30px;
-        height: 30px;
-        background-color: #007bff; 
-        color: white;
+        width: 35px; /* Tamanho ligeiramente maior */
+        height: 35px;
+        background-color: #ffffff; /* Fundo branco */
+        border: 2px solid #333; /* Borda preta fina */
+        color: #333; /* Ícone + preto */
         border-radius: 50%;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 1.5em;
-        font-weight: bold;
+        font-size: 1.8em; /* + um pouco maior */
+        font-weight: 500;
         cursor: pointer;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         z-index: 5;
-        transition: transform 0.2s;
+        transition: transform 0.2s, background-color 0.2s;
+        line-height: 0.8; /* Ajuste fino para centralizar o '+' */
     }
     
     .hotspot:hover {
-        background-color: #0056b3;
+        background-color: #f0f0f0; /* Fundo cinza suave no hover */
         transform: scale(1.1);
     }
 
@@ -222,8 +223,9 @@
     }
 
     /* ******************************************************************* */
-    /* Botão Hamburguer no canto superior esquerdo (Não Azul!) */
+    /* Botão Hamburguer no canto superior esquerdo (Não Azul, OCULTO POR PADRÃO) */
     .menu-toggle {
+        display: none; /* OCULTO NA TELA INICIAL */
         position: fixed; 
         top: 20px;
         left: 20px; 
@@ -231,7 +233,7 @@
         background: none; 
         border: none;
         cursor: pointer;
-        color: #333; /* Ícone preto */
+        color: #333; 
         line-height: 1; 
         padding: 5px 10px; 
         z-index: 1001; 
@@ -240,7 +242,7 @@
     }
 
     .menu-toggle:hover {
-        color: #555; /* Cinza escuro no hover */
+        color: #555; 
         background-color: #f0f0f0; 
     }
 
@@ -254,11 +256,11 @@
         left: 0;
         background-color: #ffffff;
         overflow-x: hidden; 
-        transition: 0.3s; /* Transição mais rápida */
+        transition: 0.3s; 
         padding-top: 60px; 
         box-shadow: 2px 0 10px rgba(0,0,0,0.1); 
         border-right: 1px solid #eee;
-        overflow-y: auto; /* Adiciona scroll se o menu for muito longo */
+        overflow-y: auto; 
     }
 
     .side-menu.open {
@@ -277,7 +279,7 @@
     }
 
     .side-menu a:hover {
-        background-color: #f6f9fc; /* Fundo cinza/azul claro no hover */
+        background-color: #f6f9fc; 
         color: #007bff; 
     }
 
@@ -293,7 +295,7 @@
     /* ******************************************************************* */
 
 
-    /* Estilos de Texto e Questão */
+    /* Estilos de Conteúdo */
     .quiz-question img {
         max-width: 100%; 
         height: auto; 
@@ -585,6 +587,7 @@
     
     const sideMenu = document.getElementById('side-menu'); 
     const navButtonsContainer = document.querySelector('.nav-buttons'); 
+    const menuToggle = document.querySelector('.menu-toggle'); // Novo: Referência ao botão hambúrguer
     
     let answerChecked = false;
     
@@ -618,11 +621,9 @@
     
     // Fechar o menu se clicar fora
     window.onclick = function(event) {
-        // Se o menu estiver aberto e o clique não for dentro do menu nem no botão de toggle
         if (sideMenu.classList.contains('open') && !event.target.closest('.side-menu') && !event.target.closest('.menu-toggle')) {
             closeNav();
         }
-        // Também trata o modal do Bingo
         const modal = document.getElementById('numberModal');
         if (event.target == modal) {
             closeNumberModal();
@@ -636,7 +637,7 @@
     }
     
     function populateMenu() {
-        sideMenu.querySelectorAll('a:not(.close-btn)').forEach(a => a.remove()); // Remove links antigos
+        sideMenu.querySelectorAll('a:not(.close-btn)').forEach(a => a.remove()); 
         
         lessonQuestions.forEach((q, index) => {
             const link = document.createElement('a');
@@ -660,6 +661,7 @@
         homeScreen.style.display = 'none';
         lessonScreen.style.display = 'block';
         navButtonsContainer.style.display = 'flex'; 
+        menuToggle.style.display = 'block'; // NOVO: MOSTRA O HAMBÚRGUER
         
         populateMenu(); 
         
@@ -671,7 +673,8 @@
         homeScreen.style.display = 'block';
         lessonScreen.style.display = 'none';
         navButtonsContainer.style.display = 'none'; 
-        closeNav(); // Fecha o menu se estiver aberto
+        menuToggle.style.display = 'none'; // NOVO: ESCONDE O HAMBÚRGUER
+        closeNav(); 
     }
 
     function loadQuestion(q) {
@@ -726,7 +729,7 @@
         } else if (q.correctAnswer === 'INTERACTIVE_BINGO') {
             optionsContainer.innerHTML = '';
             questionText.style.display = 'block'; 
-            // ATIVA OS HOTSPOTS 
+            // ATIVA OS HOTSPOTS (Tópico 5)
             document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex'); 
         }
         else {
