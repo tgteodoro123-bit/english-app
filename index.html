@@ -448,10 +448,11 @@
 
     .number-input-group {
         display: flex;
-        align-items: center;
-        gap: 8px;
-        width: 45%; 
-        min-width: 250px; 
+        flex-direction: column; /* Coloca número e input na vertical */
+        align-items: flex-start;
+        gap: 5px; /* Espaço menor entre o número e o input */
+        width: 180px; /* Largura reduzida */
+        min-width: 150px; 
         padding: 10px;
         border: 1px solid #eee;
         border-radius: 6px;
@@ -460,21 +461,23 @@
     }
 
     .number-input-group span {
-        font-size: 1.5em;
-        font-weight: bold;
-        color: #007bff;
-        width: 40px; 
-        text-align: right;
+        font-size: 1.8em; /* Número grande */
+        font-weight: 700;
+        color: #333; /* Cor neutra/escura */
+        width: 100%; 
+        text-align: left;
+        margin-bottom: 5px;
     }
 
     .number-input-group input {
-        flex-grow: 1;
-        padding: 10px;
+        width: 100%; /* Ocupa a largura do grupo */
+        padding: 12px 10px; /* Padding maior para altura */
         border: 1px solid #ccc;
         border-radius: 4px;
         font-size: 1em;
         transition: border-color 0.2s;
         text-transform: lowercase; 
+        box-sizing: border-box; /* Garante que o padding não aumente a largura total */
     }
 
     .number-input-group input:focus {
@@ -485,9 +488,9 @@
     .number-result {
         margin-top: 10px;
         font-weight: bold;
-        text-align: center;
+        text-align: left; 
         width: 100%; 
-        font-size: 1em;
+        font-size: 0.9em;
     }
 
     .result-correct { color: #28a745; }
@@ -585,7 +588,7 @@
         // TÓPICO 7: NOVO EXERCÍCIO DE DIGITAÇÃO DE NÚMEROS (FILL_IN_BLANKS)
         { 
             id: 7, 
-            question: "Type the numbers below into the blanks using their full English word form:", 
+            question: "Write the numbers in English:", /* INSTRUÇÃO SIMPLIFICADA */
             correctAnswer: 'FILL_IN_BLANKS', 
             chapter: 1, 
             title: "7. Writing Numbers Practice",
@@ -673,7 +676,7 @@
     const chapterGrid = document.querySelector('.chapter-grid');
     for (let i = 1; i <= 24; i++) {
         const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
-        let cardTopicName = i === 1 ? 'Basic Foundations (12 Topics Ready!)' : `Module ${i} Content`; // Atualizei o número de tópicos
+        let cardTopicName = i === 1 ? 'Basic Foundations (12 Topics Ready!)' : `Module ${i} Content`; 
         chapterGrid.innerHTML += `
             <div class="chapter-card" id="card-${i}">
                 <div class="card-background-image" style="background-image: url('${bgUrl}');"></div>
@@ -789,7 +792,7 @@
         
         // Lógica para controle da visibilidade do texto principal da pergunta
         if (q.correctAnswer === 'PRONUNCIATION_SET' || q.correctAnswer === 'INFO' || q.correctAnswer === 'FILL_IN_BLANKS') {
-            questionText.style.display = 'block'; // O texto é a instrução principal
+            questionText.style.display = 'block'; 
         } else {
             questionText.style.display = 'block';
         }
@@ -854,8 +857,6 @@
         
         let htmlContent = '<div class="fill-in-blanks-container">';
         q.data.forEach((item, index) => {
-            // Se já foi respondido, mostra a resposta salva (com a correção visual)
-            const resultHtml = item.feedback ? `<div class="number-result ${item.isCorrect ? 'result-correct' : 'result-incorrect'}">${item.feedback}</div>` : '';
             const value = item.lastInput || "";
             const disabled = fillInBlanksAnswered ? 'disabled' : '';
 
@@ -872,7 +873,7 @@
         // Adiciona um container para o feedback geral
         optionsContainer.innerHTML += `<div id="fill-in-blanks-results"></div>`;
 
-        // Se já foi respondido, mostra o feedback geral
+        // Se já foi respondido, mostra o feedback geral e os resultados por input
         if (fillInBlanksAnswered) {
              displayFillInBlanksCorrection(q.data);
         }
@@ -937,7 +938,7 @@
         // Renderiza o feedback no container de resultados (no lugar do feedback geral)
         displayFillInBlanksCorrection(q.data, totalCorrect);
         
-        return totalCorrect === q.data.length; // Retorna true se tudo estiver correto
+        return totalCorrect === q.data.length; 
     }
     
     function displayFillInBlanksCorrection(data, totalCorrect) {
@@ -945,11 +946,11 @@
         const totalItems = data.length;
         const totalCorrectFinal = totalCorrect !== undefined ? totalCorrect : data.filter(item => item.isCorrect).length;
         
-        let overallMessage = `<p style="font-size: 1.2em; margin-top: 20px;">You got **${totalCorrectFinal}** out of **${totalItems}** correct!</p>`;
+        let overallMessage;
         
         if (totalCorrectFinal === totalItems) {
             overallMessage = `<p class="result-correct" style="font-size: 1.4em; margin-top: 20px;">**CONGRATULATIONS!** You got all answers correct! 🎉</p>`;
-            feedback.innerHTML = ""; // Limpa o feedback de baixo para usar o de cima
+            feedback.innerHTML = ""; 
         } else {
              overallMessage = `<p class="result-incorrect" style="font-size: 1.4em; margin-top: 20px;">**Keep practicing!** You got ${totalCorrectFinal} out of ${totalItems} correct. 😥</p>`;
              feedback.innerHTML = "Click **Next** to proceed to the next topic.";
@@ -979,14 +980,20 @@
         const currentQuestion = lessonQuestions[currentQuestionIndex];
         
         // Lógica específica para o 'FILL_IN_BLANKS'
-        if (currentQuestion.correctAnswer === 'FILL_IN_BLANKS' && !fillInBlanksAnswered) {
-            // Se for a primeira vez que clica em Next no FILL_IN_BLANKS
-            checkFillInBlanks(currentQuestion);
-            return; // Permanece na mesma tela para ver a correção
+        if (currentQuestion.correctAnswer === 'FILL_IN_BLANKS') {
+            if (!fillInBlanksAnswered) {
+                // Primeira vez: checa e mostra o feedback.
+                checkFillInBlanks(currentQuestion);
+                return; 
+            } else {
+                // Segunda vez: avança
+                currentQuestionIndex++;
+            }
+        } else {
+             // Lógica padrão: avança
+            currentQuestionIndex++;
         }
         
-        // Lógica padrão para avançar
-        currentQuestionIndex++;
         if (currentQuestionIndex < lessonQuestions.length) {
             loadQuestion(lessonQuestions[currentQuestionIndex]);
         } else {
