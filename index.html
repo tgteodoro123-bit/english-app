@@ -22,7 +22,7 @@
     }
     
     h2 {
-        /* Título "Beginner" */
+        /* Título "BEGINNER" */
         color: #333; 
         border-bottom: 1px solid #e0e0e0; 
         padding-top: 10px; 
@@ -43,7 +43,7 @@
         }
     }
 
-    /* 3. Card de Confidence */
+    /* 3. Estilos do Card (Incluindo Hover) */
     .chapter-card {
         background-color: #f7f7f7; 
         border-radius: 6px; 
@@ -58,7 +58,6 @@
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
     }
     
-    /* Imagem */
     .card-background-image {
         position: absolute;
         top: 0;
@@ -70,7 +69,6 @@
         z-index: 1; 
     }
 
-    /* Área de Texto */
     .card-text-area {
         position: absolute;
         bottom: 0;
@@ -88,7 +86,6 @@
         text-align: center;
     }
 
-    /* EFEITO DE HOVER */
     .chapter-card:hover .card-text-area {
         height: 50%; 
         background: #FFFFFF; 
@@ -108,7 +105,6 @@
         transform: translateY(-5px); 
     }
 
-    /* Estilos de Texto */
     .chapter-card h3 {
         margin-top: 0;
         font-size: 1.3em;
@@ -124,13 +120,11 @@
         transition: color 0.3s ease;
     }
     
-    /* CORES PRETOS NO HOVER */
     .chapter-card:hover .card-text-area h3,
     .chapter-card:hover .card-text-area p {
         color: #000; 
     }
 
-    /* Estilo do Botão Start */
     .start-button {
         background-color: #003366; 
         color: white;
@@ -168,7 +162,7 @@
         position: relative; 
     }
     
-    /* Botões Fixos */
+    /* Botões de Navegação Fixos (Inicialmente Ocultos) */
     .nav-buttons {
         position: fixed; 
         top: 20px; 
@@ -413,14 +407,14 @@
                 optionDiv.className = 'option';
                 optionDiv.textContent = `${key}: ${q.options[key]}`;
                 optionDiv.setAttribute('data-answer', key);
-                optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer);
+                // Passando o objeto 'q' (a questão atual)
+                optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer, q); 
                 optionsContainer.appendChild(optionDiv);
             }
         }
     }
 
-    // FUNÇÃO CORRIGIDA PARA INGLÊS
-    function checkAnswer(selectedDiv, selectedKey, correctKey) {
+    function checkAnswer(selectedDiv, selectedKey, correctKey, currentQuestion) {
         if (answerChecked) return; 
         answerChecked = true;
         
@@ -433,7 +427,10 @@
             feedbackMessage = '✅ Correct Answer!';
             selectedDiv.classList.add('correct');
         } else {
-            feedbackMessage = `❌ Incorrect Answer. The correct answer was ${correctKey}.`; 
+            // Obtém o texto completo da resposta correta
+            const correctText = currentQuestion.options[correctKey];
+            feedbackMessage = `❌ Incorrect Answer. The correct answer was: ${correctText}.`; 
+            
             selectedDiv.classList.add('incorrect');
             allOptions.forEach(opt => {
                 if (opt.getAttribute('data-answer') === correctKey) {
@@ -452,7 +449,7 @@
         if (currentQuestionIndex < lessonQuestions.length) {
             loadQuestion(lessonQuestions[currentQuestionIndex]);
         } else {
-            alert(`Parabéns! Você completou o Módulo Beginner ${currentChapter}!`);
+            alert(`Congratulations! You have completed Beginner Module ${currentChapter}!`); 
             goHome(); 
         }
     }
