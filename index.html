@@ -22,7 +22,7 @@
     }
     
     h2 {
-        /* Título "BEGINNER" (Apenas na Home Screen) */
+        /* Título "Beginner" */
         color: #333; 
         border-bottom: 1px solid #e0e0e0; 
         padding-top: 10px; 
@@ -43,7 +43,7 @@
         }
     }
 
-    /* 3. Estilos do Card (Incluindo Hover) */
+    /* 3. Card de Confidence */
     .chapter-card {
         background-color: #f7f7f7; 
         border-radius: 6px; 
@@ -58,6 +58,7 @@
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
     }
     
+    /* Imagem */
     .card-background-image {
         position: absolute;
         top: 0;
@@ -69,6 +70,7 @@
         z-index: 1; 
     }
 
+    /* Área de Texto */
     .card-text-area {
         position: absolute;
         bottom: 0;
@@ -86,6 +88,7 @@
         text-align: center;
     }
 
+    /* EFEITO DE HOVER */
     .chapter-card:hover .card-text-area {
         height: 50%; 
         background: #FFFFFF; 
@@ -101,10 +104,11 @@
         box-sizing: border-box; 
     }
 
-    .chapter-card:hover .text-content-wrapper { 
+    .chapter-card:hover .text-content-wrapper {
         transform: translateY(-5px); 
     }
 
+    /* Estilos de Texto */
     .chapter-card h3 {
         margin-top: 0;
         font-size: 1.3em;
@@ -120,11 +124,13 @@
         transition: color 0.3s ease;
     }
     
+    /* CORES PRETOS NO HOVER */
     .chapter-card:hover .card-text-area h3,
     .chapter-card:hover .card-text-area p {
         color: #000; 
     }
 
+    /* Estilo do Botão Start */
     .start-button {
         background-color: #003366; 
         color: white;
@@ -141,54 +147,52 @@
         align-self: flex-start; 
     }
 
-    .chapter-card:hover .start-button {
-        opacity: 1; 
-        transform: scale(1);
-    }
-    
     .start-button:hover {
         background-color: #004c99; 
     }
     
-    /* 4. Tela de Quiz/Lição */
+    /* 4. Tela de Quiz/Lição (AJUSTE PARA BOTÕES SUPERIORES) */
     #lesson-screen {
         max-width: 650px;
-        /* Aumentei um pouco o top margin para compensar a remoção do h2 */
-        margin: 70px auto 40px; 
+        margin: 40px auto;
         padding: 30px;
         background-color: #FFFFFF; 
         border-radius: 12px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); 
         display: none; 
-        position: relative; 
+        position: relative; /* ESSENCIAL para o posicionamento absoluto dos botões */
     }
     
-    /* Botões de Navegação Fixos (Inicialmente Ocultos) */
+    /* AJUSTE: Mover Botões para o Topo-Direito */
     .nav-buttons {
-        position: fixed; 
+        position: absolute; 
         top: 20px; 
-        right: 20px; 
-        z-index: 1000; 
-        display: none; 
-        gap: 10px; 
+        right: 30px; 
+        width: auto; 
+        z-index: 10; 
+        margin-top: 0; 
+        display: flex;
+        gap: 10px; /* Espaçamento entre os botões */
     }
     
     .nav-buttons button {
-        padding: 12px 20px; 
+        padding: 12px 20px; /* Reduzi o padding horizontal um pouco */
         border: none;
         border-radius: 8px;
         cursor: pointer;
         font-weight: bold;
         color: white;
-        background-color: #007bff;
-        transition: background-color 0.2s;
     }
+    #back-btn { background-color: #6c757d; }
+    #next-btn { background-color: #007bff; }
     
-    .nav-buttons button:hover {
-        background-color: #0056b3;
+    /* Ajuste de espaçamento para o título não conflitar com os botões */
+    #lesson-title {
+        margin-right: 160px; /* Empurra o título para a esquerda */
     }
-    
-    /* Estilos de Texto e Questão */
+
+
+    /* FIX para a imagem */
     .quiz-question img {
         max-width: 100%; 
         height: auto; 
@@ -207,8 +211,9 @@
         background-color: #fcfcfc;
     }
     
+    /* NOVO AJUSTE: Aumentar o tamanho do texto da pergunta */
     #question-text {
-        font-size: 1.4em; 
+        font-size: 1.2em; /* Tamanho do texto maior */
         font-weight: 500;
         margin-bottom: 10px;
     }
@@ -222,11 +227,19 @@
         transition: background-color 0.2s, border-color 0.2s;
         text-align: left;
     }
-    
-    .correct { background-color: #e6ffed !important; border-color: #28a745 !important; font-weight: bold; }
-    .incorrect { background-color: #ffe6e6 !important; border-color: #dc3545 !important; font-weight: bold; }
+    .correct {
+        background-color: #e6ffed !important; 
+        border-color: #28a745 !important; 
+        font-weight: bold;
+    }
+    .incorrect {
+        background-color: #ffe6e6 !important; 
+        border-color: #dc3545 !important; 
+        font-weight: bold;
+    }
 
-    /* Estilos de Pronúncia */
+
+    /* 5. Estilos para o Tópico de Pronúncia */
     #pronunciation-container {
         display: flex;
         flex-direction: column;
@@ -236,10 +249,44 @@
         padding: 25px;
         border-radius: 10px;
     }
-    .word-to-practice { font-size: 1.2em; font-weight: 700; margin-bottom: 20px; color: #333; }
-    #pronunciation-list { list-style: none; padding: 0; margin-top: 15px; width: 100%; max-width: 400px; text-align: left; }
-    #pronunciation-list li { padding: 10px; border-bottom: 1px dotted #e0e0e0; display: flex; justify-content: space-between; align-items: center; font-size: 1.1em; }
-    .play-button { background: none; border: none; font-size: 1.5em; cursor: pointer; color: #007bff; margin-left: 10px; transition: color 0.1s; }
+    .word-to-practice {
+        font-size: 1.2em; 
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: #333;
+    }
+    
+    /* Lista de Palavras */
+    #pronunciation-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 15px;
+        width: 100%;
+        max-width: 400px;
+        text-align: left;
+    }
+    #pronunciation-list li {
+        padding: 10px;
+        border-bottom: 1px dotted #e0e0e0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.1em;
+    }
+    
+    /* Botão Play da Lista */
+    .play-button {
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+        color: #007bff;
+        margin-left: 10px;
+        transition: color 0.1s;
+    }
+    .play-button:hover {
+        color: #0056b3;
+    }
 </style>
 </head>
 <body>
@@ -251,7 +298,13 @@
 </div>
 
 <div id="lesson-screen">
+    <h2 id="lesson-title">BEGINNER</h2> 
     
+    <div class="nav-buttons">
+        <button id="back-btn" onclick="backQuestion()">Back</button>
+        <button id="next-btn" onclick="goNext()">Next</button>
+    </div>
+
     <div class="quiz-question">
         <p id="question-text"></p> 
         <img id="question-image" src="" alt="Lesson Image"> 
@@ -261,24 +314,25 @@
         </div>
     
     <div id="pronunciation-container" style="display: none;">
+        
         <p class="word-to-practice" id="current-instruction"></p>
+        
         <audio id="audio-player" preload="auto"></audio>
-        <ul id="pronunciation-list"></ul>
+        
+        <ul id="pronunciation-list">
+            </ul>
+        
     </div>
     
     <p id="feedback" style="font-weight: bold; margin-top: 15px; text-align: center;"></p>
 
-</div>
-
-<div class="nav-buttons">
-    <button id="back-btn" onclick="backQuestion()">Back</button>
-    <button id="next-btn" onclick="goNext()">Next</button>
-</div>
+    </div>
 
 <script>
-    // CAMINHO PARA A MAIN
+    // LINK BASE: APONTA PARA A RAIZ DO REPOSITÓRIO ONDE SEUS ARQUIVOS ESTÃO SOLTOS
     const GITHUB_RAW_BASE_URL = "https://raw.githubusercontent.com/tgteodoro123-bit/english-app/main/"; 
     
+    // ARRAY DE IMAGENS DE FUNDO (mantido)
     const BACKGROUND_IMAGES = [
         "https://images.pexels.com/photos/1036321/pexels-photo-1036321.jpeg?auto=compress&cs=tinysrgb&w=800",
         "https://images.pexels.com/photos/2076011/pexels-photo-2076011.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -288,20 +342,142 @@
         "https://images.pexels.com/photos/3401403/pexels-photo-3401403.jpeg?auto=compress&cs=tinysrgb&w=800",
     ];
 
+    // 1. DADOS DAS QUESTÕES (Beginner 1)
     const QUESTIONS = [
-        { id: 1, question: "What do you see in the image?", image: "numeros.jpg", options: { A: "The Alphabet", B: "Colors", C: "Numbers" }, correctAnswer: 'C', chapter: 1 },
-        { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', chapter: 1 },
-        { id: 3, question: `<h3 style="color: #007bff; font-size: 2em; margin-bottom: 20px;">Vocabulary:</h3>`, options: { "1.": `My <span style="color: #007bff;">address number</span> is 34.`, "2.": `I am a <span style="color: #007bff;">student</span>.`, "3.": `He is my new <span style="color: #007bff;">friend</span>, David.`, "4.": `Mr. David is a <span style="color: #007bff;">great</span> teacher.`, "5.": `My <span style="color: #007bff;">phone number</span> is: (987) 654-1234.`, "6.": `Sofia is <span style="color: #007bff;">American</span>.`, "7.": `I love my English <span style="color: #007bff;">teacher</span>.`, "8.": `Lucas is a <span style="color: #007bff;">new</span> student, too.`, "9.": `I am 18 <span style="color: #007bff;">years old</span>.`, "10.": `My <span style="color: #007bff;">nationality</span>? I'm French.`, }, correctAnswer: 'INFO', chapter: 1 },
-        { id: 4, question: "PRONUNCIATION PRACTICE: Click the play button (▶️) to hear each word.", options: { "Address number": "addressnumber.mp3", "American": "American.mp3", "Friend": "friend.mp3", "Great": "great.mp3", "Nationality": "nationality.mp3", "New": "new.mp3", "Phone number": "phonenumber.mp3", "Student": "student.mp3", "Teacher": "teacher.mp3", "Years old": "yearsold.mp3" }, correctAnswer: 'PRONUNCIATION_SET', chapter: 1 },
+        // Q1 a Q10 (Conteúdo mantido)
+        {
+            id: 1,
+            question: "What do you see in the image?", 
+            image: "numeros.jpg", 
+            options: {
+                A: "The Alphabet",
+                B: "Colors",
+                C: "Numbers"
+            },
+            correctAnswer: 'C', 
+            chapter: 1
+        },
+        {
+            id: 2,
+            question: "Complete the self-introduction: 'Hello, ____ Marcus.'", 
+            image: "cumprimento.jpg", 
+            options: {
+                A: "I is",
+                B: "I am",
+                C: "I are"
+            },
+            correctAnswer: 'B', 
+            chapter: 1
+        },
+        {
+            id: 3,
+            question: `<h3 style="color: #007bff; font-size: 2em; margin-bottom: 20px;">Vocabulary:</h3>`, 
+            options: {
+                "1.": `My <span style="color: #007bff;">address number</span> is 34.`, 
+                "2.": `I am a <span style="color: #007bff;">student</span>.`, 
+                "3.": `He is my new <span style="color: #007bff;">friend</span>, David.`, 
+                "4.": `Mr. David is a <span style="color: #007bff;">great</span> teacher.`, 
+                "5.": `My <span style="color: #007bff;">phone number</span> is: (987) 654-1234.`, 
+                "6.": `Sofia is <span style="color: #007bff;">American</span>.`, 
+                "7.": `I love my English <span style="color: #007bff;">teacher</span>.`, 
+                "8.": `Lucas is a <span style="color: #007bff;">new</span> student, too.`, 
+                "9.": `I am 18 <span style="color: #007bff;">years old</span>.`, 
+                "10.": `My <span style="color: #007bff;">nationality</span>? I'm French.`, 
+            },
+            correctAnswer: 'INFO', 
+            chapter: 1
+        },
+        {
+            id: 4,
+            question: "PRONUNCIATION PRACTICE: Click the play button (▶️) to hear each word.", 
+            options: {
+                "Address number": "addressnumber.mp3", 
+                "American": "American.mp3",
+                "Friend": "friend.mp3",
+                "Great": "great.mp3", 
+                "Nationality": "nationality.mp3",
+                "New": "new.mp3",
+                "Phone number": "phonenumber.mp3",
+                "Student": "student.mp3", 
+                "Teacher": "teacher.mp3",
+                "Years old": "yearsold.mp3" 
+            },
+            correctAnswer: 'PRONUNCIATION_SET', 
+            chapter: 1
+        },
+        {
+            id: 5,
+            question: "Which day comes after Tuesday?", 
+            image: "", 
+            options: {
+                A: "Monday",
+                B: "Wednesday",
+                C: "Thursday"
+            },
+            correctAnswer: 'B', 
+            chapter: 1
+        },
+        {
+            id: 6,
+            question: "What is the color of the sky on a sunny day?", 
+            image: "", 
+            options: {
+                A: "Red",
+                B: "Yellow",
+                C: "Blue"
+            },
+            correctAnswer: 'C', 
+            chapter: 1
+        },
+        {
+            id: 7,
+            question: "What is the English word for 'cadeira'?", 
+            image: "", 
+            options: {
+                A: "Book",
+                B: "Chair",
+                C: "Table"
+            },
+            correctAnswer: 'B', 
+            chapter: 1
+        },
+        {
+            id: 8,
+            question: "Identify the color of the object in the image:", 
+            image: "apple.jpg", 
+            options: {
+                A: "Green",
+                B: "Red",
+                C: "Orange"
+            },
+            correctAnswer: 'B', 
+            chapter: 1
+        },
+        {
+            id: 9,
+            question: "How do you ask 'Where are you from?'", 
+            image: "", 
+            options: {
+                A: "What your name is?",
+                B: "Where from you are?",
+                C: "Where are you from?"
+            },
+            correctAnswer: 'C', 
+            chapter: 1
+        },
+        {
+            id: 10,
+            question: "Complete the sentence: 'I want ___ apple.'", 
+            image: "", 
+            options: {
+                A: "a",
+                B: "an",
+                C: "the"
+            },
+            correctAnswer: 'B', 
+            chapter: 1
+        },
         
-        // Caminho ajustado: agora aponta diretamente para o arquivo na raiz da main
-        { id: 5, question: "Check the image below and choose the correct option.", image: "topico5.jpg", options: { A: "Option 1", B: "Option 2", C: "Option 3" }, correctAnswer: 'A', chapter: 1 },
-        
-        { id: 6, question: "What is the color of the sky on a sunny day?", image: "", options: { A: "Red", B: "Yellow", C: "Blue" }, correctAnswer: 'C', chapter: 1 },
-        { id: 7, question: "What is the English word for 'cadeira'?", image: "", options: { A: "Book", B: "Chair", C: "Table" }, correctAnswer: 'B', chapter: 1 },
-        { id: 8, question: "Identify the color of the object in the image:", image: "apple.jpg", options: { A: "Green", B: "Red", C: "Orange" }, correctAnswer: 'B', chapter: 1 },
-        { id: 9, question: "How do you ask 'Where are you from?'", image: "", options: { A: "What your name is?", B: "Where from you are?", C: "Where are you from?" }, correctAnswer: 'C', chapter: 1 },
-        { id: 10, question: "Complete the sentence: 'I want ___ apple.'", image: "", options: { A: "a", B: "an", C: "the" }, correctAnswer: 'B', chapter: 1 },
     ];
 
     let currentQuestionIndex = 0;
@@ -311,21 +487,30 @@
     const feedback = document.getElementById('feedback');
     const nextBtn = document.getElementById('next-btn');
     const backBtn = document.getElementById('back-btn');
+    const lessonTitle = document.getElementById('lesson-title');
     const questionText = document.getElementById('question-text');
     const questionImage = document.getElementById('question-image');
 
-    const navButtonsContainer = document.querySelector('.nav-buttons'); 
     let answerChecked = false;
+
+    // VARIÁVEL GLOBAL PARA PRONÚNCIA
     let pronunciationWords = [];
     const audioPlayer = document.getElementById('audio-player'); 
 
+    // 2. GERAÇÃO DOS 24 CARDS (mantido)
     const chapterGrid = document.querySelector('.chapter-grid');
     for (let i = 1; i <= 24; i++) {
         const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
+        
         let cardTopicName = i === 1 ? 'Basic Foundations (10 Topics Ready!)' : `Module ${i} Content`;
+        
         chapterGrid.innerHTML += `
             <div class="chapter-card" id="card-${i}">
-                <div class="card-background-image" style="background-image: url('${bgUrl}');"></div>
+                 
+                <div class="card-background-image"
+                     style="background-image: url('${bgUrl}');">
+                </div>
+                
                 <div class="card-text-area">
                     <div class="text-content-wrapper">
                         <h3>Beginner ${i}</h3>
@@ -336,6 +521,11 @@
             </div>
         `;
     }
+
+    // 3. NAVEGAÇÃO E LÓGICA (mantido)
+
+    let currentChapter = 0;
+    let lessonQuestions = [];
 
     function startLesson(chapterNumber) {
         currentChapter = chapterNumber;
@@ -349,7 +539,8 @@
         goHome(); 
         homeScreen.style.display = 'none';
         lessonScreen.style.display = 'block';
-        navButtonsContainer.style.display = 'flex'; 
+        
+        lessonTitle.textContent = `BEGINNER`; 
         
         currentQuestionIndex = 0;
         loadQuestion(lessonQuestions[currentQuestionIndex]);
@@ -358,7 +549,6 @@
     function goHome() {
         homeScreen.style.display = 'block';
         lessonScreen.style.display = 'none';
-        navButtonsContainer.style.display = 'none'; 
     }
 
     function loadQuestion(q) {
@@ -398,9 +588,11 @@
             optionsContainer.innerHTML = htmlContent;
             
         } else if (q.correctAnswer === 'PRONUNCIATION_SET') {
+            // --- TRATAMENTO PARA PRONÚNCIA (Q4) ---
             renderPronunciationPractice(q);
         }
         else {
+            // Se for um Quiz normal
             optionsContainer.style.display = 'block';
             optionsContainer.style.backgroundColor = 'transparent'; 
             optionsContainer.style.padding = '0';
@@ -410,14 +602,14 @@
                 optionDiv.className = 'option';
                 optionDiv.textContent = `${key}: ${q.options[key]}`;
                 optionDiv.setAttribute('data-answer', key);
-                // Passando o objeto 'q' (a questão atual)
-                optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer, q); 
+                optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer);
                 optionsContainer.appendChild(optionDiv);
             }
         }
     }
 
-    function checkAnswer(selectedDiv, selectedKey, correctKey, currentQuestion) {
+    // LÓGICA DO QUIZ (mantido)
+    function checkAnswer(selectedDiv, selectedKey, correctKey) {
         if (answerChecked) return; 
         answerChecked = true;
         
@@ -427,13 +619,10 @@
         let feedbackMessage = '';
 
         if (selectedKey === correctKey) {
-            feedbackMessage = '✅ Correct Answer!';
+            feedbackMessage = '✅ Resposta Correta!';
             selectedDiv.classList.add('correct');
         } else {
-            // Obtém o texto completo da resposta correta
-            const correctText = currentQuestion.options[correctKey];
-            feedbackMessage = `❌ Incorrect Answer. The correct answer was: ${correctText}.`; 
-            
+            feedbackMessage = `❌ Resposta Incorreta. A correta era ${correctKey}.`; 
             selectedDiv.classList.add('incorrect');
             allOptions.forEach(opt => {
                 if (opt.getAttribute('data-answer') === correctKey) {
@@ -447,13 +636,14 @@
         nextBtn.disabled = false;
     }
     
+    // FUNÇÃO AVANÇAR (mantido)
     function goNext() {
         currentQuestionIndex++;
         if (currentQuestionIndex < lessonQuestions.length) {
             loadQuestion(lessonQuestions[currentQuestionIndex]);
         } else {
-            alert(`Congratulations! You have completed Beginner Module ${currentChapter}!`); 
-            goHome(); 
+            alert(`Parabéns! Você completou o Módulo Beginner ${currentChapter}!`);
+            goHome();
         }
     }
     
@@ -462,18 +652,33 @@
             currentQuestionIndex--;
             loadQuestion(lessonQuestions[currentQuestionIndex]);
         } else {
-            goHome(); 
+            goHome();
         }
     }
     
+    // --- LÓGICA DE PRONÚNCIA (FIX CELULAR) ---
+    
     function playWordAudio(audioPath) {
         const audioPlayer = document.getElementById('audio-player');
+        
+        // 1. Limpa qualquer evento anterior
         audioPlayer.oncanplaythrough = null;
+        
+        // 2. Define a fonte do áudio
         audioPlayer.src = GITHUB_RAW_BASE_URL + audioPath;
+
+        // 3. Adiciona um Listener: espera que o áudio possa ser reproduzido
         audioPlayer.oncanplaythrough = function() {
-            audioPlayer.play().catch(error => { console.error("Audio playback blocked by browser:", error); });
+            // Tenta reproduzir, usando catch para promessas de navegadores rigorosos
+            audioPlayer.play().catch(error => {
+                console.error("Audio playback blocked by browser:", error);
+            });
+            
+            // Remove o evento para evitar múltiplos disparos
             audioPlayer.oncanplaythrough = null; 
         };
+        
+        // 4. Força o carregamento do novo arquivo de áudio
         audioPlayer.load();
     }
     
@@ -482,12 +687,18 @@
         pronContainer.style.display = 'flex';
         questionImage.style.display = 'none'; 
         feedback.innerHTML = ``; 
-        pronunciationWords = Object.keys(q.options).map((word) => ({ word: word, audioPath: q.options[word] }));
+
+        pronunciationWords = Object.keys(q.options).map((word) => ({
+            word: word,
+            audioPath: q.options[word]
+        }));
+        
         updatePronunciationUI();
     }
 
     function updatePronunciationUI() {
         const wordListElement = document.getElementById('pronunciation-list');
+
         wordListElement.innerHTML = '';
         pronunciationWords.forEach((item) => {
             wordListElement.innerHTML += `
