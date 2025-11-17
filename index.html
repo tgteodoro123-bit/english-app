@@ -289,7 +289,7 @@
         border: 1px solid #888;
         border-radius: 10px;
         width: 80%;
-        max-width: 400px; /* AJUSTADO PARA SER MENOR */
+        max-width: 400px; /* Ajustado para ser menor */
         box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         position: relative;
     }
@@ -393,14 +393,24 @@
         { id: 3, question: `<h3 style="color: #007bff; font-size: 2em; margin-bottom: 20px;">Vocabulary:</h3>`, options: { "1.": `My <span style="color: #007bff;">address number</span> is 34.`, "2.": `I am a <span style="color: #007bff;">student</span>.`, "3.": `He is my new <span style="color: #007bff;">friend</span>, David.`, "4.": `Mr. David is a <span style="color: #007bff;">great</span> teacher.`, "5.": `My <span style="color: #007bff;">phone number</span> is: (987) 654-1234.`, "6.": `Sofia is <span style="color: #007bff;">American</span>.`, "7.": `I love my English <span style="color: #007bff;">teacher</span>.`, "8.": `Lucas is a <span style="color: #007bff;">new</span> student, too.`, "9.": `I am 18 <span style="color: #007bff;">years old</span>.`, "10.": `My <span style="color: #007bff;">nationality</span>? I'm French.`, }, correctAnswer: 'INFO', chapter: 1 },
         { id: 4, question: "PRONUNCIATION PRACTICE: Click the play button (▶️) to hear each word.", options: { "Address number": "addressnumber.mp3", "American": "American.mp3", "Friend": "friend.mp3", "Great": "great.mp3", "Nationality": "nationality.mp3", "New": "new.mp3", "Phone number": "phonenumber.mp3", "Student": "student.mp3", "Teacher": "teacher.mp3", "Years old": "yearsold.mp3" }, correctAnswer: 'PRONUNCIATION_SET', chapter: 1 },
         
-        // Tópico 5: MODO INTERATIVO DE BINGO (APENAS IMAGEM E HOTSPOTS)
+        // Tópico 5: MODO INTERATIVO DE BINGO
         { id: 5, question: "", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1 },
         
-        { id: 6, question: "What is the color of the sky on a sunny day?", image: "", options: { A: "Red", B: "Yellow", C: "Blue" }, correctAnswer: 'C', chapter: 1 },
-        { id: 7, question: "What is the English word for 'cadeira'?", image: "", options: { A: "Book", B: "Chair", C: "Table" }, correctAnswer: 'B', chapter: 1 },
-        { id: 8, question: "Identify the color of the object in the image:", image: "apple.jpg", options: { A: "Green", B: "Red", C: "Orange" }, correctAnswer: 'B', chapter: 1 },
-        { id: 9, question: "How do you ask 'Where are you from?'", image: "", options: { A: "What your name is?", B: "Where from you are?", C: "Where are you from?" }, correctAnswer: 'C', chapter: 1 },
-        { id: 10, question: "Complete the sentence: 'I want ___ apple.'", image: "", options: { A: "a", B: "an", C: "the" }, correctAnswer: 'B', chapter: 1 },
+        // TÓPICO 6: PRONÚNCIA TEEN vs TY (ÁUDIO ÚNICO)
+        { id: 6, 
+            question: "Listen carefully to the difference between 'Teen' and 'Ty' numbers. Click the play button (▶️) to hear the full comparison.", 
+            options: { 
+                "Comparison: 13/30, 14/40, 15/50, 16/60, 17/70, 18/80, 19/90": "teenety.mp3" // <-- NOME DO ARQUIVO ATUALIZADO
+            }, 
+            correctAnswer: 'PRONUNCIATION_SET', 
+            chapter: 1 
+        },
+        
+        { id: 7, question: "What is the color of the sky on a sunny day?", image: "", options: { A: "Red", B: "Yellow", C: "Blue" }, correctAnswer: 'C', chapter: 1 },
+        { id: 8, question: "What is the English word for 'cadeira'?", image: "", options: { A: "Book", B: "Chair", C: "Table" }, correctAnswer: 'B', chapter: 1 },
+        { id: 9, question: "Identify the color of the object in the image:", image: "apple.jpg", options: { A: "Green", B: "Red", C: "Orange" }, correctAnswer: 'B', chapter: 1 },
+        { id: 10, question: "How do you ask 'Where are you from?'", image: "", options: { A: "What your name is?", B: "Where from you are?", C: "Where are you from?" }, correctAnswer: 'C', chapter: 1 },
+        { id: 11, question: "Complete the sentence: 'I want ___ apple.'", image: "", options: { A: "a", B: "an", C: "the" }, correctAnswer: 'B', chapter: 1 },
     ];
 
     // --- DADOS PARA O MODAL INTERATIVO DE BINGO ---
@@ -623,8 +633,30 @@
         pronContainer.style.display = 'flex';
         questionImage.style.display = 'none'; 
         feedback.innerHTML = ``; 
-        pronunciationWords = Object.keys(q.options).map((word) => ({ word: word, audioPath: q.options[word] }));
-        updatePronunciationUI();
+        
+        // Se for a Questão 6 (Teen/Ty), a lista é fixa no options.
+        if (q.id === 6) {
+            // Não precisa de lista de itens se for apenas um áudio de comparação
+            document.getElementById('current-instruction').textContent = q.question;
+            const wordListElement = document.getElementById('pronunciation-list');
+            wordListElement.innerHTML = '';
+            
+            // Renderiza apenas o botão de play para o arquivo único
+            const audioFileName = Object.values(q.options)[0];
+            wordListElement.innerHTML += `
+                <li>
+                    <span>Full Comparison</span>
+                    <div>
+                         <button class="play-button" onclick="playWordAudio('${audioFileName}')">▶️</button>
+                    </div>
+                </li>
+            `;
+        } else {
+            // Renderização padrão para a Questão 4
+            document.getElementById('current-instruction').textContent = q.question;
+            pronunciationWords = Object.keys(q.options).map((word) => ({ word: word, audioPath: q.options[word] }));
+            updatePronunciationUI();
+        }
     }
 
     function updatePronunciationUI() {
