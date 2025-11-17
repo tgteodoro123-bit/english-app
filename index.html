@@ -195,51 +195,63 @@
         margin-right: 15px; 
     }
 
-    /* NOVO: Botão Hamburguer - Movido para dentro do nav-buttons */
+    /* NOVO: Botão Hamburguer - Apenas o ícone azul, sem fundo */
     .menu-toggle {
-        font-size: 1.8em; /* Menor que antes */
-        background: none;
+        font-size: 1.8em; 
+        background: none; /* Remover fundo azul */
         border: none;
         cursor: pointer;
-        color: #333;
-        line-height: 1; /* Alinhamento vertical */
+        color: #007bff; /* Cor azul para o ícone */
+        line-height: 1; 
         padding: 0 10px;
         margin-right: 5px; 
-        position: relative; /* Para o dropdown */
+        position: relative; 
+        transition: color 0.2s ease;
     }
 
-    /* NOVO: Menu Dropdown (Substitui o Side Menu) */
+    .menu-toggle:hover {
+        color: #0056b3; /* Azul mais escuro no hover */
+    }
+
+    /* NOVO: Menu Dropdown (Substitui o Side Menu) - Mais clean */
     .dropdown-menu {
         display: none;
         position: absolute;
-        top: 45px; /* Abaixo do botão */
-        right: 0; 
+        top: 45px; 
+        right: 0; /* Alinha à direita do botão hamburguer */
         background-color: #ffffff;
-        min-width: 250px;
-        max-height: 300px; /* Rolagem se for muito longo */
+        min-width: 280px; /* Mais comprido */
+        max-height: 300px; 
         overflow-y: auto;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Sombra mais suave */
         z-index: 100;
         border-radius: 6px;
-        border: 1px solid #ddd;
-        padding: 5px 0;
+        border: 1px solid #e0e0e0; /* Borda mais clara */
+        padding: 0; /* Remover padding do container para gerenciar nos links */
     }
 
     .dropdown-menu a {
-        color: black;
+        color: #333; /* Letras pretas */
         padding: 10px 15px;
         text-decoration: none;
         display: block;
-        font-size: 0.95em; 
+        font-size: 0.9em; /* Letras menores */
         white-space: nowrap; 
+        border-bottom: 1px solid #f0f0f0; /* Separador fino e claro */
+        font-weight: 400; /* Letras mais finas */
+        transition: background-color 0.2s, color 0.2s;
+    }
+
+    .dropdown-menu a:last-child {
+        border-bottom: none; /* Remove a borda do último item */
     }
 
     .dropdown-menu a:hover {
-        background-color: #f1f1f1;
-        color: #007bff;
+        background-color: #f6f9fc; /* Fundo suave no hover */
+        color: #007bff; /* Azul no texto no hover */
     }
 
-    /* Estilos de Texto e Questão */
+    /* Estilos de Texto e Questão (Sem alterações) */
     .quiz-question img {
         max-width: 100%; 
         height: auto; 
@@ -278,7 +290,7 @@
     .correct { background-color: #e6ffed !important; border-color: #28a745 !important; font-weight: bold; }
     .incorrect { background-color: #ffe6e6 !important; border-color: #dc3545 !important; font-weight: bold; }
 
-    /* Estilos de Pronúncia e Áudio */
+    /* Estilos de Pronúncia e Áudio (Sem alterações) */
     #pronunciation-container {
         display: flex;
         flex-direction: column;
@@ -300,7 +312,7 @@
     #pronunciation-list li { padding: 10px; border-bottom: 1px dotted #e0e0e0; display: flex; justify-content: space-between; align-items: center; font-size: 1.1em; }
     .play-button { background: none; border: none; font-size: 1.5em; cursor: pointer; color: #007bff; margin-left: 10px; transition: color 0.1s; }
 
-    /* Estilos da Tabela de Comparação do Tópico 6 */
+    /* Estilos da Tabela de Comparação do Tópico 6 (Sem alterações significativas) */
     .comparison-table {
         width: 100%;
         max-width: 400px;
@@ -325,7 +337,7 @@
         background-color: #f9f9f9; 
     }
     
-    /* Estilos do Modal (Bingo) */
+    /* Estilos do Modal (Bingo) (Sem alterações significativas) */
     .modal {
         display: none; 
         position: fixed; 
@@ -512,7 +524,7 @@
     const questionText = document.getElementById('question-text');
     const questionImage = document.getElementById('question-image');
     const progressIndicator = document.getElementById('progress-indicator');
-    const dropdownMenu = document.getElementById('dropdown-menu'); // NOVO
+    const dropdownMenu = document.getElementById('dropdown-menu'); 
     
     const navButtonsContainer = document.querySelector('.nav-buttons'); 
     
@@ -545,7 +557,8 @@
 
     // Fechar o menu se clicar fora
     window.onclick = function(event) {
-        if (!event.target.matches('.menu-toggle') && !event.target.closest('.menu-toggle')) {
+        // Verifica se o clique não foi no botão hamburguer nem dentro do menu dropdown
+        if (!event.target.closest('.menu-toggle')) {
             if (dropdownMenu.style.display === 'block') {
                 dropdownMenu.style.display = 'none';
             }
@@ -597,224 +610,4 @@
     function goHome() {
         homeScreen.style.display = 'block';
         lessonScreen.style.display = 'none';
-        navButtonsContainer.style.display = 'none'; 
-        dropdownMenu.style.display = 'none';
-    }
-
-    function loadQuestion(q) {
-        answerChecked = false;
-        feedback.innerHTML = '';
-        optionsContainer.innerHTML = '';
-        
-        // Atualiza o indicador de progresso
-        progressIndicator.textContent = `(${currentQuestionIndex + 1}/${lessonQuestions.length})`;
-        
-        nextBtn.style.display = 'block';
-        backBtn.style.display = 'block';
-        questionText.style.display = 'block'; 
-
-        document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'none'); 
-        document.getElementById('pronunciation-container').style.display = 'none';
-        document.getElementById('comparison-table-container').innerHTML = '';
-        
-        const audioControls = document.getElementById('audio-player-controls');
-        audioControls.style.display = 'none';
-        audioControls.src = ''; 
-        
-        // CORRIGIDO: A instrução de texto principal é mostrada aqui
-        questionText.innerHTML = q.question; 
-        
-        if (q.image) {
-            questionImage.src = GITHUB_RAW_BASE_URL + q.image; 
-            questionImage.style.display = 'block';
-        } else {
-            questionImage.src = '';
-            questionImage.style.display = 'none';
-        }
-        
-        optionsContainer.style.display = 'none';
-        
-        if (q.correctAnswer === 'INFO') {
-            optionsContainer.style.display = 'block'; 
-            optionsContainer.style.backgroundColor = '#f4f4f4'; 
-            optionsContainer.style.padding = '20px';
-            optionsContainer.style.borderRadius = '8px';
-            
-            let htmlContent = '<ul style="list-style-type: none; padding: 0;">';
-            for (const key in q.options) {
-                htmlContent += `<li style="margin: 10px 0; font-size: 1.1em; border-bottom: 1px dashed #ddd; padding-bottom: 5px;">
-                                    <strong>${key}:</strong> ${q.options[key]}
-                                </li>`;
-            }
-            htmlContent += '</ul>';
-            optionsContainer.innerHTML = htmlContent;
-            
-        } else if (q.correctAnswer === 'PRONUNCIATION_SET') {
-            renderPronunciationPractice(q);
-        } else if (q.correctAnswer === 'INTERACTIVE_BINGO') {
-            optionsContainer.innerHTML = '';
-            questionText.style.display = 'block'; 
-            document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex'); 
-        }
-        else {
-            optionsContainer.style.display = 'block';
-            optionsContainer.style.backgroundColor = 'transparent'; 
-            optionsContainer.style.padding = '0';
-            
-            for (const key in q.options) {
-                const optionDiv = document.createElement('div');
-                optionDiv.className = 'option';
-                optionDiv.textContent = `${key}: ${q.options[key]}`; 
-                optionDiv.setAttribute('data-answer', key);
-                optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer, q); 
-                optionsContainer.appendChild(optionDiv);
-            }
-        }
-    }
-
-    function checkAnswer(selectedDiv, selectedKey, correctKey, currentQuestion) {
-        if (answerChecked) return; 
-        answerChecked = true;
-        
-        const allOptions = optionsContainer.querySelectorAll('.option');
-        allOptions.forEach(opt => opt.onclick = null);
-
-        let feedbackMessage = '';
-
-        if (selectedKey === correctKey) {
-            feedbackMessage = '✅ Correct Answer!';
-            selectedDiv.classList.add('correct');
-        } else {
-            const correctOptionText = currentQuestion.options[correctKey];
-            feedbackMessage = `❌ Incorrect Answer. The correct answer is: "${correctOptionText}".`; 
-            
-            selectedDiv.classList.add('incorrect');
-            allOptions.forEach(opt => {
-                if (opt.getAttribute('data-answer') === correctKey) {
-                    opt.classList.add('correct');
-                }
-            });
-        }
-
-        feedback.innerHTML = feedbackMessage;
-        
-        nextBtn.disabled = false;
-    }
-    
-    function goNext() {
-        currentQuestionIndex++;
-        if (currentQuestionIndex < lessonQuestions.length) {
-            loadQuestion(lessonQuestions[currentQuestionIndex]);
-        } else {
-            alert(`Congratulations! You have completed Beginner Module ${currentChapter}!`); 
-            goHome(); 
-        }
-    }
-    
-    function backQuestion() {
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex--;
-            loadQuestion(lessonQuestions[currentQuestionIndex]);
-        } else {
-            goHome(); 
-        }
-    }
-    
-    function renderPronunciationPractice(q) {
-        const pronContainer = document.getElementById('pronunciation-container');
-        const audioControls = document.getElementById('audio-player-controls');
-        const listContainer = document.getElementById('pronunciation-list');
-        const tableContainer = document.getElementById('comparison-table-container');
-
-        pronContainer.style.display = 'flex';
-        questionImage.style.display = 'none'; 
-        feedback.innerHTML = ``; 
-        listContainer.innerHTML = '';
-        tableContainer.innerHTML = '';
-
-        if (q.id === 6) {
-            // Tópico 6: Teen vs Ty (Áudio Único com barra de controle e Tabela Visual)
-            audioControls.style.display = 'block';
-            audioControls.src = GITHUB_RAW_BASE_URL + Object.values(q.options)[0]; 
-
-            // Geração da Tabela Visual
-            let tableHTML = '<table class="comparison-table"><thead><tr><th>Teen Numbers</th><th>Ty Numbers</th></tr></thead><tbody>';
-            teenTyData.forEach(item => {
-                tableHTML += `<tr><td>${item.teen}</td><td>${item.ty}</td></tr>`;
-            });
-            tableHTML += '</tbody></table>'; 
-            
-            tableContainer.innerHTML = tableHTML;
-            
-            // A instrução principal já está em questionText, mas repetimos aqui para o campo de instrução da pronúncia
-            document.getElementById('current-instruction').textContent = q.question; 
-
-
-        } else if (q.id === 4) {
-            // Tópico 4: Palavras individuais (Formato com vários botões de play)
-            audioControls.style.display = 'none'; 
-            document.getElementById('current-instruction').textContent = q.question;
-            
-            pronunciationWords = Object.keys(q.options).map((word) => ({ word: word, audioPath: q.options[word] }));
-            updatePronunciationUI(); 
-        }
-    }
-
-    function updatePronunciationUI() {
-        const wordListElement = document.getElementById('pronunciation-list');
-        wordListElement.innerHTML = '';
-        
-        pronunciationWords.forEach((item) => {
-            wordListElement.innerHTML += `
-                <li>
-                    <span>${item.word}</span>
-                    <div>
-                         <button class="play-button" onclick="playSeparateAudio('${item.audioPath}')">▶️</button>
-                    </div>
-                </li>
-            `;
-        });
-    }
-    
-    function playSeparateAudio(audioPath) {
-        const tempAudio = new Audio(GITHUB_RAW_BASE_URL + audioPath);
-        tempAudio.play().catch(error => { console.error("Audio playback blocked:", error); });
-    }
-
-
-    // --- FUNÇÕES DE MODAL PARA O BINGO ---
-    function generateTableHTML(data) {
-        let html = '<table class="number-table"><thead><tr><th>English Word</th><th>Number</th></tr></thead><tbody>';
-        data.forEach(item => {
-            html += `<tr><td>${item.word}</td><td>${item.number}</td></tr>`;
-        });
-        html += '</tbody></table>';
-        return html;
-    }
-
-    function openNumberModal(type) {
-        const modal = document.getElementById('numberModal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalBody = document.getElementById('modal-body');
-        
-        let title = "Numbers";
-        switch(type) {
-            case 'one-to-ten': title = "Numbers 1-10"; break;
-            case 'tens': title = "Tens (20-100)"; break;
-            case 'teens': title = "Teens (11-19)"; break;
-            case 'combined': title = "Combined Numbers"; break;
-        }
-
-        modalTitle.textContent = title;
-        modalBody.innerHTML = generateTableHTML(numberData[type]);
-        modal.style.display = "flex";
-    }
-
-    function closeNumberModal() {
-        document.getElementById('numberModal').style.display = "none";
-    }
-    
-</script>
-
-</body>
-</html>
+        navButtonsContainer.style.display = 'none';
