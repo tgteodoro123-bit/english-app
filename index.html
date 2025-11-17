@@ -22,7 +22,7 @@
     }
     
     h2 {
-        /* Título "Beginner" */
+        /* Título "BEGINNER" (Apenas na Home Screen) */
         color: #333; 
         border-bottom: 1px solid #e0e0e0; 
         padding-top: 10px; 
@@ -43,7 +43,7 @@
         }
     }
 
-    /* 3. Card de Confidence */
+    /* 3. Estilos do Card (Incluindo Hover) */
     .chapter-card {
         background-color: #f7f7f7; 
         border-radius: 6px; 
@@ -58,7 +58,6 @@
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
     }
     
-    /* Imagem */
     .card-background-image {
         position: absolute;
         top: 0;
@@ -70,7 +69,6 @@
         z-index: 1; 
     }
 
-    /* Área de Texto */
     .card-text-area {
         position: absolute;
         bottom: 0;
@@ -88,7 +86,6 @@
         text-align: center;
     }
 
-    /* EFEITO DE HOVER */
     .chapter-card:hover .card-text-area {
         height: 50%; 
         background: #FFFFFF; 
@@ -104,11 +101,10 @@
         box-sizing: border-box; 
     }
 
-    .chapter-card:hover .text-content-wrapper {
+    .chapter-card:hover .text-content-wrapper { 
         transform: translateY(-5px); 
     }
 
-    /* Estilos de Texto */
     .chapter-card h3 {
         margin-top: 0;
         font-size: 1.3em;
@@ -124,13 +120,11 @@
         transition: color 0.3s ease;
     }
     
-    /* CORES PRETOS NO HOVER */
     .chapter-card:hover .card-text-area h3,
     .chapter-card:hover .card-text-area p {
         color: #000; 
     }
 
-    /* Estilo do Botão Start */
     .start-button {
         background-color: #003366; 
         color: white;
@@ -147,52 +141,53 @@
         align-self: flex-start; 
     }
 
+    .chapter-card:hover .start-button {
+        opacity: 1; 
+        transform: scale(1);
+    }
+    
     .start-button:hover {
         background-color: #004c99; 
     }
     
-    /* 4. Tela de Quiz/Lição (AJUSTE PARA BOTÕES SUPERIORES) */
+    /* 4. Tela de Quiz/Lição */
     #lesson-screen {
         max-width: 650px;
-        margin: 40px auto;
+        margin: 70px auto 40px; 
         padding: 30px;
         background-color: #FFFFFF; 
         border-radius: 12px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); 
         display: none; 
-        position: relative; /* ESSENCIAL para o posicionamento absoluto dos botões */
+        position: relative; 
     }
     
-    /* AJUSTE: Mover Botões para o Topo-Direito */
+    /* Botões de Navegação Fixos (Inicialmente Ocultos) */
     .nav-buttons {
-        position: absolute; 
+        position: fixed; 
         top: 20px; 
-        right: 30px; 
-        width: auto; 
-        z-index: 10; 
-        margin-top: 0; 
-        display: flex;
-        gap: 10px; /* Espaçamento entre os botões */
+        right: 20px; 
+        z-index: 1000; 
+        display: none; 
+        gap: 10px; 
     }
     
     .nav-buttons button {
-        padding: 12px 20px; /* Reduzi o padding horizontal um pouco */
+        padding: 12px 20px; 
         border: none;
         border-radius: 8px;
         cursor: pointer;
         font-weight: bold;
         color: white;
+        background-color: #007bff;
+        transition: background-color 0.2s;
     }
-    #back-btn { background-color: #6c757d; }
-    #next-btn { background-color: #007bff; }
     
-    /* Ajuste de espaçamento para o título não conflitar com os botões */
-    #lesson-title {
-        margin-right: 160px; /* Empurra o título para a esquerda */
+    .nav-buttons button:hover {
+        background-color: #0056b3;
     }
-
-
-    /* FIX para a imagem */
+    
+    /* Estilos de Texto e Questão */
     .quiz-question img {
         max-width: 100%; 
         height: auto; 
@@ -209,11 +204,11 @@
         margin-bottom: 25px;
         text-align: center;
         background-color: #fcfcfc;
+        position: relative; /* Importante para posicionar os hot-spots */
     }
     
-    /* NOVO AJUSTE: Aumentar o tamanho do texto da pergunta */
     #question-text {
-        font-size: 1.2em; /* Tamanho do texto maior */
+        font-size: 1.4em; 
         font-weight: 500;
         margin-bottom: 10px;
     }
@@ -227,19 +222,11 @@
         transition: background-color 0.2s, border-color 0.2s;
         text-align: left;
     }
-    .correct {
-        background-color: #e6ffed !important; 
-        border-color: #28a745 !important; 
-        font-weight: bold;
-    }
-    .incorrect {
-        background-color: #ffe6e6 !important; 
-        border-color: #dc3545 !important; 
-        font-weight: bold;
-    }
+    
+    .correct { background-color: #e6ffed !important; border-color: #28a745 !important; font-weight: bold; }
+    .incorrect { background-color: #ffe6e6 !important; border-color: #dc3545 !important; font-weight: bold; }
 
-
-    /* 5. Estilos para o Tópico de Pronúncia */
+    /* Estilos de Pronúncia */
     #pronunciation-container {
         display: flex;
         flex-direction: column;
@@ -249,43 +236,95 @@
         padding: 25px;
         border-radius: 10px;
     }
-    .word-to-practice {
-        font-size: 1.2em; 
-        font-weight: 700;
-        margin-bottom: 20px;
-        color: #333;
+    .word-to-practice { font-size: 1.2em; font-weight: 700; margin-bottom: 20px; color: #333; }
+    #pronunciation-list { list-style: none; padding: 0; margin-top: 15px; width: 100%; max-width: 400px; text-align: left; }
+    #pronunciation-list li { padding: 10px; border-bottom: 1px dotted #e0e0e0; display: flex; justify-content: space-between; align-items: center; font-size: 1.1em; }
+    .play-button { background: none; border: none; font-size: 1.5em; cursor: pointer; color: #007bff; margin-left: 10px; transition: color 0.1s; }
+
+
+    /* NOVOS ESTILOS PARA INTERAÇÃO DE BINGO */
+    .hotspot {
+        position: absolute;
+        width: 40px; 
+        height: 40px; 
+        background-color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        font-size: 2em;
+        font-weight: bold;
+        color: #007bff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        z-index: 10;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        display: none; /* Inicialmente oculto, será exibido no loadQuestion */
     }
-    
-    /* Lista de Palavras */
-    #pronunciation-list {
-        list-style: none;
-        padding: 0;
-        margin-top: 15px;
+
+    .hotspot:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+
+    /* Estilos do Modal */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 20; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        border-radius: 10px;
+        width: 80%; /* Could be more specific */
+        max-width: 500px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        position: relative;
+    }
+
+    .close-button {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+    }
+
+    .close-button:hover,
+    .close-button:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .number-table {
         width: 100%;
-        max-width: 400px;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .number-table th, .number-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
         text-align: left;
     }
-    #pronunciation-list li {
-        padding: 10px;
-        border-bottom: 1px dotted #e0e0e0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 1.1em;
-    }
-    
-    /* Botão Play da Lista */
-    .play-button {
-        background: none;
-        border: none;
-        font-size: 1.5em;
-        cursor: pointer;
-        color: #007bff;
-        margin-left: 10px;
-        transition: color 0.1s;
-    }
-    .play-button:hover {
-        color: #0056b3;
+
+    .number-table th {
+        background-color: #f2f2f2;
     }
 </style>
 </head>
@@ -298,41 +337,47 @@
 </div>
 
 <div id="lesson-screen">
-    <h2 id="lesson-title">BEGINNER</h2> 
     
-    <div class="nav-buttons">
-        <button id="back-btn" onclick="backQuestion()">Back</button>
-        <button id="next-btn" onclick="goNext()">Next</button>
-    </div>
-
     <div class="quiz-question">
-        <p id="question-text"></p> 
         <img id="question-image" src="" alt="Lesson Image"> 
+        
+        <div class="hotspot" id="hotspot-1" style="top: 20%; left: 20%;" onclick="openNumberModal('one-to-ten')">+</div>
+        <div class="hotspot" id="hotspot-2" style="top: 20%; left: 70%;" onclick="openNumberModal('tens')">+</div>
+        <div class="hotspot" id="hotspot-3" style="top: 70%; left: 20%;" onclick="openNumberModal('teens')">+</div>
+        <div class="hotspot" id="hotspot-4" style="top: 70%; left: 70%;" onclick="openNumberModal('combined')">+</div>
     </div>
 
-    <div id="options-container">
-        </div>
+    <p id="question-text" style="display: none;"></p> 
+    <div id="options-container" style="display: none;"></div>
     
     <div id="pronunciation-container" style="display: none;">
-        
         <p class="word-to-practice" id="current-instruction"></p>
-        
         <audio id="audio-player" preload="auto"></audio>
-        
-        <ul id="pronunciation-list">
-            </ul>
-        
+        <ul id="pronunciation-list"></ul>
     </div>
     
     <p id="feedback" style="font-weight: bold; margin-top: 15px; text-align: center;"></p>
 
+</div>
+
+<div class="nav-buttons">
+    <button id="back-btn" onclick="backQuestion()">Back</button>
+    <button id="next-btn" onclick="goNext()">Next</button>
+</div>
+
+<div id="numberModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeNumberModal()">&times;</span>
+        <h3 id="modal-title">Numbers</h3>
+        <div id="modal-body">
+            </div>
     </div>
+</div>
 
 <script>
-    // LINK BASE: APONTA PARA A RAIZ DO REPOSITÓRIO ONDE SEUS ARQUIVOS ESTÃO SOLTOS
+    // CAMINHO PARA A MAIN 
     const GITHUB_RAW_BASE_URL = "https://raw.githubusercontent.com/tgteodoro123-bit/english-app/main/"; 
     
-    // ARRAY DE IMAGENS DE FUNDO (mantido)
     const BACKGROUND_IMAGES = [
         "https://images.pexels.com/photos/1036321/pexels-photo-1036321.jpeg?auto=compress&cs=tinysrgb&w=800",
         "https://images.pexels.com/photos/2076011/pexels-photo-2076011.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -342,144 +387,48 @@
         "https://images.pexels.com/photos/3401403/pexels-photo-3401403.jpeg?auto=compress&cs=tinysrgb&w=800",
     ];
 
-    // 1. DADOS DAS QUESTÕES (Beginner 1)
     const QUESTIONS = [
-        // Q1 a Q10 (Conteúdo mantido)
-        {
-            id: 1,
-            question: "What do you see in the image?", 
-            image: "numeros.jpg", 
-            options: {
-                A: "The Alphabet",
-                B: "Colors",
-                C: "Numbers"
-            },
-            correctAnswer: 'C', 
-            chapter: 1
-        },
-        {
-            id: 2,
-            question: "Complete the self-introduction: 'Hello, ____ Marcus.'", 
-            image: "cumprimento.jpg", 
-            options: {
-                A: "I is",
-                B: "I am",
-                C: "I are"
-            },
-            correctAnswer: 'B', 
-            chapter: 1
-        },
-        {
-            id: 3,
-            question: `<h3 style="color: #007bff; font-size: 2em; margin-bottom: 20px;">Vocabulary:</h3>`, 
-            options: {
-                "1.": `My <span style="color: #007bff;">address number</span> is 34.`, 
-                "2.": `I am a <span style="color: #007bff;">student</span>.`, 
-                "3.": `He is my new <span style="color: #007bff;">friend</span>, David.`, 
-                "4.": `Mr. David is a <span style="color: #007bff;">great</span> teacher.`, 
-                "5.": `My <span style="color: #007bff;">phone number</span> is: (987) 654-1234.`, 
-                "6.": `Sofia is <span style="color: #007bff;">American</span>.`, 
-                "7.": `I love my English <span style="color: #007bff;">teacher</span>.`, 
-                "8.": `Lucas is a <span style="color: #007bff;">new</span> student, too.`, 
-                "9.": `I am 18 <span style="color: #007bff;">years old</span>.`, 
-                "10.": `My <span style="color: #007bff;">nationality</span>? I'm French.`, 
-            },
-            correctAnswer: 'INFO', 
-            chapter: 1
-        },
-        {
-            id: 4,
-            question: "PRONUNCIATION PRACTICE: Click the play button (▶️) to hear each word.", 
-            options: {
-                "Address number": "addressnumber.mp3", 
-                "American": "American.mp3",
-                "Friend": "friend.mp3",
-                "Great": "great.mp3", 
-                "Nationality": "nationality.mp3",
-                "New": "new.mp3",
-                "Phone number": "phonenumber.mp3",
-                "Student": "student.mp3", 
-                "Teacher": "teacher.mp3",
-                "Years old": "yearsold.mp3" 
-            },
-            correctAnswer: 'PRONUNCIATION_SET', 
-            chapter: 1
-        },
-        {
-            id: 5,
-            question: "Which day comes after Tuesday?", 
-            image: "", 
-            options: {
-                A: "Monday",
-                B: "Wednesday",
-                C: "Thursday"
-            },
-            correctAnswer: 'B', 
-            chapter: 1
-        },
-        {
-            id: 6,
-            question: "What is the color of the sky on a sunny day?", 
-            image: "", 
-            options: {
-                A: "Red",
-                B: "Yellow",
-                C: "Blue"
-            },
-            correctAnswer: 'C', 
-            chapter: 1
-        },
-        {
-            id: 7,
-            question: "What is the English word for 'cadeira'?", 
-            image: "", 
-            options: {
-                A: "Book",
-                B: "Chair",
-                C: "Table"
-            },
-            correctAnswer: 'B', 
-            chapter: 1
-        },
-        {
-            id: 8,
-            question: "Identify the color of the object in the image:", 
-            image: "apple.jpg", 
-            options: {
-                A: "Green",
-                B: "Red",
-                C: "Orange"
-            },
-            correctAnswer: 'B', 
-            chapter: 1
-        },
-        {
-            id: 9,
-            question: "How do you ask 'Where are you from?'", 
-            image: "", 
-            options: {
-                A: "What your name is?",
-                B: "Where from you are?",
-                C: "Where are you from?"
-            },
-            correctAnswer: 'C', 
-            chapter: 1
-        },
-        {
-            id: 10,
-            question: "Complete the sentence: 'I want ___ apple.'", 
-            image: "", 
-            options: {
-                A: "a",
-                B: "an",
-                C: "the"
-            },
-            correctAnswer: 'B', 
-            chapter: 1
-        },
+        { id: 1, question: "What do you see in the image?", image: "numeros.jpg", options: { A: "The Alphabet", B: "Colors", C: "Numbers" }, correctAnswer: 'C', chapter: 1 },
+        { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', chapter: 1 },
+        { id: 3, question: `<h3 style="color: #007bff; font-size: 2em; margin-bottom: 20px;">Vocabulary:</h3>`, options: { "1.": `My <span style="color: #007bff;">address number</span> is 34.`, "2.": `I am a <span style="color: #007bff;">student</span>.`, "3.": `He is my new <span style="color: #007bff;">friend</span>, David.`, "4.": `Mr. David is a <span style="color: #007bff;">great</span> teacher.`, "5.": `My <span style="color: #007bff;">phone number</span> is: (987) 654-1234.`, "6.": `Sofia is <span style="color: #007bff;">American</span>.`, "7.": `I love my English <span style="color: #007bff;">teacher</span>.`, "8.": `Lucas is a <span style="color: #007bff;">new</span> student, too.`, "9.": `I am 18 <span style="color: #007bff;">years old</span>.`, "10.": `My <span style="color: #007bff;">nationality</span>? I'm French.`, }, correctAnswer: 'INFO', chapter: 1 },
+        { id: 4, question: "PRONUNCIATION PRACTICE: Click the play button (▶️) to hear each word.", options: { "Address number": "addressnumber.mp3", "American": "American.mp3", "Friend": "friend.mp3", "Great": "great.mp3", "Nationality": "nationality.mp3", "New": "new.mp3", "Phone number": "phonenumber.mp3", "Student": "student.mp3", "Teacher": "teacher.mp3", "Years old": "yearsold.mp3" }, correctAnswer: 'PRONUNCIATION_SET', chapter: 1 },
         
+        // Tópico 5: MODO INTERATIVO DE BINGO (APENAS IMAGEM E HOTSPOTS)
+        { id: 5, question: "", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1 },
+        
+        { id: 6, question: "What is the color of the sky on a sunny day?", image: "", options: { A: "Red", B: "Yellow", C: "Blue" }, correctAnswer: 'C', chapter: 1 },
+        { id: 7, question: "What is the English word for 'cadeira'?", image: "", options: { A: "Book", B: "Chair", C: "Table" }, correctAnswer: 'B', chapter: 1 },
+        { id: 8, question: "Identify the color of the object in the image:", image: "apple.jpg", options: { A: "Green", B: "Red", C: "Orange" }, correctAnswer: 'B', chapter: 1 },
+        { id: 9, question: "How do you ask 'Where are you from?'", image: "", options: { A: "What your name is?", B: "Where from you are?", C: "Where are you from?" }, correctAnswer: 'C', chapter: 1 },
+        { id: 10, question: "Complete the sentence: 'I want ___ apple.'", image: "", options: { A: "a", B: "an", C: "the" }, correctAnswer: 'B', chapter: 1 },
     ];
 
+    // --- DADOS PARA O MODAL INTERATIVO DE BINGO ---
+    const numberData = {
+        'one-to-ten': [
+            { word: 'One', number: 1 }, { word: 'Two', number: 2 }, { word: 'Three', number: 3 },
+            { word: 'Four', number: 4 }, { word: 'Five', number: 5 }, { word: 'Six', number: 6 },
+            { word: 'Seven', number: 7 }, { word: 'Eight', number: 8 }, { word: 'Nine', number: 9 },
+            { word: 'Ten', number: 10 }
+        ],
+        'tens': [
+            { word: 'Twenty', number: 20 }, { word: 'Thirty', number: 30 }, { word: 'Forty', number: 40 },
+            { word: 'Fifty', number: 50 }, { word: 'Sixty', number: 60 }, { word: 'Seventy', number: 70 },
+            { word: 'Eighty', number: 80 }, { word: 'Ninety', number: 90 }, { word: 'One Hundred', number: 100 }
+        ],
+        'teens': [
+            { word: 'Eleven', number: 11 }, { word: 'Twelve', number: 12 }, { word: 'Thirteen', number: 13 },
+            { word: 'Fourteen', number: 14 }, { word: 'Fifteen', number: 15 }, { word: 'Sixteen', number: 16 },
+            { word: 'Seventeen', number: 17 }, { word: 'Eighteen', number: 18 }, { word: 'Nineteen', number: 19 }
+        ],
+        'combined': [
+            { word: 'Twenty-one', number: 21 }, { word: 'Thirty-two', number: 32 }, { word: 'Forty-three', number: 43 },
+            { word: 'Fifty-four', number: 54 }, { word: 'Sixty-five', number: 65 }, { word: 'Seventy-six', number: 76 },
+            { word: 'Eighty-seven', number: 87 }, { word: 'Ninety-eight', number: 98 }
+        ]
+    };
+    // --- FIM DOS DADOS DE BINGO ---
+    
     let currentQuestionIndex = 0;
     const homeScreen = document.getElementById('home-screen');
     const lessonScreen = document.getElementById('lesson-screen');
@@ -487,30 +436,22 @@
     const feedback = document.getElementById('feedback');
     const nextBtn = document.getElementById('next-btn');
     const backBtn = document.getElementById('back-btn');
-    const lessonTitle = document.getElementById('lesson-title');
     const questionText = document.getElementById('question-text');
     const questionImage = document.getElementById('question-image');
 
+    const navButtonsContainer = document.querySelector('.nav-buttons'); 
     let answerChecked = false;
-
-    // VARIÁVEL GLOBAL PARA PRONÚNCIA
     let pronunciationWords = [];
     const audioPlayer = document.getElementById('audio-player'); 
-
-    // 2. GERAÇÃO DOS 24 CARDS (mantido)
+    
+    // RENDERIZAÇÃO DOS CARDS NA HOME SCREEN
     const chapterGrid = document.querySelector('.chapter-grid');
     for (let i = 1; i <= 24; i++) {
         const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
-        
         let cardTopicName = i === 1 ? 'Basic Foundations (10 Topics Ready!)' : `Module ${i} Content`;
-        
         chapterGrid.innerHTML += `
             <div class="chapter-card" id="card-${i}">
-                 
-                <div class="card-background-image"
-                     style="background-image: url('${bgUrl}');">
-                </div>
-                
+                <div class="card-background-image" style="background-image: url('${bgUrl}');"></div>
                 <div class="card-text-area">
                     <div class="text-content-wrapper">
                         <h3>Beginner ${i}</h3>
@@ -521,11 +462,6 @@
             </div>
         `;
     }
-
-    // 3. NAVEGAÇÃO E LÓGICA (mantido)
-
-    let currentChapter = 0;
-    let lessonQuestions = [];
 
     function startLesson(chapterNumber) {
         currentChapter = chapterNumber;
@@ -539,8 +475,7 @@
         goHome(); 
         homeScreen.style.display = 'none';
         lessonScreen.style.display = 'block';
-        
-        lessonTitle.textContent = `BEGINNER`; 
+        navButtonsContainer.style.display = 'flex'; 
         
         currentQuestionIndex = 0;
         loadQuestion(lessonQuestions[currentQuestionIndex]);
@@ -549,6 +484,7 @@
     function goHome() {
         homeScreen.style.display = 'block';
         lessonScreen.style.display = 'none';
+        navButtonsContainer.style.display = 'none'; 
     }
 
     function loadQuestion(q) {
@@ -556,8 +492,13 @@
         feedback.innerHTML = '';
         optionsContainer.innerHTML = '';
         
-        nextBtn.disabled = false; 
-        backBtn.disabled = false; 
+        // Esconde/mostra botões de navegação e garante que o texto da pergunta aparece, exceto para o BINGO
+        nextBtn.style.display = 'block';
+        backBtn.style.display = 'block';
+        questionText.style.display = 'block'; 
+
+        // Oculta todos os hotspots por padrão
+        document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'none'); 
 
         questionText.innerHTML = q.question; 
         
@@ -588,11 +529,15 @@
             optionsContainer.innerHTML = htmlContent;
             
         } else if (q.correctAnswer === 'PRONUNCIATION_SET') {
-            // --- TRATAMENTO PARA PRONÚNCIA (Q4) ---
             renderPronunciationPractice(q);
+        } else if (q.correctAnswer === 'INTERACTIVE_BINGO') {
+            // Lógica para a questão de BINGO
+            optionsContainer.innerHTML = '';
+            questionText.style.display = 'none'; // Oculta o texto da pergunta
+            document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex'); // Exibe os hotspots
         }
         else {
-            // Se for um Quiz normal
+            // Lógica para questões de múltipla escolha
             optionsContainer.style.display = 'block';
             optionsContainer.style.backgroundColor = 'transparent'; 
             optionsContainer.style.padding = '0';
@@ -600,16 +545,16 @@
             for (const key in q.options) {
                 const optionDiv = document.createElement('div');
                 optionDiv.className = 'option';
-                optionDiv.textContent = `${key}: ${q.options[key]}`;
+                // Mostra a letra e o texto
+                optionDiv.textContent = `${key}: ${q.options[key]}`; 
                 optionDiv.setAttribute('data-answer', key);
-                optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer);
+                optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer, q); 
                 optionsContainer.appendChild(optionDiv);
             }
         }
     }
 
-    // LÓGICA DO QUIZ (mantido)
-    function checkAnswer(selectedDiv, selectedKey, correctKey) {
+    function checkAnswer(selectedDiv, selectedKey, correctKey, currentQuestion) {
         if (answerChecked) return; 
         answerChecked = true;
         
@@ -619,10 +564,16 @@
         let feedbackMessage = '';
 
         if (selectedKey === correctKey) {
-            feedbackMessage = '✅ Resposta Correta!';
+            // FEEDBACK EM INGLÊS E CLARO
+            feedbackMessage = '✅ Correct Answer!';
             selectedDiv.classList.add('correct');
         } else {
-            feedbackMessage = `❌ Resposta Incorreta. A correta era ${correctKey}.`; 
+            // Extrai o texto completo da opção correta (e.g., "Numbers")
+            const correctOptionText = currentQuestion.options[correctKey];
+            
+            // FEEDBACK EM INGLÊS, MOSTRANDO APENAS O TEXTO
+            feedbackMessage = `❌ Incorrect Answer. The correct answer was: "${correctOptionText}".`; 
+            
             selectedDiv.classList.add('incorrect');
             allOptions.forEach(opt => {
                 if (opt.getAttribute('data-answer') === correctKey) {
@@ -636,14 +587,14 @@
         nextBtn.disabled = false;
     }
     
-    // FUNÇÃO AVANÇAR (mantido)
     function goNext() {
         currentQuestionIndex++;
         if (currentQuestionIndex < lessonQuestions.length) {
             loadQuestion(lessonQuestions[currentQuestionIndex]);
         } else {
-            alert(`Parabéns! Você completou o Módulo Beginner ${currentChapter}!`);
-            goHome();
+            // ALERTA EM INGLÊS
+            alert(`Congratulations! You have completed Beginner Module ${currentChapter}!`); 
+            goHome(); 
         }
     }
     
@@ -652,33 +603,18 @@
             currentQuestionIndex--;
             loadQuestion(lessonQuestions[currentQuestionIndex]);
         } else {
-            goHome();
+            goHome(); 
         }
     }
     
-    // --- LÓGICA DE PRONÚNCIA (FIX CELULAR) ---
-    
     function playWordAudio(audioPath) {
         const audioPlayer = document.getElementById('audio-player');
-        
-        // 1. Limpa qualquer evento anterior
         audioPlayer.oncanplaythrough = null;
-        
-        // 2. Define a fonte do áudio
         audioPlayer.src = GITHUB_RAW_BASE_URL + audioPath;
-
-        // 3. Adiciona um Listener: espera que o áudio possa ser reproduzido
         audioPlayer.oncanplaythrough = function() {
-            // Tenta reproduzir, usando catch para promessas de navegadores rigorosos
-            audioPlayer.play().catch(error => {
-                console.error("Audio playback blocked by browser:", error);
-            });
-            
-            // Remove o evento para evitar múltiplos disparos
+            audioPlayer.play().catch(error => { console.error("Audio playback blocked by browser:", error); });
             audioPlayer.oncanplaythrough = null; 
         };
-        
-        // 4. Força o carregamento do novo arquivo de áudio
         audioPlayer.load();
     }
     
@@ -687,18 +623,12 @@
         pronContainer.style.display = 'flex';
         questionImage.style.display = 'none'; 
         feedback.innerHTML = ``; 
-
-        pronunciationWords = Object.keys(q.options).map((word) => ({
-            word: word,
-            audioPath: q.options[word]
-        }));
-        
+        pronunciationWords = Object.keys(q.options).map((word) => ({ word: word, audioPath: q.options[word] }));
         updatePronunciationUI();
     }
 
     function updatePronunciationUI() {
         const wordListElement = document.getElementById('pronunciation-list');
-
         wordListElement.innerHTML = '';
         pronunciationWords.forEach((item) => {
             wordListElement.innerHTML += `
@@ -711,6 +641,57 @@
             `;
         });
     }
+
+
+    // --- FUNÇÕES DE MODAL PARA O BINGO (Já estão em Inglês) ---
+    function generateTableHTML(data) {
+        let html = '<table class="number-table"><thead><tr><th>English Word</th><th>Number</th></tr></thead><tbody>';
+        data.forEach(item => {
+            html += `<tr><td>${item.word}</td><td>${item.number}</td></tr>`;
+        });
+        html += '</tbody></table>';
+        return html;
+    }
+
+    function openNumberModal(type) {
+        const modal = document.getElementById('numberModal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        
+        let title = "Numbers";
+        switch(type) {
+            case 'one-to-ten':
+                title = "Numbers 1-10";
+                break;
+            case 'tens':
+                title = "Tens (20-100)";
+                break;
+            case 'teens':
+                title = "Teens (11-19)";
+                break;
+            case 'combined':
+                title = "Combined Numbers";
+                break;
+        }
+
+        modalTitle.textContent = title;
+        modalBody.innerHTML = generateTableHTML(numberData[type]);
+        modal.style.display = "flex";
+    }
+
+    function closeNumberModal() {
+        document.getElementById('numberModal').style.display = "none";
+    }
+    
+    // Fecha o modal se o usuário clicar fora dele
+    window.onclick = function(event) {
+        const modal = document.getElementById('numberModal');
+        if (event.target == modal) {
+            closeNumberModal();
+        }
+    }
+    // --- FIM DAS FUNÇÕES DE MODAL ---
+
 </script>
 
 </body>
