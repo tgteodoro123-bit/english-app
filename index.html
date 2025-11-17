@@ -436,6 +436,63 @@
         background-color: #f2f2f2;
         font-weight: bold;
     }
+
+    /* Estilos Específicos para o Tópico 7 (FILL_IN_BLANKS) */
+    .fill-in-blanks-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        padding: 20px 0;
+    }
+
+    .number-input-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 45%; 
+        min-width: 250px; 
+        padding: 10px;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        background-color: #f9f9f9;
+        transition: background-color 0.2s;
+    }
+
+    .number-input-group span {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #007bff;
+        width: 40px; 
+        text-align: right;
+    }
+
+    .number-input-group input {
+        flex-grow: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1em;
+        transition: border-color 0.2s;
+        text-transform: lowercase; 
+    }
+
+    .number-input-group input:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+    
+    .number-result {
+        margin-top: 10px;
+        font-weight: bold;
+        text-align: center;
+        width: 100%; 
+        font-size: 1em;
+    }
+
+    .result-correct { color: #28a745; }
+    .result-incorrect { color: #dc3545; }
+
 </style>
 </head>
 <body>
@@ -458,15 +515,13 @@
     </div>
 
     <p id="question-text" style="display: none;"></p> 
+    
     <div id="options-container" style="display: none;"></div>
     
     <div id="pronunciation-container" style="display: none;">
         <p class="word-to-practice" id="current-instruction"></p> 
-        
         <audio id="audio-player-controls" controls preload="auto"></audio> 
-        
         <div id="comparison-table-container"></div>
-
         <ul id="pronunciation-list"></ul>
     </div>
     
@@ -516,7 +571,7 @@
         // Tópico 5: MODO INTERATIVO DE BINGO
         { id: 5, question: "Click on the '+' signs to review the number groups.", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1, title: "5. Interactive Bingo Review" },
         
-        // TÓPICO 6: PRONÚNCIA TEEN vs TY (TEXTO EM INGLÊS)
+        // TÓPICO 6: PRONÚNCIA TEEN vs TY 
         { id: 6, 
             question: "Listen and notice the difference between -teen and -ty.", 
             options: { 
@@ -527,11 +582,33 @@
             title: "6. Pronunciation: Teen vs Ty"
         },
         
-        { id: 7, question: "What is the color of the sky on a sunny day?", image: "", options: { A: "Red", B: "Yellow", C: "Blue" }, correctAnswer: 'C', chapter: 1, title: "7. Quiz: Colors" },
-        { id: 8, question: "What is the English word for 'cadeira'?", image: "", options: { A: "Book", B: "Chair", C: "Table" }, correctAnswer: 'B', chapter: 1, title: "8. Quiz: Objects" },
-        { id: 9, question: "Identify the color of the object in the image:", image: "apple.jpg", options: { A: "Green", B: "Red", C: "Orange" }, correctAnswer: 'B', chapter: 1, title: "9. Quiz: Image Color" },
-        { id: 10, question: "How do you ask 'Where are you from?'", image: "", options: { A: "What your name is?", B: "Where from you are?", C: "Where are you from?" }, correctAnswer: 'C', chapter: 1, title: "10. Quiz: Common Phrases" },
-        { id: 11, question: "Complete the sentence: 'I want ___ apple.'", image: "", options: { A: "a", B: "an", C: "the" }, correctAnswer: 'B', chapter: 1, title: "11. Quiz: Articles" },
+        // TÓPICO 7: NOVO EXERCÍCIO DE DIGITAÇÃO DE NÚMEROS (FILL_IN_BLANKS)
+        { 
+            id: 7, 
+            question: "Type the numbers below into the blanks using their full English word form:", 
+            correctAnswer: 'FILL_IN_BLANKS', 
+            chapter: 1, 
+            title: "7. Writing Numbers Practice",
+            data: [
+                { num: 10, correct: "ten" }, 
+                { num: 22, correct: "twenty-two" }, 
+                { num: 36, correct: "thirty-six" }, 
+                { num: 12, correct: "twelve" }, 
+                { num: 44, correct: "forty-four" }, 
+                { num: 99, correct: "ninety-nine" }, 
+                { num: 8, correct: "eight" }, 
+                { num: 57, correct: "fifty-seven" }, 
+                { num: 60, correct: "sixty" }, 
+                { num: 16, correct: "sixteen" }
+            ]
+        },
+        
+        // Os demais tópicos foram reordenados:
+        { id: 8, question: "What is the color of the sky on a sunny day?", image: "", options: { A: "Red", B: "Yellow", C: "Blue" }, correctAnswer: 'C', chapter: 1, title: "8. Quiz: Colors" },
+        { id: 9, question: "What is the English word for 'cadeira'?", image: "", options: { A: "Book", B: "Chair", C: "Table" }, correctAnswer: 'B', chapter: 1, title: "9. Quiz: Objects" },
+        { id: 10, question: "Identify the color of the object in the image:", image: "apple.jpg", options: { A: "Green", B: "Red", C: "Orange" }, correctAnswer: 'B', chapter: 1, title: "10. Quiz: Image Color" },
+        { id: 11, question: "How do you ask 'Where are you from?'", image: "", options: { A: "What your name is?", B: "Where from you are?", C: "Where are you from?" }, correctAnswer: 'C', chapter: 1, title: "11. Quiz: Common Phrases" },
+        { id: 12, question: "Complete the sentence: 'I want ___ apple.'", image: "", options: { A: "a", B: "an", C: "the" }, correctAnswer: 'B', chapter: 1, title: "12. Quiz: Articles" },
     ];
     
     // Dados para a tabela de comparação do Tópico 6
@@ -574,6 +651,7 @@
     let currentQuestionIndex = 0;
     let lessonQuestions = []; 
     let currentChapter = 1; 
+    let fillInBlanksAnswered = false; 
     
     const homeScreen = document.getElementById('home-screen');
     const lessonScreen = document.getElementById('lesson-screen');
@@ -595,7 +673,7 @@
     const chapterGrid = document.querySelector('.chapter-grid');
     for (let i = 1; i <= 24; i++) {
         const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
-        let cardTopicName = i === 1 ? 'Basic Foundations (11 Topics Ready!)' : `Module ${i} Content`;
+        let cardTopicName = i === 1 ? 'Basic Foundations (12 Topics Ready!)' : `Module ${i} Content`; // Atualizei o número de tópicos
         chapterGrid.innerHTML += `
             <div class="chapter-card" id="card-${i}">
                 <div class="card-background-image" style="background-image: url('${bgUrl}');"></div>
@@ -679,6 +757,7 @@
 
     function loadQuestion(q) {
         answerChecked = false;
+        fillInBlanksAnswered = false; 
         feedback.innerHTML = '';
         optionsContainer.innerHTML = '';
         
@@ -709,52 +788,97 @@
         optionsContainer.style.display = 'none';
         
         // Lógica para controle da visibilidade do texto principal da pergunta
-        if (q.correctAnswer === 'PRONUNCIATION_SET' || q.correctAnswer === 'INFO') {
-             // Oculta questionText para os modos INFO e PRONUNCIATION para usar apenas os elementos internos.
-            questionText.style.display = 'none';
+        if (q.correctAnswer === 'PRONUNCIATION_SET' || q.correctAnswer === 'INFO' || q.correctAnswer === 'FILL_IN_BLANKS') {
+            questionText.style.display = 'block'; // O texto é a instrução principal
         } else {
             questionText.style.display = 'block';
         }
         
         
         if (q.correctAnswer === 'INFO') {
-            optionsContainer.style.display = 'block'; 
-            optionsContainer.style.backgroundColor = '#f4f4f4'; 
-            optionsContainer.style.padding = '20px';
-            optionsContainer.style.borderRadius = '8px';
-            
-            let htmlContent = '<ul style="list-style-type: none; padding: 0;">';
-            for (const key in q.options) {
-                htmlContent += `<li style="margin: 10px 0; font-size: 1.1em; border-bottom: 1px dashed #ddd; padding-bottom: 5px;">
-                                    <strong>${key}:</strong> ${q.options[key]}
-                                </li>`;
-            }
-            htmlContent += '</ul>';
-            optionsContainer.innerHTML = htmlContent;
-            
+            renderInfoScreen(q);
         } else if (q.correctAnswer === 'PRONUNCIATION_SET') {
             renderPronunciationPractice(q);
         } else if (q.correctAnswer === 'INTERACTIVE_BINGO') {
-            optionsContainer.innerHTML = '';
-            questionText.style.display = 'block'; 
-            // ATIVA OS HOTSPOTS (Tópico 5)
-            document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex'); 
+            renderInteractiveBingo(q);
+        } else if (q.correctAnswer === 'FILL_IN_BLANKS') {
+            renderFillInBlanks(q);
         }
         else {
-            optionsContainer.style.display = 'block';
-            optionsContainer.style.backgroundColor = 'transparent'; 
-            optionsContainer.style.padding = '0';
-            
-            for (const key in q.options) {
-                const optionDiv = document.createElement('div');
-                optionDiv.className = 'option';
-                optionDiv.textContent = `${key}: ${q.options[key]}`; 
-                optionDiv.setAttribute('data-answer', key);
-                optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer, q); 
-                optionsContainer.appendChild(optionDiv);
-            }
+            renderMultipleChoice(q);
         }
     }
+
+    function renderInfoScreen(q) {
+        optionsContainer.style.display = 'block'; 
+        optionsContainer.style.backgroundColor = '#f4f4f4'; 
+        optionsContainer.style.padding = '20px';
+        optionsContainer.style.borderRadius = '8px';
+        
+        let htmlContent = '<ul style="list-style-type: none; padding: 0;">';
+        for (const key in q.options) {
+            htmlContent += `<li style="margin: 10px 0; font-size: 1.1em; border-bottom: 1px dashed #ddd; padding-bottom: 5px;">
+                                <strong>${key}:</strong> ${q.options[key]}
+                            </li>`;
+        }
+        htmlContent += '</ul>';
+        optionsContainer.innerHTML = htmlContent;
+    }
+
+    function renderInteractiveBingo(q) {
+        optionsContainer.innerHTML = '';
+        document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex'); 
+        questionImage.style.display = 'block'; 
+    }
+    
+    function renderMultipleChoice(q) {
+        optionsContainer.style.display = 'block';
+        optionsContainer.style.backgroundColor = 'transparent'; 
+        optionsContainer.style.padding = '0';
+        
+        for (const key in q.options) {
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'option';
+            optionDiv.textContent = `${key}: ${q.options[key]}`; 
+            optionDiv.setAttribute('data-answer', key);
+            optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer, q); 
+            optionsContainer.appendChild(optionDiv);
+        }
+    }
+
+    // --- FUNÇÃO PARA RENDERIZAR O EXERCÍCIO DE DIGITAÇÃO (FILL_IN_BLANKS) ---
+    function renderFillInBlanks(q) {
+        optionsContainer.style.display = 'block'; 
+        optionsContainer.style.backgroundColor = 'transparent';
+        optionsContainer.style.padding = '0';
+        
+        let htmlContent = '<div class="fill-in-blanks-container">';
+        q.data.forEach((item, index) => {
+            // Se já foi respondido, mostra a resposta salva (com a correção visual)
+            const resultHtml = item.feedback ? `<div class="number-result ${item.isCorrect ? 'result-correct' : 'result-incorrect'}">${item.feedback}</div>` : '';
+            const value = item.lastInput || "";
+            const disabled = fillInBlanksAnswered ? 'disabled' : '';
+
+            htmlContent += `
+                <div class="number-input-group">
+                    <span>${item.num}:</span>
+                    <input type="text" id="input-${index}" value="${value}" ${disabled}>
+                </div>
+            `;
+        });
+        htmlContent += '</div>';
+        optionsContainer.innerHTML = htmlContent;
+        
+        // Adiciona um container para o feedback geral
+        optionsContainer.innerHTML += `<div id="fill-in-blanks-results"></div>`;
+
+        // Se já foi respondido, mostra o feedback geral
+        if (fillInBlanksAnswered) {
+             displayFillInBlanksCorrection(q.data);
+        }
+    }
+    // ----------------------------------------------------------------------
+
 
     function checkAnswer(selectedDiv, selectedKey, correctKey, currentQuestion) {
         if (answerChecked) return; 
@@ -785,7 +909,83 @@
         nextBtn.disabled = false;
     }
     
+    // --- FUNÇÃO PARA CHECAR A RESPOSTA DE DIGITAÇÃO E MOSTRAR FEEDBACK ---
+    function checkFillInBlanks(q) {
+        let totalCorrect = 0;
+        
+        q.data.forEach((item, index) => {
+            const inputElement = document.getElementById(`input-${index}`);
+            // Normalização: remove espaços extras e converte para minúsculas
+            const userAnswer = inputElement.value.toLowerCase().trim().replace(/ +/g, ' '); 
+            const correctedAnswer = item.correct.toLowerCase().trim().replace(/ +/g, ' ');
+
+            const isCorrect = userAnswer === correctedAnswer;
+            
+            if (isCorrect) {
+                totalCorrect++;
+                item.feedback = '✅ ' + correctedAnswer;
+                item.isCorrect = true;
+            } else {
+                item.feedback = '❌ ' + correctedAnswer;
+                item.isCorrect = false;
+            }
+            item.lastInput = inputElement.value; // Salva o input do usuário
+        });
+        
+        fillInBlanksAnswered = true;
+        
+        // Renderiza o feedback no container de resultados (no lugar do feedback geral)
+        displayFillInBlanksCorrection(q.data, totalCorrect);
+        
+        return totalCorrect === q.data.length; // Retorna true se tudo estiver correto
+    }
+    
+    function displayFillInBlanksCorrection(data, totalCorrect) {
+        const resultsContainer = document.getElementById('fill-in-blanks-results');
+        const totalItems = data.length;
+        const totalCorrectFinal = totalCorrect !== undefined ? totalCorrect : data.filter(item => item.isCorrect).length;
+        
+        let overallMessage = `<p style="font-size: 1.2em; margin-top: 20px;">You got **${totalCorrectFinal}** out of **${totalItems}** correct!</p>`;
+        
+        if (totalCorrectFinal === totalItems) {
+            overallMessage = `<p class="result-correct" style="font-size: 1.4em; margin-top: 20px;">**CONGRATULATIONS!** You got all answers correct! 🎉</p>`;
+            feedback.innerHTML = ""; // Limpa o feedback de baixo para usar o de cima
+        } else {
+             overallMessage = `<p class="result-incorrect" style="font-size: 1.4em; margin-top: 20px;">**Keep practicing!** You got ${totalCorrectFinal} out of ${totalItems} correct. 😥</p>`;
+             feedback.innerHTML = "Click **Next** to proceed to the next topic.";
+        }
+        
+        resultsContainer.innerHTML = overallMessage;
+
+        // Renderiza os inputs novamente com as correções
+        const inputContainer = optionsContainer.querySelector('.fill-in-blanks-container');
+        inputContainer.innerHTML = '';
+        data.forEach((item, index) => {
+             inputContainer.innerHTML += `
+                <div class="number-input-group">
+                    <span>${item.num}:</span>
+                    <input type="text" id="input-${index}" value="${item.lastInput}" disabled>
+                    <div class="number-result ${item.isCorrect ? 'result-correct' : 'result-incorrect'}">
+                         ${item.feedback}
+                    </div>
+                </div>
+            `;
+        });
+    }
+    // ----------------------------------------------------------------------
+
+
     function goNext() {
+        const currentQuestion = lessonQuestions[currentQuestionIndex];
+        
+        // Lógica específica para o 'FILL_IN_BLANKS'
+        if (currentQuestion.correctAnswer === 'FILL_IN_BLANKS' && !fillInBlanksAnswered) {
+            // Se for a primeira vez que clica em Next no FILL_IN_BLANKS
+            checkFillInBlanks(currentQuestion);
+            return; // Permanece na mesma tela para ver a correção
+        }
+        
+        // Lógica padrão para avançar
         currentQuestionIndex++;
         if (currentQuestionIndex < lessonQuestions.length) {
             loadQuestion(lessonQuestions[currentQuestionIndex]);
