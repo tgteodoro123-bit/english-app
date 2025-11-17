@@ -442,18 +442,18 @@
         display: flex;
         flex-direction: column; 
         align-items: center; 
-        gap: 10px; 
-        padding: 20px 0;
+        gap: 8px; /* Espaço entre os grupos menor */
+        padding: 15px 0;
     }
 
     .number-input-group {
         display: flex;
         flex-direction: column; 
         align-items: flex-start;
-        gap: 5px; 
+        gap: 4px; /* Espaço dentro do grupo menor */
         width: 80%; 
-        max-width: 250px; /* Mais estreito */
-        padding: 8px; 
+        max-width: 200px; /* Largura ainda mais estreita (250px -> 200px) */
+        padding: 6px; 
         border: 1px solid #eee;
         border-radius: 6px;
         background-color: #f9f9f9;
@@ -461,17 +461,17 @@
     }
 
     .number-input-group span {
-        font-size: 1.5em; /* Número (10:) um pouco menor */
+        font-size: 1.3em; /* Número (10:) menor (1.5em -> 1.3em) */
         font-weight: 700;
         color: #333; 
         width: 100%; 
         text-align: left;
-        margin-bottom: 5px;
+        margin-bottom: 3px;
     }
 
     .number-input-group input {
         width: 100%; 
-        padding: 14px 10px; /* Input mais alto */
+        padding: 12px 10px; /* Input mais compacto em altura (14px -> 12px) */
         border: 1px solid #ccc;
         border-radius: 4px;
         font-size: 1em;
