@@ -42,7 +42,7 @@
         }
     }
 
-    /* 3. Estilos do Card */
+    /* 3. Estilos do Card (Sem alterações significativas aqui) */
     .chapter-card {
         background-color: #f7f7f7; 
         border-radius: 6px; 
@@ -161,33 +161,7 @@
         position: relative; 
     }
     
-    /* Hotspot para o Tópico 5 (O círculo com o +) - ESTILO CLEAN */
-    .hotspot {
-        position: absolute;
-        width: 35px; 
-        height: 35px;
-        background-color: #ffffff; 
-        border: 2px solid #333; 
-        color: #333; 
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 1.8em; 
-        font-weight: 500;
-        cursor: pointer;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-        z-index: 5;
-        transition: transform 0.2s, background-color 0.2s;
-        line-height: 0.8; 
-    }
-    
-    .hotspot:hover {
-        background-color: #f0f0f0; 
-        transform: scale(1.1);
-    }
-
-    /* Botões de Navegação Fixos (Canto Direito) */
+    /* Botões de Navegação Fixos */
     .nav-buttons {
         position: fixed; 
         top: 20px; 
@@ -198,7 +172,6 @@
         align-items: center; 
     }
     
-    /* Estilo dos botões Back e Next */
     .nav-buttons button {
         padding: 12px 20px; 
         border: none;
@@ -214,7 +187,7 @@
         background-color: #0056b3;
     }
     
-    /* Indicador de progresso */
+    /* Indicador de progresso mais fino e menor */
     #progress-indicator {
         font-weight: 400; 
         color: #333;
@@ -222,80 +195,63 @@
         margin-right: 15px; 
     }
 
-    /* ******************************************************************* */
-    /* Botão Hamburguer no canto superior esquerdo (OCULTO POR PADRÃO) */
+    /* Botão Hamburguer - Apenas o ícone azul, sem fundo (Clean) */
     .menu-toggle {
-        display: none; 
-        position: fixed; 
-        top: 20px;
-        left: 20px; 
-        font-size: 2.2em; 
+        font-size: 1.8em; 
         background: none; 
         border: none;
         cursor: pointer;
-        color: #333; 
+        color: #007bff; 
         line-height: 1; 
-        padding: 5px 10px; 
-        z-index: 1001; 
-        transition: color 0.2s ease, background-color 0.2s ease;
-        border-radius: 4px;
+        padding: 0 10px;
+        margin-right: 5px; 
+        position: relative; 
+        transition: color 0.2s ease;
     }
 
     .menu-toggle:hover {
-        color: #555; 
-        background-color: #f0f0f0; 
+        color: #0056b3; 
     }
 
-    /* Side Menu (Lateral Esquerda) - Clean */
-    .side-menu {
-        height: 100%; 
-        width: 0; 
-        position: fixed; 
-        z-index: 1000; 
-        top: 0;
-        left: 0;
+    /* Menu Dropdown - Mais clean, mais largo e rolável */
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 45px; 
+        right: 0; 
         background-color: #ffffff;
-        overflow-x: hidden; 
-        transition: 0.3s; 
-        padding-top: 60px; 
-        box-shadow: 2px 0 10px rgba(0,0,0,0.1); 
-        border-right: 1px solid #eee;
-        overflow-y: auto; 
+        min-width: 280px; 
+        max-height: 300px; 
+        overflow-y: auto;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+        z-index: 100;
+        border-radius: 6px;
+        border: 1px solid #e0e0e0; 
+        padding: 0; 
     }
 
-    .side-menu.open {
-        width: 280px; 
-    }
-
-    .side-menu a {
-        padding: 15px 25px; 
-        text-decoration: none;
-        font-size: 1.1em; 
+    .dropdown-menu a {
         color: #333; 
+        padding: 10px 15px;
+        text-decoration: none;
         display: block;
-        transition: 0.3s;
+        font-size: 0.9em; 
+        white-space: nowrap; 
         border-bottom: 1px solid #f0f0f0; 
         font-weight: 400; 
+        transition: background-color 0.2s, color 0.2s;
     }
 
-    .side-menu a:hover {
+    .dropdown-menu a:last-child {
+        border-bottom: none; 
+    }
+
+    .dropdown-menu a:hover {
         background-color: #f6f9fc; 
         color: #007bff; 
     }
 
-    .side-menu .close-btn {
-        position: absolute;
-        top: 0;
-        right: 15px;
-        font-size: 36px;
-        margin-left: 50px;
-        color: #aaa;
-        cursor: pointer;
-    }
-    /* ******************************************************************* */
-
-
-    /* Estilos de Conteúdo */
+    /* Estilos de Texto e Questão */
     .quiz-question img {
         max-width: 100%; 
         height: auto; 
@@ -403,7 +359,7 @@
         border: 1px solid #888;
         border-radius: 10px;
         width: 80%;
-        max-width: 450px; 
+        max-width: 400px; 
         box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         position: relative;
     }
@@ -426,76 +382,14 @@
 
     .number-table th, .number-table td {
         border: 1px solid #ddd;
-        padding: 10px;
+        padding: 8px;
         text-align: left;
-        font-size: 1em; 
-        font-weight: 400; 
+        font-size: 0.95em; 
     }
 
     .number-table th {
         background-color: #f2f2f2;
-        font-weight: bold;
     }
-
-    /* Estilos Específicos para o Tópico 7 (FILL_IN_BLANKS) */
-    .fill-in-blanks-container {
-        display: flex;
-        flex-direction: column; 
-        align-items: center; 
-        gap: 4px; /* Espaço entre os grupos MUITO MENOR */
-        padding: 5px 0; /* Padding vertical mínimo */
-    }
-
-    .number-input-group {
-        display: flex;
-        flex-direction: column; 
-        align-items: flex-start;
-        gap: 2px; /* Espaço dentro do grupo MUITO MENOR */
-        width: 80%; 
-        max-width: 200px; 
-        padding: 3px; /* Padding interno mínimo */
-        border: 1px solid #eee;
-        border-radius: 6px;
-        background-color: #f9f9f9;
-        transition: background-color 0.2s;
-    }
-
-    .number-input-group span {
-        font-size: 1.1em; /* Número (10:) MENOR */
-        font-weight: 700;
-        color: #333; 
-        width: 100%; 
-        text-align: left;
-        margin-bottom: 2px;
-    }
-
-    .number-input-group input {
-        width: 100%; 
-        padding: 8px 8px; /* Input BEM MAIS COMPACTO em altura */
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 0.9em; /* Texto do input menor */
-        transition: border-color 0.2s;
-        text-transform: lowercase; 
-        box-sizing: border-box; 
-    }
-
-    .number-input-group input:focus {
-        border-color: #007bff;
-        outline: none;
-    }
-    
-    .number-result {
-        margin-top: 3px; 
-        font-weight: bold;
-        text-align: left; 
-        width: 100%; 
-        font-size: 0.85em; /* Feedback um pouco menor */
-    }
-
-    .result-correct { color: #28a745; }
-    .result-incorrect { color: #dc3545; }
-
 </style>
 </head>
 <body>
@@ -518,13 +412,15 @@
     </div>
 
     <p id="question-text" style="display: none;"></p> 
-    
     <div id="options-container" style="display: none;"></div>
     
     <div id="pronunciation-container" style="display: none;">
         <p class="word-to-practice" id="current-instruction"></p> 
+        
         <audio id="audio-player-controls" controls preload="auto"></audio> 
+        
         <div id="comparison-table-container"></div>
+
         <ul id="pronunciation-list"></ul>
     </div>
     
@@ -532,14 +428,14 @@
 
 </div>
 
-<button class="menu-toggle" onclick="openNav()">☰</button>
-
-<div id="side-menu" class="side-menu">
-    <a href="javascript:void(0)" class="close-btn" onclick="closeNav()">&times;</a>
-    </div>
-
 <div class="nav-buttons">
     <span id="progress-indicator"></span> 
+    
+    <button class="menu-toggle" onclick="toggleMenu()">☰
+        <div id="dropdown-menu" class="dropdown-menu">
+            </div>
+    </button>
+    
     <button id="back-btn" onclick="backQuestion()">Back</button>
     <button id="next-btn" onclick="goNext()">Next</button>
 </div>
@@ -574,9 +470,9 @@
         // Tópico 5: MODO INTERATIVO DE BINGO
         { id: 5, question: "Click on the '+' signs to review the number groups.", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1, title: "5. Interactive Bingo Review" },
         
-        // TÓPICO 6: PRONÚNCIA TEEN vs TY 
+        // TÓPICO 6: PRONÚNCIA TEEN vs TY (CORREÇÃO FINAL da Duplicação)
         { id: 6, 
-            question: "Listen and notice the difference between -teen and -ty.", 
+            question: "Listen and notice the difference. Don't confuse 'Teen' with 'Ty'.", 
             options: { 
                 "13: (Thirteen) – 30 (Thirty)": "teenety.mp3"
             }, 
@@ -585,33 +481,11 @@
             title: "6. Pronunciation: Teen vs Ty"
         },
         
-        // TÓPICO 7: EXERCÍCIO DE DIGITAÇÃO DE NÚMEROS (FILL_IN_BLANKS)
-        { 
-            id: 7, 
-            question: "Write the numbers in English:", 
-            correctAnswer: 'FILL_IN_BLANKS', 
-            chapter: 1, 
-            title: "7. Writing Numbers Practice",
-            data: [
-                { num: 10, correct: "ten" }, 
-                { num: 22, correct: "twenty-two" }, 
-                { num: 36, correct: "thirty-six" }, 
-                { num: 12, correct: "twelve" }, 
-                { num: 44, correct: "forty-four" }, 
-                { num: 99, correct: "ninety-nine" }, 
-                { num: 8, correct: "eight" }, 
-                { num: 57, correct: "fifty-seven" }, 
-                { num: 60, correct: "sixty" }, 
-                { num: 16, correct: "sixteen" }
-            ]
-        },
-        
-        // Os demais tópicos foram reordenados:
-        { id: 8, question: "What is the color of the sky on a sunny day?", image: "", options: { A: "Red", B: "Yellow", C: "Blue" }, correctAnswer: 'C', chapter: 1, title: "8. Quiz: Colors" },
-        { id: 9, question: "What is the English word for 'cadeira'?", image: "", options: { A: "Book", B: "Chair", C: "Table" }, correctAnswer: 'B', chapter: 1, title: "9. Quiz: Objects" },
-        { id: 10, question: "Identify the color of the object in the image:", image: "apple.jpg", options: { A: "Green", B: "Red", C: "Orange" }, correctAnswer: 'B', chapter: 1, title: "10. Quiz: Image Color" },
-        { id: 11, question: "How do you ask 'Where are you from?'", image: "", options: { A: "What your name is?", B: "Where from you are?", C: "Where are you from?" }, correctAnswer: 'C', chapter: 1, title: "11. Quiz: Common Phrases" },
-        { id: 12, question: "Complete the sentence: 'I want ___ apple.'", image: "", options: { A: "a", B: "an", C: "the" }, correctAnswer: 'B', chapter: 1, title: "12. Quiz: Articles" },
+        { id: 7, question: "What is the color of the sky on a sunny day?", image: "", options: { A: "Red", B: "Yellow", C: "Blue" }, correctAnswer: 'C', chapter: 1, title: "7. Quiz: Colors" },
+        { id: 8, question: "What is the English word for 'cadeira'?", image: "", options: { A: "Book", B: "Chair", C: "Table" }, correctAnswer: 'B', chapter: 1, title: "8. Quiz: Objects" },
+        { id: 9, question: "Identify the color of the object in the image:", image: "apple.jpg", options: { A: "Green", B: "Red", C: "Orange" }, correctAnswer: 'B', chapter: 1, title: "9. Quiz: Image Color" },
+        { id: 10, question: "How do you ask 'Where are you from?'", image: "", options: { A: "What your name is?", B: "Where from you are?", C: "Where are you from?" }, correctAnswer: 'C', chapter: 1, title: "10. Quiz: Common Phrases" },
+        { id: 11, question: "Complete the sentence: 'I want ___ apple.'", image: "", options: { A: "a", B: "an", C: "the" }, correctAnswer: 'B', chapter: 1, title: "11. Quiz: Articles" },
     ];
     
     // Dados para a tabela de comparação do Tópico 6
@@ -653,8 +527,7 @@
     
     let currentQuestionIndex = 0;
     let lessonQuestions = []; 
-    let currentChapter = 1; 
-    let fillInBlanksAnswered = false; 
+    let currentChapter = 1; // Inicializa o capítulo atual
     
     const homeScreen = document.getElementById('home-screen');
     const lessonScreen = document.getElementById('lesson-screen');
@@ -665,10 +538,9 @@
     const questionText = document.getElementById('question-text');
     const questionImage = document.getElementById('question-image');
     const progressIndicator = document.getElementById('progress-indicator');
+    const dropdownMenu = document.getElementById('dropdown-menu'); 
     
-    const sideMenu = document.getElementById('side-menu'); 
     const navButtonsContainer = document.querySelector('.nav-buttons'); 
-    const menuToggle = document.querySelector('.menu-toggle'); 
     
     let answerChecked = false;
     
@@ -676,7 +548,7 @@
     const chapterGrid = document.querySelector('.chapter-grid');
     for (let i = 1; i <= 24; i++) {
         const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
-        let cardTopicName = i === 1 ? 'Basic Foundations (12 Topics Ready!)' : `Module ${i} Content`; 
+        let cardTopicName = i === 1 ? 'Basic Foundations (11 Topics Ready!)' : `Module ${i} Content`;
         chapterGrid.innerHTML += `
             <div class="chapter-card" id="card-${i}">
                 <div class="card-background-image" style="background-image: url('${bgUrl}');"></div>
@@ -691,20 +563,21 @@
         `;
     }
 
-    // --- FUNÇÕES DO SIDE MENU ---
-    function openNav() {
-        sideMenu.classList.add('open');
+    // --- FUNÇÕES DE NAVEGAÇÃO E DROPDOWN ---
+    
+    function toggleMenu() {
+        dropdownMenu.style.display = (dropdownMenu.style.display === 'block') ? 'none' : 'block';
     }
 
-    function closeNav() {
-        sideMenu.classList.remove('open');
-    }
-    
     // Fechar o menu se clicar fora
     window.onclick = function(event) {
-        if (sideMenu.classList.contains('open') && !event.target.closest('.side-menu') && !event.target.closest('.menu-toggle')) {
-            closeNav();
+        // Verifica se o clique não foi no botão hamburguer nem dentro do menu dropdown
+        if (!event.target.closest('.menu-toggle')) {
+            if (dropdownMenu.style.display === 'block') {
+                dropdownMenu.style.display = 'none';
+            }
         }
+        // Também trata o modal do Bingo
         const modal = document.getElementById('numberModal');
         if (event.target == modal) {
             closeNumberModal();
@@ -712,20 +585,19 @@
     }
     
     function loadQuestionFromMenu(index) {
-        closeNav();
+        dropdownMenu.style.display = 'none';
         currentQuestionIndex = index;
         loadQuestion(lessonQuestions[currentQuestionIndex]);
     }
     
     function populateMenu() {
-        sideMenu.querySelectorAll('a:not(.close-btn)').forEach(a => a.remove()); 
-        
+        dropdownMenu.innerHTML = '';
         lessonQuestions.forEach((q, index) => {
             const link = document.createElement('a');
             link.textContent = q.title; 
             link.href = `javascript:void(0)`;
             link.onclick = () => loadQuestionFromMenu(index);
-            sideMenu.appendChild(link);
+            dropdownMenu.appendChild(link);
         });
     }
 
@@ -742,7 +614,6 @@
         homeScreen.style.display = 'none';
         lessonScreen.style.display = 'block';
         navButtonsContainer.style.display = 'flex'; 
-        menuToggle.style.display = 'block'; 
         
         populateMenu(); 
         
@@ -754,22 +625,21 @@
         homeScreen.style.display = 'block';
         lessonScreen.style.display = 'none';
         navButtonsContainer.style.display = 'none'; 
-        menuToggle.style.display = 'none'; 
-        closeNav(); 
+        dropdownMenu.style.display = 'none';
     }
 
     function loadQuestion(q) {
         answerChecked = false;
-        fillInBlanksAnswered = false; 
         feedback.innerHTML = '';
         optionsContainer.innerHTML = '';
         
+        // Atualiza o indicador de progresso
         progressIndicator.textContent = `(${currentQuestionIndex + 1}/${lessonQuestions.length})`;
         
         nextBtn.style.display = 'block';
         backBtn.style.display = 'block';
-        
-        // Esconde elementos específicos que podem ter sido ativados
+        questionText.style.display = 'block'; 
+
         document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'none'); 
         document.getElementById('pronunciation-container').style.display = 'none';
         document.getElementById('comparison-table-container').innerHTML = '';
@@ -790,96 +660,43 @@
         
         optionsContainer.style.display = 'none';
         
-        // Lógica para controle da visibilidade do texto principal da pergunta
-        if (q.correctAnswer === 'PRONUNCIATION_SET' || q.correctAnswer === 'INFO' || q.correctAnswer === 'FILL_IN_BLANKS') {
-            questionText.style.display = 'block'; 
-        } else {
-            questionText.style.display = 'block';
-        }
-        
-        
         if (q.correctAnswer === 'INFO') {
-            renderInfoScreen(q);
+            optionsContainer.style.display = 'block'; 
+            optionsContainer.style.backgroundColor = '#f4f4f4'; 
+            optionsContainer.style.padding = '20px';
+            optionsContainer.style.borderRadius = '8px';
+            
+            let htmlContent = '<ul style="list-style-type: none; padding: 0;">';
+            for (const key in q.options) {
+                htmlContent += `<li style="margin: 10px 0; font-size: 1.1em; border-bottom: 1px dashed #ddd; padding-bottom: 5px;">
+                                    <strong>${key}:</strong> ${q.options[key]}
+                                </li>`;
+            }
+            htmlContent += '</ul>';
+            optionsContainer.innerHTML = htmlContent;
+            
         } else if (q.correctAnswer === 'PRONUNCIATION_SET') {
             renderPronunciationPractice(q);
         } else if (q.correctAnswer === 'INTERACTIVE_BINGO') {
-            renderInteractiveBingo(q);
-        } else if (q.correctAnswer === 'FILL_IN_BLANKS') {
-            renderFillInBlanks(q);
+            optionsContainer.innerHTML = '';
+            questionText.style.display = 'block'; 
+            document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex'); 
         }
         else {
-            renderMultipleChoice(q);
+            optionsContainer.style.display = 'block';
+            optionsContainer.style.backgroundColor = 'transparent'; 
+            optionsContainer.style.padding = '0';
+            
+            for (const key in q.options) {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = `${key}: ${q.options[key]}`; 
+                optionDiv.setAttribute('data-answer', key);
+                optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer, q); 
+                optionsContainer.appendChild(optionDiv);
+            }
         }
     }
-
-    function renderInfoScreen(q) {
-        optionsContainer.style.display = 'block'; 
-        optionsContainer.style.backgroundColor = '#f4f4f4'; 
-        optionsContainer.style.padding = '20px';
-        optionsContainer.style.borderRadius = '8px';
-        
-        let htmlContent = '<ul style="list-style-type: none; padding: 0;">';
-        for (const key in q.options) {
-            htmlContent += `<li style="margin: 10px 0; font-size: 1.1em; border-bottom: 1px dashed #ddd; padding-bottom: 5px;">
-                                <strong>${key}:</strong> ${q.options[key]}
-                            </li>`;
-        }
-        htmlContent += '</ul>';
-        optionsContainer.innerHTML = htmlContent;
-    }
-
-    function renderInteractiveBingo(q) {
-        optionsContainer.innerHTML = '';
-        document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex'); 
-        questionImage.style.display = 'block'; 
-    }
-    
-    function renderMultipleChoice(q) {
-        optionsContainer.style.display = 'block';
-        optionsContainer.style.backgroundColor = 'transparent'; 
-        optionsContainer.style.padding = '0';
-        
-        for (const key in q.options) {
-            const optionDiv = document.createElement('div');
-            optionDiv.className = 'option';
-            optionDiv.textContent = `${key}: ${q.options[key]}`; 
-            optionDiv.setAttribute('data-answer', key);
-            optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer, q); 
-            optionsContainer.appendChild(optionDiv);
-        }
-    }
-
-    // --- FUNÇÃO PARA RENDERIZAR O EXERCÍCIO DE DIGITAÇÃO (FILL_IN_BLANKS) ---
-    function renderFillInBlanks(q) {
-        optionsContainer.style.display = 'block'; 
-        optionsContainer.style.backgroundColor = 'transparent';
-        optionsContainer.style.padding = '0';
-        
-        let htmlContent = '<div class="fill-in-blanks-container">';
-        q.data.forEach((item, index) => {
-            const value = item.lastInput || "";
-            const disabled = fillInBlanksAnswered ? 'disabled' : '';
-
-            htmlContent += `
-                <div class="number-input-group">
-                    <span>${item.num}:</span>
-                    <input type="text" id="input-${index}" value="${value}" ${disabled}>
-                </div>
-            `;
-        });
-        htmlContent += '</div>';
-        optionsContainer.innerHTML = htmlContent;
-        
-        // Adiciona um container para o feedback geral
-        optionsContainer.innerHTML += `<div id="fill-in-blanks-results"></div>`;
-
-        // Se já foi respondido, mostra o feedback geral e os resultados por input
-        if (fillInBlanksAnswered) {
-             displayFillInBlanksCorrection(q.data);
-        }
-    }
-    // ----------------------------------------------------------------------
-
 
     function checkAnswer(selectedDiv, selectedKey, correctKey, currentQuestion) {
         if (answerChecked) return; 
@@ -910,90 +727,8 @@
         nextBtn.disabled = false;
     }
     
-    // --- FUNÇÃO PARA CHECAR A RESPOSTA DE DIGITAÇÃO E MOSTRAR FEEDBACK ---
-    function checkFillInBlanks(q) {
-        let totalCorrect = 0;
-        
-        q.data.forEach((item, index) => {
-            const inputElement = document.getElementById(`input-${index}`);
-            // Normalização: remove espaços extras e converte para minúsculas
-            const userAnswer = inputElement.value.toLowerCase().trim().replace(/ +/g, ' '); 
-            const correctedAnswer = item.correct.toLowerCase().trim().replace(/ +/g, ' ');
-
-            const isCorrect = userAnswer === correctedAnswer;
-            
-            if (isCorrect) {
-                totalCorrect++;
-                item.feedback = '✅ ' + correctedAnswer;
-                item.isCorrect = true;
-            } else {
-                item.feedback = '❌ ' + correctedAnswer;
-                item.isCorrect = false;
-            }
-            item.lastInput = inputElement.value; // Salva o input do usuário
-        });
-        
-        fillInBlanksAnswered = true;
-        
-        // Renderiza o feedback no container de resultados (no lugar do feedback geral)
-        displayFillInBlanksCorrection(q.data, totalCorrect);
-        
-        return totalCorrect === q.data.length; 
-    }
-    
-    function displayFillInBlanksCorrection(data, totalCorrect) {
-        const resultsContainer = document.getElementById('fill-in-blanks-results');
-        const totalItems = data.length;
-        const totalCorrectFinal = totalCorrect !== undefined ? totalCorrect : data.filter(item => item.isCorrect).length;
-        
-        let overallMessage;
-        
-        if (totalCorrectFinal === totalItems) {
-            overallMessage = `<p class="result-correct" style="font-size: 1.4em; margin-top: 20px;">**CONGRATULATIONS!** You got all answers correct! 🎉</p>`;
-            feedback.innerHTML = ""; 
-        } else {
-             overallMessage = `<p class="result-incorrect" style="font-size: 1.4em; margin-top: 20px;">**Keep practicing!** You got ${totalCorrectFinal} out of ${totalItems} correct. 😥</p>`;
-             feedback.innerHTML = "Click **Next** to proceed to the next topic.";
-        }
-        
-        resultsContainer.innerHTML = overallMessage;
-
-        // Renderiza os inputs novamente com as correções
-        const inputContainer = optionsContainer.querySelector('.fill-in-blanks-container');
-        inputContainer.innerHTML = '';
-        data.forEach((item, index) => {
-             inputContainer.innerHTML += `
-                <div class="number-input-group">
-                    <span>${item.num}:</span>
-                    <input type="text" id="input-${index}" value="${item.lastInput}" disabled>
-                    <div class="number-result ${item.isCorrect ? 'result-correct' : 'result-incorrect'}">
-                         ${item.feedback}
-                    </div>
-                </div>
-            `;
-        });
-    }
-    // ----------------------------------------------------------------------
-
-
     function goNext() {
-        const currentQuestion = lessonQuestions[currentQuestionIndex];
-        
-        // Lógica específica para o 'FILL_IN_BLANKS'
-        if (currentQuestion.correctAnswer === 'FILL_IN_BLANKS') {
-            if (!fillInBlanksAnswered) {
-                // Primeira vez: checa e mostra o feedback.
-                checkFillInBlanks(currentQuestion);
-                return; 
-            } else {
-                // Segunda vez: avança
-                currentQuestionIndex++;
-            }
-        } else {
-             // Lógica padrão: avança
-            currentQuestionIndex++;
-        }
-        
+        currentQuestionIndex++;
         if (currentQuestionIndex < lessonQuestions.length) {
             loadQuestion(lessonQuestions[currentQuestionIndex]);
         } else {
@@ -1022,10 +757,6 @@
         feedback.innerHTML = ``; 
         listContainer.innerHTML = '';
         tableContainer.innerHTML = '';
-        
-        // Define a instrução, que é o texto da pergunta
-        document.getElementById('current-instruction').textContent = q.question; 
-
 
         if (q.id === 6) {
             // Tópico 6: Teen vs Ty (Áudio Único com barra de controle e Tabela Visual)
@@ -1040,10 +771,15 @@
             tableHTML += '</tbody></table>'; 
             
             tableContainer.innerHTML = tableHTML;
+            
+            // A instrução principal já está em questionText, mas repetimos aqui para o campo de instrução da pronúncia
+            document.getElementById('current-instruction').textContent = q.question; 
+
 
         } else if (q.id === 4) {
             // Tópico 4: Palavras individuais (Formato com vários botões de play)
             audioControls.style.display = 'none'; 
+            document.getElementById('current-instruction').textContent = q.question;
             
             pronunciationWords = Object.keys(q.options).map((word) => ({ word: word, audioPath: q.options[word] }));
             updatePronunciationUI(); 
