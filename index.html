@@ -17,6 +17,7 @@
     /* 2. Layout da Grade de Cards e Spacing */
     #home-screen {
         max-width: 1200px; 
+        /* Ajuste para acomodar o hambúrguer: */
         margin: 60px auto 50px; 
         padding: 0 30px;
     }
@@ -42,7 +43,7 @@
         }
     }
 
-    /* 3. Estilos do Card (Sem alterações significativas aqui) */
+    /* 3. Estilos do Card */
     .chapter-card {
         background-color: #f7f7f7; 
         border-radius: 6px; 
@@ -185,7 +186,7 @@
         transform: scale(1.1);
     }
 
-    /* Botões de Navegação Fixos */
+    /* Botões de Navegação Fixos (Canto Direito) */
     .nav-buttons {
         position: fixed; 
         top: 20px; 
@@ -221,62 +222,63 @@
     }
 
     /* ******************************************************************* */
-    /* NOVO/RESTAURADO: Botão Hamburguer no canto superior esquerdo */
+    /* Botão Hamburguer no canto superior esquerdo (Não Azul!) */
     .menu-toggle {
-        position: fixed; /* Fixado na tela */
+        position: fixed; 
         top: 20px;
-        left: 20px; /* Canto superior esquerdo */
-        font-size: 2.2em; /* Tamanho maior para o ícone */
+        left: 20px; 
+        font-size: 2.2em; 
         background: none; 
         border: none;
         cursor: pointer;
-        color: #007bff; /* Ícone azul */
+        color: #333; /* Ícone preto */
         line-height: 1; 
-        padding: 5px 10px; /* Área de clique discreta */
-        z-index: 1001; /* Acima de tudo */
+        padding: 5px 10px; 
+        z-index: 1001; 
         transition: color 0.2s ease, background-color 0.2s ease;
         border-radius: 4px;
     }
 
     .menu-toggle:hover {
-        color: #0056b3; /* Azul mais escuro no hover */
-        background-color: #f0f0f0; /* Fundo cinza suave no hover */
+        color: #555; /* Cinza escuro no hover */
+        background-color: #f0f0f0; 
     }
 
-    /* NOVO/RESTAURADO: Side Menu (antigo dropdown) - Abre da esquerda */
+    /* Side Menu (Lateral Esquerda) - Clean */
     .side-menu {
         height: 100%; 
-        width: 0; /* Começa fechado */
+        width: 0; 
         position: fixed; 
         z-index: 1000; 
         top: 0;
         left: 0;
         background-color: #ffffff;
         overflow-x: hidden; 
-        transition: 0.5s; 
+        transition: 0.3s; /* Transição mais rápida */
         padding-top: 60px; 
-        box-shadow: 2px 0 10px rgba(0,0,0,0.1); /* Sombra na lateral */
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1); 
         border-right: 1px solid #eee;
+        overflow-y: auto; /* Adiciona scroll se o menu for muito longo */
     }
 
     .side-menu.open {
-        width: 280px; /* Largura quando aberto */
+        width: 280px; 
     }
 
     .side-menu a {
-        padding: 15px 25px; /* Mais padding */
+        padding: 15px 25px; 
         text-decoration: none;
-        font-size: 1.1em; /* Tamanho da fonte mais legível */
-        color: #333; /* Texto preto */
+        font-size: 1.1em; 
+        color: #333; 
         display: block;
         transition: 0.3s;
-        border-bottom: 1px solid #f0f0f0; /* Separador fino */
-        font-weight: 400; /* Letra mais fina */
+        border-bottom: 1px solid #f0f0f0; 
+        font-weight: 400; 
     }
 
     .side-menu a:hover {
-        background-color: #eaf3ff; /* Fundo azul claro no hover */
-        color: #007bff; /* Texto azul no hover */
+        background-color: #f6f9fc; /* Fundo cinza/azul claro no hover */
+        color: #007bff; 
     }
 
     .side-menu .close-btn {
@@ -512,7 +514,7 @@
         // Tópico 5: MODO INTERATIVO DE BINGO
         { id: 5, question: "Click on the '+' signs to review the number groups.", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1, title: "5. Interactive Bingo Review" },
         
-        // TÓPICO 6: PRONÚNCIA TEEN vs TY (CORREÇÃO FINAL da Duplicação)
+        // TÓPICO 6: PRONÚNCIA TEEN vs TY 
         { id: 6, 
             question: "Listen and notice the difference. Don't confuse 'Teen' with 'Ty'.", 
             options: { 
@@ -581,8 +583,7 @@
     const questionImage = document.getElementById('question-image');
     const progressIndicator = document.getElementById('progress-indicator');
     
-    const sideMenu = document.getElementById('side-menu'); // Referência ao novo side menu
-    
+    const sideMenu = document.getElementById('side-menu'); 
     const navButtonsContainer = document.querySelector('.nav-buttons'); 
     
     let answerChecked = false;
@@ -606,10 +607,286 @@
         `;
     }
 
-    // --- FUNÇÕES DO SIDE MENU (RESTURADAS) ---
+    // --- FUNÇÕES DO SIDE MENU ---
     function openNav() {
         sideMenu.classList.add('open');
     }
 
     function closeNav() {
         sideMenu.classList.remove('open');
+    }
+    
+    // Fechar o menu se clicar fora
+    window.onclick = function(event) {
+        // Se o menu estiver aberto e o clique não for dentro do menu nem no botão de toggle
+        if (sideMenu.classList.contains('open') && !event.target.closest('.side-menu') && !event.target.closest('.menu-toggle')) {
+            closeNav();
+        }
+        // Também trata o modal do Bingo
+        const modal = document.getElementById('numberModal');
+        if (event.target == modal) {
+            closeNumberModal();
+        }
+    }
+    
+    function loadQuestionFromMenu(index) {
+        closeNav();
+        currentQuestionIndex = index;
+        loadQuestion(lessonQuestions[currentQuestionIndex]);
+    }
+    
+    function populateMenu() {
+        sideMenu.querySelectorAll('a:not(.close-btn)').forEach(a => a.remove()); // Remove links antigos
+        
+        lessonQuestions.forEach((q, index) => {
+            const link = document.createElement('a');
+            link.textContent = q.title; 
+            link.href = `javascript:void(0)`;
+            link.onclick = () => loadQuestionFromMenu(index);
+            sideMenu.appendChild(link);
+        });
+    }
+
+    function startLesson(chapterNumber) {
+        currentChapter = chapterNumber;
+        lessonQuestions = QUESTIONS.filter(q => q.chapter === chapterNumber);
+
+        if (lessonQuestions.length === 0) {
+            alert(`The Beginner ${chapterNumber} level does not have content yet.`);
+            return;
+        }
+
+        goHome(); 
+        homeScreen.style.display = 'none';
+        lessonScreen.style.display = 'block';
+        navButtonsContainer.style.display = 'flex'; 
+        
+        populateMenu(); 
+        
+        currentQuestionIndex = 0;
+        loadQuestion(lessonQuestions[currentQuestionIndex]);
+    }
+
+    function goHome() {
+        homeScreen.style.display = 'block';
+        lessonScreen.style.display = 'none';
+        navButtonsContainer.style.display = 'none'; 
+        closeNav(); // Fecha o menu se estiver aberto
+    }
+
+    function loadQuestion(q) {
+        answerChecked = false;
+        feedback.innerHTML = '';
+        optionsContainer.innerHTML = '';
+        
+        progressIndicator.textContent = `(${currentQuestionIndex + 1}/${lessonQuestions.length})`;
+        
+        nextBtn.style.display = 'block';
+        backBtn.style.display = 'block';
+        questionText.style.display = 'block'; 
+
+        // Oculta todos os elementos especiais por padrão
+        document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'none'); 
+        document.getElementById('pronunciation-container').style.display = 'none';
+        document.getElementById('comparison-table-container').innerHTML = '';
+        
+        const audioControls = document.getElementById('audio-player-controls');
+        audioControls.style.display = 'none';
+        audioControls.src = ''; 
+        
+        questionText.innerHTML = q.question; 
+        
+        if (q.image) {
+            questionImage.src = GITHUB_RAW_BASE_URL + q.image; 
+            questionImage.style.display = 'block';
+        } else {
+            questionImage.src = '';
+            questionImage.style.display = 'none';
+        }
+        
+        optionsContainer.style.display = 'none';
+        
+        if (q.correctAnswer === 'INFO') {
+            optionsContainer.style.display = 'block'; 
+            optionsContainer.style.backgroundColor = '#f4f4f4'; 
+            optionsContainer.style.padding = '20px';
+            optionsContainer.style.borderRadius = '8px';
+            
+            let htmlContent = '<ul style="list-style-type: none; padding: 0;">';
+            for (const key in q.options) {
+                htmlContent += `<li style="margin: 10px 0; font-size: 1.1em; border-bottom: 1px dashed #ddd; padding-bottom: 5px;">
+                                    <strong>${key}:</strong> ${q.options[key]}
+                                </li>`;
+            }
+            htmlContent += '</ul>';
+            optionsContainer.innerHTML = htmlContent;
+            
+        } else if (q.correctAnswer === 'PRONUNCIATION_SET') {
+            renderPronunciationPractice(q);
+        } else if (q.correctAnswer === 'INTERACTIVE_BINGO') {
+            optionsContainer.innerHTML = '';
+            questionText.style.display = 'block'; 
+            // ATIVA OS HOTSPOTS 
+            document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex'); 
+        }
+        else {
+            optionsContainer.style.display = 'block';
+            optionsContainer.style.backgroundColor = 'transparent'; 
+            optionsContainer.style.padding = '0';
+            
+            for (const key in q.options) {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = `${key}: ${q.options[key]}`; 
+                optionDiv.setAttribute('data-answer', key);
+                optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer, q); 
+                optionsContainer.appendChild(optionDiv);
+            }
+        }
+    }
+
+    function checkAnswer(selectedDiv, selectedKey, correctKey, currentQuestion) {
+        if (answerChecked) return; 
+        answerChecked = true;
+        
+        const allOptions = optionsContainer.querySelectorAll('.option');
+        allOptions.forEach(opt => opt.onclick = null);
+
+        let feedbackMessage = '';
+
+        if (selectedKey === correctKey) {
+            feedbackMessage = '✅ Correct Answer!';
+            selectedDiv.classList.add('correct');
+        } else {
+            const correctOptionText = currentQuestion.options[correctKey];
+            feedbackMessage = `❌ Incorrect Answer. The correct answer is: "${correctOptionText}".`; 
+            
+            selectedDiv.classList.add('incorrect');
+            allOptions.forEach(opt => {
+                if (opt.getAttribute('data-answer') === correctKey) {
+                    opt.classList.add('correct');
+                }
+            });
+        }
+
+        feedback.innerHTML = feedbackMessage;
+        
+        nextBtn.disabled = false;
+    }
+    
+    function goNext() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < lessonQuestions.length) {
+            loadQuestion(lessonQuestions[currentQuestionIndex]);
+        } else {
+            alert(`Congratulations! You have completed Beginner Module ${currentChapter}!`); 
+            goHome(); 
+        }
+    }
+    
+    function backQuestion() {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            loadQuestion(lessonQuestions[currentQuestionIndex]);
+        } else {
+            goHome(); 
+        }
+    }
+    
+    function renderPronunciationPractice(q) {
+        const pronContainer = document.getElementById('pronunciation-container');
+        const audioControls = document.getElementById('audio-player-controls');
+        const listContainer = document.getElementById('pronunciation-list');
+        const tableContainer = document.getElementById('comparison-table-container');
+
+        pronContainer.style.display = 'flex';
+        questionImage.style.display = 'none'; 
+        feedback.innerHTML = ``; 
+        listContainer.innerHTML = '';
+        tableContainer.innerHTML = '';
+
+        if (q.id === 6) {
+            // Tópico 6: Teen vs Ty (Áudio Único com barra de controle e Tabela Visual)
+            audioControls.style.display = 'block';
+            audioControls.src = GITHUB_RAW_BASE_URL + Object.values(q.options)[0]; 
+
+            // Geração da Tabela Visual
+            let tableHTML = '<table class="comparison-table"><thead><tr><th>Teen Numbers</th><th>Ty Numbers</th></tr></thead><tbody>';
+            teenTyData.forEach(item => {
+                tableHTML += `<tr><td>${item.teen}</td><td>${item.ty}</td></tr>`;
+            });
+            tableHTML += '</tbody></table>'; 
+            
+            tableContainer.innerHTML = tableHTML;
+            
+            document.getElementById('current-instruction').textContent = q.question; 
+
+
+        } else if (q.id === 4) {
+            // Tópico 4: Palavras individuais (Formato com vários botões de play)
+            audioControls.style.display = 'none'; 
+            document.getElementById('current-instruction').textContent = q.question;
+            
+            pronunciationWords = Object.keys(q.options).map((word) => ({ word: word, audioPath: q.options[word] }));
+            updatePronunciationUI(); 
+        }
+    }
+
+    function updatePronunciationUI() {
+        const wordListElement = document.getElementById('pronunciation-list');
+        wordListElement.innerHTML = '';
+        
+        pronunciationWords.forEach((item) => {
+            wordListElement.innerHTML += `
+                <li>
+                    <span>${item.word}</span>
+                    <div>
+                         <button class="play-button" onclick="playSeparateAudio('${item.audioPath}')">▶️</button>
+                    </div>
+                </li>
+            `;
+        });
+    }
+    
+    function playSeparateAudio(audioPath) {
+        const tempAudio = new Audio(GITHUB_RAW_BASE_URL + audioPath);
+        tempAudio.play().catch(error => { console.error("Audio playback blocked:", error); });
+    }
+
+
+    // --- FUNÇÕES DE MODAL PARA O BINGO ---
+    function generateTableHTML(data) {
+        let html = '<table class="number-table"><thead><tr><th>English Word</th><th>Number</th></tr></thead><tbody>';
+        data.forEach(item => {
+            html += `<tr><td>${item.word}</td><td>${item.number}</td></tr>`;
+        });
+        html += '</tbody></table>';
+        return html;
+    }
+
+    function openNumberModal(type) {
+        const modal = document.getElementById('numberModal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        
+        let title = "Numbers";
+        switch(type) {
+            case 'one-to-ten': title = "Numbers 1-10"; break;
+            case 'tens': title = "Tens (20-100)"; break;
+            case 'teens': title = "Teens (11-19)"; break;
+            case 'combined': title = "Combined Numbers"; break;
+        }
+
+        modalTitle.textContent = title;
+        modalBody.innerHTML = generateTableHTML(numberData[type]);
+        modal.style.display = "flex";
+    }
+
+    function closeNumberModal() {
+        document.getElementById('numberModal').style.display = "none";
+    }
+    
+</script>
+
+</body>
+</html>
