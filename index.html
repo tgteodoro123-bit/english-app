@@ -43,7 +43,7 @@
         }
     }
 
-    /* 3. Card de Confidence (Mantido) */
+    /* 3. Card de Confidence */
     .chapter-card {
         background-color: #f7f7f7; 
         border-radius: 6px; 
@@ -58,6 +58,7 @@
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
     }
     
+    /* Imagem */
     .card-background-image {
         position: absolute;
         top: 0;
@@ -69,6 +70,7 @@
         z-index: 1; 
     }
 
+    /* Área de Texto */
     .card-text-area {
         position: absolute;
         bottom: 0;
@@ -85,7 +87,50 @@
         align-items: center;
         text-align: center;
     }
+
+    /* EFEITO DE HOVER -- RESTAURADO! */
+    .chapter-card:hover .card-text-area {
+        height: 50%; 
+        background: #FFFFFF; 
+        justify-content: space-between; 
+        padding: 15px; 
+        align-items: flex-start; 
+    }
     
+    .text-content-wrapper {
+        transition: transform 0.3s ease;
+        text-align: left; 
+        width: 100%; 
+        box-sizing: border-box; 
+    }
+
+    .chapter-card:hover .text-content-wrapper { /* Efeito de translação no hover */
+        transform: translateY(-5px); 
+    }
+
+    /* Estilos de Texto */
+    .chapter-card h3 {
+        margin-top: 0;
+        font-size: 1.3em;
+        margin-bottom: 5px;
+        color: white; /* Cor inicial branca */
+        transition: color 0.3s ease;
+    }
+
+    .chapter-card p {
+        margin: 0;
+        font-size: 0.8em;
+        color: #ddd; /* Cor inicial cinza */
+        transition: color 0.3s ease;
+    }
+    
+    /* CORES PRETOS NO HOVER -- RESTAURADO! */
+    .chapter-card:hover .card-text-area h3,
+    .chapter-card:hover .card-text-area p {
+        color: #000; /* Cor preta no hover */
+    }
+
+    /* Estilo do Botão Start */
     .start-button {
         background-color: #003366; 
         color: white;
@@ -273,7 +318,7 @@
     const questionText = document.getElementById('question-text');
     const questionImage = document.getElementById('question-image');
 
-    const navButtonsContainer = document.querySelector('.nav-buttons'); // Novo elemento para controle de visibilidade
+    const navButtonsContainer = document.querySelector('.nav-buttons'); 
     let answerChecked = false;
     let pronunciationWords = [];
     const audioPlayer = document.getElementById('audio-player'); 
@@ -311,7 +356,7 @@
         goHome(); 
         homeScreen.style.display = 'none';
         lessonScreen.style.display = 'block';
-        navButtonsContainer.style.display = 'flex'; // CORREÇÃO: Mostra os botões ao iniciar a lição
+        navButtonsContainer.style.display = 'flex'; 
         
         lessonTitle.textContent = `BEGINNER`; 
         currentQuestionIndex = 0;
@@ -321,7 +366,7 @@
     function goHome() {
         homeScreen.style.display = 'block';
         lessonScreen.style.display = 'none';
-        navButtonsContainer.style.display = 'none'; // CORREÇÃO: Oculta os botões ao voltar para o início
+        navButtonsContainer.style.display = 'none'; 
     }
 
     function loadQuestion(q) {
@@ -412,7 +457,7 @@
             loadQuestion(lessonQuestions[currentQuestionIndex]);
         } else {
             alert(`Parabéns! Você completou o Módulo Beginner ${currentChapter}!`);
-            goHome(); // Chama goHome que oculta os botões
+            goHome(); 
         }
     }
     
@@ -421,7 +466,7 @@
             currentQuestionIndex--;
             loadQuestion(lessonQuestions[currentQuestionIndex]);
         } else {
-            goHome(); // Chama goHome que oculta os botões
+            goHome(); 
         }
     }
     
