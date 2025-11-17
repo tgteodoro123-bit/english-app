@@ -442,18 +442,18 @@
         display: flex;
         flex-direction: column; 
         align-items: center; 
-        gap: 8px; /* Espaço entre os grupos menor */
-        padding: 15px 0;
+        gap: 4px; /* Espaço entre os grupos MUITO MENOR */
+        padding: 5px 0; /* Padding vertical mínimo */
     }
 
     .number-input-group {
         display: flex;
         flex-direction: column; 
         align-items: flex-start;
-        gap: 4px; /* Espaço dentro do grupo menor */
+        gap: 2px; /* Espaço dentro do grupo MUITO MENOR */
         width: 80%; 
-        max-width: 200px; /* Largura ainda mais estreita (250px -> 200px) */
-        padding: 6px; 
+        max-width: 200px; 
+        padding: 3px; /* Padding interno mínimo */
         border: 1px solid #eee;
         border-radius: 6px;
         background-color: #f9f9f9;
@@ -461,20 +461,20 @@
     }
 
     .number-input-group span {
-        font-size: 1.3em; /* Número (10:) menor (1.5em -> 1.3em) */
+        font-size: 1.1em; /* Número (10:) MENOR */
         font-weight: 700;
         color: #333; 
         width: 100%; 
         text-align: left;
-        margin-bottom: 3px;
+        margin-bottom: 2px;
     }
 
     .number-input-group input {
         width: 100%; 
-        padding: 12px 10px; /* Input mais compacto em altura (14px -> 12px) */
+        padding: 8px 8px; /* Input BEM MAIS COMPACTO em altura */
         border: 1px solid #ccc;
         border-radius: 4px;
-        font-size: 1em;
+        font-size: 0.9em; /* Texto do input menor */
         transition: border-color 0.2s;
         text-transform: lowercase; 
         box-sizing: border-box; 
@@ -486,11 +486,11 @@
     }
     
     .number-result {
-        margin-top: 5px; 
+        margin-top: 3px; 
         font-weight: bold;
         text-align: left; 
         width: 100%; 
-        font-size: 0.9em;
+        font-size: 0.85em; /* Feedback um pouco menor */
     }
 
     .result-correct { color: #28a745; }
