@@ -276,7 +276,9 @@
 </div>
 
 <script>
-    const GITHUB_RAW_BASE_URL = "https://raw.githubusercontent.com/tgteodoro123-bit/english-app/main/"; 
+    // ⚠️ ATENÇÃO: MUDANÇA TEMPORÁRIA PARA TESTAR A BRANCH 'imagens'
+    const GITHUB_RAW_BASE_URL = "https://raw.githubusercontent.com/tgteodoro123-bit/english-app/imagens/"; 
+    
     const BACKGROUND_IMAGES = [
         "https://images.pexels.com/photos/1036321/pexels-photo-1036321.jpeg?auto=compress&cs=tinysrgb&w=800",
         "https://images.pexels.com/photos/2076011/pexels-photo-2076011.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -369,6 +371,7 @@
         questionText.innerHTML = q.question; 
         
         if (q.image) {
+            // O caminho da imagem agora é GITHUB_RAW_BASE_URL + "imagens/topico5.jpg"
             questionImage.src = GITHUB_RAW_BASE_URL + q.image; 
             questionImage.style.display = 'block';
         } else {
