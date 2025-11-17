@@ -474,7 +474,7 @@
 
 </div>
 
-<button class="menu-toggle" onclick="openNav()">☰</button>
+<button class="menu-toggle" onclick="goHome(); event.stopPropagation();">☰</button>
 
 <div id="side-menu" class="side-menu">
     <a href="javascript:void(0)" class="close-btn" onclick="closeNav()">&times;</a>
@@ -518,7 +518,7 @@
         
         // TÓPICO 6: PRONÚNCIA TEEN vs TY (TEXTO SIMPLIFICADO)
         { id: 6, 
-            question: "Listen and notice the difference.", // <--- ALTERADO PARA O TEXTO SIMPLES
+            question: "Listen and notice the difference.", 
             options: { 
                 "13: (Thirteen) – 30 (Thirty)": "teenety.mp3"
             }, 
@@ -686,9 +686,8 @@
         
         nextBtn.style.display = 'block';
         backBtn.style.display = 'block';
-        questionText.style.display = 'block'; 
-
-        // Oculta todos os elementos especiais por padrão
+        
+        // Esconde elementos específicos que podem ter sido ativados
         document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'none'); 
         document.getElementById('pronunciation-container').style.display = 'none';
         document.getElementById('comparison-table-container').innerHTML = '';
@@ -708,6 +707,15 @@
         }
         
         optionsContainer.style.display = 'none';
+        
+        // Lógica para controle da visibilidade do texto principal da pergunta
+        if (q.correctAnswer === 'PRONUNCIATION_SET' || q.correctAnswer === 'INFO') {
+             // Oculta questionText para os modos INFO e PRONUNCIATION para usar apenas os elementos internos.
+            questionText.style.display = 'none';
+        } else {
+            questionText.style.display = 'block';
+        }
+        
         
         if (q.correctAnswer === 'INFO') {
             optionsContainer.style.display = 'block'; 
@@ -807,6 +815,10 @@
         feedback.innerHTML = ``; 
         listContainer.innerHTML = '';
         tableContainer.innerHTML = '';
+        
+        // Define a instrução, que é o texto da pergunta
+        document.getElementById('current-instruction').textContent = q.question; 
+
 
         if (q.id === 6) {
             // Tópico 6: Teen vs Ty (Áudio Único com barra de controle e Tabela Visual)
@@ -821,14 +833,10 @@
             tableHTML += '</tbody></table>'; 
             
             tableContainer.innerHTML = tableHTML;
-            
-            document.getElementById('current-instruction').textContent = q.question; 
-
 
         } else if (q.id === 4) {
             // Tópico 4: Palavras individuais (Formato com vários botões de play)
             audioControls.style.display = 'none'; 
-            document.getElementById('current-instruction').textContent = q.question;
             
             pronunciationWords = Object.keys(q.options).map((word) => ({ word: word, audioPath: q.options[word] }));
             updatePronunciationUI(); 
