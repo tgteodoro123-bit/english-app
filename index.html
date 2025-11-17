@@ -161,6 +161,30 @@
         position: relative; 
     }
     
+    /* Hotspot para o Tópico 5 (CORRIGIDO: O círculo com o +) */
+    .hotspot {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background-color: #007bff; /* Fundo azul para o circulo */
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5em;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        z-index: 5;
+        transition: transform 0.2s;
+    }
+    
+    .hotspot:hover {
+        background-color: #0056b3;
+        transform: scale(1.1);
+    }
+
     /* Botões de Navegação Fixos */
     .nav-buttons {
         position: fixed; 
@@ -172,6 +196,7 @@
         align-items: center; 
     }
     
+    /* Estilo dos botões Back e Next */
     .nav-buttons button {
         padding: 12px 20px; 
         border: none;
@@ -187,7 +212,7 @@
         background-color: #0056b3;
     }
     
-    /* Indicador de progresso mais fino e menor */
+    /* Indicador de progresso */
     #progress-indicator {
         font-weight: 400; 
         color: #333;
@@ -195,51 +220,52 @@
         margin-right: 15px; 
     }
 
-    /* Botão Hamburguer - Apenas o ícone azul, sem fundo (Clean) */
+    /* Botão Hamburguer - Apenas o ícone azul (Clean) */
     .menu-toggle {
         font-size: 1.8em; 
         background: none; 
         border: none;
         cursor: pointer;
-        color: #007bff; 
+        color: #007bff; /* Ícone azul */
         line-height: 1; 
-        padding: 0 10px;
-        margin-right: 5px; 
+        padding: 10px 10px; /* Adiciona padding para área de clique */
         position: relative; 
         transition: color 0.2s ease;
+        border-radius: 6px;
     }
 
     .menu-toggle:hover {
+        background-color: #f0f0f0; /* Fundo levemente cinza no hover */
         color: #0056b3; 
     }
 
-    /* Menu Dropdown - Mais clean, mais largo e rolável */
+    /* Menu Dropdown - Mais retangular e clean */
     .dropdown-menu {
         display: none;
         position: absolute;
-        top: 45px; 
+        top: 50px; /* Desce um pouco mais */
         right: 0; 
         background-color: #ffffff;
-        min-width: 280px; 
-        max-height: 300px; 
+        min-width: 300px; /* MAIS RETANGULAR */
+        max-height: 350px; /* Mais alto */
         overflow-y: auto;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+        box-shadow: 0 6px 16px rgba(0,0,0,0.15); /* Sombra mais visível e suave */
         z-index: 100;
-        border-radius: 6px;
-        border: 1px solid #e0e0e0; 
-        padding: 0; 
+        border-radius: 8px; /* Bordas mais suaves */
+        border: 1px solid #ddd; 
+        padding: 5px 0;
     }
 
     .dropdown-menu a {
         color: #333; 
-        padding: 10px 15px;
+        padding: 12px 18px; /* Mais espaçamento interno */
         text-decoration: none;
         display: block;
-        font-size: 0.9em; 
+        font-size: 0.95em; 
         white-space: nowrap; 
-        border-bottom: 1px solid #f0f0f0; 
+        border-bottom: 1px solid #f5f5f5; /* Separador bem fino e claro */
         font-weight: 400; 
-        transition: background-color 0.2s, color 0.2s;
+        transition: background-color 0.2s;
     }
 
     .dropdown-menu a:last-child {
@@ -247,7 +273,7 @@
     }
 
     .dropdown-menu a:hover {
-        background-color: #f6f9fc; 
+        background-color: #eaf3ff; /* Fundo azul claro e suave no hover */
         color: #007bff; 
     }
 
@@ -359,7 +385,7 @@
         border: 1px solid #888;
         border-radius: 10px;
         width: 80%;
-        max-width: 400px; 
+        max-width: 450px; /* Um pouco mais largo para o modal */
         box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         position: relative;
     }
@@ -382,13 +408,15 @@
 
     .number-table th, .number-table td {
         border: 1px solid #ddd;
-        padding: 8px;
+        padding: 10px;
         text-align: left;
-        font-size: 0.95em; 
+        font-size: 1em; 
+        font-weight: 400; /* Letras mais finas no corpo da tabela */
     }
 
     .number-table th {
         background-color: #f2f2f2;
+        font-weight: bold;
     }
 </style>
 </head>
@@ -527,7 +555,7 @@
     
     let currentQuestionIndex = 0;
     let lessonQuestions = []; 
-    let currentChapter = 1; // Inicializa o capítulo atual
+    let currentChapter = 1; 
     
     const homeScreen = document.getElementById('home-screen');
     const lessonScreen = document.getElementById('lesson-screen');
@@ -566,6 +594,7 @@
     // --- FUNÇÕES DE NAVEGAÇÃO E DROPDOWN ---
     
     function toggleMenu() {
+        // Alterna a visibilidade do dropdown
         dropdownMenu.style.display = (dropdownMenu.style.display === 'block') ? 'none' : 'block';
     }
 
@@ -640,6 +669,7 @@
         backBtn.style.display = 'block';
         questionText.style.display = 'block'; 
 
+        // Oculta todos os elementos especiais por padrão
         document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'none'); 
         document.getElementById('pronunciation-container').style.display = 'none';
         document.getElementById('comparison-table-container').innerHTML = '';
@@ -680,6 +710,7 @@
         } else if (q.correctAnswer === 'INTERACTIVE_BINGO') {
             optionsContainer.innerHTML = '';
             questionText.style.display = 'block'; 
+            // ATIVA OS HOTSPOTS NOVAMENTE
             document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex'); 
         }
         else {
@@ -772,7 +803,6 @@
             
             tableContainer.innerHTML = tableHTML;
             
-            // A instrução principal já está em questionText, mas repetimos aqui para o campo de instrução da pronúncia
             document.getElementById('current-instruction').textContent = q.question; 
 
 
