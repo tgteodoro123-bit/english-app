@@ -161,29 +161,29 @@
         position: relative; 
     }
     
-    /* Hotspot para o Tópico 5 (O círculo com o +) - CORREÇÃO DE ESTILO */
+    /* Hotspot para o Tópico 5 (O círculo com o +) - ESTILO CLEAN */
     .hotspot {
         position: absolute;
-        width: 35px; /* Tamanho ligeiramente maior */
+        width: 35px; 
         height: 35px;
-        background-color: #ffffff; /* Fundo branco */
-        border: 2px solid #333; /* Borda preta fina */
-        color: #333; /* Ícone + preto */
+        background-color: #ffffff; 
+        border: 2px solid #333; 
+        color: #333; 
         border-radius: 50%;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 1.8em; /* + um pouco maior */
+        font-size: 1.8em; 
         font-weight: 500;
         cursor: pointer;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         z-index: 5;
         transition: transform 0.2s, background-color 0.2s;
-        line-height: 0.8; /* Ajuste fino para centralizar o '+' */
+        line-height: 0.8; 
     }
     
     .hotspot:hover {
-        background-color: #f0f0f0; /* Fundo cinza suave no hover */
+        background-color: #f0f0f0; 
         transform: scale(1.1);
     }
 
@@ -223,9 +223,9 @@
     }
 
     /* ******************************************************************* */
-    /* Botão Hamburguer no canto superior esquerdo (Não Azul, OCULTO POR PADRÃO) */
+    /* Botão Hamburguer no canto superior esquerdo (OCULTO POR PADRÃO) */
     .menu-toggle {
-        display: none; /* OCULTO NA TELA INICIAL */
+        display: none; 
         position: fixed; 
         top: 20px;
         left: 20px; 
@@ -516,9 +516,9 @@
         // Tópico 5: MODO INTERATIVO DE BINGO
         { id: 5, question: "Click on the '+' signs to review the number groups.", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1, title: "5. Interactive Bingo Review" },
         
-        // TÓPICO 6: PRONÚNCIA TEEN vs TY 
+        // TÓPICO 6: PRONÚNCIA TEEN vs TY (TEXTO SIMPLIFICADO)
         { id: 6, 
-            question: "Listen and notice the difference. Don't confuse 'Teen' with 'Ty'.", 
+            question: "Listen and notice the difference.", // <--- ALTERADO PARA O TEXTO SIMPLES
             options: { 
                 "13: (Thirteen) – 30 (Thirty)": "teenety.mp3"
             }, 
@@ -587,7 +587,7 @@
     
     const sideMenu = document.getElementById('side-menu'); 
     const navButtonsContainer = document.querySelector('.nav-buttons'); 
-    const menuToggle = document.querySelector('.menu-toggle'); // Novo: Referência ao botão hambúrguer
+    const menuToggle = document.querySelector('.menu-toggle'); 
     
     let answerChecked = false;
     
@@ -661,7 +661,7 @@
         homeScreen.style.display = 'none';
         lessonScreen.style.display = 'block';
         navButtonsContainer.style.display = 'flex'; 
-        menuToggle.style.display = 'block'; // NOVO: MOSTRA O HAMBÚRGUER
+        menuToggle.style.display = 'block'; 
         
         populateMenu(); 
         
@@ -673,7 +673,7 @@
         homeScreen.style.display = 'block';
         lessonScreen.style.display = 'none';
         navButtonsContainer.style.display = 'none'; 
-        menuToggle.style.display = 'none'; // NOVO: ESCONDE O HAMBÚRGUER
+        menuToggle.style.display = 'none'; 
         closeNav(); 
     }
 
