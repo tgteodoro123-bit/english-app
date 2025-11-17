@@ -440,19 +440,19 @@
     /* Estilos Específicos para o Tópico 7 (FILL_IN_BLANKS) */
     .fill-in-blanks-container {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 15px;
+        flex-direction: column; /* NOVO: Empilha os itens verticalmente */
+        align-items: center; /* Centraliza o bloco de inputs */
+        gap: 20px; /* Mais espaço entre os inputs */
         padding: 20px 0;
     }
 
     .number-input-group {
         display: flex;
-        flex-direction: column; /* Coloca número e input na vertical */
+        flex-direction: column; 
         align-items: flex-start;
-        gap: 5px; /* Espaço menor entre o número e o input */
-        width: 180px; /* Largura reduzida */
-        min-width: 150px; 
+        gap: 5px; 
+        width: 80%; /* Ocupa a maior parte da largura centralizada */
+        max-width: 350px; /* Limite de largura para não ficar muito comprido em telas grandes */
         padding: 10px;
         border: 1px solid #eee;
         border-radius: 6px;
@@ -461,23 +461,23 @@
     }
 
     .number-input-group span {
-        font-size: 1.8em; /* Número grande */
+        font-size: 1.8em; 
         font-weight: 700;
-        color: #333; /* Cor neutra/escura */
+        color: #333; 
         width: 100%; 
         text-align: left;
         margin-bottom: 5px;
     }
 
     .number-input-group input {
-        width: 100%; /* Ocupa a largura do grupo */
-        padding: 12px 10px; /* Padding maior para altura */
+        width: 100%; 
+        padding: 12px 10px; 
         border: 1px solid #ccc;
         border-radius: 4px;
         font-size: 1em;
         transition: border-color 0.2s;
         text-transform: lowercase; 
-        box-sizing: border-box; /* Garante que o padding não aumente a largura total */
+        box-sizing: border-box; 
     }
 
     .number-input-group input:focus {
@@ -585,10 +585,10 @@
             title: "6. Pronunciation: Teen vs Ty"
         },
         
-        // TÓPICO 7: NOVO EXERCÍCIO DE DIGITAÇÃO DE NÚMEROS (FILL_IN_BLANKS)
+        // TÓPICO 7: EXERCÍCIO DE DIGITAÇÃO DE NÚMEROS (FILL_IN_BLANKS)
         { 
             id: 7, 
-            question: "Write the numbers in English:", /* INSTRUÇÃO SIMPLIFICADA */
+            question: "Write the numbers in English:", 
             correctAnswer: 'FILL_IN_BLANKS', 
             chapter: 1, 
             title: "7. Writing Numbers Practice",
