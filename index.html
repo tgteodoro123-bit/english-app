@@ -42,7 +42,7 @@
         }
     }
 
-    /* 3. Estilos do Card */
+    /* 3. Estilos do Card (Sem alterações significativas aqui) */
     .chapter-card {
         background-color: #f7f7f7; 
         border-radius: 6px; 
@@ -187,70 +187,58 @@
         background-color: #0056b3;
     }
     
-    /* NOVO: Indicador de progresso mais fino e menor */
+    /* Indicador de progresso mais fino e menor */
     #progress-indicator {
-        font-weight: 400; /* Mais fino */
+        font-weight: 400; 
         color: #333;
-        font-size: 0.95em; /* Menor */
+        font-size: 0.95em; 
         margin-right: 15px; 
     }
 
-    /* NOVO: Botão Hamburguer - Mantido grande para clique fácil */
+    /* NOVO: Botão Hamburguer - Movido para dentro do nav-buttons */
     .menu-toggle {
-        font-size: 2em;
+        font-size: 1.8em; /* Menor que antes */
         background: none;
         border: none;
         cursor: pointer;
         color: #333;
-        position: fixed;
-        top: 20px;
-        left: 20px;
-        z-index: 1001;
-        display: none; 
+        line-height: 1; /* Alinhamento vertical */
+        padding: 0 10px;
+        margin-right: 5px; 
+        position: relative; /* Para o dropdown */
     }
 
-    /* NOVO: Menu Lateral (Side Menu) - Mais compacto */
-    .side-menu {
-        height: 100%;
-        width: 0;
-        position: fixed;
-        z-index: 1002;
-        top: 0;
-        left: 0;
-        background-color: #f8f8f8; 
-        overflow-x: hidden;
-        transition: 0.5s;
-        padding-top: 60px;
-        box-shadow: 2px 0 10px rgba(0,0,0,0.1); 
-        max-width: 200px; /* Largura ainda menor */
-    }
-
-    .side-menu a {
-        padding: 10px 8px 10px 25px; /* Padding reduzido */
-        text-decoration: none;
-        font-size: 1em; /* Tamanho da fonte reduzido */
-        color: #333; 
-        display: block;
-        transition: 0.3s;
-        border-bottom: 1px solid #eee;
-    }
-
-    .side-menu a:hover {
-        color: #007bff; 
-        background-color: #e9e9e9; 
-    }
-
-    .side-menu .closebtn {
+    /* NOVO: Menu Dropdown (Substitui o Side Menu) */
+    .dropdown-menu {
+        display: none;
         position: absolute;
-        top: 0;
-        right: 15px; /* Ajustado para caber no menu menor */
-        font-size: 30px; /* Ligeiramente menor */
-        margin-left: 50px;
-        padding: 10px;
-        color: #333; 
+        top: 45px; /* Abaixo do botão */
+        right: 0; 
+        background-color: #ffffff;
+        min-width: 250px;
+        max-height: 300px; /* Rolagem se for muito longo */
+        overflow-y: auto;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        z-index: 100;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        padding: 5px 0;
     }
 
-    
+    .dropdown-menu a {
+        color: black;
+        padding: 10px 15px;
+        text-decoration: none;
+        display: block;
+        font-size: 0.95em; 
+        white-space: nowrap; 
+    }
+
+    .dropdown-menu a:hover {
+        background-color: #f1f1f1;
+        color: #007bff;
+    }
+
     /* Estilos de Texto e Questão */
     .quiz-question img {
         max-width: 100%; 
@@ -290,7 +278,7 @@
     .correct { background-color: #e6ffed !important; border-color: #28a745 !important; font-weight: bold; }
     .incorrect { background-color: #ffe6e6 !important; border-color: #dc3545 !important; font-weight: bold; }
 
-    /* Estilos de Pronúncia e Áudio (COM BARRA) */
+    /* Estilos de Pronúncia e Áudio */
     #pronunciation-container {
         display: flex;
         flex-direction: column;
@@ -322,9 +310,9 @@
     }
     .comparison-table th, .comparison-table td {
         border: 1px solid #ddd;
-        padding: 10px; /* Padding um pouco menor */
+        padding: 10px; 
         text-align: center;
-        font-size: 1em; /* Fonte ligeiramente menor */
+        font-size: 1em; 
     }
     .comparison-table th {
         background-color: #f2f2f2; 
@@ -337,31 +325,7 @@
         background-color: #f9f9f9; 
     }
     
-    /* Hotspots e Modal (Omitidos para concisão, são os mesmos) */
-
-    .hotspot {
-        position: absolute;
-        width: 40px; 
-        height: 40px; 
-        background-color: white;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        font-size: 2em;
-        font-weight: bold;
-        color: #007bff;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        z-index: 10;
-        display: none; 
-    }
-
-    .hotspot:hover {
-        transform: scale(1.1);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-    }
-
+    /* Estilos do Modal (Bingo) */
     .modal {
         display: none; 
         position: fixed; 
@@ -398,40 +362,12 @@
         right: 20px;
     }
 
-    .close-button:hover,
-    .close-button:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-
-    .number-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
     .number-table th, .number-table td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-        font-size: 0.95em; /* Fonte ligeiramente menor na tabela do modal */
-    }
-
-    .number-table th {
-        background-color: #f2f2f2;
+        font-size: 0.95em; 
     }
 </style>
 </head>
 <body>
-
-<button class="menu-toggle" id="menu-toggle" onclick="openNav()">☰</button>
-
-<div id="mySidenav" class="side-menu">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-    <div id="side-menu-content">
-        </div>
-</div>
 
 <div id="home-screen">
     <h2>BEGINNER</h2>
@@ -469,6 +405,12 @@
 
 <div class="nav-buttons">
     <span id="progress-indicator"></span> 
+    
+    <button class="menu-toggle" onclick="toggleMenu()">☰
+        <div id="dropdown-menu" class="dropdown-menu">
+            </div>
+    </button>
+    
     <button id="back-btn" onclick="backQuestion()">Back</button>
     <button id="next-btn" onclick="goNext()">Next</button>
 </div>
@@ -503,9 +445,9 @@
         // Tópico 5: MODO INTERATIVO DE BINGO
         { id: 5, question: "Click on the '+' signs to review the number groups.", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1, title: "5. Interactive Bingo Review" },
         
-        // TÓPICO 6: PRONÚNCIA TEEN vs TY
+        // TÓPICO 6: PRONÚNCIA TEEN vs TY (CORREÇÃO FINAL da Duplicação)
         { id: 6, 
-            question: "Listen and notice the difference.", 
+            question: "Listen and notice the difference. Don't confuse 'Teen' with 'Ty'.", 
             options: { 
                 "13: (Thirteen) – 30 (Thirty)": "teenety.mp3"
             }, 
@@ -532,7 +474,7 @@
         { teen: '19: (Nineteen)', ty: '90 (Ninety)' },
     ];
     
-    // --- DADOS PARA O MODAL INTERATIVO DE BINGO (const numberData omitida, é a mesma) ---
+    // --- DADOS PARA O MODAL INTERATIVO DE BINGO (omitidos para concisão) ---
     const numberData = {
         'one-to-ten': [
             { word: 'One', number: 1 }, { word: 'Two', number: 2 }, { word: 'Three', number: 3 },
@@ -570,9 +512,9 @@
     const questionText = document.getElementById('question-text');
     const questionImage = document.getElementById('question-image');
     const progressIndicator = document.getElementById('progress-indicator');
-
+    const dropdownMenu = document.getElementById('dropdown-menu'); // NOVO
+    
     const navButtonsContainer = document.querySelector('.nav-buttons'); 
-    const menuToggle = document.getElementById('menu-toggle'); 
     
     let answerChecked = false;
     
@@ -595,30 +537,40 @@
         `;
     }
 
-    // --- FUNÇÕES DE NAVEGAÇÃO E MENU LATERAL ---
-    function openNav() {
-      document.getElementById("mySidenav").style.width = "200px"; /* Largura ajustada */
+    // --- FUNÇÕES DE NAVEGAÇÃO E DROPDOWN ---
+    
+    function toggleMenu() {
+        dropdownMenu.style.display = (dropdownMenu.style.display === 'block') ? 'none' : 'block';
     }
 
-    function closeNav() {
-      document.getElementById("mySidenav").style.width = "0";
+    // Fechar o menu se clicar fora
+    window.onclick = function(event) {
+        if (!event.target.matches('.menu-toggle') && !event.target.closest('.menu-toggle')) {
+            if (dropdownMenu.style.display === 'block') {
+                dropdownMenu.style.display = 'none';
+            }
+        }
+        // Também trata o modal do Bingo
+        const modal = document.getElementById('numberModal');
+        if (event.target == modal) {
+            closeNumberModal();
+        }
     }
     
     function loadQuestionFromMenu(index) {
-        closeNav();
+        dropdownMenu.style.display = 'none';
         currentQuestionIndex = index;
         loadQuestion(lessonQuestions[currentQuestionIndex]);
     }
     
     function populateMenu() {
-        const menuContent = document.getElementById('side-menu-content');
-        menuContent.innerHTML = '';
+        dropdownMenu.innerHTML = '';
         lessonQuestions.forEach((q, index) => {
             const link = document.createElement('a');
             link.textContent = q.title; 
             link.href = `javascript:void(0)`;
             link.onclick = () => loadQuestionFromMenu(index);
-            menuContent.appendChild(link);
+            dropdownMenu.appendChild(link);
         });
     }
 
@@ -635,7 +587,6 @@
         homeScreen.style.display = 'none';
         lessonScreen.style.display = 'block';
         navButtonsContainer.style.display = 'flex'; 
-        menuToggle.style.display = 'block'; 
         
         populateMenu(); 
         
@@ -647,7 +598,7 @@
         homeScreen.style.display = 'block';
         lessonScreen.style.display = 'none';
         navButtonsContainer.style.display = 'none'; 
-        menuToggle.style.display = 'none'; 
+        dropdownMenu.style.display = 'none';
     }
 
     function loadQuestion(q) {
@@ -655,7 +606,7 @@
         feedback.innerHTML = '';
         optionsContainer.innerHTML = '';
         
-        // Atualiza o indicador de progresso com o estilo mais fino
+        // Atualiza o indicador de progresso
         progressIndicator.textContent = `(${currentQuestionIndex + 1}/${lessonQuestions.length})`;
         
         nextBtn.style.display = 'block';
@@ -670,6 +621,7 @@
         audioControls.style.display = 'none';
         audioControls.src = ''; 
         
+        // CORRIGIDO: A instrução de texto principal é mostrada aqui
         questionText.innerHTML = q.question; 
         
         if (q.image) {
@@ -794,8 +746,8 @@
             
             tableContainer.innerHTML = tableHTML;
             
-            // Texto da instrução (corrigido na versão anterior)
-            document.getElementById('current-instruction').textContent = q.question + " Don't confuse 'Teen' with 'Ty'."; 
+            // A instrução principal já está em questionText, mas repetimos aqui para o campo de instrução da pronúncia
+            document.getElementById('current-instruction').textContent = q.question; 
 
 
         } else if (q.id === 4) {
@@ -862,14 +814,6 @@
         document.getElementById('numberModal').style.display = "none";
     }
     
-    window.onclick = function(event) {
-        const modal = document.getElementById('numberModal');
-        if (event.target == modal) {
-            closeNumberModal();
-        }
-    }
-    // --- FIM DAS FUNÇÕES DE MODAL ---
-
 </script>
 
 </body>
