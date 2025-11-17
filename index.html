@@ -88,7 +88,7 @@
         text-align: center;
     }
 
-    /* EFEITO DE HOVER -- RESTAURADO! */
+    /* EFEITO DE HOVER */
     .chapter-card:hover .card-text-area {
         height: 50%; 
         background: #FFFFFF; 
@@ -104,7 +104,7 @@
         box-sizing: border-box; 
     }
 
-    .chapter-card:hover .text-content-wrapper { /* Efeito de translação no hover */
+    .chapter-card:hover .text-content-wrapper { 
         transform: translateY(-5px); 
     }
 
@@ -113,21 +113,21 @@
         margin-top: 0;
         font-size: 1.3em;
         margin-bottom: 5px;
-        color: white; /* Cor inicial branca */
+        color: white; 
         transition: color 0.3s ease;
     }
 
     .chapter-card p {
         margin: 0;
         font-size: 0.8em;
-        color: #ddd; /* Cor inicial cinza */
+        color: #ddd; 
         transition: color 0.3s ease;
     }
     
-    /* CORES PRETOS NO HOVER -- RESTAURADO! */
+    /* CORES PRETOS NO HOVER */
     .chapter-card:hover .card-text-area h3,
     .chapter-card:hover .card-text-area p {
-        color: #000; /* Cor preta no hover */
+        color: #000; 
     }
 
     /* Estilo do Botão Start */
@@ -168,13 +168,13 @@
         position: relative; 
     }
     
-    /* CORREÇÃO CRÍTICA: Ocultar botões por padrão */
+    /* Botões Fixos */
     .nav-buttons {
         position: fixed; 
         top: 20px; 
         right: 20px; 
         z-index: 1000; 
-        display: none; /* AQUI ESTÁ A CORREÇÃO PRINCIPAL */
+        display: none; 
         gap: 10px; 
     }
     
@@ -227,11 +227,11 @@
         transition: background-color 0.2s, border-color 0.2s;
         text-align: left;
     }
-    /* Estilos de correção (mantidos) */
+    
     .correct { background-color: #e6ffed !important; border-color: #28a745 !important; font-weight: bold; }
     .incorrect { background-color: #ffe6e6 !important; border-color: #dc3545 !important; font-weight: bold; }
 
-    /* Estilos de Pronúncia (Mantidos) */
+    /* Estilos de Pronúncia */
     #pronunciation-container {
         display: flex;
         flex-direction: column;
@@ -282,7 +282,6 @@
 </div>
 
 <script>
-    // LINK BASE (Mantido)
     const GITHUB_RAW_BASE_URL = "https://raw.githubusercontent.com/tgteodoro123-bit/english-app/main/"; 
     const BACKGROUND_IMAGES = [
         "https://images.pexels.com/photos/1036321/pexels-photo-1036321.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -293,7 +292,6 @@
         "https://images.pexels.com/photos/3401403/pexels-photo-3401403.jpeg?auto=compress&cs=tinysrgb&w=800",
     ];
 
-    // DADOS DAS QUESTÕES (Mantido)
     const QUESTIONS = [
         { id: 1, question: "What do you see in the image?", image: "numeros.jpg", options: { A: "The Alphabet", B: "Colors", C: "Numbers" }, correctAnswer: 'C', chapter: 1 },
         { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', chapter: 1 },
@@ -323,7 +321,6 @@
     let pronunciationWords = [];
     const audioPlayer = document.getElementById('audio-player'); 
 
-    // Geração dos Cards (Mantido)
     const chapterGrid = document.querySelector('.chapter-grid');
     for (let i = 1; i <= 24; i++) {
         const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
@@ -341,8 +338,6 @@
             </div>
         `;
     }
-
-    // Funções de Navegação com correção de visibilidade
 
     function startLesson(chapterNumber) {
         currentChapter = chapterNumber;
@@ -424,6 +419,7 @@
         }
     }
 
+    // FUNÇÃO CORRIGIDA PARA INGLÊS
     function checkAnswer(selectedDiv, selectedKey, correctKey) {
         if (answerChecked) return; 
         answerChecked = true;
@@ -434,10 +430,10 @@
         let feedbackMessage = '';
 
         if (selectedKey === correctKey) {
-            feedbackMessage = '✅ Resposta Correta!';
+            feedbackMessage = '✅ Correct Answer!';
             selectedDiv.classList.add('correct');
         } else {
-            feedbackMessage = `❌ Resposta Incorreta. A correta era ${correctKey}.`; 
+            feedbackMessage = `❌ Incorrect Answer. The correct answer was ${correctKey}.`; 
             selectedDiv.classList.add('incorrect');
             allOptions.forEach(opt => {
                 if (opt.getAttribute('data-answer') === correctKey) {
@@ -470,7 +466,6 @@
         }
     }
     
-    // Funções de Áudio e Pronúncia (Mantidas)
     function playWordAudio(audioPath) {
         const audioPlayer = document.getElementById('audio-player');
         audioPlayer.oncanplaythrough = null;
