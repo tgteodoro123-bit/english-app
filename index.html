@@ -251,6 +251,7 @@
 </div>
 
 <div id="lesson-screen">
+    
     <div class="quiz-question">
         <p id="question-text"></p> 
         <img id="question-image" src="" alt="Lesson Image"> 
@@ -290,7 +291,9 @@
         { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', chapter: 1 },
         { id: 3, question: `<h3 style="color: #007bff; font-size: 2em; margin-bottom: 20px;">Vocabulary:</h3>`, options: { "1.": `My <span style="color: #007bff;">address number</span> is 34.`, "2.": `I am a <span style="color: #007bff;">student</span>.`, "3.": `He is my new <span style="color: #007bff;">friend</span>, David.`, "4.": `Mr. David is a <span style="color: #007bff;">great</span> teacher.`, "5.": `My <span style="color: #007bff;">phone number</span> is: (987) 654-1234.`, "6.": `Sofia is <span style="color: #007bff;">American</span>.`, "7.": `I love my English <span style="color: #007bff;">teacher</span>.`, "8.": `Lucas is a <span style="color: #007bff;">new</span> student, too.`, "9.": `I am 18 <span style="color: #007bff;">years old</span>.`, "10.": `My <span style="color: #007bff;">nationality</span>? I'm French.`, }, correctAnswer: 'INFO', chapter: 1 },
         { id: 4, question: "PRONUNCIATION PRACTICE: Click the play button (▶️) to hear each word.", options: { "Address number": "addressnumber.mp3", "American": "American.mp3", "Friend": "friend.mp3", "Great": "great.mp3", "Nationality": "nationality.mp3", "New": "new.mp3", "Phone number": "phonenumber.mp3", "Student": "student.mp3", "Teacher": "teacher.mp3", "Years old": "yearsold.mp3" }, correctAnswer: 'PRONUNCIATION_SET', chapter: 1 },
-        { id: 5, question: "Which day comes after Tuesday?", image: "", options: { A: "Monday", B: "Wednesday", C: "Thursday" }, correctAnswer: 'B', chapter: 1 },
+        
+        { id: 5, question: "Check the image below and choose the correct option.", image: "imagens/topico5.jpg", options: { A: "Option 1", B: "Option 2", C: "Option 3" }, correctAnswer: 'A', chapter: 1 },
+        
         { id: 6, question: "What is the color of the sky on a sunny day?", image: "", options: { A: "Red", B: "Yellow", C: "Blue" }, correctAnswer: 'C', chapter: 1 },
         { id: 7, question: "What is the English word for 'cadeira'?", image: "", options: { A: "Book", B: "Chair", C: "Table" }, correctAnswer: 'B', chapter: 1 },
         { id: 8, question: "Identify the color of the object in the image:", image: "apple.jpg", options: { A: "Green", B: "Red", C: "Orange" }, correctAnswer: 'B', chapter: 1 },
@@ -305,7 +308,6 @@
     const feedback = document.getElementById('feedback');
     const nextBtn = document.getElementById('next-btn');
     const backBtn = document.getElementById('back-btn');
-    // REMOVIDO: const lessonTitle = document.getElementById('lesson-title');
     const questionText = document.getElementById('question-text');
     const questionImage = document.getElementById('question-image');
 
@@ -346,7 +348,6 @@
         lessonScreen.style.display = 'block';
         navButtonsContainer.style.display = 'flex'; 
         
-        // REMOVIDO: lessonTitle.textContent = `BEGINNER`; 
         currentQuestionIndex = 0;
         loadQuestion(lessonQuestions[currentQuestionIndex]);
     }
