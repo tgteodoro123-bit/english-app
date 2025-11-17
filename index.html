@@ -288,8 +288,8 @@
         padding: 20px;
         border: 1px solid #888;
         border-radius: 10px;
-        width: 80%; /* Could be more specific */
-        max-width: 500px;
+        width: 80%;
+        max-width: 400px; /* AJUSTADO PARA SER MENOR */
         box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         position: relative;
     }
@@ -571,8 +571,8 @@
             // Extrai o texto completo da opção correta (e.g., "Numbers")
             const correctOptionText = currentQuestion.options[correctKey];
             
-            // FEEDBACK EM INGLÊS, MOSTRANDO APENAS O TEXTO
-            feedbackMessage = `❌ Incorrect Answer. The correct answer was: "${correctOptionText}".`; 
+            // FEEDBACK EM INGLÊS, USANDO "IS" E MOSTRANDO APENAS O TEXTO
+            feedbackMessage = `❌ Incorrect Answer. The correct answer is: "${correctOptionText}".`; 
             
             selectedDiv.classList.add('incorrect');
             allOptions.forEach(opt => {
@@ -643,7 +643,7 @@
     }
 
 
-    // --- FUNÇÕES DE MODAL PARA O BINGO (Já estão em Inglês) ---
+    // --- FUNÇÕES DE MODAL PARA O BINGO ---
     function generateTableHTML(data) {
         let html = '<table class="number-table"><thead><tr><th>English Word</th><th>Number</th></tr></thead><tbody>';
         data.forEach(item => {
