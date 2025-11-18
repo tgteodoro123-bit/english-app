@@ -301,11 +301,15 @@
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         
-        /* CORREÇÃO: Garante que a imagem inteira seja visível */
         width: 100%; 
-        height: 250px; /* Altura fixa para melhor visualização */
-        object-fit: contain; /* Garante que a imagem inteira caiba, com barras se necessário */
-        background-color: #fcfcfc; /* Fundo branco para imagens com transparência ou bordas */
+        height: 250px; 
+        object-fit: cover; /* PADRÃO: Corta para preencher */
+        background-color: #fcfcfc; 
+    }
+    
+    /* NOVO AJUSTE: Apenas a imagem do Tópico 5 (a do Bingo) deve usar 'contain' para caber inteira */
+    .quiz-question img.interactive-image {
+        object-fit: contain; 
     }
     
     .quiz-question {
@@ -412,7 +416,7 @@
         border: 1px solid #ddd;
     }
     
-    /* CORREÇÃO: Remover cabeçalho das tabelas do modal */
+    /* REMOÇÃO: Remover cabeçalho das tabelas do modal (Ajuste final) */
     .modal-content .info-table thead {
         display: none; 
     }
@@ -567,10 +571,10 @@
 
     /* MODIFICAÇÃO Tópico 8: Ajustes de foco para melhor centralização */
     .gallery-image-wrapper:nth-child(1) img { 
-        object-position: center 25%; /* Ajuste fino */
+        object-position: center 25%; 
     }
     .gallery-image-wrapper:nth-child(3) img { 
-        object-position: center 5%; /* Ajuste fino para evitar corte de cabeça */
+        object-position: center 5%; 
     }
     
 
@@ -717,7 +721,7 @@
 
     /* Estilos do Modal (Tópico 5) */
     .modal {
-        display: none; /* CORRIGIDO: Esconde por padrão */
+        display: none; 
         position: fixed; 
         z-index: 1002; 
         left: 0;
@@ -726,7 +730,6 @@
         height: 100%; 
         overflow: auto; 
         background-color: rgba(0,0,0,0.4); 
-        /* Novos estilos para animação/esconder instantaneamente */
         opacity: 0;
         transition: opacity 0.3s ease-in-out;
         justify-content: center; 
@@ -735,7 +738,7 @@
     
     /* Nova classe para exibir o modal com animação */
     .modal.show-modal {
-        display: flex; /* Usa flex para centralizar APENAS quando show-modal é ativado */
+        display: flex; 
         opacity: 1;
     }
 
@@ -894,7 +897,7 @@
         { id: 1, question: "What do you see in the image?", image: "numeros.jpg", options: { A: "The Alphabet", B: "Colors", C: "Numbers" }, correctAnswer: 'C', correctWord: 'Numbers', chapter: 1, title: "1. Numbers Overview" },
         { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', correctWord: 'I am', chapter: 1, title: "2. Verb 'To Be' (I am)" },
         
-        // Tópico 3 - Vocabulary (Tabela menor e cor do título)
+        // Tópico 3 - Vocabulary 
         { id: 3, 
             question: `<h3 style="color: #333; font-size: 2em; margin-bottom: 20px; text-align: center;">Vocabulary</h3>`, 
             options: [ 
@@ -912,7 +915,7 @@
             correctAnswer: 'INFO_TABLE', chapter: 1, title: "3. Lesson Vocabulary" 
         },
         
-        // Tópico 4 - Pronúncia (Remove instrução repetida)
+        // Tópico 4 - Pronúncia
         { id: 4, 
             question: "Click the play button (▶️) next to each word to listen and practice.", 
             options: { "Address number": "addressnumber.mp3", "American": "American.mp3", "Friend": "friend.mp3", "Great": "great.mp3", "Nationality": "nationality.mp3", "New": "new.mp3", "Phone number": "phonenumber.mp3", "Student": "student.mp3", "Teacher": "teacher.mp3", "Years old": "yearsold.mp3" }, 
@@ -921,10 +924,10 @@
             title: "4. Word Pronunciation" 
         },
         
-        // Topic 5 
+        // Topic 5 - Interactive Bingo (Imagem com contain)
         { id: 5, question: "Click on the '+' signs to review the number groups.", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1, title: "5. Interactive Bingo Review" },
         
-        // Topic 6 (Remove instrução repetida)
+        // Topic 6 
         { id: 6, 
             question: "Listen and notice the difference between -teen and -ty.", 
             options: { "13: (Thirteen) – 30 (Thirty)": "teenety.mp3" }, 
@@ -976,7 +979,7 @@
     let currentQuestionIndex = 0;
     let lessonQuestions = []; 
     let currentChapter = 1; 
-    let selectedOption = null; // Armazena a opção selecionada
+    let selectedOption = null; 
     
     // Variáveis que você já definiu (DOM elements)
     const homeScreen = document.getElementById('home-screen');
@@ -993,7 +996,7 @@
     const navButtonsContainer = document.querySelector('.nav-buttons'); 
     const menuToggle = document.querySelector('.menu-toggle'); 
     
-    let answerChecked = false; // Controla se a resposta (ou check) já foi processada
+    let answerChecked = false; 
     
     // RENDER CHAPTER CARDS ON HOME SCREEN
     const chapterGrid = document.querySelector('.chapter-grid');
@@ -1023,7 +1026,6 @@
             closeNav();
         }
         const modal = document.getElementById('numberModal');
-        // Se o clique foi no background do modal, fechar
         if (event.target == modal) { 
             closeNumberModal(); 
         }
@@ -1135,7 +1137,7 @@
     function loadQuizSlide(q) {
         optionsContainer.style.display = 'block';
         optionsContainer.innerHTML = '';
-        selectedOption = null; // Reseta a opção selecionada
+        selectedOption = null; 
         
         for (const [key, value] of Object.entries(q.options)) {
             const optionDiv = document.createElement('div');
@@ -1152,8 +1154,8 @@
                 optionDiv.classList.add('selected');
                 selectedOption = optionDiv;
                 
-                // NOVO: Adiciona um feedback visual discreto que a opção foi selecionada
-                feedback.innerHTML = '<span style="color: #007bff;">Option selected. Click Next to check and continue.</span>';
+                // NOVO: Remove feedback interativo
+                feedback.innerHTML = ''; 
             };
             optionsContainer.appendChild(optionDiv);
         }
@@ -1177,8 +1179,8 @@
             </table>
         `;
 
-        container.innerHTML = q.question + tableHTML; // Coloca o título ajustado dentro do container
-        questionText.style.display = 'none'; // Esconde o texto da pergunta
+        container.innerHTML = q.question + tableHTML; 
+        questionText.style.display = 'none'; 
         optionsContainer.style.display = 'block';
     }
 
@@ -1197,10 +1199,9 @@
         audioPlayer.style.display = (q.id === 4) ? 'none' : 'block';
         audioPlayer.src = ''; 
         
-        document.getElementById('comparison-table-container').innerHTML = ''; // Limpa tabela
+        document.getElementById('comparison-table-container').innerHTML = ''; 
 
         if (q.id === 6) {
-            // Lógica específica para o Tópico 6 (Teen vs Ty) - Tabela de Comparação
             const tableContainer = document.getElementById('comparison-table-container');
             tableContainer.innerHTML = `
                 <table class="comparison-table">
@@ -1221,12 +1222,9 @@
                     </tbody>
                 </table>
             `;
-            // Tópico 6: Exibe apenas a instrução
             document.getElementById('current-instruction').textContent = q.question;
             audioPlayer.src = GITHUB_RAW_BASE_URL + q.options[Object.keys(q.options)[0]];
         } else {
-            // Lógica para o Tópico 4 (Lista de Pronúncias Individuais)
-            // Tópico 4: Exibe apenas a instrução
             document.getElementById('current-instruction').textContent = q.question;
             for (const [word, audioFile] of Object.entries(q.options)) {
                 const li = document.createElement('li');
@@ -1248,7 +1246,7 @@
     function checkAnswer(selectedDiv, correctAnswerKey, options) {
         if (answerChecked) return; 
         
-        const correctWord = options[correctAnswerKey]; // Pega a palavra correta
+        const correctWord = options[correctAnswerKey]; 
         
         // Limpa todas as opções
         Array.from(optionsContainer.children).forEach(div => {
@@ -1267,11 +1265,9 @@
         });
         
         if (selectedDiv && selectedDiv.getAttribute('data-key') === correctAnswerKey) {
-            feedback.innerHTML = `<span style="color: #28a745;">**Correct!** The answer is **${correctWord}**. Click Next.</span>`;
+            feedback.innerHTML = `<span style="color: #28a745;">**Correct!** Click Next to advance.</span>`;
         } else {
-            // Esta parte não deve ser acessada pela nova lógica (Next só avança se não selecionou)
-            feedback.innerHTML = `<span style="color: #dc3545;">**Incorrect.**</span> The correct answer is: **${correctWord}**. Click Next.`;
-            // Garante que a correta seja marcada
+            feedback.innerHTML = `<span style="color: #dc3545;">**Incorrect.** The correct answer is: **${correctWord}**. Click Next.</span>`;
             Array.from(optionsContainer.children).forEach(div => {
                 const optionKey = div.getAttribute('data-key'); 
                 if (optionKey === correctAnswerKey) {
@@ -1378,7 +1374,8 @@
             container.appendChild(group);
         });
 
-        feedback.innerHTML = '<span style="color: #007bff; font-size: 1.1em;">Click **Next** to check your answers.</span>';
+        // NOVO: Remove feedback interativo
+        feedback.innerHTML = '';
         
         optionsContainer.style.display = 'flex';
         optionsContainer.style.justifyContent = 'center';
@@ -1483,7 +1480,8 @@
             dropZone.addEventListener('drop', drop);
         });
         
-        feedback.innerHTML = '<span style="color: #007bff; font-size: 1.1em;">Click **Next** to check your answers.</span>';
+        // NOVO: Remove feedback interativo
+        feedback.innerHTML = '';
         
         // Adiciona listeners para retornar a palavra ao container de palavras
         wordsContainer.addEventListener('dragover', dragOver);
@@ -1621,6 +1619,14 @@
         if (q.image) {
             questionImage.src = GITHUB_RAW_BASE_URL + q.image; 
             questionImage.style.display = 'block';
+            
+            // NOVO: Adiciona/Remove classe para controle do object-fit (contain vs cover)
+            if (q.id === 5) {
+                questionImage.classList.add('interactive-image');
+            } else {
+                questionImage.classList.remove('interactive-image');
+            }
+            
         } else {
             questionImage.style.display = 'none';
         }
@@ -1651,7 +1657,6 @@
                 break;
             default: // Múltipla Escolha
                 loadQuizSlide(q);
-                // CORRIGIDO: Remove a mensagem de feedback inicial para ficar mais clean
                 feedback.innerHTML = ''; 
                 break;
         }
