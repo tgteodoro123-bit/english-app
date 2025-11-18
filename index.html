@@ -5,1486 +5,1382 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Basic English Course</title>
 <style>
-    /* 1. Estilos Gerais */
-    body {
-        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #FFFFFF; 
-        color: #333;
-    }
+    /* 1. Estilos Gerais */
+    body {
+        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #FFFFFF; 
+        color: #333;
+    }
 
-    /* 2. Layout da Grade de Cards e Spacing */
-    #home-screen {
-        max-width: 1200px; 
-        margin: 60px auto 50px; 
-        padding: 0 30px;
-    }
+    /* 2. Layout da Grade de Cards e Spacing */
+    #home-screen {
+        max-width: 1200px; 
+        margin: 60px auto 50px; 
+        padding: 0 30px;
+    }
+    
+    h2 {
+        color: #333; 
+        border-bottom: 1px solid #e0e0e0; 
+        padding-top: 10px; 
+        padding-bottom: 25px; 
+        margin-bottom: 15px; 
+        font-size: 2.2em; 
+        font-weight: 500; 
+    }
+    .chapter-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); 
+        gap: 15px; 
+    }
+    
+    @media (max-width: 1024px) {
+        .chapter-grid {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+    }
+
+    /* 3. Estilos do Card */
+    .chapter-card {
+        background-color: #f7f7f7; 
+        border-radius: 6px; 
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); 
+        cursor: pointer;
+        height: 240px; 
+        position: relative; 
+        overflow: hidden; 
+        transition: box-shadow 0.2s ease;
+    }
+    .chapter-card:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
+    }
+    
+    .card-background-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        z-index: 1; 
+    }
+
+    .card-text-area {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 30%; 
+        padding: 15px;
+        z-index: 2; 
+        transition: height 0.3s ease, background 0.3s ease, color 0.3s ease; 
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%); 
+        display: flex;
+        flex-direction: column;
+        justify-content: center; 
+        align-items: center;
+        text-align: center;
+    }
+
+    .chapter-card:hover .card-text-area {
+        height: 50%; 
+        background: #FFFFFF; 
+        justify-content: space-between; 
+        padding: 15px; 
+        align-items: flex-start; 
+    }
+    
+    .text-content-wrapper {
+        transition: transform 0.3s ease;
+        text-align: left; 
+        width: 100%; 
+        box-sizing: border-box; 
+    }
+
+    .chapter-card:hover .text-content-wrapper { 
+        transform: translateY(-5px); 
+    }
+
+    .chapter-card h3 {
+        margin-top: 0;
+        font-size: 1.3em;
+        margin-bottom: 5px;
+        color: white; 
+        transition: color 0.3s ease;
+    }
+
+    .chapter-card p {
+        margin: 0;
+        font-size: 0.8em;
+        color: #ddd; 
+        transition: color 0.3s ease;
+    }
+    
+    .chapter-card:hover .card-text-area h3,
+    .chapter-card:hover .card-text-area p {
+        color: #000; 
+    }
+
+    .start-button {
+        background-color: #003366; 
+        color: white;
+        padding: 10px 22px; 
+        border: none;
+        border-radius: 5px; 
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1em; 
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        opacity: 0; 
+        transform: scale(0.9); 
+        transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
+        align-self: flex-start; 
+    }
+
+    .chapter-card:hover .start-button {
+        opacity: 1; 
+        transform: scale(1);
+    }
+    
+    .start-button:hover {
+        background-color: #004c99; 
+    }
+    
+    /* 4. Lesson/Quiz Screen */
+    #lesson-screen {
+        max-width: 650px;
+        margin: 70px auto 40px; 
+        padding: 30px;
+        background-color: #FFFFFF; 
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); 
+        display: none; 
+        position: relative; 
+    }
+    
+    /* Hotspot for Topic 5 */
+    .hotspot {
+        position: absolute;
+        width: 35px; 
+        height: 35px;
+        background-color: #ffffff; 
+        border: 2px solid #333; 
+        color: #333; 
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.8em; 
+        font-weight: 500;
+        cursor: pointer;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        z-index: 5;
+        transition: transform 0.2s, background-color 0.2s;
+        line-height: 0.8; 
+    }
+    
+    .hotspot:hover {
+        background-color: #f0f0f0; 
+        transform: scale(1.1);
+    }
+
+    /* Fixed Navigation Buttons (Right Corner) */
+    .nav-buttons {
+        position: fixed; 
+        top: 20px; 
+        right: 20px; 
+        z-index: 1000; 
+        display: none; 
+        gap: 10px; 
+        align-items: center; 
+    }
+    
+    /* Back and Next Button Style */
+    .nav-buttons button {
+        padding: 12px 20px; 
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        color: white;
+        background-color: #007bff;
+        transition: background-color 0.2s;
+    }
+    
+    .nav-buttons button:hover {
+        background-color: #0056b3;
+    }
+    
+    /* Progress Indicator */
+    #progress-indicator {
+        font-weight: 400; 
+        color: #333;
+        font-size: 0.95em; 
+        margin-right: 15px; 
+    }
+
+    /* Hamburger Menu Button (Top Left) */
+    .menu-toggle {
+        display: none; 
+        position: fixed; 
+        top: 20px;
+        left: 20px; 
+        font-size: 2.2em; 
+        background: none; 
+        border: none;
+        cursor: pointer;
+        color: #333; 
+        line-height: 1; 
+        padding: 5px 10px; 
+        z-index: 1001; 
+        transition: color 0.2s ease, background-color 0.2s ease;
+        border-radius: 4px;
+    }
+
+    .menu-toggle:hover {
+        color: #555; 
+        background-color: #f0f0f0; 
+    }
+
+    /* Side Menu (Left Side) */
+    .side-menu {
+        height: 100%; 
+        width: 0; 
+        position: fixed; 
+        z-index: 1000; 
+        top: 0;
+        left: 0;
+        background-color: #ffffff;
+        overflow-x: hidden; 
+        transition: 0.3s; 
+        padding-top: 60px; 
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1); 
+        border-right: 1px solid #eee;
+        overflow-y: auto; 
+    }
+
+    .side-menu.open {
+        width: 280px; 
+    }
+
+    .side-menu a {
+        padding: 15px 25px; 
+        text-decoration: none;
+        font-size: 1.1em; 
+        color: #333; 
+        display: block;
+        transition: 0.3s;
+        border-bottom: 1px solid #f0f0f0; 
+        font-weight: 400; 
+    }
+
+    .side-menu a:hover {
+        background-color: #f6f9fc; 
+        color: #007bff; 
+    }
+
+    .side-menu .close-btn {
+        position: absolute;
+        top: 0;
+        right: 15px;
+        font-size: 36px;
+        margin-left: 50px;
+        color: #aaa;
+        cursor: pointer;
+    }
+
+    /* Content Styles */
+    .quiz-question img {
+        max-width: 100%; 
+        height: auto; 
+        display: block;
+        margin: 15px auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .quiz-question {
+        padding: 20px;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        text-align: center;
+        background-color: #fcfcfc;
+        position: relative; 
+    }
+    
+    #question-text {
+        font-size: 1.4em; 
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
+    
+    .option {
+        padding: 15px;
+        margin: 12px 0;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        transition: background-color 0.2s, border-color 0.2s;
+        text-align: left;
+    }
+    
+    .correct { background-color: #e6ffed !important; border-color: #28a745 !important; font-weight: bold; }
+    .incorrect { background-color: #ffe6e6 !important; border-color: #dc3545 !important; font-weight: bold; }
+
+    /* Pronunciation and Audio Styles */
+    #pronunciation-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 15px;
+        border: 1px solid #ddd; 
+        padding: 25px;
+        border-radius: 10px;
+    }
+    .word-to-practice { font-size: 1.2em; font-weight: 700; margin-bottom: 20px; color: #333; }
+    
+    #audio-player-controls {
+        width: 100%; 
+        max-width: 400px; 
+        margin-bottom: 20px; 
+    }
+    
+    #pronunciation-list { list-style: none; padding: 0; margin-top: 15px; width: 100%; max-width: 400px; text-align: left; }
+    #pronunciation-list li { padding: 10px; border-bottom: 1px dotted #e0e0e0; display: flex; justify-content: space-between; align-items: center; font-size: 1.1em; }
+    .play-button { background: none; border: none; font-size: 1.5em; cursor: pointer; color: #007bff; margin-left: 10px; transition: color 0.1s; }
+
+    /* Topic 6 Comparison Table Styles */
+    .comparison-table {
+        width: 100%;
+        max-width: 400px;
+        border-collapse: collapse;
+        margin: 20px auto;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+    }
+    .comparison-table th, .comparison-table td {
+        border: 1px solid #ddd;
+        padding: 10px; 
+        text-align: center;
+        font-size: 1em; 
+    }
+    .comparison-table th {
+        background-color: #f2f2f2; 
+        color: #333;
+    }
+    .comparison-table tr:nth-child(even) {
+        background-color: #fff; 
+    }
+    .comparison-table tr:nth-child(odd) {
+        background-color: #f9f9f9; 
+    }
+    
+    /* Topic 7 (FILL_IN_BLANKS) Styles */
+    .fill-in-blanks-container {
+        display: flex;
+        flex-direction: row; 
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        padding: 5px 0; 
+    }
+
+    .number-input-group {
+        display: flex;
+        flex-direction: column; 
+        align-items: flex-start;
+        gap: 2px; 
+        width: 80%; 
+        max-width: 200px; 
+        padding: 3px; 
+        border: 1px solid #eee;
+        border-radius: 6px;
+        background-color: #f9f9f9;
+        transition: background-color 0.2s;
+    }
+
+    .number-input-group span {
+        font-size: 1.1em; 
+        font-weight: 700;
+        color: #333; 
+        width: 100%; 
+        text-align: left;
+        margin-bottom: 2px;
+    }
+
+    .number-input-group input {
+        width: 100%; 
+        padding: 8px 8px; 
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 0.9em; 
+        transition: border-color 0.2s;
+        text-transform: lowercase; 
+        box-sizing: border-box; 
+    }
+
+    .number-input-group input:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+    
+    .number-result {
+        margin-top: 3px; 
+        font-weight: bold;
+        text-align: left; 
+        width: 100%; 
+        font-size: 0.85em; 
+    }
+
+    .result-correct { color: #28a745; }
+    .result-incorrect { color: #dc3545; }
+
+    /* Topic 8 (Drag and Drop) Styles */
+    .drag-drop-overall-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+        width: 100%;
+        max-width: 600px; 
+        margin: 0 auto; 
+        padding: 20px 0;
+    }
+
+    /* 1. Image Gallery */
+    .image-gallery-container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 15px; 
+        margin-bottom: 30px; 
+    }
+
+    .gallery-image-wrapper {
+        position: relative;
+        width: 100%;
+        height: 320px; 
+        border-radius: 10px; 
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    }
+
+    .gallery-image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; 
+        object-position: center; 
+        background-color: #fcfcfc;
+        display: block;
+    }
+
+    .image-number-label {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 1.1em;
+        font-weight: bold;
+        z-index: 10;
+    }
+
+    @media (max-width: 480px) {
+        .image-gallery-container {
+            grid-template-columns: 1fr; 
+        }
+        .gallery-image-wrapper {
+            height: 250px; 
+        }
+    }
+
+    /* 2. Sentence List */
+    .sentence-list-container {
+        width: 100%; 
+        display: flex;
+        flex-direction: column;
+        gap: 12px; 
+        margin-bottom: 30px; 
+    }
+
+    .sentence-item {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; 
+        font-size: 1.1em; 
+        font-weight: 500;
+        line-height: 1.4;
+        margin: 0;
+        padding: 3px 0;
+    }
+
+    .sentence-text-before {
+        margin-right: 5px; 
+    }
     
-    h2 {
-        color: #333; 
-        border-bottom: 1px solid #e0e0e0; 
-        padding-top: 10px; 
-        padding-bottom: 25px; 
-        margin-bottom: 15px; 
-        font-size: 2.2em; 
-        font-weight: 500; 
-    }
-    .chapter-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr); 
-        gap: 15px; 
-    }
-    
-    @media (max-width: 1024px) {
-        .chapter-grid {
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        }
+    .sentence-punctuation {
+        margin-left: 0; /* Ajuste para pontuação colada */
+        margin-right: 5px; /* Pequeno espaçamento para o próximo item */
     }
 
-    /* 3. Estilos do Card */
-    .chapter-card {
-        background-color: #f7f7f7; 
-        border-radius: 6px; 
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); 
-        cursor: pointer;
-        height: 240px; 
-        position: relative; 
-        overflow: hidden; 
-        transition: box-shadow 0.2s ease;
-    }
-    .chapter-card:hover {
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
-    }
-    
-    .card-background-image {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: center;
-        z-index: 1; 
-    }
+    /* Drop Zone */
+    .drop-zone {
+        min-width: 120px; 
+        min-height: 2.2em; 
+        border: 1px solid #cccccc; 
+        border-radius: 6px; 
+        padding: 3px 8px; 
+        line-height: 1.3; 
+        display: inline-flex; 
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        flex-grow: 0; 
+        transition: background-color 0.1s, border-color 0.1s;
+        white-space: nowrap; 
+    }
+    
+    .drop-zone.drag-over {
+        background-color: #eef7ff; 
+        border-color: #007bff; 
+    }
 
-    .card-text-area {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 30%; 
-        padding: 15px;
-        z-index: 2; 
-        transition: height 0.3s ease, background 0.3s ease, color 0.3s ease; 
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%); 
-        display: flex;
-        flex-direction: column;
-        justify-content: center; 
-        align-items: center;
-        text-align: center;
-    }
+    .drop-zone.correct-drop {
+        border-color: #28a745; 
+        background-color: #e6ffed; 
+    }
 
-    .chapter-card:hover .card-text-area {
-        height: 50%; 
-        background: #FFFFFF; 
-        justify-content: space-between; 
-        padding: 15px; 
-        align-items: flex-start; 
-    }
-    
-    .text-content-wrapper {
-        transition: transform 0.3s ease;
-        text-align: left; 
-        width: 100%; 
-        box-sizing: border-box; 
-    }
+    .drop-zone.incorrect-drop {
+        border-color: #dc3545; 
+        background-color: #ffe6e6; 
+    }
 
-    .chapter-card:hover .text-content-wrapper { 
-        transform: translateY(-5px); 
-    }
+    /* 3. Draggable Words Container */
+    .draggable-words-container {
+        width: 100%; 
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; 
+        gap: 10px; 
+        padding: 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background-color: #f8f8f8;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.02); 
+    }
 
-    .chapter-card h3 {
-        margin-top: 0;
-        font-size: 1.3em;
-        margin-bottom: 5px;
-        color: white; 
-        transition: color 0.3s ease;
-    }
+    /* Draggable Word */
+    .draggable-word {
+        cursor: grab;
+        background-color: #ffffff; 
+        color: #333; 
+        padding: 9px 18px; 
+        border-radius: 18px; 
+        font-size: 0.95em; 
+        font-weight: 600;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08); 
+        border: 1px solid #e0e0e0; 
+        transition: opacity 0.2s, transform 0.1s, background-color 0.2s, box-shadow 0.2s;
+    }
+    
+    .draggable-word:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+    }
+    
+    .draggable-word.dragging {
+        opacity: 0.6; 
+        box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+        transform: scale(0.98);
+    }
+    
+    /* Dropped Word Style */
+    .drop-zone .draggable-word {
+        cursor: default;
+        box-shadow: none;
+        margin: 0; 
+        padding: 5px 10px; 
+        font-size: 0.9em;
+        background-color: #e8f0fe; 
+        border-color: #c0d8f8;
+        color: #004085;
+        font-weight: 600;
+        display: inline-block; 
+        pointer-events: all;
+    }
 
-    .chapter-card p {
-        margin: 0;
-        font-size: 0.8em;
-        color: #ddd; 
-        transition: color 0.3s ease;
-    }
-    
-    .chapter-card:hover .card-text-area h3,
-    .chapter-card:hover .card-text-area p {
-        color: #000; 
-    }
+    .correct-word-display {
+        background-color: #28a745 !important;
+        color: white !important;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 1em;
+    }
 
-    .start-button {
-        background-color: #003366; 
-        color: white;
-        padding: 10px 22px; 
-        border: none;
-        border-radius: 5px; 
-        cursor: pointer;
-        font-weight: bold;
-        font-size: 1em; 
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        opacity: 0; 
-        transform: scale(0.9); 
-        transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
-        align-self: flex-start; 
-    }
-
-    .chapter-card:hover .start-button {
-        opacity: 1; 
-        transform: scale(1);
-    }
-    
-    .start-button:hover {
-        background-color: #004c99; 
-    }
-    
-    /* 4. Lesson/Quiz Screen */
-    #lesson-screen {
-        max-width: 650px;
-        margin: 70px auto 40px; 
-        padding: 30px;
-        background-color: #FFFFFF; 
-        border-radius: 12px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); 
-        display: none; 
-        position: relative; 
-    }
-    
-    /* Hotspot for Topic 5 */
-    .hotspot {
-        position: absolute;
-        width: 35px; 
-        height: 35px;
-        background-color: #ffffff; 
-        border: 2px solid #333; 
-        color: #333; 
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 1.8em; 
-        font-weight: 500;
-        cursor: pointer;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-        z-index: 5;
-        transition: transform 0.2s, background-color 0.2s;
-        line-height: 0.8; 
-    }
-    
-    .hotspot:hover {
-        background-color: #f0f0f0; 
-        transform: scale(1.1);
-    }
-
-    /* Fixed Navigation Buttons (Right Corner) */
-    .nav-buttons {
-        position: fixed; 
-        top: 20px; 
-        right: 20px; 
-        z-index: 1000; 
-        display: none; 
-        gap: 10px; 
-        align-items: center; 
-    }
-    
-    /* Back and Next Button Style */
-    .nav-buttons button {
-        padding: 12px 20px; 
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-        color: white;
-        background-color: #007bff;
-        transition: background-color 0.2s;
-    }
-    
-    .nav-buttons button:hover {
-        background-color: #0056b3;
-    }
-    
-    /* Progress Indicator */
-    #progress-indicator {
-        font-weight: 400; 
-        color: #333;
-        font-size: 0.95em; 
-        margin-right: 15px; 
-    }
-
-    /* Hamburger Menu Button (Top Left) */
-    .menu-toggle {
-        display: none; 
-        position: fixed; 
-        top: 20px;
-        left: 20px; 
-        font-size: 2.2em; 
-        background: none; 
-        border: none;
-        cursor: pointer;
-        color: #333; 
-        line-height: 1; 
-        padding: 5px 10px; 
-        z-index: 1001; 
-        transition: color 0.2s ease, background-color 0.2s ease;
-        border-radius: 4px;
-    }
-
-    .menu-toggle:hover {
-        color: #555; 
-        background-color: #f0f0f0; 
-    }
-
-    /* Side Menu (Left Side) */
-    .side-menu {
-        height: 100%; 
-        width: 0; 
-        position: fixed; 
-        z-index: 1000; 
-        top: 0;
-        left: 0;
-        background-color: #ffffff;
-        overflow-x: hidden; 
-        transition: 0.3s; 
-        padding-top: 60px; 
-        box-shadow: 2px 0 10px rgba(0,0,0,0.1); 
-        border-right: 1px solid #eee;
-        overflow-y: auto; 
-    }
-
-    .side-menu.open {
-        width: 280px; 
-    }
-
-    .side-menu a {
-        padding: 15px 25px; 
-        text-decoration: none;
-        font-size: 1.1em; 
-        color: #333; 
-        display: block;
-        transition: 0.3s;
-        border-bottom: 1px solid #f0f0f0; 
-        font-weight: 400; 
-    }
-
-    .side-menu a:hover {
-        background-color: #f6f9fc; 
-        color: #007bff; 
-    }
-
-    .side-menu .close-btn {
-        position: absolute;
-        top: 0;
-        right: 15px;
-        font-size: 36px;
-        margin-left: 50px;
-        color: #aaa;
-        cursor: pointer;
-    }
-
-    /* Content Styles */
-    .quiz-question img {
-        max-width: 100%; 
-        height: auto; 
-        display: block;
-        margin: 15px auto;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-    
-    .quiz-question {
-        padding: 20px;
-        border: 1px solid #eee;
-        border-radius: 10px;
-        margin-bottom: 25px;
-        text-align: center;
-        background-color: #fcfcfc;
-        position: relative; 
-    }
-    
-    #question-text {
-        font-size: 1.4em; 
-        font-weight: 500;
-        margin-bottom: 10px;
-    }
-    
-    .option {
-        padding: 15px;
-        margin: 12px 0;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-        cursor: pointer;
-        transition: background-color 0.2s, border-color 0.2s;
-        text-align: left;
-    }
-    
-    .correct { background-color: #e6ffed !important; border-color: #28a745 !important; font-weight: bold; }
-    .incorrect { background-color: #ffe6e6 !important; border-color: #dc3545 !important; font-weight: bold; }
-
-    /* Pronunciation and Audio Styles */
-    #pronunciation-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-top: 15px;
-        border: 1px solid #ddd; 
-        padding: 25px;
-        border-radius: 10px;
-    }
-    .word-to-practice { font-size: 1.2em; font-weight: 700; margin-bottom: 20px; color: #333; }
-    
-    #audio-player-controls {
-        width: 100%; 
-        max-width: 400px; 
-        margin-bottom: 20px; 
-    }
-    
-    #pronunciation-list { list-style: none; padding: 0; margin-top: 15px; width: 100%; max-width: 400px; text-align: left; }
-    #pronunciation-list li { padding: 10px; border-bottom: 1px dotted #e0e0e0; display: flex; justify-content: space-between; align-items: center; font-size: 1.1em; }
-    .play-button { background: none; border: none; font-size: 1.5em; cursor: pointer; color: #007bff; margin-left: 10px; transition: color 0.1s; }
-
-    /* Topic 6 Comparison Table Styles */
-    .comparison-table {
-        width: 100%;
-        max-width: 400px;
-        border-collapse: collapse;
-        margin: 20px auto;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
-    }
-    .comparison-table th, .comparison-table td {
-        border: 1px solid #ddd;
-        padding: 10px; 
-        text-align: center;
-        font-size: 1em; 
-    }
-    .comparison-table th {
-        background-color: #f2f2f2; 
-        color: #333;
-    }
-    .comparison-table tr:nth-child(even) {
-        background-color: #fff; 
-    }
-    .comparison-table tr:nth-child(odd) {
-        background-color: #f9f9f9; 
-    }
-    
-    /* Topic 7 (FILL_IN_BLANKS) Styles */
-    .fill-in-blanks-container {
-        display: flex;
-        flex-direction: column; 
-        align-items: center; 
-        gap: 4px; 
-        padding: 5px 0; 
-    }
-
-    .number-input-group {
-        display: flex;
-        flex-direction: column; 
-        align-items: flex-start;
-        gap: 2px; 
-        width: 80%; 
-        max-width: 200px; 
-        padding: 3px; 
-        border: 1px solid #eee;
-        border-radius: 6px;
-        background-color: #f9f9f9;
-        transition: background-color 0.2s;
-    }
-
-    .number-input-group span {
-        font-size: 1.1em; 
-        font-weight: 700;
-        color: #333; 
-        width: 100%; 
-        text-align: left;
-        margin-bottom: 2px;
-    }
-
-    .number-input-group input {
-        width: 100%; 
-        padding: 8px 8px; 
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 0.9em; 
-        transition: border-color 0.2s;
-        text-transform: lowercase; 
-        box-sizing: border-box; 
-    }
-
-    .number-input-group input:focus {
-        border-color: #007bff;
-        outline: none;
-    }
-    
-    .number-result {
-        margin-top: 3px; 
-        font-weight: bold;
-        text-align: left; 
-        width: 100%; 
-        font-size: 0.85em; 
-    }
-
-    .result-correct { color: #28a745; }
-    .result-incorrect { color: #dc3545; }
-
-    /* Topic 8 (Drag and Drop) Styles */
-    .drag-drop-overall-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center; 
-        width: 100%;
-        max-width: 600px; 
-        margin: 0 auto; 
-        padding: 20px 0;
-    }
-
-    /* 1. Image Gallery */
-    .image-gallery-container {
-        width: 100%;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 15px; 
-        margin-bottom: 30px; 
-    }
-
-    .gallery-image-wrapper {
-        position: relative;
-        width: 100%;
-        height: 320px; 
-        border-radius: 10px; 
-        overflow: hidden;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-    }
-
-    .gallery-image-wrapper img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; 
-        object-position: center; 
-        background-color: #fcfcfc;
-        display: block;
-    }
-
-    .image-number-label {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        background-color: rgba(0, 0, 0, 0.7);
-        color: white;
-        padding: 5px 10px;
-        border-radius: 6px;
-        font-size: 1.1em;
-        font-weight: bold;
-        z-index: 10;
-    }
-
-    @media (max-width: 480px) {
-        .image-gallery-container {
-            grid-template-columns: 1fr; 
-        }
-        .gallery-image-wrapper {
-            height: 250px; 
-        }
-    }
-
-    /* 2. Sentence List */
-    .sentence-list-container {
-        width: 100%; 
-        display: flex;
-        flex-direction: column;
-        gap: 12px; 
-        margin-bottom: 30px; 
-    }
-
-    .sentence-item {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start; 
-        font-size: 1.1em; 
-        font-weight: 500;
-        line-height: 1.4;
-        margin: 0;
-        padding: 3px 0;
-    }
-
-    .sentence-text-before {
-        margin-right: 5px; 
-    }
-
-    /* Drop Zone */
-    .drop-zone {
-        min-width: 120px; 
-        min-height: 2.2em; 
-        border: 1px solid #cccccc; 
-        border-radius: 6px; 
-        padding: 3px 8px; 
-        line-height: 1.3; 
-        display: inline-flex; 
-        align-items: center;
-        justify-content: center;
-        box-sizing: border-box;
-        flex-grow: 0; 
-        transition: background-color 0.1s, border-color 0.1s;
-        white-space: nowrap; 
-    }
-    
-    .drop-zone.drag-over {
-        background-color: #eef7ff; 
-        border-color: #007bff; 
-    }
-
-    .drop-zone.correct-drop {
-        border-color: #28a745; 
-        background-color: #e6ffed; 
-    }
-
-    .drop-zone.incorrect-drop {
-        border-color: #dc3545; 
-        background-color: #ffe6e6; 
-    }
-
-    /* 3. Draggable Words Container */
-    .draggable-words-container {
-        width: 100%; 
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center; 
-        gap: 10px; 
-        padding: 15px;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        background-color: #f8f8f8;
-        box-shadow: inset 0 1px 3px rgba(0,0,0,0.02); 
-    }
-
-    /* Draggable Word */
-    .draggable-word {
-        cursor: grab;
-        background-color: #ffffff; 
-        color: #333; 
-        padding: 9px 18px; 
-        border-radius: 18px; 
-        font-size: 0.95em; 
-        font-weight: 600;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.08); 
-        border: 1px solid #e0e0e0; 
-        transition: opacity 0.2s, transform 0.1s, background-color 0.2s, box-shadow 0.2s;
-    }
-    
-    .draggable-word:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.12);
-    }
-    
-    .draggable-word.dragging {
-        opacity: 0.6; 
-        box-shadow: 0 6px 15px rgba(0,0,0,0.25);
-        transform: scale(0.98);
-    }
-    
-    /* Dropped Word Style */
-    .drop-zone .draggable-word {
-        cursor: default;
-        box-shadow: none;
-        margin: 0; 
-        padding: 5px 10px; 
-        font-size: 0.9em;
-        background-color: #e8f0fe; 
-        border-color: #c0d8f8;
-        color: #004085;
-        font-weight: 600;
-        display: block; 
-    }
-
-    .correct-word-display {
-        background-color: #28a745 !important;
-        color: white !important;
-        padding: 5px 10px;
-        border-radius: 6px;
-        font-size: 1em;
-    }
-
-    .modal {
-        display: none; 
-        position: fixed; 
-        z-index: 1002; 
-        left: 0;
-        top: 0;
-        width: 100%; 
-        height: 100%; 
-        overflow: auto; 
-        background-color: rgba(0,0,0,0.4); 
-    }
-    
-    .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto; 
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%; 
-        max-width: 500px; 
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-    
-    .close-button {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-    
-    .close-button:hover,
-    .close-button:focus {
-        color: #000;
-        text-decoration: none;
-        cursor: pointer;
-    }
+    .modal {
+        display: none; 
+        position: fixed; 
+        z-index: 1002; 
+        left: 0;
+        top: 0;
+        width: 100%; 
+        height: 100%; 
+        overflow: auto; 
+        background-color: rgba(0,0,0,0.4); 
+    }
+    
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; 
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; 
+        max-width: 500px; 
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    
+    .close-button {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    
+    .close-button:hover,
+    .close-button:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
 </style>
 </head>
 <body>
 
 <div id="home-screen">
-    <h2>BEGINNER</h2>
-    <div class="chapter-grid">
-    </div>
+    <h2>BEGINNER</h2>
+    <div class="chapter-grid">
+    </div>
 </div>
 
 <div id="lesson-screen">
-    
-    <div class="quiz-question">
-        <img id="question-image" src="" alt="Lesson Image"> 
-        
-        <div class="hotspot" id="hotspot-1" style="top: 20%; left: 20%;" onclick="openNumberModal('one-to-ten')">+</div>
-        <div class="hotspot" id="hotspot-2" style="top: 20%; left: 70%;" onclick="openNumberModal('tens')">+</div>
-        <div class="hotspot" id="hotspot-3" style="top: 70%; left: 20%;" onclick="openNumberModal('teens')">+</div>
-        <div class="hotspot" id="hotspot-4" style="top: 70%; left: 70%;" onclick="openNumberModal('combined')">+</div>
-    </div>
+    
+    <div class="quiz-question">
+        <img id="question-image" src="" alt="Lesson Image"> 
+        
+        <div class="hotspot" id="hotspot-1" style="top: 20%; left: 20%;" onclick="openNumberModal('one-to-ten')">+</div>
+        <div class="hotspot" id="hotspot-2" style="top: 20%; left: 70%;" onclick="openNumberModal('tens')">+</div>
+        <div class="hotspot" id="hotspot-3" style="top: 70%; left: 20%;" onclick="openNumberModal('teens')">+</div>
+        <div class="hotspot" id="hotspot-4" style="top: 70%; left: 70%;" onclick="openNumberModal('combined')">+</div>
+    </div>
 
-    <p id="question-text" style="display: none;"></p> 
-    
-    <div id="options-container" style="display: none;"></div>
-    
-    <div id="pronunciation-container" style="display: none;">
-        <p class="word-to-practice" id="current-instruction"></p> 
-        <audio id="audio-player-controls" controls preload="auto"></audio> 
-        <div id="comparison-table-container"></div>
-        <ul id="pronunciation-list"></ul>
-    </div>
-    
-    <p id="feedback" style="font-weight: bold; margin-top: 15px; text-align: center;"></p>
+    <p id="question-text" style="display: none;"></p> 
+    
+    <div id="options-container" style="display: none;"></div>
+    
+    <div id="pronunciation-container" style="display: none;">
+        <p class="word-to-practice" id="current-instruction"></p> 
+        <audio id="audio-player-controls" controls preload="auto"></audio> 
+        <div id="comparison-table-container"></div>
+        <ul id="pronunciation-list"></ul>
+    </div>
+    
+    <p id="feedback" style="font-weight: bold; margin-top: 15px; text-align: center;"></p>
 
 </div>
 
 <button class="menu-toggle" onclick="openNav()">☰</button>
 
 <div id="side-menu" class="side-menu">
-    <a href="javascript:void(0)" class="close-btn" onclick="closeNav()">&times;</a>
-    </div>
+    <a href="javascript:void(0)" class="close-btn" onclick="closeNav()">&times;</a>
+    </div>
 
 <div class="nav-buttons">
-    <span id="progress-indicator"></span> 
-    <button id="back-btn" onclick="backQuestion()">Back</button>
-    <button id="next-btn" onclick="goNext()">Next</button>
+    <span id="progress-indicator"></span> 
+    <button id="back-btn" onclick="backQuestion()">Back</button>
+    <button id="next-btn" onclick="goNext()">Next</button>
 </div>
 
 <div id="numberModal" class="modal">
-    <div class="modal-content">
-        <span class="close-button" onclick="closeNumberModal()">&times;</span>
-        <h3 id="modal-title">Numbers</h3>
-        <div id="modal-body">
-        </div>
-    </div>
+    <div class="modal-content">
+        <span class="close-button" onclick="closeNumberModal()">&times;</span>
+        <h3 id="modal-title">Numbers</h3>
+        <div id="modal-body">
+        </div>
+    </div>
 </div>
 
 <script>
-    // Se você estiver rodando localmente, mude esta URL para o caminho do seu disco, ou mantenha esta URL base se estiver usando o seu GitHub.
-    const GITHUB_RAW_BASE_URL = "https://raw.githubusercontent.com/tgteodoro123-bit/english-app/main/"; 
-    
-    const BACKGROUND_IMAGES = [
-        "https://images.pexels.com/photos/1036321/pexels-photo-1036321.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "https://images.pexels.com/photos/2076011/pexels-photo-2076011.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "https://images.pexels.com/photos/6684742/pexels-photo-6684742.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "https://images.pexels.com/photos/4144294/pexels-photo-4144294.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "https://images.pexels.com/photos/1481005/pexels-photo-1481005.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "https://images.pexels.com/photos/3401403/pexels-photo-3401403.jpeg?auto=compress&cs=tinysrgb&w=800",
-    ];
-    
-    // --- TOPIC 8 DATA ---
-    const DRAG_AND_DROP_WORDS = [
-        { id: 'word-1', text: 'friend', correctTarget: 'drop-1' },
-        { id: 'word-2', text: 'phone number', correctTarget: 'drop-2' },
-        { id: 'word-3', text: 'teacher', correctTarget: 'drop-3' },
-        { id: 'word-4', text: 'address number', correctTarget: 'drop-4' }
-    ];
-    
-    const DRAG_AND_DROP_SENTENCES = [
-        { 
-            id: 'sent-1', 
-            text: '1. This is my best ____.', 
-            image: 'friendtopico8.jpg', 
-            dropId: 'drop-1', 
-            correct: 'friend' ,
-            userAnswer: null, 
-            isCorrect: false
-        },
-        { 
-            id: 'sent-2', 
-            text: '2. It is a ____.', 
-            image: 'phonenumbertopico8.jpg', 
-            dropId: 'drop-2', 
-            correct: 'phone number' ,
-            userAnswer: null, 
-            isCorrect: false
-        },
-        { 
-            id: 'sent-3', 
-            text: '3. He is a math ____.', 
-            image: 'teachertopico8.jpg', 
-            dropId: 'drop-3', 
-            correct: 'teacher' ,
-            userAnswer: null, 
-            isCorrect: false
-        },
-        { 
-            id: 'sent-4', 
-            text: '4. It is an ____.', 
-            image: 'addressnumber2topico8.png', 
-            dropId: 'drop-4', 
-            correct: 'address number' ,
-            userAnswer: null, 
-            isCorrect: false
-        }
-    ];
+    // Se você estiver rodando localmente, mude esta URL para o caminho do seu disco, ou mantenha esta URL base se estiver usando o seu GitHub.
+    const GITHUB_RAW_BASE_URL = "https://raw.githubusercontent.com/tgteodoro123-bit/english-app/main/"; 
+    
+    const BACKGROUND_IMAGES = [
+        "https://images.pexels.com/photos/1036321/pexels-photo-1036321.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/2076011/pexels-photo-2076011.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/6684742/pexels-photo-6684742.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/4144294/pexels-photo-4144294.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/1481005/pexels-photo-1481005.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/3401403/pexels-photo-3401403.jpeg?auto=compress&cs=tinysrgb&w=800",
+    ];
+    
+    // --- TOPIC 8 DATA ---
+    const DRAG_AND_DROP_WORDS = [
+        { id: 'word-1', text: 'friend', correctTarget: 'drop-1' },
+        { id: 'word-2', text: 'phone number', correctTarget: 'drop-2' },
+        { id: 'word-3', text: 'teacher', correctTarget: 'drop-3' },
+        { id: 'word-4', text: 'address number', correctTarget: 'drop-4' }
+    ];
+    
+    const DRAG_AND_DROP_SENTENCES = [
+        { 
+            id: 'sent-1', 
+            text: '1. This is my best ____.', // Mantenha o ponto aqui para a lógica de separação
+            image: 'friendtopico8.jpg', 
+            dropId: 'drop-1', 
+            correct: 'friend' ,
+            userAnswer: null, 
+            isCorrect: false
+        },
+        { 
+            id: 'sent-2', 
+            text: '2. It is a ____.', 
+            image: 'phonenumbertopico8.jpg', 
+            dropId: 'drop-2', 
+            correct: 'phone number' ,
+            userAnswer: null, 
+            isCorrect: false
+        },
+        { 
+            id: 'sent-3', 
+            text: '3. He is a math ____.', 
+            image: 'teachertopico8.jpg', 
+            dropId: 'drop-3', 
+            correct: 'teacher' ,
+            userAnswer: null, 
+            isCorrect: false
+        },
+        { 
+            id: 'sent-4', 
+            text: '4. It is an ____.', 
+            image: 'addressnumber2topico8.png', 
+            dropId: 'drop-4', 
+            correct: 'address number' ,
+            userAnswer: null, 
+            isCorrect: false
+        }
+    ];
 
-    const QUESTIONS = [
-        // Topics 1 to 4 
-        { id: 1, question: "What do you see in the image?", image: "numeros.jpg", options: { A: "The Alphabet", B: "Colors", C: "Numbers" }, correctAnswer: 'C', chapter: 1, title: "1. Numbers Overview" },
-        { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', chapter: 1, title: "2. Verb 'To Be' (I am)" },
-        { id: 3, question: `<h3 style="color: #007bff; font-size: 2em; margin-bottom: 20px;">Vocabulary:</h3>`, options: { "1.": `My <span style="color: #007bff;">address number</span> is 34.`, "2.": `I am a <span style="color: #007bff;">student</span>.`, "3.": `He is my new <span style="color: #007bff;">friend</span>, David.`, "4.": `Mr. David is a <span style="color: #007bff;">great</span> teacher.`, "5.": `My <span style="color: #007bff;">phone number</span> is: (987) 654-1234.`, "6.": `Sofia is <span style="color: #007bff;">American</span>.`, "7.": `I love my English <span style="color: #007bff;">teacher</span>.`, "8.": `Lucas is a <span style="color: #007bff;">new</span> student, too.`, "9.": `I am 18 <span style="color: #007bff;">years old</span>.`, "10.": `My <span style="color: #007bff;">nationality</span>? I'm French.`, }, correctAnswer: 'INFO', chapter: 1, title: "3. Lesson Vocabulary" },
-        { id: 4, question: "PRONUNCIATION PRACTICE: Click the play button (▶️) to hear each word.", options: { "Address number": "addressnumber.mp3", "American": "American.mp3", "Friend": "friend.mp3", "Great": "great.mp3", "Nationality": "nationality.mp3", "New": "new.mp3", "Phone number": "phonenumber.mp3", "Student": "student.mp3", "Teacher": "teacher.mp3", "Years old": "yearsold.mp3" }, correctAnswer: 'PRONUNCIATION_SET', chapter: 1, title: "4. Word Pronunciation" },
-        // Topic 5 
-        { id: 5, question: "Click on the '+' signs to review the number groups.", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1, title: "5. Interactive Bingo Review" },
-        // Topic 6 
-        { id: 6, 
-            question: "Listen and notice the difference between -teen and -ty.", 
-            options: { "13: (Thirteen) – 30 (Thirty)": "teenety.mp3" }, 
-            correctAnswer: 'PRONUNCIATION_SET', 
-            chapter: 1,
-            title: "6. Pronunciation: Teen vs Ty"
-        },
-        // Topic 7 
-        { 
-            id: 7, 
-            question: "Write the numbers in English:", 
-            correctAnswer: 'FILL_IN_BLANKS', 
-            chapter: 1, 
-            title: "7. Writing Numbers Practice",
-            data: [
-                { num: 10, correct: "ten" }, 
-                { num: 22, correct: "twenty-two" }, 
-                { num: 36, correct: "thirty-six" }, 
-                { num: 12, correct: "twelve" }, 
-                { num: 44, correct: "forty-four" }, 
-                { num: 99, correct: "ninety-nine" }, 
-                { num: 8, correct: "eight" }, 
-                { num: 57, correct: "fifty-seven" }, 
-                { num: 60, correct: "sixty" }, 
-                { num: 16, correct: "sixteen" }
-            ]
-        },
-        // Topic 8 
-        { id: 8, question: "Drag the correct word to complete the sentences based on the images.", 
-            correctAnswer: 'DRAG_AND_DROP', 
-            chapter: 1, 
-            title: "8. Drag & Drop: Vocabulary",
-            data: {
-                words: DRAG_AND_DROP_WORDS,
-                sentences: DRAG_AND_DROP_SENTENCES
-            }
-        },
-        // Topics 9 to 13 
-        { id: 9, question: "What is the color of the sky on a sunny day?", image: "", options: { A: "Red", B: "Yellow", C: "Blue" }, correctAnswer: 'C', chapter: 1, title: "9. Quiz: Colors" },
-        { id: 10, question: "What is the English word for 'cadeira'?", image: "", options: { A: "Book", B: "Chair", C: "Table" }, correctAnswer: 'B', chapter: 1, title: "10. Quiz: Objects" },
-        { id: 11, question: "Identify the color of the object in the image:", image: "apple.jpg", options: { A: "Green", B: "Red", C: "Orange" }, correctAnswer: 'B', chapter: 1, title: "11. Quiz: Image Color" },
-        { id: 12, question: "How do you ask 'Where are you from?'", image: "", options: { A: "What your name is?", B: "Where from you are?", C: "Where are you from?" }, correctAnswer: 'C', chapter: 1, title: "12. Quiz: Common Phrases" },
-        { id: 13, question: "Complete the sentence: 'I want ___ apple.'", image: "", options: { A: "a", B: "an", C: "the" }, correctAnswer: 'B', chapter: 1, title: "13. Quiz: Articles" },
-    ];
-    
-    let currentQuestionIndex = 0;
-    let lessonQuestions = []; 
-    let currentChapter = 1; 
-    let fillInBlanksAnswered = false; 
-    let dragAndDropAnswered = false; 
-    
-    const homeScreen = document.getElementById('home-screen');
-    const lessonScreen = document.getElementById('lesson-screen');
-    const optionsContainer = document.getElementById('options-container');
-    const feedback = document.getElementById('feedback');
-    const nextBtn = document.getElementById('next-btn');
-    const backBtn = document.getElementById('back-btn');
-    const questionText = document.getElementById('question-text');
-    const questionImage = document.getElementById('question-image');
-    const progressIndicator = document.getElementById('progress-indicator');
-    
-    const sideMenu = document.getElementById('side-menu'); 
-    const navButtonsContainer = document.querySelector('.nav-buttons'); 
-    const menuToggle = document.querySelector('.menu-toggle'); 
-    
-    let answerChecked = false;
-    
-    // RENDER CHAPTER CARDS ON HOME SCREEN
-    const chapterGrid = document.querySelector('.chapter-grid');
-    for (let i = 1; i <= 24; i++) {
-        const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
-        let cardTopicName = i === 1 ? 'Basic Foundations (13 Topics Ready!)' : `Module ${i} Content`; 
-        chapterGrid.innerHTML += `
-            <div class="chapter-card" id="card-${i}">
-                <div class="card-background-image" style="background-image: url('${bgUrl}');"></div>
-                <div class="card-text-area">
-                    <div class="text-content-wrapper">
-                        <h3>Beginner ${i}</h3>
-                        <p>${cardTopicName}</p> 
-                    </div>
-                    <button class="start-button" onclick="startLesson(${i}); event.stopPropagation();">Start</button>
-                </div>
-            </div>
-        `;
-    }
+    const QUESTIONS = [
+        // Topics 1 to 4 
+        { id: 1, question: "What do you see in the image?", image: "numeros.jpg", options: { A: "The Alphabet", B: "Colors", C: "Numbers" }, correctAnswer: 'C', chapter: 1, title: "1. Numbers Overview" },
+        { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', chapter: 1, title: "2. Verb 'To Be' (I am)" },
+        { id: 3, question: `<h3 style="color: #007bff; font-size: 2em; margin-bottom: 20px;">Vocabulary:</h3>`, options: { "1.": `My <span style="color: #007bff;">address number</span> is 34.`, "2.": `I am a <span style="color: #007bff;">student</span>.`, "3.": `He is my new <span style="color: #007bff;">friend</span>, David.`, "4.": `Mr. David is a <span style="color: #007bff;">great</span> teacher.`, "5.": `My <span style="color: #007bff;">phone number</span> is: (987) 654-1234.`, "6.": `Sofia is <span style="color: #007bff;">American</span>.`, "7.": `I love my English <span style="color: #007bff;">teacher</span>.`, "8.": `Lucas is a <span style="color: #007bff;">new</span> student, too.`, "9.": `I am 18 <span style="color: #007bff;">years old</span>.`, "10.": `My <span style="color: #007bff;">nationality</span>? I'm French.`, }, correctAnswer: 'INFO', chapter: 1, title: "3. Lesson Vocabulary" },
+        { id: 4, question: "PRONUNCIATION PRACTICE: Click the play button (▶️) to hear each word.", options: { "Address number": "addressnumber.mp3", "American": "American.mp3", "Friend": "friend.mp3", "Great": "great.mp3", "Nationality": "nationality.mp3", "New": "new.mp3", "Phone number": "phonenumber.mp3", "Student": "student.mp3", "Teacher": "teacher.mp3", "Years old": "yearsold.mp3" }, correctAnswer: 'PRONUNCIATION_SET', chapter: 1, title: "4. Word Pronunciation" },
+        // Topic 5 
+        { id: 5, question: "Click on the '+' signs to review the number groups.", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1, title: "5. Interactive Bingo Review" },
+        // Topic 6 
+        { id: 6, 
+            question: "Listen and notice the difference between -teen and -ty.", 
+            options: { "13: (Thirteen) – 30 (Thirty)": "teenety.mp3" }, 
+            correctAnswer: 'PRONUNCIATION_SET', 
+            chapter: 1,
+            title: "6. Pronunciation: Teen vs Ty"
+        },
+        // Topic 7 
+        { 
+            id: 7, 
+            question: "Write the numbers in English:", 
+            correctAnswer: 'FILL_IN_BLANKS', 
+            chapter: 1, 
+            title: "7. Writing Numbers Practice",
+            data: [
+                { num: 10, correct: "ten" }, 
+                { num: 22, correct: "twenty-two" }, 
+                { num: 36, correct: "thirty-six" }, 
+                { num: 12, correct: "twelve" }, 
+                { num: 44, correct: "forty-four" }, 
+                { num: 99, correct: "ninety-nine" }, 
+                { num: 8, correct: "eight" }, 
+                { num: 57, correct: "fifty-seven" }, 
+                { num: 60, correct: "sixty" }, 
+                { num: 16, correct: "sixteen" }
+            ]
+        },
+        // Topic 8 
+        { id: 8, question: "Drag the correct word to complete the sentences based on the images.", 
+            correctAnswer: 'DRAG_AND_DROP', 
+            chapter: 1, 
+            title: "8. Drag & Drop: Vocabulary",
+            data: {
+                words: DRAG_AND_DROP_WORDS,
+                sentences: DRAG_AND_DROP_SENTENCES
+            }
+        },
+        // Topics 9 to 13 
+        { id: 9, question: "What is the color of the sky on a sunny day?", image: "", options: { A: "Red", B: "Yellow", C: "Blue" }, correctAnswer: 'C', chapter: 1, title: "9. Quiz: Colors" },
+        { id: 10, question: "What is the English word for 'cadeira'?", image: "", options: { A: "Book", B: "Chair", C: "Table" }, correctAnswer: 'B', chapter: 1, title: "10. Quiz: Objects" },
+        { id: 11, question: "Identify the color of the object in the image:", image: "apple.jpg", options: { A: "Green", B: "Red", C: "Orange" }, correctAnswer: 'B', chapter: 1, title: "11. Quiz: Image Color" },
+        { id: 12, question: "How do you ask 'Where are you from?'", image: "", options: { A: "What your name is?", B: "Where from you are?", C: "Where are you from?" }, correctAnswer: 'C', chapter: 1, title: "12. Quiz: Common Phrases" },
+        { id: 13, question: "Complete the sentence: 'I want ___ apple.'", image: "", options: { A: "a", B: "an", C: "the" }, correctAnswer: 'B', chapter: 1, title: "13. Quiz: Articles" },
+    ];
+    
+    let currentQuestionIndex = 0;
+    let lessonQuestions = []; 
+    let currentChapter = 1; 
+    let fillInBlanksAnswered = false; 
+    let dragAndDropAnswered = false; 
+    
+    const homeScreen = document.getElementById('home-screen');
+    const lessonScreen = document.getElementById('lesson-screen');
+    const optionsContainer = document.getElementById('options-container');
+    const feedback = document.getElementById('feedback');
+    const nextBtn = document.getElementById('next-btn');
+    const backBtn = document.getElementById('back-btn');
+    const questionText = document.getElementById('question-text');
+    const questionImage = document.getElementById('question-image');
+    const progressIndicator = document.getElementById('progress-indicator');
+    
+    const sideMenu = document.getElementById('side-menu'); 
+    const navButtonsContainer = document.querySelector('.nav-buttons'); 
+    const menuToggle = document.querySelector('.menu-toggle'); 
+    
+    let answerChecked = false;
+    
+    // RENDER CHAPTER CARDS ON HOME SCREEN
+    const chapterGrid = document.querySelector('.chapter-grid');
+    for (let i = 1; i <= 24; i++) {
+        const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
+        let cardTopicName = i === 1 ? 'Basic Foundations (13 Topics Ready!)' : `Module ${i} Content`; 
+        chapterGrid.innerHTML += `
+            <div class="chapter-card" id="card-${i}">
+                <div class="card-background-image" style="background-image: url('${bgUrl}');"></div>
+                <div class="card-text-area">
+                    <div class="text-content-wrapper">
+                        <h3>Beginner ${i}</h3>
+                        <p>${cardTopicName}</p> 
+                    </div>
+                    <button class="start-button" onclick="startLesson(${i}); event.stopPropagation();">Start</button>
+                </div>
+            </div>
+        `;
+    }
 
-    // --- GENERAL NAVIGATION AND LOADING FUNCTIONS ---
-    function openNav() { sideMenu.classList.add('open'); }
-    function closeNav() { sideMenu.classList.remove('open'); }
-    window.onclick = function(event) {
-        if (sideMenu.classList.contains('open') && !event.target.closest('.side-menu') && !event.target.closest('.menu-toggle')) {
-            closeNav();
-        }
-        const modal = document.getElementById('numberModal');
-        if (event.target == modal) { closeNumberModal(); }
-    }
-    function loadQuestionFromMenu(index) { closeNav(); currentQuestionIndex = index; loadQuestion(lessonQuestions[currentQuestionIndex]); }
-    function populateMenu() {
-        sideMenu.querySelectorAll('a:not(.close-btn)').forEach(a => a.remove()); 
-        lessonQuestions.forEach((q, index) => {
-            const link = document.createElement('a');
-            link.textContent = q.title; 
-            link.href = `javascript:void(0)`;
-            link.onclick = () => loadQuestionFromMenu(index);
-            sideMenu.appendChild(link);
-        });
-    }
+    // --- GENERAL NAVIGATION AND LOADING FUNCTIONS ---
+    function openNav() { sideMenu.classList.add('open'); }
+    function closeNav() { sideMenu.classList.remove('open'); }
+    window.onclick = function(event) {
+        if (sideMenu.classList.contains('open') && !event.target.closest('.side-menu') && !event.target.closest('.menu-toggle')) {
+            closeNav();
+        }
+        const modal = document.getElementById('numberModal');
+        if (event.target == modal) { closeNumberModal(); }
+    }
+    function loadQuestionFromMenu(index) { closeNav(); currentQuestionIndex = index; loadQuestion(lessonQuestions[currentQuestionIndex]); }
+    function populateMenu() {
+        sideMenu.querySelectorAll('a:not(.close-btn)').forEach(a => a.remove()); 
+        lessonQuestions.forEach((q, index) => {
+            const link = document.createElement('a');
+            link.textContent = q.title; 
+            link.href = `javascript:void(0)`;
+            link.onclick = () => loadQuestionFromMenu(index);
+            sideMenu.appendChild(link);
+        });
+    }
 
-    function startLesson(chapterNumber) {
-        currentChapter = chapterNumber;
-        lessonQuestions = QUESTIONS.filter(q => q.chapter === chapterNumber);
+    function startLesson(chapterNumber) {
+        currentChapter = chapterNumber;
+        lessonQuestions = QUESTIONS.filter(q => q.chapter === chapterNumber);
 
-        if (lessonQuestions.length === 0) {
-            alert(`The Beginner ${chapterNumber} level does not have content yet.`);
-            return;
-        }
+        if (lessonQuestions.length === 0) {
+            alert(`The Beginner ${chapterNumber} level does not have content yet.`);
+            return;
+        }
 
-        homeScreen.style.display = 'none';
-        lessonScreen.style.display = 'block';
-        navButtonsContainer.style.display = 'flex'; 
-        menuToggle.style.display = 'block'; 
-        
-        populateMenu(); 
-        
-        currentQuestionIndex = 0;
-        loadQuestion(lessonQuestions[currentQuestionIndex]);
-    }
+        homeScreen.style.display = 'none';
+        lessonScreen.style.display = 'block';
+        navButtonsContainer.style.display = 'flex'; 
+        menuToggle.style.display = 'block'; 
+        
+        populateMenu(); 
+        
+        currentQuestionIndex = 0;
+        loadQuestion(lessonQuestions[currentQuestionIndex]);
+    }
 
-    function goHome() {
-        homeScreen.style.display = 'block';
-        lessonScreen.style.display = 'none';
-        navButtonsContainer.style.display = 'none'; 
-        menuToggle.style.display = 'none'; 
-        closeNav(); 
-    }
+    function goHome() {
+        homeScreen.style.display = 'block';
+        lessonScreen.style.display = 'none';
+        navButtonsContainer.style.display = 'none'; 
+        menuToggle.style.display = 'none'; 
+        closeNav(); 
+    }
 
-    // UPDATED: goNext to advance immediately AND check answers for interactive topics (without blocking)
-    function goNext() {
-        const currentQ = lessonQuestions[currentQuestionIndex];
-        
-        // 1. CHECAGEM OBRIGATÓRIA ANTES DE AVANÇAR (APENAS PARA MARCAR A RESPOSTA)
-        // Se for um tópico de quiz interativo e ainda não foi checado, checa a resposta e re-renderiza.
-        // O usuário NÃO é bloqueado, apenas forçado a ver o feedback da sua tentativa.
-        if (!answerChecked) {
-            if (currentQ.correctAnswer === 'FILL_IN_BLANKS') {
-                checkFillInBlanks(currentQ);
-                answerChecked = true; 
-                return; // Re-renderiza a correção, mas não avança ainda.
-            }
-            
-            if (currentQ.correctAnswer === 'DRAG_AND_DROP') {
-                checkDragAndDrop(currentQ);
-                answerChecked = true; 
-                return; // Re-renderiza a correção, mas não avança ainda.
-            }
-            
-            // Para Múltipla Escolha: se o usuário não clicou em nada, ele não tem 'answerChecked'.
-            // Não vamos forçar, apenas limpamos o feedback se houver.
-            feedback.innerHTML = '';
-        }
+    // UPDATED: goNext to advance immediately AND check answers for interactive topics (without blocking)
+    function goNext() {
+        const currentQ = lessonQuestions[currentQuestionIndex];
+        
+        // 1. CHECAGEM OBRIGATÓRIA ANTES DE AVANÇAR (APENAS PARA MARCAR A RESPOSTA)
+        if (!answerChecked) {
+            if (currentQ.correctAnswer === 'FILL_IN_BLANKS') {
+                checkFillInBlanks(currentQ);
+                answerChecked = true; 
+                return; 
+            }
+            
+            if (currentQ.correctAnswer === 'DRAG_AND_DROP') {
+                checkDragAndDrop(currentQ);
+                answerChecked = true; 
+                return; 
+            }
+            
+            feedback.innerHTML = '';
+        }
 
-        // 2. AVANÇA PARA A PRÓXIMA PERGUNTA
-        currentQuestionIndex++;
-        if (currentQuestionIndex < lessonQuestions.length) {
-            loadQuestion(lessonQuestions[currentQuestionIndex]);
-        } else {
-            // End of module
-            alert(`Congratulations! You have completed the Beginner ${currentChapter} level.`);
-            goHome();
-        }
-    }
-    
-    function backQuestion() {
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex--;
-            loadQuestion(lessonQuestions[currentQuestionIndex]);
-        } else {
-            goHome();
-        }
-    }
+        // 2. AVANÇA PARA A PRÓXIMA PERGUNTA
+        currentQuestionIndex++;
+        if (currentQuestionIndex < lessonQuestions.length) {
+            loadQuestion(lessonQuestions[currentQuestionIndex]);
+        } else {
+            // End of module
+            alert(`Congratulations! You have completed the Beginner ${currentChapter} level.`);
+            goHome();
+        }
+    }
+    
+    function backQuestion() {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            loadQuestion(lessonQuestions[currentQuestionIndex]);
+        } else {
+            goHome();
+        }
+    }
 
-    function loadQuestion(q) {
-        answerChecked = false;
-        fillInBlanksAnswered = false; 
-        
-        // The dragAndDropAnswered flag is reset to false only when exiting topic 8
-        if(q.correctAnswer !== 'DRAG_AND_DROP') {
-            dragAndDropAnswered = false;
-        }
+    function loadQuestion(q) {
+        answerChecked = false;
+        fillInBlanksAnswered = false; 
+        
+        // The dragAndDropAnswered flag is reset to false only when exiting topic 8
+        if(q.correctAnswer !== 'DRAG_AND_DROP') {
+            dragAndDropAnswered = false;
+        }
 
-        feedback.innerHTML = '';
-        optionsContainer.innerHTML = '';
-        
-        progressIndicator.textContent = `(${currentQuestionIndex + 1}/${lessonQuestions.length})`;
-        
-        nextBtn.style.display = 'block';
-        backBtn.style.display = 'block';
-        
-        document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'none'); 
-        document.getElementById('pronunciation-container').style.display = 'none';
-        document.getElementById('comparison-table-container').innerHTML = '';
-        
-        const audioControls = document.getElementById('audio-player-controls');
-        audioControls.style.display = 'none';
-        audioControls.src = ''; 
-        
-        questionText.innerHTML = q.question; 
-        
-        if (q.image) {
-            questionImage.src = GITHUB_RAW_BASE_URL + q.image; 
-            questionImage.style.display = 'block';
-        } else {
-            questionImage.src = '';
-            questionImage.style.display = 'none';
-        }
-        
-        optionsContainer.style.display = 'none';
-        questionText.style.display = 'block'; 
-        
-        if (q.correctAnswer === 'INFO') {
-            renderInfoScreen(q);
-        } else if (q.correctAnswer === 'PRONUNCIATION_SET') {
-            renderPronunciationPractice(q);
-        } else if (q.correctAnswer === 'INTERACTIVE_BINGO') {
-            renderInteractiveBingo(q);
-        } else if (q.correctAnswer === 'FILL_IN_BLANKS') {
-            renderFillInBlanks(q);
-        } else if (q.correctAnswer === 'DRAG_AND_DROP') {
-            renderDragAndDrop(q);
-        }
-        else {
-            renderMultipleChoice(q);
-        }
-    }
+        feedback.innerHTML = '';
+        optionsContainer.innerHTML = '';
+        
+        progressIndicator.textContent = `(${currentQuestionIndex + 1}/${lessonQuestions.length})`;
+        
+        nextBtn.style.display = 'block';
+        backBtn.style.display = 'block';
+        nextBtn.textContent = 'Next';
+        
+        document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'none'); 
+        document.getElementById('pronunciation-container').style.display = 'none';
+        document.getElementById('comparison-table-container').innerHTML = '';
+        
+        const audioControls = document.getElementById('audio-player-controls');
+        audioControls.style.display = 'none';
+        audioControls.src = ''; 
+        
+        questionText.innerHTML = q.question; 
+        questionText.style.display = 'block';
+        optionsContainer.style.display = 'block';
+        questionImage.style.display = 'block';
+        document.querySelector('.quiz-question').style.border = '1px solid #eee'; 
 
-    // --- AUXILIARY RENDERING FUNCTIONS ---
-    
-    function renderMultipleChoice(q) {
-        optionsContainer.style.display = 'block';
-        let optionsHtml = '';
-        // If question was already answered, render with correction
-        const hasAnswered = q.userAnswer !== undefined; 
+        // --- TYPE SPECIFIC RENDERING ---
+        if (q.correctAnswer === 'C' || q.correctAnswer === 'B' || q.correctAnswer === 'A') { // Multiple Choice Quiz
+            if (q.image) {
+                questionImage.src = GITHUB_RAW_BASE_URL + q.image;
+            } else {
+                questionImage.style.display = 'none';
+            }
+            optionsContainer.innerHTML = Object.keys(q.options).map(key => `
+                <div class="option" onclick="checkAnswer(this, '${key}', '${q.correctAnswer}')">
+                    <span>${key}. ${q.options[key]}</span>
+                </div>
+            `).join('');
+            // If already checked (e.g., coming back from the menu), disable options
+            if (answerChecked) {
+                document.querySelectorAll('.option').forEach(opt => opt.onclick = null);
+            }
+        } else if (q.correctAnswer === 'INFO') { // Simple Info/Vocabulary Screen
+            questionImage.style.display = 'none';
+            optionsContainer.innerHTML = `<ul style="list-style-type: none; padding: 0; text-align: left; max-width: 450px; margin: 0 auto;">${Object.keys(q.options).map(key => `<li style="padding: 8px 0;">${key} ${q.options[key]}</li>`).join('')}</ul>`;
+        } else if (q.correctAnswer === 'PRONUNCIATION_SET') { // Pronunciation List
+            renderPronunciation(q);
+        } else if (q.correctAnswer === 'INTERACTIVE_BINGO') { // Hotspot Image
+            questionImage.src = GITHUB_RAW_BASE_URL + q.image;
+            document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex');
+            questionText.style.display = 'none';
+            optionsContainer.style.display = 'none';
+        } else if (q.correctAnswer === 'FILL_IN_BLANKS') { // Topic 7
+            renderFillInBlanks(q);
+            document.querySelector('.quiz-question').style.border = 'none'; 
+            nextBtn.textContent = fillInBlanksAnswered ? 'Next' : 'Check Answers';
+        } else if (q.correctAnswer === 'DRAG_AND_DROP') { // Topic 8
+            renderDragAndDrop(q.data);
+            questionImage.style.display = 'none';
+            document.querySelector('.quiz-question').style.border = 'none';
+            nextBtn.textContent = dragAndDropAnswered ? 'Next' : 'Check Answers';
+        }
+    }
+    
+    function checkAnswer(selectedOption, key, correctAnswer) {
+        if (answerChecked) return;
+        
+        answerChecked = true;
+        document.querySelectorAll('.option').forEach(opt => {
+            opt.onclick = null;
+            if (opt !== selectedOption) {
+                opt.style.opacity = '0.5';
+            }
+        });
 
-        for (const [key, value] of Object.entries(q.options)) {
-            let classes = '';
-            let onClickHandler = `checkAnswer(this, '${q.correctAnswer}', ${q.id})`;
+        if (key === correctAnswer) {
+            selectedOption.classList.add('correct');
+            feedback.innerHTML = '<span style="color:#28a745;">✅ Correct!</span>';
+        } else {
+            selectedOption.classList.add('incorrect');
+            // Highlight correct answer
+            document.querySelectorAll('.option').forEach(opt => {
+                if (opt.textContent.startsWith(correctAnswer + '.')) {
+                    opt.classList.add('correct');
+                }
+            });
+            feedback.innerHTML = '<span style="color:#dc3545;">❌ Incorrect. Try to remember!</span>';
+        }
+    }
+    
+    // --- PRONUNCIATION FUNCTIONS (Tópico 4 e 6) ---
+    function renderPronunciation(q) {
+        questionImage.style.display = 'none';
+        optionsContainer.style.display = 'none';
+        const pronContainer = document.getElementById('pronunciation-container');
+        const pronList = document.getElementById('pronunciation-list');
+        const audioControls = document.getElementById('audio-player-controls');
+        
+        pronContainer.style.display = 'flex';
+        audioControls.style.display = 'block';
 
-            if (hasAnswered) {
-                onClickHandler = null; // Disable further clicking
-                if (key === q.userAnswer) {
-                    classes += (key === q.correctAnswer) ? ' correct' : ' incorrect';
-                } else if (key === q.correctAnswer) {
-                    classes += ' correct';
-                }
-            }
+        document.getElementById('current-instruction').textContent = q.question;
+        pronList.innerHTML = '';
+        
+        if (q.id === 6) { // Tópico 6: Teen vs Ty
+            document.getElementById('comparison-table-container').innerHTML = `
+                <table class="comparison-table">
+                    <thead><tr><th>Teen (Emphasis on 'Teen')</th><th>Ty (Emphasis on first syllable)</th></tr></thead>
+                    <tbody>
+                        <tr><td>Thirteen (13)</td><td>Thirty (30)</td></tr>
+                        <tr><td>Fourteen (14)</td><td>Forty (40)</td></tr>
+                        <tr><td>Fifteen (15)</td><td>Fifty (50)</td></tr>
+                        <tr><td>Sixteen (16)</td><td>Sixty (60)</td></tr>
+                    </tbody>
+                </table>
+            `;
+            audioControls.src = GITHUB_RAW_BASE_URL + q.options["13: (Thirteen) – 30 (Thirty)"];
+            
+        } else { // Tópico 4: Palavras
+            document.getElementById('comparison-table-container').innerHTML = '';
+            audioControls.style.display = 'none';
 
-            optionsHtml += `<div class="option${classes}" data-answer="${key}" onclick="${onClickHandler}">${key}. ${value}</div>`;
-        }
-        optionsContainer.innerHTML = optionsHtml;
+            Object.keys(q.options).forEach(word => {
+                const li = document.createElement('li');
+                li.innerHTML = `${word} <button class="play-button" onclick="playAudio('${q.options[word]}')">▶️</button>`;
+                pronList.appendChild(li);
+            });
+        }
+    }
 
-        if (hasAnswered) {
-            displayMultipleChoiceCorrection(q.userAnswer === q.correctAnswer, q.correctAnswer);
-        }
-    }
-    
-    function checkAnswer(selectedOption, correctAnswer, qId) {
-        // Prevent re-checking if already answered
-        const currentQ = lessonQuestions.find(q => q.id === qId);
-        if (currentQ.userAnswer !== undefined) return;
-        
-        const selectedKey = selectedOption.getAttribute('data-answer');
-        
-        // Store answer locally in the question object for re-rendering
-        currentQ.userAnswer = selectedKey; 
-        
-        // Re-render the question to show correction
-        loadQuestion(currentQ);
-        answerChecked = true; // Mark as checked for navigation purposes
-    }
-    
-    function displayMultipleChoiceCorrection(isCorrect, correctAnswer) {
-        if (isCorrect) {
-            feedback.innerHTML = '✅ **Correct!** Great job!';
-        } else {
-            feedback.innerHTML = `❌ **Incorrect.** The correct answer is **${correctAnswer}**.`;
-        }
-    }
+    function playAudio(filename) {
+        const audio = new Audio(GITHUB_RAW_BASE_URL + filename);
+        audio.play().catch(error => console.error("Error playing audio:", error));
+    }
+    
+    // --- HOTSPOT MODAL (Tópico 5) ---
+    function openNumberModal(type) {
+        const modal = document.getElementById('numberModal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        
+        let content = '';
+        if (type === 'one-to-ten') {
+            modalTitle.textContent = "Numbers 1 - 10";
+            content = `<p>One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten.</p>`;
+        } else if (type === 'tens') {
+            modalTitle.textContent = "Tens (Round Numbers)";
+            content = `<p>Ten, Twenty, Thirty, Forty, Fifty, Sixty, Seventy, Eighty, Ninety, One Hundred.</p>`;
+        } else if (type === 'teens') {
+            modalTitle.textContent = "Teens (13 - 19)";
+            content = `<p>Thirteen, Fourteen, Fifteen, Sixteen, Seventeen, Eighteen, Nineteen.</p>`;
+        } else if (type === 'combined') {
+            modalTitle.textContent = "Combined (e.g., 21)";
+            content = `<p>Twenty-one, Thirty-five, Forty-two, Ninety-nine.</p>`;
+        }
+        
+        modalBody.innerHTML = content;
+        modal.style.display = "block";
+    }
 
-    function renderInfoScreen(q) {
-        optionsContainer.style.display = 'block';
-        let optionsHtml = '<div style="text-align: left; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">';
-        for (const [key, value] of Object.entries(q.options)) {
-            optionsHtml += `<p style="margin: 8px 0;">**${key}** ${value}</p>`;
-        }
-        optionsHtml += '</div>';
-        optionsContainer.innerHTML = optionsHtml;
-        feedback.innerHTML = ``; // No instruction
-    }
+    function closeNumberModal() {
+        document.getElementById('numberModal').style.display = "none";
+    }
 
-    function renderPronunciationPractice(q) {
-        document.getElementById('pronunciation-container').style.display = 'flex';
-        
-        if (q.id === 6) { // Topic 6: Teen vs Ty
-            document.getElementById('current-instruction').textContent = 'Listen and notice the difference between -teen and -ty:';
-            document.getElementById('audio-player-controls').style.display = 'block';
-            document.getElementById('audio-player-controls').src = GITHUB_RAW_BASE_URL + q.options["13: (Thirteen) – 30 (Thirty)"];
-            document.getElementById('comparison-table-container').innerHTML = generateTableHTML();
-            document.getElementById('pronunciation-list').innerHTML = ''; 
-            
-        } else { // Topic 4: Word List
-            document.getElementById('current-instruction').textContent = 'Click the play button (▶️) to hear each word:';
-            document.getElementById('audio-player-controls').style.display = 'none';
-            document.getElementById('comparison-table-container').innerHTML = '';
-            
-            let listHtml = '';
-            for (const [word, file] of Object.entries(q.options)) {
-                listHtml += `
-                    <li>
-                        ${word}
-                        <button class="play-button" onclick="playSeparateAudio('${file}')">▶️</button>
-                    </li>
-                `;
-            }
-            document.getElementById('pronunciation-list').innerHTML = listHtml;
-        }
+    // --- FILL IN BLANKS (TOPIC 7) FUNCTIONS ---
+    function renderFillInBlanks(questionData) {
+        questionText.style.display = 'block';
+        optionsContainer.style.display = 'flex';
+        optionsContainer.style.flexDirection = 'row';
+        optionsContainer.style.flexWrap = 'wrap';
+        optionsContainer.style.justifyContent = 'center';
+        optionsContainer.style.gap = '20px';
+        questionImage.style.display = 'none';
 
-        feedback.innerHTML = ``; // No instruction
-    }
+        const inputsHtml = questionData.data.map((item, index) => {
+            let resultHtml = '';
+            const inputId = `fill-in-${index}`;
+            
+            if (fillInBlanksAnswered) {
+                const isCorrect = item.userAnswer && item.userAnswer.toLowerCase() === item.correct.toLowerCase();
+                const resultClass = isCorrect ? 'result-correct' : 'result-incorrect';
+                const correctWord = isCorrect ? 'Correct' : `Answer: ${item.correct.toUpperCase()}`;
+                resultHtml = `<p class="number-result ${resultClass}">${correctWord}</p>`;
+            }
 
-    function generateTableHTML() {
-        return `
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>TEEN</th>
-                        <th>TY</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Thir**teen** (13)</td><td>Thir**ty** (30)</td></tr>
-                    <tr><td>Four**teen** (14)</td><td>For**ty** (40)</td></tr>
-                    <tr><td>Fif**teen** (15)</td><td>Fif**ty** (50)</td></tr>
-                    <tr><td>Six**teen** (16)</td><td>Six**ty** (60)</td></tr>
-                    <tr><td>Seven**teen** (17)</td><td>Seven**ty** (70)</td></tr>
-                    <tr><td>Eigh**teen** (18)</td><td>Eigh**ty** (80)</td></tr>
-                    <tr><td>Nine**teen** (19)</td><td>Nine**ty** (90)</td></tr>
-                </tbody>
-            </table>
-        `;
-    }
-    
-    function playSeparateAudio(audioFile) {
-        const audio = new Audio(GITHUB_RAW_BASE_URL + audioFile);
-        audio.play();
-    }
-    
-    function renderInteractiveBingo(q) {
-        // Display hotspots over the image
-        document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex');
-        feedback.innerHTML = ``; // No instruction
-    }
-    
-    function openNumberModal(type) {
-        const modal = document.getElementById('numberModal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalBody = document.getElementById('modal-body');
-        
-        let content = '';
-        let title = '';
-        
-        switch (type) {
-            case 'one-to-ten':
-                title = 'Numbers 1-10';
-                content = 'One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten.';
-                break;
-            case 'teens':
-                title = 'Teen Numbers (11-19)';
-                content = 'Eleven, Twelve, Thirteen, Fourteen, Fifteen, Sixteen, Seventeen, Eighteen, Nineteen.';
-                break;
-            case 'tens':
-                title = 'Tens (20, 30, 40...)';
-                content = 'Twenty, Thirty, Forty, Fifty, Sixty, Seventy, Eighty, Ninety, One Hundred.';
-                break;
-            case 'combined':
-                title = 'Combined Numbers (Example)';
-                content = 'Twenty-one, Thirty-five, Forty-eight, Seventy-three, Ninety-nine.';
-                break;
-        }
-        
-        modalTitle.textContent = title;
-        modalBody.innerHTML = `<p style="font-size: 1.1em; line-height: 1.6;">${content}</p>`;
-        modal.style.display = "block";
-    }
+            return `
+                <div class="number-input-group">
+                    <span>${item.num}</span>
+                    <input type="text" id="${inputId}" placeholder="Write the word" value="${item.userAnswer || ''}" ${fillInBlanksAnswered ? 'disabled' : ''}>
+                    ${resultHtml}
+                </div>
+            `;
+        }).join('');
 
-    function closeNumberModal() {
-        document.getElementById('numberModal').style.display = "none";
-    }
+        optionsContainer.innerHTML = `<div class="fill-in-blanks-container">${inputsHtml}</div>`;
+        nextBtn.textContent = fillInBlanksAnswered ? 'Next' : 'Check Answers';
+    }
 
-    // --- FILL IN BLANKS FUNCTIONS (TOPIC 7) ---
-    
-    function renderFillInBlanks(q) {
-        optionsContainer.style.display = 'block';
-        let inputsHtml = '<div class="fill-in-blanks-container">';
-        
-        const inputsDisabled = fillInBlanksAnswered ? 'disabled' : '';
+    function checkFillInBlanks(currentQ) {
+        let allCorrect = true;
+        currentQ.data.forEach((item, index) => {
+            const input = document.getElementById(`fill-in-${index}`);
+            const userAnswer = input ? input.value.trim() : '';
+            item.userAnswer = userAnswer; 
+            
+            if (userAnswer.toLowerCase() !== item.correct.toLowerCase()) {
+                allCorrect = false;
+            }
+        });
 
-        q.data.forEach((item, index) => {
-            let resultHtml = '';
-            let inputValue = item.userAnswer || '';
-            let resultClass = '';
-            
-            if (fillInBlanksAnswered) {
-                if (item.isCorrect) {
-                    resultClass = 'result-correct';
-                    resultHtml = `(✅ Correct: ${item.correct})`;
-                } else {
-                    resultClass = 'result-incorrect';
-                    resultHtml = `(❌ Correct: ${item.correct})`;
-                }
-            } 
+        fillInBlanksAnswered = true;
+        renderFillInBlanks(currentQ);
 
-            inputsHtml += `
-                <div class="number-input-group">
-                    <span>${item.num}:</span>
-                    <input type="text" id="num-input-${index}" value="${inputValue}" ${inputsDisabled} placeholder="Write the number..." data-correct="${item.correct.toLowerCase()}">
-                    <p class="number-result ${resultClass}">${resultHtml}</p>
-                </div>
-            `;
-        });
+        feedback.innerHTML = allCorrect 
+            ? '<span style="color:#28a745;">✅ Excellent! All numbers are correct.</span>' 
+            : '<span style="color:#dc3545;">❌ Some answers are incorrect. Review the corrections above.</span>';
 
-        inputsHtml += '</div>';
-        optionsContainer.innerHTML = inputsHtml;
+        nextBtn.textContent = 'Next';
+    }
 
-        if (fillInBlanksAnswered) {
-             displayFillInBlanksCorrection(q.data);
-        } else {
-             feedback.innerHTML = '';
-        }
-    }
-    
-    function checkFillInBlanks(q) {
-        let allCorrect = true;
-        
-        q.data.forEach((item, index) => {
-            const input = document.getElementById(`num-input-${index}`);
-            // Check only if input exists and is not already answered
-            if(input && !fillInBlanksAnswered) {
-                const userAnswer = input.value.trim().toLowerCase();
-                const correct = item.correct.toLowerCase();
-                
-                item.userAnswer = userAnswer;
-                item.isCorrect = (userAnswer === correct);
-            }
-            
-            if (!item.isCorrect) {
-                allCorrect = false;
-            }
-        });
-        
-        fillInBlanksAnswered = true;
-        renderFillInBlanks(q); // Re-render to show correction
-        
-        return allCorrect;
-    }
-    
-    function displayFillInBlanksCorrection(data) {
-        const totalCorrect = data.filter(item => item.isCorrect).length;
-        const totalQuestions = data.length;
-        
-        if (totalCorrect === totalQuestions) {
-            feedback.innerHTML = '✅ **CONGRATULATIONS!** You got all answers correct! 🎉';
-        } else {
-            feedback.innerHTML = `❌ **Oops, that's not correct!** You got ${totalCorrect} out of ${totalQuestions} correct.`;
-        }
-    }
+    // --- DRAG AND DROP (TOPIC 8) FUNCTIONS ---
+    function renderDragAndDrop(questionData) {
+        questionText.style.display = 'block';
+        optionsContainer.style.display = 'block';
+        questionImage.style.display = 'none';
 
+        // 1. Image Gallery
+        const imageGalleryHtml = questionData.sentences.map((sent, index) => `
+            <div class="gallery-image-wrapper">
+                <img src="${GITHUB_RAW_BASE_URL + sent.image}" alt="Image ${index + 1}">
+                <div class="image-number-label">${index + 1}</div>
+            </div>
+        `).join('');
 
-    // --- DRAG AND DROP FUNCTIONS (TOPIC 8) ---
-    let draggedElement = null; 
+        // 2. Sentence List (com o ajuste do ponto final)
+        const sentenceListHtml = questionData.sentences.map(sent => {
+            const parts = sent.text.split('____');
+            const textBefore = parts[0].trim();
+            let textAfter = parts.length > 1 ? parts[1].trim() : '';
 
-    function handleDragStart(e) {
-        if (dragAndDropAnswered) return;
-        draggedElement = e.target;
-        e.dataTransfer.setData('text/plain', e.target.id);
-        setTimeout(() => e.target.classList.add('dragging'), 0); 
-    }
+            // SEPARA O PONTO FINAL
+            let punctuation = '';
+            if (textAfter.endsWith('.') || textAfter.endsWith('?') || textAfter.endsWith('!')) {
+                punctuation = textAfter.slice(-1); 
+                textAfter = textAfter.slice(0, -1).trim(); 
+            }
+           
+            let dropZoneContent = sent.userAnswer 
+                ? `<div class="draggable-word dropped-word" draggable="false" data-word="${sent.userAnswer}">${sent.userAnswer}</div>`
+                : '';
+           
+            let dropClass = '';
+            if (dragAndDropAnswered) {
+                dropClass = sent.isCorrect ? 'correct-drop' : 'incorrect-drop';
+                if (!sent.isCorrect) {
+                    dropZoneContent = `<span class="correct-word-display">${sent.correct}</span>`;
+                }
+            }
 
-    function handleDragOver(e) {
-        e.preventDefault(); 
-        const dropZone = e.target.closest('.drop-zone');
-        if (dropZone && !dragAndDropAnswered) {
-            // Check if the dropZone is empty or contains only correction text
-            if (dropZone.children.length === 0 || (dropZone.children.length > 0 && dropZone.querySelector('.draggable-word') === null)) {
-                 dropZone.classList.add('drag-over');
-            }
-        }
-    }
-    
-    function handleDragLeave(e) {
-        const dropZone = e.target.closest('.drop-zone');
-        if (dropZone) {
-            dropZone.classList.remove('drag-over');
-        }
-    }
+            return `
+                <p class="sentence-item">
+                    <span class="sentence-text-before">${textBefore}</span>
+                    <span class="drop-zone ${dropClass}" id="${sent.dropId}" data-correct="${sent.correct}">
+                        ${dropZoneContent}
+                    </span>
+                    <span class="sentence-text-after">${textAfter}</span>
+                    <span class="sentence-punctuation">${punctuation}</span>
+                </p>
+            `;
+        }).join('');
+       
+        // 3. Draggable Words
+        const draggableWordsHtml = questionData.words.map(word => {
+            const isUsed = questionData.sentences.some(s => s.userAnswer === word.text);
+            
+            if (isUsed && !dragAndDropAnswered) {
+                return ''; 
+            }
+            if (dragAndDropAnswered && isUsed) return '';
 
-    function handleDrop(e) {
-        e.preventDefault(); 
-        if (dragAndDropAnswered) return;
+            return `<div class="draggable-word" id="${word.id}" draggable="true" data-word="${word.text}">${word.text}</div>`;
+        }).join('');
 
-        const dropZone = e.target.closest('.drop-zone');
-        if (!dropZone || !draggedElement) return;
-        
-        dropZone.classList.remove('drag-over');
+        const dragAndDropHtml = `
+            <div class="drag-drop-overall-container">
+                <div class="image-gallery-container">${imageGalleryHtml}</div>
+                <div class="sentence-list-container">${sentenceListHtml}</div>
+                <div class="draggable-words-container" id="draggable-words-container">${draggableWordsHtml}</div>
+            </div>
+        `;
 
-        // Check if another word is already present
-        const existingWord = dropZone.querySelector('.draggable-word');
-        
-        if (existingWord) {
-            const wordsContainer = document.getElementById('draggable-words-container');
-            if (wordsContainer) {
-                dropZone.removeChild(existingWord); 
-                wordsContainer.appendChild(existingWord); 
-                existingWord.setAttribute('draggable', 'true'); 
-                existingWord.classList.remove('dragging');
-                existingWord.style.cssText = ''; 
-            }
-        }
-        
-        // Move the new word to the drop zone
-        if (draggedElement) {
-            const originalParent = draggedElement.parentElement;
-            
-            // If the word comes from another drop zone, remove it from there.
-            if (originalParent && originalParent.classList.contains('drop-zone')) {
-                originalParent.removeChild(draggedElement);
-            }
-            
-            dropZone.appendChild(draggedElement);
-            draggedElement.classList.remove('dragging');
-            draggedElement.setAttribute('draggable', 'false'); 
-            draggedElement.style.cssText = ''; 
-        }
-        
-        draggedElement = null;
-    }
-    
-    function handleDragEnd(e) {
-        if(e.target) e.target.classList.remove('dragging');
-        draggedElement = null;
-    }
+        optionsContainer.innerHTML = dragAndDropHtml;
+        
+        if (!dragAndDropAnswered) {
+            addDragAndDropListeners();
+        }
+    }
 
+    function addDragAndDropListeners() {
+        const draggables = document.querySelectorAll('.draggable-word:not(.dropped-word)');
+        const dropZones = document.querySelectorAll('.drop-zone');
 
-    function renderDragAndDrop(q) {
-        optionsContainer.style.display = 'block'; 
-        optionsContainer.innerHTML = '';
-        questionImage.style.display = 'none'; 
-        questionText.style.display = 'none'; 
-        
-        // State cleanup if not answered
-        if (!dragAndDropAnswered) {
-            q.data.sentences.forEach(item => {
-                item.userAnswer = null;
-                item.isCorrect = false;
-            });
-        }
-        
-        let fullContentHTML = `<div class="drag-drop-overall-container">`;
+        draggables.forEach(word => {
+            word.addEventListener('dragstart', dragStart);
+            word.addEventListener('dragend', dragEnd);
+        });
 
-        // --- 1. IMAGE GALLERY ---
-        fullContentHTML += `<div class="image-gallery-container">`;
-        q.data.sentences.forEach((item, index) => {
-            fullContentHTML += `
-                <div class="gallery-image-wrapper">
-                    <span class="image-number-label">${index + 1}</span>
-                    <img src="${GITHUB_RAW_BASE_URL + item.image}" alt="Image for ${item.correct}">
-                </div>
-            `;
-        });
-        fullContentHTML += `</div>`; 
+        dropZones.forEach(zone => {
+            zone.addEventListener('dragover', dragOver);
+            zone.addEventListener('dragleave', dragLeave);
+            zone.addEventListener('drop', drop);
+            
+            const droppedWord = zone.querySelector('.dropped-word');
+            if (droppedWord) {
+                droppedWord.addEventListener('dblclick', unDropWord);
+            }
+        });
+    }
 
-        // --- 2. SENTENCE LIST ---
-        fullContentHTML += `<div class="sentence-list-container">`;
-        q.data.sentences.forEach(item => {
-            let dropZoneContent = '';
-            let dropClass = '';
-            let dropZoneEvents = `ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)"`;
-            
-            if (dragAndDropAnswered) {
-                dropZoneEvents = '';
-                dropClass = item.isCorrect ? 'correct-drop' : 'incorrect-drop';
-                
-                if (item.isCorrect) {
-                     dropZoneContent = `<div class="draggable-word correct-word-display">${item.correct}</div>`;
-                } else {
-                     dropZoneContent = `<span style="color: #dc3545; display: block; font-weight: bold; margin-bottom: 2px; font-size: 0.9em;">${item.userAnswer || '❌ Missing'}</span>
-                                        <span style="color: #28a745; display: block; font-size: 0.75em; font-weight: 500;">(Correct: ${item.correct})</span>`;
-                }
-            } else {
-                 dropZoneContent = '';
-            }
-            
-            fullContentHTML += `
-                <p class="sentence-item">
-                    <span class="sentence-text-before">${item.text.replace('____', '')}</span>
-                    <span 
-                        class="drop-zone ${dropClass}" 
-                        id="${item.dropId}" 
-                        data-correct="${item.correct}"
-                        ${dropZoneEvents}
-                    >${dropZoneContent}</span>
-                </p>
-            `;
-        });
-        fullContentHTML += `</div>`; 
-        
-        // --- 3. DRAGGABLE WORDS ---
-        fullContentHTML += `<div class="draggable-words-container" id="draggable-words-container">`;
-        
-        if (!dragAndDropAnswered) {
-            // Render all free words
-            const wordsToRender = DRAG_AND_DROP_WORDS.sort(() => Math.random() - 0.5); 
-            const droppedWords = new Set();
-            
-            // Collect words that are currently in a drop zone (to prevent re-rendering them here)
-            q.data.sentences.forEach(item => {
-                // If it's a new render, this check is mainly for consistency, but not strictly necessary since the list is cleared
-                if (item.userAnswer && q.data.words.some(w => w.text === item.userAnswer)) {
-                    droppedWords.add(item.userAnswer);
-                }
-            });
+    function dragStart(e) {
+        e.dataTransfer.setData('text/plain', e.target.getAttribute('data-word'));
+        e.dataTransfer.effectAllowed = 'move';
+        e.target.classList.add('dragging');
+    }
 
-            wordsToRender.forEach(word => {
-                if (!droppedWords.has(word.text)) {
-                    fullContentHTML += `
-                        <div 
-                            class="draggable-word" 
-                            id="${word.id}" 
-                            draggable="true" 
-                            data-word="${word.text}"
-                            data-target="${word.correctTarget}"
-                            ondragstart="handleDragStart(event)"
-                            ondragend="handleDragEnd(event)"
-                        >${word.text}</div>
-                    `;
-                }
-            });
-        }
-        fullContentHTML += `</div>`; 
+    function dragEnd(e) {
+        e.target.classList.remove('dragging');
+    }
 
-        fullContentHTML += `</div>`; 
-        optionsContainer.innerHTML = fullContentHTML;
-        
-        answerChecked = dragAndDropAnswered; 
+    function dragOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        e.target.closest('.drop-zone').classList.add('drag-over');
+    }
 
-        if (dragAndDropAnswered) {
-             displayDragAndDropCorrection(q.data.sentences);
-        } else {
-             feedback.innerHTML = '';
-        }
-    }
+    function dragLeave(e) {
+        e.target.closest('.drop-zone').classList.remove('drag-over');
+    }
 
-    function checkDragAndDrop(q) {
-        let totalCorrect = 0;
-        
-        // 1. Check and Store the result
-        q.data.sentences.forEach(item => {
-            const dropZone = document.getElementById(item.dropId);
-            const droppedWord = dropZone ? dropZone.querySelector('.draggable-word') : null;
-            
-            let isCorrect = false;
-            let userAnswer = '';
-            
-            if (droppedWord) {
-                userAnswer = droppedWord.getAttribute('data-word');
-                isCorrect = userAnswer === item.correct;
-            }
-            
-            item.isCorrect = isCorrect;
-            item.userAnswer = userAnswer || null; 
-            
-            if (isCorrect) {
-                totalCorrect++;
-            }
-        });
-        
-        // 2. Update global state and re-render the correction
-        dragAndDropAnswered = true;
-        renderDragAndDrop(q); 
-        
-        return totalCorrect === q.data.sentences.length;
-    }
+    function drop(e) {
+        e.preventDefault();
+        const dropZone = e.target.closest('.drop-zone');
+        dropZone.classList.remove('drag-over');
+        
+        if (dropZone.querySelector('.draggable-word')) {
+            return;
+        }
 
-    function displayDragAndDropCorrection(sentences) {
-        const totalCorrect = sentences.filter(item => item.isCorrect).length;
-        const totalSentences = sentences.length;
-        
-        if (totalCorrect === totalSentences) {
-            feedback.innerHTML = '✅ **CONGRATULATIONS!** You got all answers correct! 🎉';
-        } else {
-            feedback.innerHTML = `❌ **Oops, that's not correct!** You got **${totalCorrect}** out of **${totalSentences}** sentences correct. The correct answers are marked.`;
-        }
-    }
+        const data = e.dataTransfer.getData('text/plain');
+        const wordElement = document.querySelector(`.draggable-word[data-word="${data}"][draggable="true"]`);
 
-    // Initialize home screen
-    window.onload = () => {
-        // Ensure home screen is visible on load
-    };
-    
+        if (wordElement) {
+            const newDroppedWord = document.createElement('div');
+            newDroppedWord.className = 'draggable-word dropped-word';
+            newDroppedWord.setAttribute('draggable', 'false');
+            newDroppedWord.setAttribute('data-word', data);
+            newDroppedWord.textContent = data;
+            newDroppedWord.addEventListener('dblclick', unDropWord);
+           
+            dropZone.appendChild(newDroppedWord);
+            wordElement.style.display = 'none'; 
+
+            updateSentenceUserAnswer(dropZone.id, data);
+        }
+    }
+
+    function unDropWord(e) {
+        const droppedWord = e.target.closest('.draggable-word');
+        if (!droppedWord || dragAndDropAnswered) return;
+
+        const dropZone = droppedWord.parentElement;
+        const wordText = droppedWord.getAttribute('data-word');
+       
+        const originalWord = document.querySelector(`.draggable-word[data-word="${wordText}"][draggable="true"]`);
+        if (originalWord) {
+            originalWord.style.display = 'block'; 
+        }
+
+        dropZone.removeChild(droppedWord);
+        
+        updateSentenceUserAnswer(dropZone.id, null);
+    }
+
+    function updateSentenceUserAnswer(dropId, userAnswer) {
+        const questionData = lessonQuestions[currentQuestionIndex].data;
+        const sentence = questionData.sentences.find(s => s.dropId === dropId);
+        if (sentence) {
+            sentence.userAnswer = userAnswer;
+        }
+    }
+
+    function checkDragAndDrop(currentQ) {
+        let allCorrect = true;
+        const sentenceData = currentQ.data.sentences;
+
+        sentenceData.forEach(sent => {
+            const dropZone = document.getElementById(sent.dropId);
+           
+            if (sent.userAnswer && sent.userAnswer.toLowerCase() === sent.correct.toLowerCase()) {
+                sent.isCorrect = true;
+            } else {
+                sent.isCorrect = false;
+                allCorrect = false;
+            }
+        });
+
+        dragAndDropAnswered = true; 
+        renderDragAndDrop(currentQ.data); // Re-renderiza para mostrar as correções
+
+        feedback.innerHTML = allCorrect 
+            ? '<span style="color:#28a745;">✅ Great job! All sentences are correct!</span>' 
+            : '<span style="color:#dc3545;">❌ Review your answers. The correct words are shown in green.</span>';
+
+        nextBtn.textContent = 'Next';
+    }
 </script>
-
 </body>
 </html>
