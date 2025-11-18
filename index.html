@@ -363,32 +363,49 @@
         overflow: hidden; 
     }
     
-    /* MODIFICAÇÃO Tópico 5: Diminui o tamanho da tabela do Modal */
-    .modal-content .info-table {
-        max-width: 180px; /* Reduz de 200px para 180px */
-        margin: 10px auto; /* Reduz a margem superior/inferior */
-        font-size: 0.9em; /* Diminui a fonte um pouco */
+    /* Estilo Específico para o Tópico 3 (Lesson Vocabulary) */
+    .lesson-vocabulary .info-table {
+        margin: 10px auto; 
+        max-width: 450px; 
+        border-radius: 6px;
+        box-shadow: none; 
     }
 
-    .info-table th, .info-table td {
-        padding: 8px 10px; /* Reduz padding para diminuir a altura das células */
-        text-align: left;
-        border-bottom: 1px solid #f0f0f0; 
-        font-size: 1em; 
-    }
-    .info-table th {
-        background-color: #007bff; 
-        color: white;
-        font-weight: 600;
-        text-transform: uppercase;
-    }
-    .info-table tr:nth-child(even) {
-        background-color: #f9f9f9; 
-    }
-    .info-table tr:hover {
-        background-color: #f1f1f1; 
+    .lesson-vocabulary .info-table tr {
+        border: 1px solid #e0e0e0; /* Adiciona borda em volta de cada frase */
+        margin-bottom: 8px;
+        display: block; 
+        border-radius: 4px;
+        overflow: hidden;
+        transition: background-color 0.2s;
     }
     
+    .lesson-vocabulary .info-table tr:hover {
+        background-color: #f6f9fc;
+    }
+    
+    .lesson-vocabulary .info-table th, .lesson-vocabulary .info-table td {
+        padding: 12px 15px; 
+        text-align: left;
+        border: none; /* Remove bordas internas */
+    }
+    
+    /* MODIFICAÇÃO Tópico 5: Diminui o tamanho da tabela do Modal */
+    .modal-content .info-table {
+        max-width: 180px; 
+        margin: 0 auto; 
+        font-size: 0.9em; 
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        border: 1px solid #ddd;
+    }
+    
+    /* MODIFICAÇÃO Tópico 5: Remove fundo azul do cabeçalho da tabela */
+    .modal-content .info-table th {
+        background-color: #f7f7f7; 
+        color: #333;
+        font-weight: 600;
+    }
+
     /* Estilo para a coluna de palavras (Topic 3) */
     .info-table td.sentence-cell {
         font-weight: 400;
@@ -517,10 +534,18 @@
         width: 100%;
         height: 100%;
         object-fit: cover; 
-        object-position: center; 
         background-color: #fcfcfc;
         display: block;
     }
+
+    /* Ajustes específicos para as imagens do Tópico 8 (Foco) */
+    .gallery-image-wrapper:nth-child(1) img { 
+        object-position: center 30%; /* Ajusta o foco para cima (menos cortes no topo) */
+    }
+    .gallery-image-wrapper:nth-child(3) img { 
+        object-position: center 10%; /* Ajusta o foco para cima (menos cortes na cabeça) */
+    }
+    
 
     .image-number-label {
         position: absolute;
@@ -661,7 +686,7 @@
         font-size: 1em;
     }
 
-    /* Estilos do Modal */
+    /* Estilos do Modal (Tópico 5) */
     .modal {
         display: none; 
         position: fixed; 
@@ -672,22 +697,29 @@
         height: 100%; 
         overflow: auto; 
         background-color: rgba(0,0,0,0.4); 
+        display: flex; /* Adicionado para centralizar */
+        justify-content: center; /* Adicionado para centralizar */
+        align-items: center; /* Adicionado para centralizar */
     }
     
+    /* MODIFICAÇÃO Tópico 5: Modal mais compacto e sem fundo branco grande */
     .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto; 
+        background-color: transparent; /* Fundo transparente */
+        padding: 0; /* Remove padding externo */
+        border: none; /* Remove borda */
+        box-shadow: none; /* Remove sombra */
+        width: auto; 
+        max-width: 90%; 
+        /* Remove margin para centralização ser controlada pelo .modal */
+        margin: 0; 
+    }
+
+    .modal-content-wrapper {
+        background-color: #fefefe; 
         padding: 20px;
         border: 1px solid #888;
-        width: 80%; 
-        max-width: 500px; 
         border-radius: 10px;
         box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        
-        /* MODIFICAÇÃO Tópico 5: Ajusta o tamanho do modal ao conteúdo */
-        max-height: 80vh; 
-        overflow-y: auto; 
-        width: auto; /* Permite que a largura se ajuste */
     }
 
     .close-button {
@@ -696,6 +728,7 @@
         font-size: 28px;
         font-weight: bold;
         cursor: pointer;
+        margin-left: 10px;
     }
     
     .close-button:hover,
@@ -753,9 +786,11 @@
 
 <div id="numberModal" class="modal">
     <div class="modal-content">
-        <span class="close-button" onclick="closeNumberModal()">&times;</span>
-        <h3 id="modal-title">Numbers</h3>
-        <div id="modal-body">
+        <div class="modal-content-wrapper">
+            <span class="close-button" onclick="closeNumberModal()">&times;</span>
+            <h3 id="modal-title" style="margin-top: 0; text-align: center;">Numbers</h3>
+            <div id="modal-body">
+            </div>
         </div>
     </div>
 </div>
@@ -824,7 +859,7 @@
         { id: 1, question: "What do you see in the image?", image: "numeros.jpg", options: { A: "The Alphabet", B: "Colors", C: "Numbers" }, correctAnswer: 'C', chapter: 1, title: "1. Numbers Overview" },
         { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', chapter: 1, title: "2. Verb 'To Be' (I am)" },
         
-        // Tópico 3 - Vocabulary (MODIFICADO para remover "Listen and practice each word.")
+        // Tópico 3 - Vocabulary (Tabela em volta das frases)
         { id: 3, 
             question: `<h3 style="color: #007bff; font-size: 2em; margin-bottom: 20px;">Vocabulary</h3>`, 
             options: [ 
@@ -842,9 +877,9 @@
             correctAnswer: 'INFO_TABLE', chapter: 1, title: "3. Lesson Vocabulary" 
         },
         
-        // Tópico 4 - Pronúncia 
+        // Tópico 4 - Pronúncia (Remove instrução repetida)
         { id: 4, 
-            question: "Listen and practice each word.", 
+            question: "Click the play button (▶️) next to each word to listen and practice.", 
             options: { "Address number": "addressnumber.mp3", "American": "American.mp3", "Friend": "friend.mp3", "Great": "great.mp3", "Nationality": "nationality.mp3", "New": "new.mp3", "Phone number": "phonenumber.mp3", "Student": "student.mp3", "Teacher": "teacher.mp3", "Years old": "yearsold.mp3" }, 
             correctAnswer: 'PRONUNCIATION_SET', 
             chapter: 1, 
@@ -906,8 +941,6 @@
     let currentQuestionIndex = 0;
     let lessonQuestions = []; 
     let currentChapter = 1; 
-    let fillInBlanksAnswered = false; 
-    let dragAndDropAnswered = false; 
     
     // Variáveis que você já definiu (DOM elements)
     const homeScreen = document.getElementById('home-screen');
@@ -924,7 +957,7 @@
     const navButtonsContainer = document.querySelector('.nav-buttons'); 
     const menuToggle = document.querySelector('.menu-toggle'); 
     
-    let answerChecked = false;
+    let answerChecked = false; // Controla se a resposta (ou check) já foi processada
     
     // RENDER CHAPTER CARDS ON HOME SCREEN
     const chapterGrid = document.querySelector('.chapter-grid');
@@ -998,7 +1031,7 @@
     function goNext() {
         const currentQ = lessonQuestions[currentQuestionIndex];
         
-        // 1. CHECAGEM OBRIGATÓRIA ANTES DE AVANÇAR (APENAS PARA MARCAR A RESPOSTA)
+        // 1. CHECAGEM OBRIGATÓRIA / AÇÃO DE FEEDBACK
         if (!answerChecked) {
             if (currentQ.correctAnswer === 'FILL_IN_BLANKS') {
                 checkFillInBlanks(currentQ);
@@ -1012,7 +1045,14 @@
                 return; // Re-renderiza a correção, mas não avança ainda.
             }
             
-            feedback.innerHTML = '';
+            // Para slides de informação (tabelas, pronúncia, bingo), apenas avança.
+            if (['INFO_TABLE', 'PRONUNCIATION_SET', 'INTERACTIVE_BINGO'].includes(currentQ.correctAnswer)) {
+                 // Não faz nada, segue para o passo 2
+            } else {
+                 // Se for múltipla escolha e não respondeu, exibe feedback e espera
+                 feedback.innerHTML = '<span style="color: #dc3545;">Please select an option first.</span>';
+                 return;
+            }
         }
 
         // 2. AVANÇA PARA A PRÓXIMA PERGUNTA
@@ -1035,7 +1075,7 @@
         }
     }
 
-    // --- FUNÇÕES AUXILIARES DE CARREGAMENTO (AS QUE FALTAVAM) ---
+    // --- FUNÇÕES AUXILIARES DE CARREGAMENTO ---
 
     function loadQuizSlide(q) {
         optionsContainer.style.display = 'block';
@@ -1053,12 +1093,11 @@
     // Função para carregar Tabela de Informação (Tópico 3)
     function loadInfoTable(q) {
         optionsContainer.style.display = 'block';
-        optionsContainer.innerHTML = ''; 
+        optionsContainer.innerHTML = `<div class="lesson-vocabulary"></div>`; 
+        const container = optionsContainer.querySelector('.lesson-vocabulary');
 
-        // Tópico 3: Removemos a instrução "Listen and practice each word." no questionText
-        
         const tableHTML = `
-            <table class="info-table" style="max-width: 500px; margin: 20px auto;">
+            <table class="info-table">
                 <tbody>
                     ${q.options.map(item => `
                         <tr>
@@ -1069,7 +1108,7 @@
             </table>
         `;
 
-        optionsContainer.innerHTML = tableHTML;
+        container.innerHTML = tableHTML;
         optionsContainer.style.display = 'block';
     }
 
@@ -1112,11 +1151,13 @@
                     </tbody>
                 </table>
             `;
-            document.getElementById('current-instruction').textContent = 'Listen and notice the difference between -teen and -ty.';
+            // Tópico 6: A instrução já foi corrigida no JSON. Apenas exibe.
+            document.getElementById('current-instruction').textContent = q.question;
             audioPlayer.src = GITHUB_RAW_BASE_URL + q.options[Object.keys(q.options)[0]];
         } else {
             // Lógica para o Tópico 4 (Lista de Pronúncias Individuais)
-            document.getElementById('current-instruction').textContent = 'Click the play button (▶️) next to each word to listen and practice.';
+            // Tópico 4: A instrução já foi corrigida no JSON. Apenas exibe.
+            document.getElementById('current-instruction').textContent = q.question;
             for (const [word, audioFile] of Object.entries(q.options)) {
                 const li = document.createElement('li');
                 li.innerHTML = `
@@ -1137,8 +1178,14 @@
     function checkAnswer(selectedDiv, correctAnswer) {
         if (answerChecked) return; 
 
+        // Limpa todas as opções
         Array.from(optionsContainer.children).forEach(div => {
             div.style.pointerEvents = 'none'; 
+            div.classList.remove('correct', 'incorrect');
+        });
+
+        // Marca a opção correta e a selecionada
+        Array.from(optionsContainer.children).forEach(div => {
             const optionText = div.textContent.trim().substring(0, 1); 
             if (optionText === correctAnswer) {
                 div.classList.add('correct');
@@ -1148,14 +1195,14 @@
         });
 
         if (selectedDiv.textContent.trim().substring(0, 1) === correctAnswer) {
-            feedback.innerHTML = '<span style="color: #28a745;">Correct!</span>';
+            feedback.innerHTML = '<span style="color: #28a745;">Correct! Click Next to continue.</span>';
         } else {
-            feedback.innerHTML = `<span style="color: #dc3545;">Incorrect.</span> The correct answer is: <strong>${correctAnswer}</strong>.`;
+            feedback.innerHTML = `<span style="color: #dc3545;">Incorrect.</span> The correct answer is: <strong>${correctAnswer}</strong>. Click Next to continue.`;
         }
         answerChecked = true;
     }
 
-    // O código para o Tópico 5 (Interactive Bingo Review) - CSS para o modal já foi ajustado
+    // O código para o Tópico 5 (Interactive Bingo Review) - Modal
     function openNumberModal(group) {
         const modal = document.getElementById('numberModal');
         const modalTitle = document.getElementById('modal-title');
@@ -1186,7 +1233,6 @@
 
         modalTitle.textContent = title;
         
-        // A classe CSS 'modal-content .info-table' já restringe o tamanho.
         const tableHTML = `
             <table class="info-table">
                 <thead>
@@ -1205,7 +1251,7 @@
         `;
 
         modalBody.innerHTML = tableHTML;
-        modal.style.display = 'block';
+        modal.style.display = 'flex'; // Usa flex para centralizar
     }
 
     function closeNumberModal() {
@@ -1230,7 +1276,7 @@
             input.type = 'text';
             input.id = `input-${index}`;
             input.placeholder = 'Write the word...';
-            input.oninput = () => { /* remove feedback on re-entry */ };
+            // input.oninput = () => { /* remove feedback on re-entry */ }; // Comentado para evitar perda de dados antes do check
             
             const resultDiv = document.createElement('div');
             resultDiv.className = 'number-result';
@@ -1242,17 +1288,14 @@
             container.appendChild(group);
         });
 
-        // Adiciona um botão de checagem para o Tópico 7
-        feedback.innerHTML = '<button id="check-fill-blanks" class="start-button" style="opacity: 1; transform: scale(1); margin-top: 20px;" onclick="checkFillInBlanks(lessonQuestions[currentQuestionIndex]);">Check Answers</button>';
+        // Não mostra botão de checagem. O check é feito pelo botão 'Next'.
+        feedback.innerHTML = '<span style="color: #007bff; font-size: 1.1em;">Click Next to check your answers.</span>';
         
-        // Alinha os inputs no centro da tela
         optionsContainer.style.display = 'flex';
         optionsContainer.style.justifyContent = 'center';
     }
 
     function checkFillInBlanks(q) {
-        if (fillInBlanksAnswered) return;
-        
         let allCorrect = true;
         
         q.data.forEach((item, index) => {
@@ -1273,16 +1316,11 @@
             }
         });
         
-        document.getElementById('check-fill-blanks').style.display = 'none';
-        
         if (allCorrect) {
-            feedback.innerHTML = '<span style="color: #28a745; font-size: 1.2em;">All answers are correct!</span>';
+            feedback.innerHTML = '<span style="color: #28a745; font-size: 1.2em;">All answers are correct! Click Next.</span>';
         } else {
             feedback.innerHTML = '<span style="color: #dc3545; font-size: 1.2em;">Review the incorrect answers and click Next.</span>';
         }
-
-        fillInBlanksAnswered = true;
-        answerChecked = true;
     }
 
     // O código para o Tópico 8 (DRAG_AND_DROP)
@@ -1356,8 +1394,8 @@
             dropZone.addEventListener('drop', drop);
         });
         
-        // Adiciona um botão de checagem para o Tópico 8
-        feedback.innerHTML = '<button id="check-drag-drop" class="start-button" style="opacity: 1; transform: scale(1); margin-top: 20px;" onclick="checkDragAndDrop(lessonQuestions[currentQuestionIndex]);">Check Answers</button>';
+        // Não mostra botão de checagem. O check é feito pelo botão 'Next'.
+        feedback.innerHTML = '<span style="color: #007bff; font-size: 1.1em;">Click Next to check your answers.</span>';
         
         // Adiciona listeners para retornar a palavra ao container de palavras
         wordsContainer.addEventListener('dragover', dragOver);
@@ -1421,8 +1459,6 @@
     }
     
     function checkDragAndDrop(q) {
-        if (dragAndDropAnswered) return;
-        
         let allCorrect = true;
         
         document.querySelectorAll('.drop-zone').forEach(dropZone => {
@@ -1431,6 +1467,7 @@
             const sentenceData = q.data.sentences.find(s => s.id === sentenceId);
 
             if (dropZone.children.length === 0) {
+                // Se estiver vazio
                 dropZone.classList.add('incorrect-drop');
                 dropZone.innerHTML = `<span class="correct-word-display">${correctWord}</span>`;
                 allCorrect = false;
@@ -1440,11 +1477,13 @@
                 const droppedText = droppedWord.textContent;
                 
                 if (droppedText === correctWord) {
+                    // Correto
                     dropZone.classList.add('correct-drop');
                     droppedWord.style.backgroundColor = 'transparent';
                     droppedWord.style.color = 'inherit';
                     sentenceData.isCorrect = true;
                 } else {
+                    // Incorreto
                     dropZone.classList.add('incorrect-drop');
                     droppedWord.style.display = 'none'; // Esconde a palavra errada
                     dropZone.innerHTML += `<span class="correct-word-display">${correctWord}</span>`; // Mostra a correta
@@ -1456,27 +1495,18 @@
         });
         
         document.querySelectorAll('.draggable-word').forEach(word => word.style.pointerEvents = 'none');
-        document.getElementById('check-drag-drop').style.display = 'none';
-
+        
         if (allCorrect) {
-            feedback.innerHTML = '<span style="color: #28a745; font-size: 1.2em;">All sentences are correct!</span>';
+            feedback.innerHTML = '<span style="color: #28a745; font-size: 1.2em;">All sentences are correct! Click Next.</span>';
         } else {
             feedback.innerHTML = '<span style="color: #dc3545; font-size: 1.2em;">Review the corrected sentences and click Next.</span>';
         }
-        
-        dragAndDropAnswered = true;
-        answerChecked = true;
     }
 
     // --- FUNÇÃO PRINCIPAL DE CARREGAMENTO (COMPLETA) ---
 
     function loadQuestion(q) {
         answerChecked = false;
-        fillInBlanksAnswered = false; 
-        
-        if(q.correctAnswer !== 'DRAG_AND_DROP') {
-            dragAndDropAnswered = false;
-        }
 
         feedback.innerHTML = '';
         optionsContainer.innerHTML = '';
