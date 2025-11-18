@@ -473,7 +473,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover; 
-        object-position: center; /* Ajustado para center */
+        object-position: center; 
         background-color: #fcfcfc;
         display: block;
     }
@@ -741,7 +741,7 @@
             image: 'friendtopico8.jpg', 
             dropId: 'drop-1', 
             correct: 'friend' ,
-            userAnswer: null, // Adicionado para rastrear a resposta do usuário
+            userAnswer: null, 
             isCorrect: false
         },
         { 
@@ -916,6 +916,57 @@
         navButtonsContainer.style.display = 'none'; 
         menuToggle.style.display = 'none'; 
         closeNav(); 
+    }
+
+    // CORREÇÃO: Função goNext para lidar com verificação de Fill-in-Blanks e Drag-and-Drop
+    function goNext() {
+        const currentQ = lessonQuestions[currentQuestionIndex];
+        
+        // 1. CHECAGEM INICIAL: Tópicos 7 e 8
+        if (!answerChecked) {
+            
+            if (currentQ.correctAnswer === 'FILL_IN_BLANKS' && !fillInBlanksAnswered) {
+                checkFillInBlanks(currentQ);
+                answerChecked = true; // Marca como checado (agora o Next prossegue)
+                // A correção é exibida no re-render de checkFillInBlanks
+                return; 
+            }
+            
+            if (currentQ.correctAnswer === 'DRAG_AND_DROP' && !dragAndDropAnswered) {
+                checkDragAndDrop(currentQ);
+                answerChecked = true; // Marca como checado (agora o Next prossegue)
+                // A correção é exibida no re-render de checkDragAndDrop
+                return; 
+            }
+            
+            // Para Múltipla Escolha e outros não-interativos que não exigem checagem manual:
+            if (currentQ.correctAnswer !== 'INFO' && currentQ.correctAnswer !== 'PRONUNCIATION_SET' && currentQ.correctAnswer !== 'INTERACTIVE_BINGO' && currentQ.correctAnswer !== 'FILL_IN_BLANKS' && currentQ.correctAnswer !== 'DRAG_AND_DROP') {
+                // Se for Múltipla Escolha e o usuário não clicou em nada, ele não pode prosseguir.
+                if (!answerChecked) {
+                    feedback.innerHTML = '⚠️ Please select an answer before proceeding.';
+                    return;
+                }
+            }
+        }
+
+        // 2. AVANÇA PARA A PRÓXIMA PERGUNTA
+        currentQuestionIndex++;
+        if (currentQuestionIndex < lessonQuestions.length) {
+            loadQuestion(lessonQuestions[currentQuestionIndex]);
+        } else {
+            // Fim do módulo
+            alert(`Congratulations! You have completed the Beginner ${currentChapter} level.`);
+            goHome();
+        }
+    }
+    
+    function backQuestion() {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            loadQuestion(lessonQuestions[currentQuestionIndex]);
+        } else {
+            goHome();
+        }
     }
 
     function loadQuestion(q) {
@@ -1366,10 +1417,12 @@
         fullContentHTML += `</div>`; 
         optionsContainer.innerHTML = fullContentHTML;
         
-        // Apenas limpa o feedback no início
+        // A flag de resposta é importante aqui para que o Next funcione corretamente
+        answerChecked = dragAndDropAnswered; 
+
         if (!dragAndDropAnswered) {
-            // A instrução principal já está no título da questão.
-            feedback.innerHTML = 'Arraste as palavras para completar as frases e clique **Next** para verificar.';
+            // Frase removida. A instrução é mantida como um lembrete conciso.
+            feedback.innerHTML = 'Complete as frases arrastando as palavras para as lacunas.';
         } else {
              displayDragAndDropCorrection(q.data.sentences);
         }
