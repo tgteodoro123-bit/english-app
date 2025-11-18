@@ -359,9 +359,16 @@
         border-collapse: collapse;
         margin: 20px 0;
         box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
-        border-radius: 10px; /* Arredondamento */
-        overflow: hidden; /* Garante que as bordas arredondadas funcionem */
+        border-radius: 10px; 
+        overflow: hidden; 
     }
+    
+    /* MODIFICAÇÃO Tópico 5: Reduz o tamanho da tabela do Modal */
+    .modal-content .info-table {
+        max-width: 200px; 
+        margin: 15px auto; 
+    }
+
     .info-table th, .info-table td {
         padding: 12px 15px; 
         text-align: left;
@@ -380,13 +387,19 @@
     .info-table tr:hover {
         background-color: #f1f1f1; 
     }
+    
     /* Estilo para a coluna de palavras (Topic 3) */
-    .info-table td.word-cell {
+    .info-table td.sentence-cell {
+        font-weight: 400;
+        color: #333; 
+    }
+    .info-table td.sentence-cell .highlight {
         font-weight: bold;
-        color: #003366; 
+        color: #007bff; /* Azul para as palavras-chave */
     }
 
-    /* Topic 6 Comparison Table Styles (Mantida) */
+
+    /* Topic 6 Comparison Table Styles */
     .comparison-table {
         width: 100%;
         max-width: 400px;
@@ -616,12 +629,12 @@
     
     .draggable-word:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
     }
     
     .draggable-word.dragging {
         opacity: 0.6; 
-        box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
         transform: scale(0.98);
     }
     
@@ -741,7 +754,6 @@
 </div>
 
 <script>
-    // Se você estiver rodando localmente, mude esta URL para o caminho do seu disco, ou mantenha esta URL base se estiver usando o seu GitHub.
     const GITHUB_RAW_BASE_URL = "https://raw.githubusercontent.com/tgteodoro123-bit/english-app/main/"; 
     
     const BACKGROUND_IMAGES = [
@@ -805,27 +817,27 @@
         { id: 1, question: "What do you see in the image?", image: "numeros.jpg", options: { A: "The Alphabet", B: "Colors", C: "Numbers" }, correctAnswer: 'C', chapter: 1, title: "1. Numbers Overview" },
         { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', chapter: 1, title: "2. Verb 'To Be' (I am)" },
         
-        // Tópico 3 - Informação (Vocabulary) - AGORA EM FORMATO DE TABELA
+        // Tópico 3 - Vocabulary (MODIFICADO para 1 coluna com highlight)
         { id: 3, 
-            question: `<h3 style="color: #007bff; font-size: 2em; margin-bottom: 20px;">Lesson Vocabulary:</h3>`, 
+            question: `<h3 style="color: #007bff; font-size: 2em; margin-bottom: 20px;">Vocabulary</h3>`, 
             options: [ 
-                { word: 'address number', example: 'My address number is 34.' },
-                { word: 'student', example: 'I am a student.' },
-                { word: 'friend', example: 'He is my new friend, David.' },
-                { word: 'great', example: 'Mr. David is a great teacher.' },
-                { word: 'phone number', example: 'My phone number is: (987) 654-1234.' },
-                { word: 'American', example: 'Sofia is American.' },
-                { word: 'teacher', example: 'I love my English teacher.' },
-                { word: 'new', example: 'Lucas is a new student, too.' },
-                { word: 'years old', example: 'I am 18 years old.' },
-                { word: 'nationality', example: 'My nationality? I\'m French.' }
+                { word: 'address number', example: 'My <span class="highlight">address number</span> is 34.' },
+                { word: 'student', example: 'I am a <span class="highlight">student</span>.' },
+                { word: 'friend', example: 'He is my new <span class="highlight">friend</span>, David.' },
+                { word: 'great', example: 'Mr. David is a <span class="highlight">great</span> teacher.' },
+                { word: 'phone number', example: 'My <span class="highlight">phone number</span> is: (987) 654-1234.' },
+                { word: 'American', example: 'Sofia is <span class="highlight">American</span>.' },
+                { word: 'teacher', example: 'I love my English <span class="highlight">teacher</span>.' },
+                { word: 'new', example: 'Lucas is a <span class="highlight">new</span> student, too.' },
+                { word: 'years old', example: 'I am 18 <span class="highlight">years old</span>.' },
+                { word: 'nationality', example: 'My <span class="highlight">nationality</span>? I\'m French.' }
             ], 
             correctAnswer: 'INFO_TABLE', chapter: 1, title: "3. Lesson Vocabulary" 
         },
         
-        // Tópico 4 - Pronúncia - REMOVENDO TEXTO E ÁUDIO PRINCIPAL
+        // Tópico 4 - Pronúncia (MODIFICADO para remover instrução duplicada)
         { id: 4, 
-            question: "Click the play button (▶️) next to each word to listen and practice.", 
+            question: "Listen and practice each word.", // Título da instrução
             options: { "Address number": "addressnumber.mp3", "American": "American.mp3", "Friend": "friend.mp3", "Great": "great.mp3", "Nationality": "nationality.mp3", "New": "new.mp3", "Phone number": "phonenumber.mp3", "Student": "student.mp3", "Teacher": "teacher.mp3", "Years old": "yearsold.mp3" }, 
             correctAnswer: 'PRONUNCIATION_SET', 
             chapter: 1, 
@@ -835,7 +847,7 @@
         // Topic 5 
         { id: 5, question: "Click on the '+' signs to review the number groups.", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1, title: "5. Interactive Bingo Review" },
         
-        // Topic 6 
+        // Topic 6 (MODIFICADO para remover acentuação e negrito, e ajustar instrução)
         { id: 6, 
             question: "Listen and notice the difference between -teen and -ty.", 
             options: { "13: (Thirteen) – 30 (Thirty)": "teenety.mp3" }, 
@@ -976,7 +988,6 @@
         closeNav(); 
     }
 
-    // UPDATED: goNext to advance immediately AND check answers for interactive topics (without blocking)
     function goNext() {
         const currentQ = lessonQuestions[currentQuestionIndex];
         
@@ -994,7 +1005,6 @@
                 return; // Re-renderiza a correção, mas não avança ainda.
             }
             
-            // Para Múltipla Escolha: se o usuário não clicou em nada, ele não tem 'answerChecked'.
             feedback.innerHTML = '';
         }
 
@@ -1033,24 +1043,17 @@
         }
     }
 
-    // NOVO: Função para carregar Tabela de Informação (Tópico 3)
+    // NOVO: Função para carregar Tabela de Informação (Tópico 3) - MODIFICADA PARA 1 COLUNA
     function loadInfoTable(q) {
         optionsContainer.style.display = 'block';
         optionsContainer.innerHTML = ''; 
 
         const tableHTML = `
-            <table class="info-table">
-                <thead>
-                    <tr>
-                        <th style="width: 35%;">Word</th>
-                        <th>Example Sentence</th>
-                    </tr>
-                </thead>
+            <table class="info-table" style="max-width: 500px; margin: 20px auto;">
                 <tbody>
                     ${q.options.map(item => `
                         <tr>
-                            <td class="word-cell">${item.word}</td>
-                            <td>${item.example}</td>
+                            <td class="sentence-cell">${item.example}</td>
                         </tr>
                     `).join('')}
                 </tbody>
@@ -1058,7 +1061,6 @@
         `;
 
         optionsContainer.innerHTML = tableHTML;
-        // Removido feedback.innerHTML = 'Review the content and click Next to continue.';
         optionsContainer.style.display = 'block';
     }
 
@@ -1073,7 +1075,6 @@
         const list = document.getElementById('pronunciation-list');
         list.innerHTML = '';
         
-        // MODIFICAÇÃO: Oculta o player de áudio principal (<audio controls>) no Tópico 4
         const audioPlayer = document.getElementById('audio-player-controls');
         audioPlayer.style.display = (q.id === 4) ? 'none' : 'block';
         audioPlayer.src = ''; 
@@ -1081,28 +1082,29 @@
         document.getElementById('comparison-table-container').innerHTML = ''; // Limpa tabela
 
         if (q.id === 6) {
-            // Lógica específica para o Tópico 6 (Teen vs Ty) - Tabela de Comparação
+            // Lógica específica para o Tópico 6 (Teen vs Ty) - Tabela de Comparação (MODIFICADA)
             const tableContainer = document.getElementById('comparison-table-container');
             tableContainer.innerHTML = `
                 <table class="comparison-table">
                     <thead>
                         <tr>
-                            <th>-TEEN (Strong Accent on second syllable)</th>
-                            <th>-TY (Strong Accent on first syllable)</th>
+                            <th>-TEEN</th>
+                            <th>-TY</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>Thir**teen** (13)</td><td>**Thir**ty (30)</td></tr>
-                        <tr><td>Four**teen** (14)</td><td>**Four**ty (40)</td></tr>
-                        <tr><td>Fif**teen** (15)</td><td>**Fif**ty (50)</td></tr>
-                        <tr><td>Six**teen** (16)</td><td>**Six**ty (60)</td></tr>
-                        <tr><td>Seven**teen** (17)</td><td>**Seven**ty (70)</td></tr>
-                        <tr><td>Eigh**teen** (18)</td><td>**Eigh**ty (80)</td></tr>
-                        <tr><td>Nine**teen** (19)</td><td>**Nine**ty (90)</td></tr>
+                        <tr><td>Thirteen (13)</td><td>Thirty (30)</td></tr>
+                        <tr><td>Fourteen (14)</td><td>Forty (40)</td></tr>
+                        <tr><td>Fifteen (15)</td><td>Fifty (50)</td></tr>
+                        <tr><td>Sixteen (16)</td><td>Sixty (60)</td></tr>
+                        <tr><td>Seventeen (17)</td><td>Seventy (70)</td></tr>
+                        <tr><td>Eighteen (18)</td><td>Eighty (80)</td></tr>
+                        <tr><td>Nineteen (19)</td><td>Ninety (90)</td></tr>
                     </tbody>
                 </table>
             `;
-            document.getElementById('current-instruction').textContent = 'Click Play to hear the general difference: Thirteen vs. Thirty';
+            // MODIFICAÇÃO: Nova instrução para o Tópico 6
+            document.getElementById('current-instruction').textContent = 'Listen and notice the difference between -teen and -ty.';
             audioPlayer.src = GITHUB_RAW_BASE_URL + q.options[Object.keys(q.options)[0]];
         } else {
             // Lógica para o Tópico 4 (Lista de Pronúncias Individuais) - MODIFICADO O TEXTO DA INSTRUÇÃO
@@ -1124,13 +1126,12 @@
         tempAudio.play();
     }
 
-    // A função checkAnswer de Múltipla Escolha que você usou em outros tópicos
     function checkAnswer(selectedDiv, correctAnswer) {
         if (answerChecked) return; 
 
         Array.from(optionsContainer.children).forEach(div => {
-            div.style.pointerEvents = 'none'; // Desabilita todos os cliques
-            const optionText = div.textContent.trim().substring(0, 1); // Pega A, B, C...
+            div.style.pointerEvents = 'none'; 
+            const optionText = div.textContent.trim().substring(0, 1); 
             if (optionText === correctAnswer) {
                 div.classList.add('correct');
             } else if (div === selectedDiv) {
@@ -1146,7 +1147,7 @@
         answerChecked = true;
     }
 
-    // O código para o Tópico 5 (Interactive Bingo Review) - MODIFICADO PARA TABELA
+    // O código para o Tópico 5 (Interactive Bingo Review) - MODIFICADO PARA TABELA MENOR
     function openNumberModal(group) {
         const modal = document.getElementById('numberModal');
         const modalTitle = document.getElementById('modal-title');
@@ -1177,8 +1178,9 @@
 
         modalTitle.textContent = title;
         
+        // A classe CSS 'modal-content .info-table' já restringe o tamanho.
         const tableHTML = `
-            <table class="info-table" style="max-width: 300px; margin: 15px auto;">
+            <table class="info-table">
                 <thead>
                     <tr>
                         <th>Number / Example</th>
@@ -1464,7 +1466,6 @@
         answerChecked = false;
         fillInBlanksAnswered = false; 
         
-        // The dragAndDropAnswered flag is reset to false only when exiting topic 8
         if(q.correctAnswer !== 'DRAG_AND_DROP') {
             dragAndDropAnswered = false;
         }
@@ -1472,7 +1473,6 @@
         feedback.innerHTML = '';
         optionsContainer.innerHTML = '';
         
-        // MODIFICAÇÃO: Remove "Tópico" do indicador de progresso
         progressIndicator.textContent = `${currentQuestionIndex + 1}/${lessonQuestions.length}`;
         
         nextBtn.style.display = 'block';
@@ -1483,7 +1483,6 @@
         document.getElementById('comparison-table-container').innerHTML = '';
         
         const audioControls = document.getElementById('audio-player-controls');
-        // MODIFICAÇÃO: Garante que o player principal está escondido (Tópicos 4 e 6 serão tratados no loadPronunciationSlide)
         audioControls.style.display = 'none';
         audioControls.src = ''; 
         
@@ -1499,14 +1498,13 @@
         }
 
         switch (q.correctAnswer) {
-            case 'INFO_TABLE': // Novo tipo de resposta para Tabela de Vocabulário
+            case 'INFO_TABLE': 
                 loadInfoTable(q);
                 break;
             case 'PRONUNCIATION_SET':
                 loadPronunciationSlide(q);
                 break;
             case 'INTERACTIVE_BINGO':
-                // Mostra a imagem e os hotspots
                 questionImage.style.display = 'block';
                 document.getElementById('hotspot-1').style.display = 'flex';
                 document.getElementById('hotspot-2').style.display = 'flex';
@@ -1514,14 +1512,13 @@
                 document.getElementById('hotspot-4').style.display = 'flex';
                 optionsContainer.innerHTML = '';
                 optionsContainer.style.display = 'none';
-                feedback.innerHTML = ''; // Removido o texto de revisão do Tópico 5
+                feedback.innerHTML = ''; 
                 break;
             case 'FILL_IN_BLANKS':
                 loadFillInBlanks(q);
                 break;
             case 'DRAG_AND_DROP':
                 loadDragAndDrop(q);
-                // Oculta a imagem principal, pois as imagens estão dentro do container
                 questionImage.style.display = 'none';
                 break;
             default: // Múltipla Escolha
@@ -1529,7 +1526,6 @@
                 break;
         }
 
-        // Garante que o botão Voltar esteja sempre visível na tela de perguntas
         backBtn.style.display = 'block';
     }
 </script>
