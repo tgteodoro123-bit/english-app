@@ -503,19 +503,19 @@
     .sentence-text {
         font-size: 1.15em;
         font-weight: 500;
-        text-align: center;
+        text-align: center; /* Centraliza o bloco de texto */
         margin-bottom: 5px;
         min-height: 40px; 
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: flex; /* Flexbox para alinhar itens na mesma linha */
+        align-items: center; /* Alinha verticalmente */
+        justify-content: center; /* Centraliza horizontalmente se houver espaço */
         flex-wrap: wrap; /* Permite que o texto e a drop zone quebrem a linha se necessário */
         line-height: 1.5;
     }
 
     /* Estilo da Drop Zone (o espaço em branco) - LIMPO E DISCRETO */
     .drop-zone {
-        display: inline-flex; 
+        display: inline-flex; /* Permite que o span se comporte como inline mas com propriedades flex */
         justify-content: center;
         align-items: center;
         min-width: 130px; /* Largura mínima maior */
@@ -524,9 +524,10 @@
         border-radius: 8px;
         padding: 4px 10px;
         background-color: transparent; /* Fundo transparente */
-        margin: 0 8px; /* Mais espaço horizontal */
+        margin: 0 5px; /* Ajuste a margem para ficar mais próximo do texto */
         transition: background-color 0.1s, border-color 0.1s;
         vertical-align: middle; /* Alinha com o texto da frase */
+        white-space: nowrap; /* Impede que o conteúdo do drop-zone quebre a linha */
     }
 
     .drop-zone.drag-over {
@@ -741,33 +742,33 @@
         { id: 'word-4', text: 'address number', correctTarget: 'drop-4' }
     ];
     
-    // Frases e Imagens que dão o contexto (coeso com Tópico 3).
+    // Frases e Imagens que dão o contexto.
     const DRAG_AND_DROP_SENTENCES = [
         { 
             id: 'sent-1', 
             text: '1. This is my best ____.', 
-            image: 'friendtopico8.jpg', // Seu arquivo de imagem
+            image: 'friendtopico8.jpg', // Seu arquivo de imagem existente
             dropId: 'drop-1', 
             correct: 'friend' 
         },
         { 
             id: 'sent-2', 
             text: '2. What is your ____?', 
-            image: 'phonenumbertopico8.jpg', // Seu arquivo de imagem
+            image: 'phonenumbertopico8.jpg', // Seu arquivo de imagem existente
             dropId: 'drop-2', 
             correct: 'phone number' 
         },
         { 
             id: 'sent-3', 
-            text: '3. She is a math ____.', 
-            image: 'teachertopico8.jpg', // Seu arquivo de imagem
+            text: '3. He is a math ____.', // FRASE: "He" para o professor homem
+            image: 'teachertopico8.jpg', // Seu arquivo de imagem do professor homem
             dropId: 'drop-3', 
             correct: 'teacher' 
         },
         { 
             id: 'sent-4', 
-            text: '4. Write your ____ here.', 
-            image: 'addressnumbertopico8.jpg', // Seu arquivo de imagem
+            text: '4. What is your ____?', // NOVA FRASE: Para identificação do número de endereço
+            image: 'adressnumber2topico8.jpg', // **NOME DO ARQUIVO ATUALIZADO**
             dropId: 'drop-4', 
             correct: 'address number' 
         }
@@ -807,10 +808,10 @@
         },
         
         // TÓPICO 8: DRAG AND DROP (AGORA CONFIGURADO)
-        { id: 8, question: "Drag the correct word to complete the sentences based on the images (Vocabulary Review).", 
+        { id: 8, question: "Drag the correct word to complete the sentences based on the images.", 
             correctAnswer: 'DRAG_AND_DROP', 
             chapter: 1, 
-            title: "8. Drag & Drop: Vocabulary Review",
+            title: "8. Drag & Drop: Vocabulary",
             data: {
                 words: DRAG_AND_DROP_WORDS,
                 sentences: DRAG_AND_DROP_SENTENCES
@@ -1264,7 +1265,7 @@
                             data-correct="${item.correct}"
                             ${dropZoneEvents}
                         >${dropZoneContent}</span>
-                    `)}</p>
+                    `)}.</p>
                 </div>
             `;
         });
