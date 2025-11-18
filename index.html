@@ -473,7 +473,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover; 
-        object-position: top; 
+        object-position: center; /* Ajustado para center */
         background-color: #fcfcfc;
         display: block;
     }
@@ -921,7 +921,8 @@
     function loadQuestion(q) {
         answerChecked = false;
         fillInBlanksAnswered = false; 
-        // A flag dragAndDropAnswered é redefinida no checkDragAndDrop se necessário, mas para iniciar o tópico:
+        
+        // A flag dragAndDropAnswered é redefinida para false apenas ao sair do tópico 8
         if(q.correctAnswer !== 'DRAG_AND_DROP') {
             dragAndDropAnswered = false;
         }
@@ -1281,6 +1282,7 @@
         
         // Estado temporário para evitar que os dados persistam se o usuário voltar
         if (!dragAndDropAnswered) {
+            // Garante que o estado interno do QUIZ está limpo
             q.data.sentences.forEach(item => {
                 item.userAnswer = null;
                 item.isCorrect = false;
@@ -1309,6 +1311,7 @@
             let dropZoneEvents = `ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)"`;
             
             if (dragAndDropAnswered) {
+                // Se respondido, mostra a correção
                 dropZoneEvents = '';
                 dropClass = item.isCorrect ? 'correct-drop' : 'incorrect-drop';
                 
@@ -1318,7 +1321,10 @@
                      dropZoneContent = `<span style="color: #dc3545; display: block; font-weight: bold; margin-bottom: 2px; font-size: 0.9em;">${item.userAnswer || '❌ Missing'}</span>
                                         <span style="color: #28a745; display: block; font-size: 0.75em; font-weight: 500;">(Correct: ${item.correct})</span>`;
                 }
-            } 
+            } else {
+                // Estado inicial: Garante que a drop zone está vazia
+                 dropZoneContent = '';
+            }
             
             fullContentHTML += `
                 <p class="sentence-item">
@@ -1338,7 +1344,7 @@
         fullContentHTML += `<div class="draggable-words-container" id="draggable-words-container">`;
         
         if (!dragAndDropAnswered) {
-            // Renderiza as palavras livres. As que foram dropadas serão movidas via JS.
+            // Renderiza todas as palavras livres.
             const wordsToRender = DRAG_AND_DROP_WORDS.sort(() => Math.random() - 0.5); 
 
             wordsToRender.forEach(word => {
@@ -1360,30 +1366,11 @@
         fullContentHTML += `</div>`; 
         optionsContainer.innerHTML = fullContentHTML;
         
-        // Logica para mover as palavras se elas foram arrastadas e o usuário navegou de volta
+        // Apenas limpa o feedback no início
         if (!dragAndDropAnswered) {
-            q.data.sentences.forEach(item => {
-                // Remove a palavra do container de palavras livres (se estiver lá)
-                const droppedWordData = DRAG_AND_DROP_WORDS.find(word => word.correctTarget === item.dropId);
-                if (droppedWordData) {
-                    const droppedWord = document.getElementById(droppedWordData.id);
-                    if (droppedWord) {
-                        const dropZone = document.getElementById(item.dropId);
-                        
-                        // Move para a dropzone apenas se ela estiver no container de palavras e a dropzone estiver vazia
-                        if (droppedWord.parentElement && droppedWord.parentElement.id === 'draggable-words-container' && dropZone.children.length === 0) {
-                            dropZone.appendChild(droppedWord);
-                            droppedWord.setAttribute('draggable', 'false');
-                            // Garante que o CSS de palavra arrastável é aplicado corretamente na drop zone
-                            droppedWord.style.cssText = ''; 
-                            droppedWord.classList.remove('dragging');
-                        }
-                    }
-                }
-            });
-            feedback.innerHTML = 'Drag the words to complete the sentences and click **Next** to check your answers.';
+            // A instrução principal já está no título da questão.
+            feedback.innerHTML = 'Arraste as palavras para completar as frases e clique **Next** para verificar.';
         } else {
-            // Se já foi respondido, exibe a correção
              displayDragAndDropCorrection(q.data.sentences);
         }
     }
@@ -1427,53 +1414,12 @@
         if (totalCorrect === totalSentences) {
             feedback.innerHTML = '✅ **CONGRATULATIONS!** You got all answers correct! 🎉';
         } else {
-            feedback.innerHTML = `❌ **Oops, that's not correct!** You got **${totalCorrect}** out of **${totalSentences}** correct. The correct answers are marked.`;
+            feedback.innerHTML = `❌ **Oops, that's not correct!** Você acertou **${totalCorrect}** de **${totalSentences}** frases. As respostas corretas estão marcadas.`;
         }
-        feedback.innerHTML += `<br><p style="margin-top: 10px;">Click **Next** again to proceed to the next topic.</p>`;
+        feedback.innerHTML += `<br><p style="margin-top: 10px;">Clique **Next** novamente para prosseguir.</p>`;
     }
 
 
-    // --- FUNÇÕES DE NAVEGAÇÃO ---
-    function goNext() {
-        const currentQuestion = lessonQuestions[currentQuestionIndex];
-        
-        if (currentQuestion.correctAnswer === 'FILL_IN_BLANKS') {
-            if (!fillInBlanksAnswered) {
-                checkFillInBlanks(currentQuestion);
-                return; 
-            } else {
-                currentQuestionIndex++;
-            }
-        } 
-        else if (currentQuestion.correctAnswer === 'DRAG_AND_DROP') {
-             if (!dragAndDropAnswered) {
-                checkDragAndDrop(currentQuestion); 
-                return; 
-             } else {
-                 currentQuestionIndex++;
-             }
-        }
-        else {
-             currentQuestionIndex++;
-        }
-        
-        if (currentQuestionIndex < lessonQuestions.length) {
-            loadQuestion(lessonQuestions[currentQuestionIndex]);
-        } else {
-            alert(`Congratulations! You have completed Beginner Module ${currentChapter}!`); 
-            goHome(); 
-        }
-    }
-    
-    function backQuestion() {
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex--;
-            loadQuestion(lessonQuestions[currentQuestionIndex]);
-        } else {
-            goHome(); 
-        }
-    }
-    
     // Iniciar a renderização dos cards da home
     window.onload = () => {
         // Nada a fazer aqui além de garantir que a home está visível por padrão, o que o HTML já faz.
