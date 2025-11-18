@@ -642,13 +642,13 @@
         float: right;
         font-size: 28px;
         font-weight: bold;
+        cursor: pointer;
     }
     
     .close-button:hover,
     .close-button:focus {
         color: #000;
         text-decoration: none;
-        cursor: pointer;
     }
 </style>
 </head>
@@ -771,10 +771,29 @@
         // Topics 1 to 4 
         { id: 1, question: "What do you see in the image?", image: "numeros.jpg", options: { A: "The Alphabet", B: "Colors", C: "Numbers" }, correctAnswer: 'C', chapter: 1, title: "1. Numbers Overview" },
         { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', chapter: 1, title: "2. Verb 'To Be' (I am)" },
-        { id: 3, question: `<h3 style="color: #007bff; font-size: 2em; margin-bottom: 20px;">Vocabulary:</h3>`, options: { "1.": `My <span style="color: #007bff;">address number</span> is 34.`, "2.": `I am a <span style="color: #007bff;">student</span>.`, "3.": `He is my new <span style="color: #007bff;">friend</span>, David.`, "4.": `Mr. David is a <span style="color: #007bff;">great</span> teacher.`, "5.": `My <span style="color: #007bff;">phone number</span> is: (987) 654-1234.`, "6.": `Sofia is <span style="color: #007bff;">American</span>.`, "7.": `I love my English <span style="color: #007bff;">teacher</span>.`, "8.": `Lucas is a <span style="color: #007bff;">new</span> student, too.`, "9.": `I am 18 <span style="color: #007bff;">years old</span>.`, "10.": `My <span style="color: #007bff;">nationality</span>? I'm French.`, }, correctAnswer: 'INFO', chapter: 1, title: "3. Lesson Vocabulary" },
+        
+        // Tópico 3 - Informação (Vocabulary) - **CORRIGIDO PARA ARRAY E NOVA FORMATAÇÃO**
+        { id: 3, question: `<h3 style="color: #007bff; font-size: 2em; margin-bottom: 20px;">Vocabulary:</h3>`, 
+            options: [ 
+                `My <span style="color: #007bff;">address number</span> is 34.`, 
+                `I am a <span style="color: #007bff;">student</span>.`, 
+                `He is my new <span style="color: #007bff;">friend</span>, David.`, 
+                `Mr. David is a <span style="color: #007bff;">great</span> teacher.`, 
+                `My <span style="color: #007bff;">phone number</span> is: (987) 654-1234.`, 
+                `Sofia is <span style="color: #007bff;">American</span>.`, 
+                `I love my English <span style="color: #007bff;">teacher</span>.`, 
+                `Lucas is a <span style="color: #007bff;">new</span> student, too.`, 
+                `I am 18 <span style="color: #007bff;">years old</span>.`, 
+                `My <span style="color: #007bff;">nationality</span>? I'm French.`, 
+            ], 
+            correctAnswer: 'INFO', chapter: 1, title: "3. Lesson Vocabulary" 
+        },
+        
         { id: 4, question: "PRONUNCIATION PRACTICE: Click the play button (▶️) to hear each word.", options: { "Address number": "addressnumber.mp3", "American": "American.mp3", "Friend": "friend.mp3", "Great": "great.mp3", "Nationality": "nationality.mp3", "New": "new.mp3", "Phone number": "phonenumber.mp3", "Student": "student.mp3", "Teacher": "teacher.mp3", "Years old": "yearsold.mp3" }, correctAnswer: 'PRONUNCIATION_SET', chapter: 1, title: "4. Word Pronunciation" },
+        
         // Topic 5 
         { id: 5, question: "Click on the '+' signs to review the number groups.", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1, title: "5. Interactive Bingo Review" },
+        
         // Topic 6 
         { id: 6, 
             question: "Listen and notice the difference between -teen and -ty.", 
@@ -783,6 +802,7 @@
             chapter: 1,
             title: "6. Pronunciation: Teen vs Ty"
         },
+        
         // Topic 7 
         { 
             id: 7, 
@@ -803,6 +823,7 @@
                 { num: 16, correct: "sixteen" }
             ]
         },
+        
         // Topic 8 
         { id: 8, question: "Drag the correct word to complete the sentences based on the images.", 
             correctAnswer: 'DRAG_AND_DROP', 
@@ -813,6 +834,7 @@
                 sentences: DRAG_AND_DROP_SENTENCES
             }
         },
+        
         // Topics 9 to 13 
         { id: 9, question: "What is the color of the sky on a sunny day?", image: "", options: { A: "Red", B: "Yellow", C: "Blue" }, correctAnswer: 'C', chapter: 1, title: "9. Quiz: Colors" },
         { id: 10, question: "What is the English word for 'cadeira'?", image: "", options: { A: "Book", B: "Chair", C: "Table" }, correctAnswer: 'B', chapter: 1, title: "10. Quiz: Objects" },
@@ -827,6 +849,7 @@
     let fillInBlanksAnswered = false; 
     let dragAndDropAnswered = false; 
     
+    // Variáveis que você já definiu (DOM elements)
     const homeScreen = document.getElementById('home-screen');
     const lessonScreen = document.getElementById('lesson-screen');
     const optionsContainer = document.getElementById('options-container');
@@ -917,8 +940,6 @@
         const currentQ = lessonQuestions[currentQuestionIndex];
         
         // 1. CHECAGEM OBRIGATÓRIA ANTES DE AVANÇAR (APENAS PARA MARCAR A RESPOSTA)
-        // Se for um tópico de quiz interativo e ainda não foi checado, checa a resposta e re-renderiza.
-        // O usuário NÃO é bloqueado, apenas forçado a ver o feedback da sua tentativa.
         if (!answerChecked) {
             if (currentQ.correctAnswer === 'FILL_IN_BLANKS') {
                 checkFillInBlanks(currentQ);
@@ -933,7 +954,6 @@
             }
             
             // Para Múltipla Escolha: se o usuário não clicou em nada, ele não tem 'answerChecked'.
-            // Não vamos forçar, apenas limpamos o feedback se houver.
             feedback.innerHTML = '';
         }
 
@@ -957,6 +977,416 @@
         }
     }
 
+    // --- FUNÇÕES AUXILIARES DE CARREGAMENTO (AS QUE FALTAVAM) ---
+
+    function loadQuizSlide(q) {
+        optionsContainer.style.display = 'block';
+        optionsContainer.innerHTML = '';
+
+        for (const [key, value] of Object.entries(q.options)) {
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'option';
+            optionDiv.innerHTML = `${key} ${value}`;
+            optionDiv.onclick = () => checkAnswer(optionDiv, q.correctAnswer);
+            optionsContainer.appendChild(optionDiv);
+        }
+    }
+
+    function loadInfoSlide(q) {
+        optionsContainer.style.display = 'block';
+        optionsContainer.innerHTML = ''; // Limpa o container
+
+        // Itera sobre o array de frases (a nova estrutura do Tópico 3)
+        q.options.forEach(value => {
+            const infoDiv = document.createElement('p');
+            
+            // Adiciona um bullet point elegante (•)
+            infoDiv.innerHTML = `<span style="font-weight: bold; margin-right: 10px; color: #007bff;">•</span> ${value}`;
+            
+            // Estilos
+            infoDiv.style.padding = '10px 0';
+            infoDiv.style.borderBottom = '1px dotted #e0e0e0';
+            infoDiv.style.textAlign = 'left';
+            infoDiv.style.fontSize = '1.1em';
+            optionsContainer.appendChild(infoDiv);
+        });
+        
+        feedback.innerHTML = 'Review the content and click Next to continue.';
+    }
+
+    // A função loadPronunciationSlide e checkAnswer de Quiz não estavam completas no seu envio, então vou fornecer as versões que suportam os tópicos 4 e 6.
+
+    function loadPronunciationSlide(q) {
+        document.getElementById('pronunciation-container').style.display = 'flex';
+        questionText.innerHTML = q.question;
+        questionText.style.display = 'block';
+        optionsContainer.style.display = 'none';
+
+        const list = document.getElementById('pronunciation-list');
+        list.innerHTML = '';
+        const audioPlayer = document.getElementById('audio-player-controls');
+        audioPlayer.style.display = 'block';
+        
+        if (q.id === 6) {
+            // Lógica específica para o Tópico 6 (Teen vs Ty) - Tabela de Comparação
+            const tableContainer = document.getElementById('comparison-table-container');
+            tableContainer.innerHTML = `
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>-TEEN (Strong Accent on second syllable)</th>
+                            <th>-TY (Strong Accent on first syllable)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Thir**teen** (13)</td><td>**Thir**ty (30)</td></tr>
+                        <tr><td>Four**teen** (14)</td><td>**Four**ty (40)</td></tr>
+                        <tr><td>Fif**teen** (15)</td><td>**Fif**ty (50)</td></tr>
+                        <tr><td>Six**teen** (16)</td><td>**Six**ty (60)</td></tr>
+                        <tr><td>Seven**teen** (17)</td><td>**Seven**ty (70)</td></tr>
+                        <tr><td>Eigh**teen** (18)</td><td>**Eigh**ty (80)</td></tr>
+                        <tr><td>Nine**teen** (19)</td><td>**Nine**ty (90)</td></tr>
+                    </tbody>
+                </table>
+            `;
+            // Adiciona o áudio do exemplo teenety.mp3 para tocar no player principal
+            document.getElementById('current-instruction').textContent = 'Click Play to hear the general difference: Thirteen vs. Thirty';
+            audioPlayer.src = GITHUB_RAW_BASE_URL + q.options[Object.keys(q.options)[0]];
+        } else {
+            // Lógica para o Tópico 4 (Lista de Pronúncias Individuais)
+            document.getElementById('current-instruction').textContent = 'Click on the play button (▶️) next to each word.';
+            for (const [word, audioFile] of Object.entries(q.options)) {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${word}</span>
+                    <button class="play-button" onclick="playAudio('${GITHUB_RAW_BASE_URL}${audioFile}')">▶️</button>
+                `;
+                list.appendChild(li);
+            }
+        }
+    }
+
+    // Função para tocar áudio individual (usado no Tópico 4)
+    function playAudio(src) {
+        const tempAudio = new Audio(src);
+        tempAudio.play();
+    }
+
+    // A função checkAnswer de Múltipla Escolha que você usou em outros tópicos
+    function checkAnswer(selectedDiv, correctAnswer) {
+        if (answerChecked) return; 
+
+        Array.from(optionsContainer.children).forEach(div => {
+            div.style.pointerEvents = 'none'; // Desabilita todos os cliques
+            const optionText = div.textContent.trim().substring(0, 1); // Pega A, B, C...
+            if (optionText === correctAnswer) {
+                div.classList.add('correct');
+            } else if (div === selectedDiv) {
+                div.classList.add('incorrect');
+            }
+        });
+
+        if (selectedDiv.textContent.trim().substring(0, 1) === correctAnswer) {
+            feedback.innerHTML = '<span style="color: #28a745;">Correct!</span>';
+        } else {
+            feedback.innerHTML = `<span style="color: #dc3545;">Incorrect.</span> The correct answer is: <strong>${correctAnswer}</strong>.`;
+        }
+        answerChecked = true;
+    }
+
+    // O código para o Tópico 5 (Interactive Bingo Review)
+    function openNumberModal(group) {
+        const modal = document.getElementById('numberModal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        modalBody.innerHTML = '';
+
+        let content = '';
+        switch (group) {
+            case 'one-to-ten':
+                modalTitle.textContent = 'Numbers 1 - 10';
+                content = `One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten.`;
+                break;
+            case 'tens':
+                modalTitle.textContent = 'Tens (10, 20, 30...)';
+                content = `Ten, Twenty, Thirty, Forty, Fifty, Sixty, Seventy, Eighty, Ninety.`;
+                break;
+            case 'teens':
+                modalTitle.textContent = 'Teens (13 - 19)';
+                content = `Thirteen, Fourteen, Fifteen, Sixteen, Seventeen, Eighteen, Nineteen.`;
+                break;
+            case 'combined':
+                modalTitle.textContent = 'Combined (1-99)';
+                content = `Examples: Twenty-one, Thirty-five, Forty-eight, Ninety-nine.`;
+                break;
+        }
+
+        modalBody.innerHTML = `<p style="font-size: 1.2em;">${content}</p>`;
+        modal.style.display = 'block';
+    }
+
+    function closeNumberModal() {
+        document.getElementById('numberModal').style.display = 'none';
+    }
+
+    // O código para o Tópico 7 (FILL_IN_BLANKS)
+    function loadFillInBlanks(q) {
+        optionsContainer.style.display = 'block';
+        optionsContainer.innerHTML = `<div class="fill-in-blanks-container"></div>`;
+        
+        const container = optionsContainer.querySelector('.fill-in-blanks-container');
+        
+        q.data.forEach((item, index) => {
+            const group = document.createElement('div');
+            group.className = 'number-input-group';
+            
+            const span = document.createElement('span');
+            span.textContent = item.num;
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = `input-${index}`;
+            input.placeholder = 'Write the word...';
+            input.oninput = () => { /* remove feedback on re-entry */ };
+            
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'number-result';
+            resultDiv.id = `result-${index}`;
+            
+            group.appendChild(span);
+            group.appendChild(input);
+            group.appendChild(resultDiv);
+            container.appendChild(group);
+        });
+
+        // Adiciona um botão de checagem para o Tópico 7
+        feedback.innerHTML = '<button id="check-fill-blanks" class="start-button" style="opacity: 1; transform: scale(1); margin-top: 20px;" onclick="checkFillInBlanks(lessonQuestions[currentQuestionIndex]);">Check Answers</button>';
+        
+        // Alinha os inputs no centro da tela
+        optionsContainer.style.display = 'flex';
+        optionsContainer.style.justifyContent = 'center';
+    }
+
+    function checkFillInBlanks(q) {
+        if (fillInBlanksAnswered) return;
+        
+        let allCorrect = true;
+        
+        q.data.forEach((item, index) => {
+            const input = document.getElementById(`input-${index}`);
+            const resultDiv = document.getElementById(`result-${index}`);
+            const userAnswer = input.value.trim().toLowerCase().replace(/[^a-z-]/g, ''); 
+            const correctAnswer = item.correct.toLowerCase().replace(/[^a-z-]/g, ''); 
+
+            input.disabled = true;
+            
+            if (userAnswer === correctAnswer) {
+                resultDiv.innerHTML = 'Correct!';
+                resultDiv.className = 'number-result result-correct';
+            } else {
+                resultDiv.innerHTML = `Incorrect. Correct answer: <strong>${item.correct}</strong>`;
+                resultDiv.className = 'number-result result-incorrect';
+                allCorrect = false;
+            }
+        });
+        
+        document.getElementById('check-fill-blanks').style.display = 'none';
+        
+        if (allCorrect) {
+            feedback.innerHTML = '<span style="color: #28a745; font-size: 1.2em;">All answers are correct!</span>';
+        } else {
+            feedback.innerHTML = '<span style="color: #dc3545; font-size: 1.2em;">Review the incorrect answers and click Next.</span>';
+        }
+
+        fillInBlanksAnswered = true;
+        answerChecked = true;
+    }
+
+    // O código para o Tópico 8 (DRAG_AND_DROP)
+    let currentDraggedElement = null;
+
+    function loadDragAndDrop(q) {
+        optionsContainer.style.display = 'block';
+        optionsContainer.innerHTML = '';
+        
+        // Reset the data state for redrawing
+        q.data.sentences.forEach(s => {
+            s.userAnswer = null;
+            s.isCorrect = false;
+        });
+
+        const mainContainer = document.createElement('div');
+        mainContainer.className = 'drag-drop-overall-container';
+
+        // 1. Image Gallery (Left/Top)
+        const imageGallery = document.createElement('div');
+        imageGallery.className = 'image-gallery-container';
+        
+        q.data.sentences.forEach((sent, index) => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'gallery-image-wrapper';
+            wrapper.innerHTML = `
+                <span class="image-number-label">${index + 1}</span>
+                <img src="${GITHUB_RAW_BASE_URL}${sent.image}" alt="Image for sentence ${index + 1}">
+            `;
+            imageGallery.appendChild(wrapper);
+        });
+        mainContainer.appendChild(imageGallery);
+
+        // 2. Sentence List (Middle)
+        const sentenceList = document.createElement('div');
+        sentenceList.className = 'sentence-list-container';
+        
+        q.data.sentences.forEach(sent => {
+            const item = document.createElement('p');
+            item.className = 'sentence-item';
+            item.innerHTML = `
+                <span class="sentence-text-before">${sent.text.split('____')[0]}</span>
+                <div class="drop-zone" id="${sent.dropId}" data-correct-word="${sent.correct}" data-sentence-id="${sent.id}"></div>
+                <span class="sentence-text-after">${sent.text.split('____')[1] || ''}</span>
+            `;
+            sentenceList.appendChild(item);
+        });
+        mainContainer.appendChild(sentenceList);
+        
+        // 3. Draggable Words (Bottom)
+        const wordsContainer = document.createElement('div');
+        wordsContainer.className = 'draggable-words-container';
+
+        q.data.words.forEach(word => {
+            const draggable = document.createElement('div');
+            draggable.className = 'draggable-word';
+            draggable.id = word.id;
+            draggable.textContent = word.text;
+            draggable.draggable = true;
+            draggable.addEventListener('dragstart', dragStart);
+            wordsContainer.appendChild(draggable);
+        });
+        mainContainer.appendChild(wordsContainer);
+
+        optionsContainer.appendChild(mainContainer);
+
+        // Adiciona listeners aos drop zones
+        document.querySelectorAll('.drop-zone').forEach(dropZone => {
+            dropZone.addEventListener('dragover', dragOver);
+            dropZone.addEventListener('dragleave', dragLeave);
+            dropZone.addEventListener('drop', drop);
+        });
+        
+        // Adiciona um botão de checagem para o Tópico 8
+        feedback.innerHTML = '<button id="check-drag-drop" class="start-button" style="opacity: 1; transform: scale(1); margin-top: 20px;" onclick="checkDragAndDrop(lessonQuestions[currentQuestionIndex]);">Check Answers</button>';
+        
+        // Adiciona listeners para retornar a palavra ao container de palavras
+        wordsContainer.addEventListener('dragover', dragOver);
+        wordsContainer.addEventListener('dragleave', dragLeave);
+        wordsContainer.addEventListener('drop', returnWordToContainer);
+    }
+
+    // Funções Drag and Drop
+    function dragStart(e) {
+        currentDraggedElement = e.target;
+        e.dataTransfer.setData('text/plain', e.target.id);
+        setTimeout(() => e.target.classList.add('dragging'), 0);
+    }
+    function dragOver(e) {
+        e.preventDefault();
+        if (e.target.classList.contains('drop-zone')) {
+            e.target.classList.add('drag-over');
+        } else if (e.target.classList.contains('draggable-words-container')) {
+             e.target.classList.add('drag-over');
+        }
+    }
+    function dragLeave(e) {
+        if (e.target.classList.contains('drop-zone')) {
+            e.target.classList.remove('drag-over');
+        } else if (e.target.classList.contains('draggable-words-container')) {
+             e.target.classList.remove('drag-over');
+        }
+    }
+    function drop(e) {
+        e.preventDefault();
+        e.target.classList.remove('drag-over');
+        const data = e.dataTransfer.getData('text/plain');
+        const draggable = document.getElementById(data);
+        
+        if (e.target.classList.contains('drop-zone')) {
+            // Se já houver uma palavra, move-a de volta para o container
+            if (e.target.children.length > 0) {
+                const existingWord = e.target.children[0];
+                document.querySelector('.draggable-words-container').appendChild(existingWord);
+                existingWord.classList.remove('dragging');
+                existingWord.style.cursor = 'grab';
+            }
+            // Move a nova palavra para a zona de drop
+            e.target.appendChild(draggable);
+            draggable.classList.remove('dragging');
+            draggable.style.cursor = 'default';
+        }
+    }
+    
+    function returnWordToContainer(e) {
+        e.preventDefault();
+        e.target.classList.remove('drag-over');
+        const data = e.dataTransfer.getData('text/plain');
+        const draggable = document.getElementById(data);
+
+        if (e.target.classList.contains('draggable-words-container') && draggable && draggable.parentElement.classList.contains('drop-zone')) {
+            e.target.appendChild(draggable);
+            draggable.classList.remove('dragging');
+            draggable.style.cursor = 'grab';
+        }
+    }
+    
+    function checkDragAndDrop(q) {
+        if (dragAndDropAnswered) return;
+        
+        let allCorrect = true;
+        
+        document.querySelectorAll('.drop-zone').forEach(dropZone => {
+            const correctWord = dropZone.getAttribute('data-correct-word');
+            const sentenceId = dropZone.getAttribute('data-sentence-id');
+            const sentenceData = q.data.sentences.find(s => s.id === sentenceId);
+
+            if (dropZone.children.length === 0) {
+                dropZone.classList.add('incorrect-drop');
+                dropZone.innerHTML = `<span class="correct-word-display">${correctWord}</span>`;
+                allCorrect = false;
+                sentenceData.isCorrect = false;
+            } else {
+                const droppedWord = dropZone.children[0];
+                const droppedText = droppedWord.textContent;
+                
+                if (droppedText === correctWord) {
+                    dropZone.classList.add('correct-drop');
+                    droppedWord.style.backgroundColor = 'transparent';
+                    droppedWord.style.color = 'inherit';
+                    sentenceData.isCorrect = true;
+                } else {
+                    dropZone.classList.add('incorrect-drop');
+                    droppedWord.style.display = 'none'; // Esconde a palavra errada
+                    dropZone.innerHTML += `<span class="correct-word-display">${correctWord}</span>`; // Mostra a correta
+                    allCorrect = false;
+                    sentenceData.isCorrect = false;
+                }
+            }
+            dropZone.style.pointerEvents = 'none'; // Impede alteração após o check
+        });
+        
+        document.querySelectorAll('.draggable-word').forEach(word => word.style.pointerEvents = 'none');
+        document.getElementById('check-drag-drop').style.display = 'none';
+
+        if (allCorrect) {
+            feedback.innerHTML = '<span style="color: #28a745; font-size: 1.2em;">All sentences are correct!</span>';
+        } else {
+            feedback.innerHTML = '<span style="color: #dc3545; font-size: 1.2em;">Review the corrected sentences and click Next.</span>';
+        }
+        
+        dragAndDropAnswered = true;
+        answerChecked = true;
+    }
+
+    // --- FUNÇÃO PRINCIPAL DE CARREGAMENTO (COMPLETA) ---
+
     function loadQuestion(q) {
         answerChecked = false;
         fillInBlanksAnswered = false; 
@@ -969,7 +1399,7 @@
         feedback.innerHTML = '';
         optionsContainer.innerHTML = '';
         
-        progressIndicator.textContent = `(${currentQuestionIndex + 1}/${lessonQuestions.length})`;
+        progressIndicator.textContent = `Tópico ${currentQuestionIndex + 1}/${lessonQuestions.length}`;
         
         nextBtn.style.display = 'block';
         backBtn.style.display = 'block';
@@ -983,508 +1413,50 @@
         audioControls.src = ''; 
         
         questionText.innerHTML = q.question; 
-        
+        questionText.style.display = 'block';
+        optionsContainer.style.display = 'none';
+
         if (q.image) {
             questionImage.src = GITHUB_RAW_BASE_URL + q.image; 
             questionImage.style.display = 'block';
         } else {
-            questionImage.src = '';
             questionImage.style.display = 'none';
         }
-        
-        optionsContainer.style.display = 'none';
-        questionText.style.display = 'block'; 
-        
-        if (q.correctAnswer === 'INFO') {
-            renderInfoScreen(q);
-        } else if (q.correctAnswer === 'PRONUNCIATION_SET') {
-            renderPronunciationPractice(q);
-        } else if (q.correctAnswer === 'INTERACTIVE_BINGO') {
-            renderInteractiveBingo(q);
-        } else if (q.correctAnswer === 'FILL_IN_BLANKS') {
-            renderFillInBlanks(q);
-        } else if (q.correctAnswer === 'DRAG_AND_DROP') {
-            renderDragAndDrop(q);
-        }
-        else {
-            renderMultipleChoice(q);
-        }
-    }
 
-    // --- AUXILIARY RENDERING FUNCTIONS ---
-    
-    function renderMultipleChoice(q) {
-        optionsContainer.style.display = 'block';
-        let optionsHtml = '';
-        // If question was already answered, render with correction
-        const hasAnswered = q.userAnswer !== undefined; 
-
-        for (const [key, value] of Object.entries(q.options)) {
-            let classes = '';
-            let onClickHandler = `checkAnswer(this, '${q.correctAnswer}', ${q.id})`;
-
-            if (hasAnswered) {
-                onClickHandler = null; // Disable further clicking
-                if (key === q.userAnswer) {
-                    classes += (key === q.correctAnswer) ? ' correct' : ' incorrect';
-                } else if (key === q.correctAnswer) {
-                    classes += ' correct';
-                }
-            }
-
-            optionsHtml += `<div class="option${classes}" data-answer="${key}" onclick="${onClickHandler}">${key}. ${value}</div>`;
-        }
-        optionsContainer.innerHTML = optionsHtml;
-
-        if (hasAnswered) {
-            displayMultipleChoiceCorrection(q.userAnswer === q.correctAnswer, q.correctAnswer);
-        }
-    }
-    
-    function checkAnswer(selectedOption, correctAnswer, qId) {
-        // Prevent re-checking if already answered
-        const currentQ = lessonQuestions.find(q => q.id === qId);
-        if (currentQ.userAnswer !== undefined) return;
-        
-        const selectedKey = selectedOption.getAttribute('data-answer');
-        
-        // Store answer locally in the question object for re-rendering
-        currentQ.userAnswer = selectedKey; 
-        
-        // Re-render the question to show correction
-        loadQuestion(currentQ);
-        answerChecked = true; // Mark as checked for navigation purposes
-    }
-    
-    function displayMultipleChoiceCorrection(isCorrect, correctAnswer) {
-        if (isCorrect) {
-            feedback.innerHTML = '✅ **Correct!** Great job!';
-        } else {
-            feedback.innerHTML = `❌ **Incorrect.** The correct answer is **${correctAnswer}**.`;
-        }
-    }
-
-    function renderInfoScreen(q) {
-        optionsContainer.style.display = 'block';
-        let optionsHtml = '<div style="text-align: left; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">';
-        for (const [key, value] of Object.entries(q.options)) {
-            optionsHtml += `<p style="margin: 8px 0;">**${key}** ${value}</p>`;
-        }
-        optionsHtml += '</div>';
-        optionsContainer.innerHTML = optionsHtml;
-        feedback.innerHTML = ``; // No instruction
-    }
-
-    function renderPronunciationPractice(q) {
-        document.getElementById('pronunciation-container').style.display = 'flex';
-        
-        if (q.id === 6) { // Topic 6: Teen vs Ty
-            document.getElementById('current-instruction').textContent = 'Listen and notice the difference between -teen and -ty:';
-            document.getElementById('audio-player-controls').style.display = 'block';
-            document.getElementById('audio-player-controls').src = GITHUB_RAW_BASE_URL + q.options["13: (Thirteen) – 30 (Thirty)"];
-            document.getElementById('comparison-table-container').innerHTML = generateTableHTML();
-            document.getElementById('pronunciation-list').innerHTML = ''; 
-            
-        } else { // Topic 4: Word List
-            document.getElementById('current-instruction').textContent = 'Click the play button (▶️) to hear each word:';
-            document.getElementById('audio-player-controls').style.display = 'none';
-            document.getElementById('comparison-table-container').innerHTML = '';
-            
-            let listHtml = '';
-            for (const [word, file] of Object.entries(q.options)) {
-                listHtml += `
-                    <li>
-                        ${word}
-                        <button class="play-button" onclick="playSeparateAudio('${file}')">▶️</button>
-                    </li>
-                `;
-            }
-            document.getElementById('pronunciation-list').innerHTML = listHtml;
-        }
-
-        feedback.innerHTML = ``; // No instruction
-    }
-
-    function generateTableHTML() {
-        return `
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>TEEN</th>
-                        <th>TY</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Thir**teen** (13)</td><td>Thir**ty** (30)</td></tr>
-                    <tr><td>Four**teen** (14)</td><td>For**ty** (40)</td></tr>
-                    <tr><td>Fif**teen** (15)</td><td>Fif**ty** (50)</td></tr>
-                    <tr><td>Six**teen** (16)</td><td>Six**ty** (60)</td></tr>
-                    <tr><td>Seven**teen** (17)</td><td>Seven**ty** (70)</td></tr>
-                    <tr><td>Eigh**teen** (18)</td><td>Eigh**ty** (80)</td></tr>
-                    <tr><td>Nine**teen** (19)</td><td>Nine**ty** (90)</td></tr>
-                </tbody>
-            </table>
-        `;
-    }
-    
-    function playSeparateAudio(audioFile) {
-        const audio = new Audio(GITHUB_RAW_BASE_URL + audioFile);
-        audio.play();
-    }
-    
-    function renderInteractiveBingo(q) {
-        // Display hotspots over the image
-        document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex');
-        feedback.innerHTML = ``; // No instruction
-    }
-    
-    function openNumberModal(type) {
-        const modal = document.getElementById('numberModal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalBody = document.getElementById('modal-body');
-        
-        let content = '';
-        let title = '';
-        
-        switch (type) {
-            case 'one-to-ten':
-                title = 'Numbers 1-10';
-                content = 'One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten.';
+        switch (q.correctAnswer) {
+            case 'INFO':
+                loadInfoSlide(q);
                 break;
-            case 'teens':
-                title = 'Teen Numbers (11-19)';
-                content = 'Eleven, Twelve, Thirteen, Fourteen, Fifteen, Sixteen, Seventeen, Eighteen, Nineteen.';
+            case 'PRONUNCIATION_SET':
+                loadPronunciationSlide(q);
                 break;
-            case 'tens':
-                title = 'Tens (20, 30, 40...)';
-                content = 'Twenty, Thirty, Forty, Fifty, Sixty, Seventy, Eighty, Ninety, One Hundred.';
+            case 'INTERACTIVE_BINGO':
+                // Mostra a imagem e os hotspots
+                questionImage.style.display = 'block';
+                document.getElementById('hotspot-1').style.display = 'flex';
+                document.getElementById('hotspot-2').style.display = 'flex';
+                document.getElementById('hotspot-3').style.display = 'flex';
+                document.getElementById('hotspot-4').style.display = 'flex';
+                optionsContainer.innerHTML = '';
+                optionsContainer.style.display = 'none';
+                feedback.innerHTML = 'Review the topics using the "+" signs and click Next.';
                 break;
-            case 'combined':
-                title = 'Combined Numbers (Example)';
-                content = 'Twenty-one, Thirty-five, Forty-eight, Seventy-three, Ninety-nine.';
+            case 'FILL_IN_BLANKS':
+                loadFillInBlanks(q);
+                break;
+            case 'DRAG_AND_DROP':
+                loadDragAndDrop(q);
+                // Oculta a imagem principal, pois as imagens estão dentro do container
+                questionImage.style.display = 'none';
+                break;
+            default: // Múltipla Escolha
+                loadQuizSlide(q);
                 break;
         }
-        
-        modalTitle.textContent = title;
-        modalBody.innerHTML = `<p style="font-size: 1.1em; line-height: 1.6;">${content}</p>`;
-        modal.style.display = "block";
+
+        // Garante que o botão Voltar esteja sempre visível na tela de perguntas
+        backBtn.style.display = 'block';
     }
-
-    function closeNumberModal() {
-        document.getElementById('numberModal').style.display = "none";
-    }
-
-    // --- FILL IN BLANKS FUNCTIONS (TOPIC 7) ---
-    
-    function renderFillInBlanks(q) {
-        optionsContainer.style.display = 'block';
-        let inputsHtml = '<div class="fill-in-blanks-container">';
-        
-        const inputsDisabled = fillInBlanksAnswered ? 'disabled' : '';
-
-        q.data.forEach((item, index) => {
-            let resultHtml = '';
-            let inputValue = item.userAnswer || '';
-            let resultClass = '';
-            
-            if (fillInBlanksAnswered) {
-                if (item.isCorrect) {
-                    resultClass = 'result-correct';
-                    resultHtml = `(✅ Correct: ${item.correct})`;
-                } else {
-                    resultClass = 'result-incorrect';
-                    resultHtml = `(❌ Correct: ${item.correct})`;
-                }
-            } 
-
-            inputsHtml += `
-                <div class="number-input-group">
-                    <span>${item.num}:</span>
-                    <input type="text" id="num-input-${index}" value="${inputValue}" ${inputsDisabled} placeholder="Write the number..." data-correct="${item.correct.toLowerCase()}">
-                    <p class="number-result ${resultClass}">${resultHtml}</p>
-                </div>
-            `;
-        });
-
-        inputsHtml += '</div>';
-        optionsContainer.innerHTML = inputsHtml;
-
-        if (fillInBlanksAnswered) {
-             displayFillInBlanksCorrection(q.data);
-        } else {
-             feedback.innerHTML = '';
-        }
-    }
-    
-    function checkFillInBlanks(q) {
-        let allCorrect = true;
-        
-        q.data.forEach((item, index) => {
-            const input = document.getElementById(`num-input-${index}`);
-            // Check only if input exists and is not already answered
-            if(input && !fillInBlanksAnswered) {
-                const userAnswer = input.value.trim().toLowerCase();
-                const correct = item.correct.toLowerCase();
-                
-                item.userAnswer = userAnswer;
-                item.isCorrect = (userAnswer === correct);
-            }
-            
-            if (!item.isCorrect) {
-                allCorrect = false;
-            }
-        });
-        
-        fillInBlanksAnswered = true;
-        renderFillInBlanks(q); // Re-render to show correction
-        
-        return allCorrect;
-    }
-    
-    function displayFillInBlanksCorrection(data) {
-        const totalCorrect = data.filter(item => item.isCorrect).length;
-        const totalQuestions = data.length;
-        
-        if (totalCorrect === totalQuestions) {
-            feedback.innerHTML = '✅ **CONGRATULATIONS!** You got all answers correct! 🎉';
-        } else {
-            feedback.innerHTML = `❌ **Oops, that's not correct!** You got ${totalCorrect} out of ${totalQuestions} correct.`;
-        }
-    }
-
-
-    // --- DRAG AND DROP FUNCTIONS (TOPIC 8) ---
-    let draggedElement = null; 
-
-    function handleDragStart(e) {
-        if (dragAndDropAnswered) return;
-        draggedElement = e.target;
-        e.dataTransfer.setData('text/plain', e.target.id);
-        setTimeout(() => e.target.classList.add('dragging'), 0); 
-    }
-
-    function handleDragOver(e) {
-        e.preventDefault(); 
-        const dropZone = e.target.closest('.drop-zone');
-        if (dropZone && !dragAndDropAnswered) {
-            // Check if the dropZone is empty or contains only correction text
-            if (dropZone.children.length === 0 || (dropZone.children.length > 0 && dropZone.querySelector('.draggable-word') === null)) {
-                 dropZone.classList.add('drag-over');
-            }
-        }
-    }
-    
-    function handleDragLeave(e) {
-        const dropZone = e.target.closest('.drop-zone');
-        if (dropZone) {
-            dropZone.classList.remove('drag-over');
-        }
-    }
-
-    function handleDrop(e) {
-        e.preventDefault(); 
-        if (dragAndDropAnswered) return;
-
-        const dropZone = e.target.closest('.drop-zone');
-        if (!dropZone || !draggedElement) return;
-        
-        dropZone.classList.remove('drag-over');
-
-        // Check if another word is already present
-        const existingWord = dropZone.querySelector('.draggable-word');
-        
-        if (existingWord) {
-            const wordsContainer = document.getElementById('draggable-words-container');
-            if (wordsContainer) {
-                dropZone.removeChild(existingWord); 
-                wordsContainer.appendChild(existingWord); 
-                existingWord.setAttribute('draggable', 'true'); 
-                existingWord.classList.remove('dragging');
-                existingWord.style.cssText = ''; 
-            }
-        }
-        
-        // Move the new word to the drop zone
-        if (draggedElement) {
-            const originalParent = draggedElement.parentElement;
-            
-            // If the word comes from another drop zone, remove it from there.
-            if (originalParent && originalParent.classList.contains('drop-zone')) {
-                originalParent.removeChild(draggedElement);
-            }
-            
-            dropZone.appendChild(draggedElement);
-            draggedElement.classList.remove('dragging');
-            draggedElement.setAttribute('draggable', 'false'); 
-            draggedElement.style.cssText = ''; 
-        }
-        
-        draggedElement = null;
-    }
-    
-    function handleDragEnd(e) {
-        if(e.target) e.target.classList.remove('dragging');
-        draggedElement = null;
-    }
-
-
-    function renderDragAndDrop(q) {
-        optionsContainer.style.display = 'block'; 
-        optionsContainer.innerHTML = '';
-        questionImage.style.display = 'none'; 
-        questionText.style.display = 'none'; 
-        
-        // State cleanup if not answered
-        if (!dragAndDropAnswered) {
-            q.data.sentences.forEach(item => {
-                item.userAnswer = null;
-                item.isCorrect = false;
-            });
-        }
-        
-        let fullContentHTML = `<div class="drag-drop-overall-container">`;
-
-        // --- 1. IMAGE GALLERY ---
-        fullContentHTML += `<div class="image-gallery-container">`;
-        q.data.sentences.forEach((item, index) => {
-            fullContentHTML += `
-                <div class="gallery-image-wrapper">
-                    <span class="image-number-label">${index + 1}</span>
-                    <img src="${GITHUB_RAW_BASE_URL + item.image}" alt="Image for ${item.correct}">
-                </div>
-            `;
-        });
-        fullContentHTML += `</div>`; 
-
-        // --- 2. SENTENCE LIST ---
-        fullContentHTML += `<div class="sentence-list-container">`;
-        q.data.sentences.forEach(item => {
-            let dropZoneContent = '';
-            let dropClass = '';
-            let dropZoneEvents = `ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)"`;
-            
-            if (dragAndDropAnswered) {
-                dropZoneEvents = '';
-                dropClass = item.isCorrect ? 'correct-drop' : 'incorrect-drop';
-                
-                if (item.isCorrect) {
-                     dropZoneContent = `<div class="draggable-word correct-word-display">${item.correct}</div>`;
-                } else {
-                     dropZoneContent = `<span style="color: #dc3545; display: block; font-weight: bold; margin-bottom: 2px; font-size: 0.9em;">${item.userAnswer || '❌ Missing'}</span>
-                                        <span style="color: #28a745; display: block; font-size: 0.75em; font-weight: 500;">(Correct: ${item.correct})</span>`;
-                }
-            } else {
-                 dropZoneContent = '';
-            }
-            
-            fullContentHTML += `
-                <p class="sentence-item">
-                    <span class="sentence-text-before">${item.text.replace('____', '')}</span>
-                    <span 
-                        class="drop-zone ${dropClass}" 
-                        id="${item.dropId}" 
-                        data-correct="${item.correct}"
-                        ${dropZoneEvents}
-                    >${dropZoneContent}</span>
-                </p>
-            `;
-        });
-        fullContentHTML += `</div>`; 
-        
-        // --- 3. DRAGGABLE WORDS ---
-        fullContentHTML += `<div class="draggable-words-container" id="draggable-words-container">`;
-        
-        if (!dragAndDropAnswered) {
-            // Render all free words
-            const wordsToRender = DRAG_AND_DROP_WORDS.sort(() => Math.random() - 0.5); 
-            const droppedWords = new Set();
-            
-            // Collect words that are currently in a drop zone (to prevent re-rendering them here)
-            q.data.sentences.forEach(item => {
-                // If it's a new render, this check is mainly for consistency, but not strictly necessary since the list is cleared
-                if (item.userAnswer && q.data.words.some(w => w.text === item.userAnswer)) {
-                    droppedWords.add(item.userAnswer);
-                }
-            });
-
-            wordsToRender.forEach(word => {
-                if (!droppedWords.has(word.text)) {
-                    fullContentHTML += `
-                        <div 
-                            class="draggable-word" 
-                            id="${word.id}" 
-                            draggable="true" 
-                            data-word="${word.text}"
-                            data-target="${word.correctTarget}"
-                            ondragstart="handleDragStart(event)"
-                            ondragend="handleDragEnd(event)"
-                        >${word.text}</div>
-                    `;
-                }
-            });
-        }
-        fullContentHTML += `</div>`; 
-
-        fullContentHTML += `</div>`; 
-        optionsContainer.innerHTML = fullContentHTML;
-        
-        answerChecked = dragAndDropAnswered; 
-
-        if (dragAndDropAnswered) {
-             displayDragAndDropCorrection(q.data.sentences);
-        } else {
-             feedback.innerHTML = '';
-        }
-    }
-
-    function checkDragAndDrop(q) {
-        let totalCorrect = 0;
-        
-        // 1. Check and Store the result
-        q.data.sentences.forEach(item => {
-            const dropZone = document.getElementById(item.dropId);
-            const droppedWord = dropZone ? dropZone.querySelector('.draggable-word') : null;
-            
-            let isCorrect = false;
-            let userAnswer = '';
-            
-            if (droppedWord) {
-                userAnswer = droppedWord.getAttribute('data-word');
-                isCorrect = userAnswer === item.correct;
-            }
-            
-            item.isCorrect = isCorrect;
-            item.userAnswer = userAnswer || null; 
-            
-            if (isCorrect) {
-                totalCorrect++;
-            }
-        });
-        
-        // 2. Update global state and re-render the correction
-        dragAndDropAnswered = true;
-        renderDragAndDrop(q); 
-        
-        return totalCorrect === q.data.sentences.length;
-    }
-
-    function displayDragAndDropCorrection(sentences) {
-        const totalCorrect = sentences.filter(item => item.isCorrect).length;
-        const totalSentences = sentences.length;
-        
-        if (totalCorrect === totalSentences) {
-            feedback.innerHTML = '✅ **CONGRATULATIONS!** You got all answers correct! 🎉';
-        } else {
-            feedback.innerHTML = `❌ **Oops, that's not correct!** You got **${totalCorrect}** out of **${totalSentences}** sentences correct. The correct answers are marked.`;
-        }
-    }
-
-    // Initialize home screen
-    window.onload = () => {
-        // Ensure home screen is visible on load
-    };
-    
 </script>
-
 </body>
 </html>
