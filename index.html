@@ -447,19 +447,19 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 35px; /* Mais espaço entre as seções */
+        gap: 35px; 
         padding: 10px;
     }
     
     /* Container principal das frases e imagens (Layout em 2 colunas) */
     .drag-drop-sentences {
         width: 100%;
-        display: grid; /* Usamos grid para um layout mais controlado */
-        grid-template-columns: repeat(2, 1fr); /* Duas colunas */
-        gap: 30px; /* Espaço entre os blocos */
+        display: grid; 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 20px; /* Espaço menor entre os blocos */
         margin-top: 20px;
-        justify-items: center; /* Centraliza os itens na grade */
-        align-items: start; /* Alinha os itens no topo */
+        justify-items: center; 
+        align-items: start; 
     }
 
     @media (max-width: 768px) {
@@ -470,8 +470,8 @@
 
     /* Estilo de cada bloco de frase/imagem */
     .sentence-block {
-        width: 100%; /* Ocupa a largura da coluna */
-        max-width: 320px; /* Largura máxima para cada bloco */
+        width: 100%; 
+        max-width: 320px; 
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -488,15 +488,36 @@
     }
 
     /* Imagem MAIOR e sem corte */
+    .sentence-block-image-container {
+        position: relative;
+        width: 100%;
+        height: 180px; 
+        margin-bottom: 20px;
+        border-radius: 8px;
+        overflow: hidden; 
+        border: 1px solid #f0f0f0;
+    }
     .sentence-block img {
         width: 100%; 
-        height: 180px; /* Altura fixa para uniformidade */
-        object-fit: contain; /* Garante que a imagem inteira seja visível */
-        object-position: center; /* Centraliza a imagem no espaço */
-        border-radius: 8px;
-        margin-bottom: 20px;
-        border: 1px solid #f0f0f0;
-        background-color: #fcfcfc; /* Fundo claro para imagens com transparência */
+        height: 100%;
+        object-fit: contain; 
+        object-position: center; 
+        background-color: #fcfcfc; 
+        display: block;
+    }
+
+    /* Número da Imagem (1, 2, 3, 4) */
+    .image-number-label {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 1.1em;
+        font-weight: bold;
+        z-index: 10;
     }
     
     /* Estilo da frase com o espaço em branco */
@@ -504,49 +525,45 @@
         font-size: 1.15em;
         font-weight: 500;
         text-align: center; 
-        margin-bottom: 5px;
         min-height: 40px; 
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        flex-wrap: nowrap; /* <-- CORREÇÃO PRINCIPAL: IMPEDE A QUEBRA DE LINHA DENTRO DESTE CONTÊINER */
+        display: block; /* Garante que ocupe a largura total */
         line-height: 1.5;
-        width: 100%; /* Garante que ocupe todo o espaço disponível para centralizar */
-        max-width: 95%; 
+        width: 100%; 
+        padding: 0 5px; 
         box-sizing: border-box; 
     }
 
     /* Estilo da Drop Zone (o espaço em branco) - LIMPO E DISCRETO */
     .drop-zone {
-        display: inline-block; /* <-- Ajuste para maior flexibilidade em linha */
+        display: inline-block; /* Fica na mesma linha que o texto da frase */
         justify-content: center;
         align-items: center;
-        min-width: 130px; /* Largura mínima maior */
-        min-height: 2.5em; /* Altura maior para acomodar a palavra */
-        border: 1px solid #cccccc; /* Borda discreta, sem traços azuis */
+        min-width: 130px; 
+        min-height: 2.5em; 
+        border: 1px solid #cccccc; 
         border-radius: 8px;
         padding: 4px 10px;
-        background-color: transparent; /* Fundo transparente */
-        margin: 0 5px; /* Ajuste a margem para ficar mais próximo do texto */
+        background-color: transparent; 
+        margin: 0 3px; 
         transition: background-color 0.1s, border-color 0.1s;
-        vertical-align: middle; /* Alinha com o texto da frase */
+        vertical-align: middle; 
         white-space: nowrap; /* Impede que o conteúdo do drop-zone quebre a linha */
-        line-height: 1.4; /* Ajuste para melhor alinhamento vertical */
+        line-height: 1.4; 
     }
 
     .drop-zone.drag-over {
-        background-color: #eef7ff; /* Leve fundo azul claro ao passar o mouse */
-        border-color: #007bff; /* Borda azul ao passar o mouse */
+        background-color: #eef7ff; 
+        border-color: #007bff; 
     }
 
     /* Container das Palavras Arrastáveis */
     .draggable-words-container {
         width: 95%;
-        max-width: 700px; /* Largura máxima para o container de palavras */
+        max-width: 700px; 
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 18px; /* Espaço entre as palavras */
+        gap: 18px; 
         padding: 25px;
         border: 1px solid #e0e0e0;
         border-radius: 12px;
@@ -557,14 +574,14 @@
     /* Estilo da Palavra Arrastável - LIMPO E MODERNO */
     .draggable-word {
         cursor: grab;
-        background-color: #ffffff; /* Fundo branco */
-        color: #333; /* Cor do texto escura */
-        padding: 12px 25px; /* Preenchimento maior */
-        border-radius: 30px; /* Mais arredondado */
+        background-color: #ffffff; 
+        color: #333; 
+        padding: 12px 25px; 
+        border-radius: 30px; 
         font-size: 1.05em;
         font-weight: 600;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Sombra suave */
-        border: 1px solid #e0e0e0; /* Borda sutil */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+        border: 1px solid #e0e0e0; 
         transition: opacity 0.2s, transform 0.1s, background-color 0.2s, box-shadow 0.2s;
     }
     
@@ -575,7 +592,7 @@
     }
     
     .draggable-word.dragging {
-        opacity: 0.6; /* Mais opaco ao arrastar */
+        opacity: 0.6; 
         box-shadow: 0 6px 15px rgba(0,0,0,0.25);
         transform: scale(0.98);
     }
@@ -585,28 +602,29 @@
         cursor: default;
         box-shadow: none;
         margin: 0; 
-        padding: 8px 15px; /* Preenchimento ajustado para dentro do drop zone */
+        padding: 8px 15px; 
         font-size: 1em;
-        background-color: #e8f0fe; /* Levemente azul ao ser dropada */
+        background-color: #e8f0fe; 
         border-color: #c0d8f8;
         color: #004085;
         font-weight: 600;
+        display: block; /* Para que ocupe todo o drop zone */
     }
     
     /* Feedback de correção */
     .drop-zone.correct-drop {
-        border-color: #28a745; /* Borda verde */
-        background-color: #e6ffed; /* Fundo verde claro */
+        border-color: #28a745; 
+        background-color: #e6ffed; 
     }
 
     .drop-zone.incorrect-drop {
-        border-color: #dc3545; /* Borda vermelha */
-        background-color: #ffe6e6; /* Fundo vermelho claro */
+        border-color: #dc3545; 
+        background-color: #ffe6e6; 
     }
     
     /* Estilo para as mensagens de correção dentro do drop zone */
     .drop-zone.incorrect-drop span {
-        font-size: 0.9em; /* Texto menor para a correção */
+        font-size: 0.9em; 
         line-height: 1.2;
     }
     /* *************************************************************** */
@@ -757,7 +775,7 @@
         },
         { 
             id: 'sent-2', 
-            text: '2. What is your ____?', 
+            text: '2. It is a ____.', // <--- FRASE ATUALIZADA
             image: 'phonenumbertopico8.jpg', 
             dropId: 'drop-2', 
             correct: 'phone number' 
@@ -771,7 +789,7 @@
         },
         { 
             id: 'sent-4', 
-            text: '4. It is an ____.', // <--- FRASE ATUALIZADA
+            text: '4. It is an ____.', 
             image: 'addressnumber2topico8.png', 
             dropId: 'drop-4', 
             correct: 'address number' 
@@ -1166,29 +1184,22 @@
     // ----------------------------------------------------------------------
 
     // --- FUNÇÕES DE DRAG AND DROP (TÓPICO 8) ---
-    let draggedElement = null; // Variável global para armazenar o elemento que está sendo arrastado
+    let draggedElement = null; 
 
     function handleDragStart(e) {
-        // Armazena o ID do elemento arrastado
         draggedElement = e.target;
         e.dataTransfer.setData('text/plain', e.target.id);
-        
-        // Adiciona classe para feedback visual
         setTimeout(() => e.target.classList.add('dragging'), 0); 
     }
 
     function handleDragOver(e) {
-        // Impede o comportamento padrão para permitir o drop
         e.preventDefault(); 
-        
-        // Adiciona feedback visual à zona de soltura
         if (e.target.classList.contains('drop-zone')) {
             e.target.classList.add('drag-over');
         }
     }
     
     function handleDragLeave(e) {
-        // Remove feedback visual
         if (e.target.classList.contains('drop-zone')) {
             e.target.classList.remove('drag-over');
         }
@@ -1196,8 +1207,6 @@
 
     function handleDrop(e) {
         e.preventDefault(); 
-        
-        // A drop zone é o target
         const dropZone = e.target;
         
         if (dropZone.classList.contains('drop-zone') && draggedElement) {
@@ -1205,13 +1214,16 @@
             // Remove qualquer palavra que já esteja na drop zone (evita duplicidade)
             while (dropZone.firstChild) {
                 const existingWord = dropZone.firstChild;
-                // Move a palavra de volta para o contêiner de palavras, se existir
-                const wordsContainer = document.getElementById('draggable-words-container');
-                if (wordsContainer) {
-                    wordsContainer.appendChild(existingWord);
-                    existingWord.style.opacity = 1;
-                    existingWord.classList.remove('dragging');
-                    existingWord.setAttribute('draggable', 'true'); // Reabilita o arrastar
+                if (existingWord.classList.contains('draggable-word')) {
+                     const wordsContainer = document.getElementById('draggable-words-container');
+                    if (wordsContainer) {
+                        wordsContainer.appendChild(existingWord);
+                        existingWord.style.opacity = 1;
+                        existingWord.classList.remove('dragging');
+                        existingWord.setAttribute('draggable', 'true'); 
+                    }
+                } else {
+                     dropZone.removeChild(existingWord);
                 }
             }
             
@@ -1221,6 +1233,7 @@
             // Limpa o estado
             dropZone.classList.remove('drag-over');
             draggedElement.classList.remove('dragging');
+            draggedElement.setAttribute('draggable', 'false'); // Desabilita o arrastar após o drop
             draggedElement = null;
         }
     }
@@ -1233,36 +1246,45 @@
     function renderDragAndDrop(q) {
         optionsContainer.style.display = 'block'; 
         optionsContainer.innerHTML = '';
-        questionImage.style.display = 'none'; // A imagem principal é desabilitada para o conteúdo D&D
+        questionImage.style.display = 'none'; 
         
         let htmlContent = `<div class="drag-drop-content">
                                 <div class="drag-drop-sentences">`;
         
         // 1. Renderiza as frases/imagens e drop zones
-        q.data.sentences.forEach(item => {
+        q.data.sentences.forEach((item, index) => {
             let dropZoneContent = '';
             let dropClass = '';
             let dropZoneEvents = `ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)"`;
 
             if (dragAndDropAnswered) {
-                // Se já foi respondido, exibe a resposta correta/incorreta
                 dropZoneEvents = '';
                 dropClass = item.isCorrect ? 'correct-drop' : 'incorrect-drop';
                 
-                // Se incorreto ou vazio, exibe o feedback de correção
-                if (!item.isCorrect) {
-                     dropZoneContent = `<span style="color: #dc3545; display: block;">${item.userAnswer || '❌ Missing'}</span>
-                                    <span style="color: #28a745; display: block; font-size: 0.7em;">(Correct: ${item.correct})</span>`;
+                // Conteúdo da Drop Zone após a resposta
+                if (item.isCorrect) {
+                     dropZoneContent = `<div class="draggable-word" style="background-color: #28a745; border-color: #28a745; color: white; display: inline-block;">${item.correct}</div>`;
                 } else {
-                     dropZoneContent = `<div class="draggable-word" style="background-color: #28a745; border-color: #28a745; color: white;">${item.correct}</div>`;
+                     dropZoneContent = `<span style="color: #dc3545; display: block; font-weight: bold; margin-bottom: 2px;">${item.userAnswer || '❌ Missing'}</span>
+                                    <span style="color: #28a745; display: block; font-size: 0.75em;">(Correct: ${item.correct})</span>`;
                 }
                 
-            } 
+            } else {
+                 // Durante o jogo
+                 const existingWord = document.getElementById(item.dropId)?.querySelector('.draggable-word');
+                 if (existingWord) {
+                     dropZoneContent = existingWord.outerHTML; // Mantém a palavra arrastada se re-renderizar
+                 }
+            }
             
             // O ponto final/interrogação está no item.text. REMOVEMOS O PONTO EXTRA DEPOIS DA SUBSTITUIÇÃO.
             htmlContent += `
                 <div class="sentence-block">
-                    <img src="${GITHUB_RAW_BASE_URL + item.image}" alt="Image for ${item.correct}">
+                    <div class="sentence-block-image-container">
+                        <span class="image-number-label">${index + 1}</span>
+                        <img src="${GITHUB_RAW_BASE_URL + item.image}" alt="Image for ${item.correct}">
+                    </div>
+                    
                     <p class="sentence-text">${item.text.replace('____', `
                         <span 
                             class="drop-zone ${dropClass}" 
@@ -1276,6 +1298,7 @@
         });
 
         htmlContent += `</div>
+                        <h3 style="margin-top: 30px; margin-bottom: 15px; font-size: 1.2em; border-bottom: 1px solid #ddd; padding-bottom: 10px; width: 100%; max-width: 700px; text-align: center;">Words to Drag</h3>
                         <div class="draggable-words-container" id="draggable-words-container">`;
 
         // 2. Renderiza as palavras arrastáveis
@@ -1283,17 +1306,23 @@
         
         shuffledWords.forEach(word => {
             if (!dragAndDropAnswered) {
-                htmlContent += `
-                    <div 
-                        class="draggable-word" 
-                        id="${word.id}" 
-                        draggable="true" 
-                        data-word="${word.text}"
-                        data-target="${word.correctTarget}"
-                        ondragstart="handleDragStart(event)"
-                        ondragend="handleDragEnd(event)"
-                    >${word.text}</div>
-                `;
+                // Se a palavra não foi dropada em uma zona, ela aparece aqui
+                 const dropZone = document.getElementById(word.correctTarget);
+                 const isDropped = dropZone && dropZone.querySelector(`#${word.id}`);
+
+                if (!isDropped) {
+                    htmlContent += `
+                        <div 
+                            class="draggable-word" 
+                            id="${word.id}" 
+                            draggable="true" 
+                            data-word="${word.text}"
+                            data-target="${word.correctTarget}"
+                            ondragstart="handleDragStart(event)"
+                            ondragend="handleDragEnd(event)"
+                        >${word.text}</div>
+                    `;
+                }
             }
         });
 
@@ -1331,9 +1360,9 @@
             }
         });
         
-        // 2. Atualiza o estado global e renderiza a correção
+        // 2. Atualiza o estado global e re-renderiza a correção
         dragAndDropAnswered = true;
-        renderDragAndDrop(q); // Re-renderiza a tela para exibir as cores de correção
+        renderDragAndDrop(q); 
         
         // 3. Exibe o feedback final
         if (totalCorrect === totalSentences) {
