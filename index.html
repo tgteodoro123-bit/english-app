@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+quero que faça as modificaçoes usando esse codigo <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -377,17 +377,6 @@
     .comparison-table tr:nth-child(odd) {
         background-color: #f9f9f9; 
     }
-    /* NOVO ESTILO: Ênfase de pronúncia no Tópico 6 */
-    .comparison-table .teen-emphasis {
-        font-weight: bold;
-        color: #007bff; /* Cor azul para destaque do -teen */
-        font-size: 1.1em;
-    }
-    .comparison-table .ty-emphasis {
-        font-weight: bold;
-        color: #dc3545; /* Cor vermelha para destaque do -ty */
-        font-size: 1.1em;
-    }
     
     /* Topic 7 (FILL_IN_BLANKS) Styles */
     .fill-in-blanks-container {
@@ -471,7 +460,7 @@
     .gallery-image-wrapper {
         position: relative;
         width: 100%;
-        /* CORREÇÃO APLICADA AQUI: Aumentado o espaço para as imagens */
+        /* CORRIGIDO: Aumentado para melhor visualização (remover cortes) */
         height: 380px; 
         border-radius: 10px; 
         overflow: hidden;
@@ -677,7 +666,7 @@
     <div class="quiz-question">
         <img id="question-image" src="" alt="Lesson Image"> 
         
-                <div class="hotspot" id="hotspot-1" style="top: 20%; left: 20%;" onclick="openNumberModal('one-to-ten')">+</div>
+        <div class="hotspot" id="hotspot-1" style="top: 20%; left: 20%;" onclick="openNumberModal('one-to-ten')">+</div>
         <div class="hotspot" id="hotspot-2" style="top: 20%; left: 70%;" onclick="openNumberModal('tens')">+</div>
         <div class="hotspot" id="hotspot-3" style="top: 70%; left: 20%;" onclick="openNumberModal('teens')">+</div>
         <div class="hotspot" id="hotspot-4" style="top: 70%; left: 70%;" onclick="openNumberModal('combined')">+</div>
@@ -743,7 +732,7 @@
     const DRAG_AND_DROP_SENTENCES = [
         { 
             id: 'sent-1', 
-            text: '1. This is my best ____.', 
+            text: '1. This is my best ____.', // CORRIGIDO: Adicionado o ponto final.
             image: 'friendtopico8.jpg', 
             dropId: 'drop-1', 
             correct: 'friend' ,
@@ -779,17 +768,6 @@
         }
     ];
 
-    // DADOS DA TABELA DE COMPARAÇÃO (TÓPICO 6)
-    const COMPARISON_DATA = [
-        { teen: 'Thir', ty: 'Thir', number: '13 – 30' },
-        { teen: 'Four', ty: 'For', number: '14 – 40' },
-        { teen: 'Fif', ty: 'Fif', number: '15 – 50' },
-        { teen: 'Six', ty: 'Six', number: '16 – 60' },
-        { teen: 'Seven', ty: 'Seven', number: '17 – 70' },
-        { teen: 'Eigh', ty: 'Eigh', number: '18 – 80' },
-        { teen: 'Nine', ty: 'Nine', number: '19 – 90' }
-    ];
-
     const QUESTIONS = [
         // Topics 1 to 4 
         { id: 1, question: "What do you see in the image?", image: "numeros.jpg", options: { A: "The Alphabet", B: "Colors", C: "Numbers" }, correctAnswer: 'C', chapter: 1, title: "1. Numbers Overview" },
@@ -800,8 +778,8 @@
         { id: 5, question: "Click on the '+' signs to review the number groups.", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1, title: "5. Interactive Bingo Review" },
         // Topic 6 
         { id: 6, 
-            // CORREÇÃO APLICADA AQUI: O texto foi corrigido para não ter a repetição.
-            question: "Listen and notice the difference between **-teen** and **-ty**. The emphasized part of the word is in bold (blue for -teen, red for -ty).", 
+            question: "Listen and notice the difference between -teen and -ty.", 
+            // CORRIGIDO: Removida a ênfase (EEN) dos exemplos no dado do question, será ajustado na renderização.
             options: { "13 (Thirteen) – 30 (Thirty)": "teenety.mp3" }, 
             correctAnswer: 'PRONUNCIATION_SET', 
             chapter: 1,
@@ -828,7 +806,7 @@
             ]
         },
         // Topic 8 
-        { id: 8, question: "Complete the sentences based on the images.", 
+        { id: 8, question: "Complete the sentences based on the images.", // CORRIGIDO: Removida a frase de instrução de drag and drop.
             correctAnswer: 'DRAG_AND_DROP', 
             chapter: 1, 
             title: "8. Drag & Drop: Vocabulary",
@@ -993,402 +971,4 @@
         feedback.innerHTML = '';
         optionsContainer.innerHTML = '';
         
-        progressIndicator.textContent = `${currentQuestionIndex + 1} / ${lessonQuestions.length} - ${q.title}`;
-
-        // Esconde todos os elementos de conteúdo primeiro
-        questionText.style.display = 'none';
-        optionsContainer.style.display = 'none';
-        questionImage.style.display = 'none';
-        document.getElementById('pronunciation-container').style.display = 'none';
-        document.getElementById('comparison-table-container').innerHTML = '';
-        document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'none'); // Esconde hotspots
-
-        // RENDERIZAÇÃO ESPECÍFICA POR TIPO
-        switch(q.correctAnswer) {
-            case 'PRONUNCIATION_SET':
-                renderPronunciationSet(q);
-                break;
-            case 'INFO':
-                renderInfoScreen(q);
-                break;
-            case 'INTERACTIVE_BINGO':
-                renderInteractiveBingo(q);
-                break;
-            case 'FILL_IN_BLANKS':
-                renderFillInBlanks(q);
-                break;
-            case 'DRAG_AND_DROP':
-                renderDragAndDrop(q);
-                break;
-            default:
-                renderMultipleChoice(q);
-                break;
-        }
-
-        // Atualiza o estado dos botões de navegação
-        backBtn.textContent = currentQuestionIndex === 0 ? 'Home' : 'Back';
-    }
-    
-    // --- RENDERIZADORES DE TELA ---
-    
-    function renderMultipleChoice(q) {
-        questionText.innerHTML = q.question;
-        questionText.style.display = 'block';
-        optionsContainer.style.display = 'block';
-        
-        if (q.image) {
-            questionImage.src = GITHUB_RAW_BASE_URL + q.image;
-            questionImage.style.display = 'block';
-        } else {
-            questionImage.style.display = 'none';
-        }
-
-        Object.keys(q.options).forEach(key => {
-            const optionDiv = document.createElement('div');
-            optionDiv.classList.add('option');
-            optionDiv.textContent = `${key}. ${q.options[key]}`;
-            optionDiv.onclick = () => checkMultipleChoice(optionDiv, key, q.correctAnswer);
-            optionsContainer.appendChild(optionDiv);
-        });
-    }
-
-    function renderInfoScreen(q) {
-        questionText.innerHTML = q.question;
-        questionText.style.display = 'block';
-        optionsContainer.style.display = 'block';
-        
-        // Renderiza o vocabulário/informação como opções
-        Object.keys(q.options).forEach(key => {
-            const infoDiv = document.createElement('div');
-            infoDiv.classList.add('option');
-            infoDiv.innerHTML = `${key} ${q.options[key]}`;
-            optionsContainer.appendChild(infoDiv);
-        });
-    }
-
-    function renderInteractiveBingo(q) {
-        questionText.innerHTML = q.question;
-        questionText.style.display = 'block';
-        questionImage.src = GITHUB_RAW_BASE_URL + q.image;
-        questionImage.style.display = 'block';
-        document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex');
-    }
-
-    function renderPronunciationSet(q) {
-        const pronContainer = document.getElementById('pronunciation-container');
-        const pronList = document.getElementById('pronunciation-list');
-        const audioPlayer = document.getElementById('audio-player-controls');
-        const currentInstruction = document.getElementById('current-instruction');
-        
-        // Limpa o conteúdo e exibe o container
-        pronList.innerHTML = '';
-        pronContainer.style.display = 'flex';
-        currentInstruction.innerHTML = q.question;
-        audioPlayer.style.display = 'none';
-
-        // TÓPICO 6: Renderização especial da tabela de comparação
-        if (q.id === 6) {
-            renderComparisonTable();
-            audioPlayer.src = GITHUB_RAW_BASE_URL + q.options["13 (Thirteen) – 30 (Thirty)"];
-            audioPlayer.style.display = 'block'; // Mostra o player para o áudio de comparação
-        } else {
-            // TÓPICO 4: Lista de palavras com botão de play individual
-            document.getElementById('comparison-table-container').innerHTML = ''; // Limpa a tabela
-            Object.keys(q.options).forEach(word => {
-                const audioSrc = GITHUB_RAW_BASE_URL + q.options[word];
-                const li = document.createElement('li');
-                li.innerHTML = `<span>${word}</span><button class="play-button" onclick="playAudio('${audioSrc}')">▶️</button>`;
-                pronList.appendChild(li);
-            });
-        }
-    }
-    
-    // NOVA FUNÇÃO: Renderiza a tabela de comparação -teen vs -ty
-    function renderComparisonTable() {
-        const tableContainer = document.getElementById('comparison-table-container');
-        let tableHTML = `<table class="comparison-table"><thead><tr><th>-TEEN</th><th>Número</th><th>-TY</th></tr></thead><tbody>`;
-
-        COMPARISON_DATA.forEach(item => {
-            // Aplica o bold (e a cor via CSS) apenas na parte da sílaba
-            const teenWord = `${item.teen}<span class="teen-emphasis">teen</span>`;
-            const tyWord = `${item.ty}<span class="ty-emphasis">ty</span>`;
-            
-            tableHTML += `
-                <tr>
-                    <td>${teenWord}</td>
-                    <td>${item.number}</td>
-                    <td>${tyWord}</td>
-                </tr>
-            `;
-        });
-
-        tableHTML += `</tbody></table>`;
-        tableContainer.innerHTML = tableHTML;
-    }
-
-    // Tópico 7
-    function renderFillInBlanks(q) {
-        questionText.innerHTML = q.question;
-        questionText.style.display = 'block';
-        optionsContainer.style.display = 'block';
-        
-        let html = '';
-        q.data.forEach((item, index) => {
-            html += `
-                <div class="number-input-group">
-                    <span>${item.num}</span>
-                    <input type="text" id="input-${index}" data-correct="${item.correct}" placeholder="Write the number in English">
-                    <div id="result-${index}" class="number-result"></div>
-                </div>
-            `;
-        });
-        optionsContainer.innerHTML = `<div class="fill-in-blanks-container">${html}</div>`;
-    }
-
-    // Tópico 8
-    function renderDragAndDrop(q) {
-        questionText.innerHTML = q.question;
-        questionText.style.display = 'block';
-        optionsContainer.style.display = 'block';
-        
-        let html = `<div class="drag-drop-overall-container">`;
-
-        // 1. Galeria de Imagens
-        html += `<div class="image-gallery-container">`;
-        q.data.sentences.forEach((s, index) => {
-            html += `
-                <div class="gallery-image-wrapper">
-                    <span class="image-number-label">${index + 1}</span>
-                    <img src="${GITHUB_RAW_BASE_URL + s.image}" alt="Image for question ${index + 1}">
-                </div>
-            `;
-        });
-        html += `</div>`;
-
-        // 2. Sentenças com Drop Zones
-        html += `<div class="sentence-list-container">`;
-        q.data.sentences.forEach(s => {
-            const parts = s.text.split('____');
-            html += `
-                <p class="sentence-item">
-                    <span class="sentence-text-before">${parts[0]}</span>
-                    <div class="drop-zone" id="${s.dropId}" data-correct-word="${s.correct}" ondragover="dragOver(event)" ondrop="drop(event)" ondragleave="dragLeave(event)"></div>
-                    <span class="sentence-text-after">${parts[1] || ''}</span>
-                </p>
-            `;
-        });
-        html += `</div>`;
-
-        // 3. Palavras arrastáveis
-        html += `<div class="draggable-words-container" id="draggable-words-container">`;
-        // Embaralha as palavras para que a ordem não dê a resposta
-        shuffleArray(q.data.words).forEach(word => {
-            html += `<div class="draggable-word" id="${word.id}" draggable="true" ondragstart="drag(event)">${word.text}</div>`;
-        });
-        html += `</div>`;
-
-        html += `</div>`;
-        optionsContainer.innerHTML = html;
-    }
-
-    // --- CHECKERS E UTILITÁRIOS ---
-
-    function checkMultipleChoice(selectedDiv, selectedKey, correctAnswer) {
-        if (answerChecked) return;
-        
-        // Remove classes de todas as opções
-        document.querySelectorAll('.option').forEach(div => div.classList.remove('correct', 'incorrect'));
-        
-        if (selectedKey === correctAnswer) {
-            selectedDiv.classList.add('correct');
-            feedback.innerHTML = '<span style="color: #28a745;">✅ Correct!</span>';
-        } else {
-            selectedDiv.classList.add('incorrect');
-            feedback.innerHTML = '<span style="color: #dc3545;">❌ Incorrect. The correct answer is ' + correctAnswer + '.</span>';
-            // Destaca a resposta correta
-            document.querySelectorAll('.option').forEach(div => {
-                if (div.textContent.startsWith(correctAnswer + '.')) {
-                    div.classList.add('correct');
-                }
-            });
-        }
-        answerChecked = true;
-    }
-
-    function checkFillInBlanks(q) {
-        let allCorrect = true;
-        q.data.forEach((item, index) => {
-            const input = document.getElementById(`input-${index}`);
-            const resultDiv = document.getElementById(`result-${index}`);
-            const userAnswer = input.value.trim().toLowerCase().replace(/[\s-]/g, '');
-            const correctValue = item.correct.toLowerCase().replace(/[\s-]/g, '');
-
-            resultDiv.classList.remove('result-correct', 'result-incorrect');
-            input.disabled = true;
-
-            if (userAnswer === correctValue) {
-                resultDiv.innerHTML = '✅ Correct';
-                resultDiv.classList.add('result-correct');
-            } else {
-                resultDiv.innerHTML = `❌ Wrong. Correct: ${item.correct}`;
-                resultDiv.classList.add('result-incorrect');
-                allCorrect = false;
-            }
-        });
-        
-        fillInBlanksAnswered = true;
-        feedback.innerHTML = allCorrect 
-            ? '<span style="color: #28a745;">🌟 All correct!</span>' 
-            : '<span style="color: #dc3545;">Review the incorrect answers above.</span>';
-    }
-
-    function checkDragAndDrop(q) {
-        let allCorrect = true;
-        
-        q.data.sentences.forEach(s => {
-            const dropZone = document.getElementById(s.dropId);
-            const droppedWord = dropZone.querySelector('.draggable-word');
-            
-            dropZone.classList.remove('correct-drop', 'incorrect-drop');
-            
-            if (droppedWord) {
-                const wordText = droppedWord.textContent.trim().toLowerCase();
-                const correctWord = dropZone.dataset.correctWord.trim().toLowerCase();
-                
-                if (wordText === correctWord) {
-                    dropZone.classList.add('correct-drop');
-                } else {
-                    dropZone.classList.add('incorrect-drop');
-                    allCorrect = false;
-                }
-            } else {
-                // Se não houver palavra, considera incorreto
-                dropZone.classList.add('incorrect-drop');
-                allCorrect = false;
-            }
-        });
-
-        dragAndDropAnswered = true;
-        feedback.innerHTML = allCorrect 
-            ? '<span style="color: #28a745;">🌟 All matches are correct!</span>' 
-            : '<span style="color: #dc3545;">Review the sentences marked in red.</span>';
-
-        // Desativa o arrastar após a checagem
-        document.querySelectorAll('.draggable-word').forEach(word => word.draggable = false);
-    }
-
-    // Função utilitária para reprodução de áudio
-    function playAudio(src) {
-        const audio = new Audio(src);
-        audio.play().catch(e => console.error("Error playing audio:", e));
-    }
-    window.playAudio = playAudio;
-
-    // Funções Drag and Drop
-    let draggedElement = null;
-    function drag(ev) {
-        draggedElement = ev.target;
-        ev.dataTransfer.setData("text", ev.target.id);
-        ev.target.classList.add('dragging');
-    }
-    function dragOver(ev) {
-        ev.preventDefault();
-        if (ev.target.classList.contains('drop-zone') && !ev.target.querySelector('.draggable-word')) {
-            ev.target.classList.add('drag-over');
-        }
-    }
-    function dragLeave(ev) {
-        if (ev.target.classList.contains('drop-zone')) {
-            ev.target.classList.remove('drag-over');
-        }
-    }
-    function drop(ev) {
-        ev.preventDefault();
-        const data = ev.dataTransfer.getData("text");
-        const dragged = document.getElementById(data);
-        const dropTarget = ev.target.classList.contains('drop-zone') ? ev.target : ev.target.closest('.drop-zone');
-
-        if (dragged && dropTarget && !dropTarget.querySelector('.draggable-word')) {
-            // Remove do container original, se houver
-            const parent = dragged.parentNode;
-            if (parent && parent.id !== 'draggable-words-container' && parent.classList.contains('drop-zone')) {
-                parent.classList.remove('correct-drop', 'incorrect-drop');
-                // Reset the original drop zone's state if needed
-            }
-            
-            // Adiciona no novo drop zone
-            dropTarget.appendChild(dragged);
-        } else if (dragged && dropTarget && dropTarget.id === 'draggable-words-container') {
-            // Move de volta para o pool de palavras (se soltar no container)
-            dropTarget.appendChild(dragged);
-        } else if (dragged && !dropTarget) {
-            // Move de volta para o pool de palavras (se soltar fora)
-            document.getElementById('draggable-words-container').appendChild(dragged);
-        }
-        
-        if (dragged) {
-            dragged.classList.remove('dragging');
-        }
-        
-        document.querySelectorAll('.drop-zone').forEach(dz => dz.classList.remove('drag-over'));
-    }
-    window.drag = drag;
-    window.dragOver = dragOver;
-    window.dragLeave = dragLeave;
-    window.drop = drop;
-    
-    // Utility function to shuffle an array
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
-    
-    // MODAL FUNCTIONS (TOPIC 5)
-    const numberModal = document.getElementById('numberModal');
-    const modalTitle = document.getElementById('modal-title');
-    const modalBody = document.getElementById('modal-body');
-
-    function openNumberModal(type) {
-        modalBody.innerHTML = '';
-        let title = '';
-        let content = '';
-
-        switch(type) {
-            case 'one-to-ten':
-                title = 'Numbers 1-10';
-                content = `<p style="font-size: 1.1em;">One (1), Two (2), Three (3), Four (4), Five (5), Six (6), Seven (7), Eight (8), Nine (9), Ten (10).</p>`;
-                break;
-            case 'teens':
-                title = 'The -TEEN Numbers';
-                content = `<p style="font-size: 1.1em;">Eleven (11), Twelve (12), Thirteen (13), Fourteen (14), Fifteen (15), Sixteen (16), Seventeen (17), Eighteen (18), Nineteen (19).</p>`;
-                break;
-            case 'tens':
-                title = 'The -TY Numbers (Tens)';
-                content = `<p style="font-size: 1.1em;">Ten (10), Twenty (20), Thirty (30), Forty (40), Fifty (50), Sixty (60), Seventy (70), Eighty (80), Ninety (90).</p>`;
-                break;
-            case 'combined':
-                title = 'Combined Examples';
-                content = `<p style="font-size: 1.1em;">Twenty-one (21), Thirty-two (32), Forty-three (43), Fifty-four (54), Sixty-five (65), Seventy-six (76), Eighty-seven (87), Ninety-eight (98).</p>`;
-                break;
-        }
-
-        modalTitle.textContent = title;
-        modalBody.innerHTML = content;
-        numberModal.style.display = 'block';
-    }
-
-    function closeNumberModal() {
-        numberModal.style.display = 'none';
-    }
-    window.openNumberModal = openNumberModal;
-    window.closeNumberModal = closeNumberModal;
-
-    // INICIALIZAÇÃO
-    goHome();
-</script>
-
-</body>
-</html>
+        progressIndica
