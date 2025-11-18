@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inglês Básico</title>
+<title>Basic English Course</title>
 <style>
     /* 1. Estilos Gerais */
     body {
@@ -149,7 +149,7 @@
         background-color: #004c99; 
     }
     
-    /* 4. Tela de Quiz/Lição */
+    /* 4. Lesson/Quiz Screen */
     #lesson-screen {
         max-width: 650px;
         margin: 70px auto 40px; 
@@ -161,7 +161,7 @@
         position: relative; 
     }
     
-    /* Hotspot para o Tópico 5 (O círculo com o +) - ESTILO CLEAN */
+    /* Hotspot for Topic 5 */
     .hotspot {
         position: absolute;
         width: 35px; 
@@ -187,7 +187,7 @@
         transform: scale(1.1);
     }
 
-    /* Botões de Navegação Fixos (Canto Direito) */
+    /* Fixed Navigation Buttons (Right Corner) */
     .nav-buttons {
         position: fixed; 
         top: 20px; 
@@ -198,7 +198,7 @@
         align-items: center; 
     }
     
-    /* Estilo dos botões Back e Next */
+    /* Back and Next Button Style */
     .nav-buttons button {
         padding: 12px 20px; 
         border: none;
@@ -214,7 +214,7 @@
         background-color: #0056b3;
     }
     
-    /* Indicador de progresso */
+    /* Progress Indicator */
     #progress-indicator {
         font-weight: 400; 
         color: #333;
@@ -222,7 +222,7 @@
         margin-right: 15px; 
     }
 
-    /* Botão Hamburguer no canto superior esquerdo */
+    /* Hamburger Menu Button (Top Left) */
     .menu-toggle {
         display: none; 
         position: fixed; 
@@ -245,7 +245,7 @@
         background-color: #f0f0f0; 
     }
 
-    /* Side Menu (Lateral Esquerda) */
+    /* Side Menu (Left Side) */
     .side-menu {
         height: 100%; 
         width: 0; 
@@ -292,7 +292,7 @@
         cursor: pointer;
     }
 
-    /* Estilos de Conteúdo */
+    /* Content Styles */
     .quiz-question img {
         max-width: 100%; 
         height: auto; 
@@ -331,7 +331,7 @@
     .correct { background-color: #e6ffed !important; border-color: #28a745 !important; font-weight: bold; }
     .incorrect { background-color: #ffe6e6 !important; border-color: #dc3545 !important; font-weight: bold; }
 
-    /* Estilos de Pronúncia e Áudio */
+    /* Pronunciation and Audio Styles */
     #pronunciation-container {
         display: flex;
         flex-direction: column;
@@ -353,7 +353,7 @@
     #pronunciation-list li { padding: 10px; border-bottom: 1px dotted #e0e0e0; display: flex; justify-content: space-between; align-items: center; font-size: 1.1em; }
     .play-button { background: none; border: none; font-size: 1.5em; cursor: pointer; color: #007bff; margin-left: 10px; transition: color 0.1s; }
 
-    /* Estilos da Tabela de Comparação do Tópico 6 */
+    /* Topic 6 Comparison Table Styles */
     .comparison-table {
         width: 100%;
         max-width: 400px;
@@ -378,7 +378,7 @@
         background-color: #f9f9f9; 
     }
     
-    /* Estilos Específicos para o Tópico 7 (FILL_IN_BLANKS) */
+    /* Topic 7 (FILL_IN_BLANKS) Styles */
     .fill-in-blanks-container {
         display: flex;
         flex-direction: column; 
@@ -437,10 +437,7 @@
     .result-correct { color: #28a745; }
     .result-incorrect { color: #dc3545; }
 
-    /* *************************************************************** */
-    /* Estilos Drag and Drop (Tópico 8) - LAYOUT FINAL CLEAN CORRIGIDO */
-
-    /* Container geral para organizar tudo no centro */
+    /* Topic 8 (Drag and Drop) Styles */
     .drag-drop-overall-container {
         display: flex;
         flex-direction: column;
@@ -451,7 +448,7 @@
         padding: 20px 0;
     }
 
-    /* 1. Galeria de Imagens (2 em cima, 2 embaixo) - MAIOR E COMPACTO */
+    /* 1. Image Gallery */
     .image-gallery-container {
         width: 100%;
         display: grid;
@@ -491,7 +488,6 @@
         z-index: 10;
     }
 
-    /* Ajuste para telas menores */
     @media (max-width: 480px) {
         .image-gallery-container {
             grid-template-columns: 1fr; 
@@ -501,7 +497,7 @@
         }
     }
 
-    /* 2. Lista de Frases (Enfileiradas) - ABAIXO DA GALERIA */
+    /* 2. Sentence List */
     .sentence-list-container {
         width: 100%; 
         display: flex;
@@ -525,7 +521,7 @@
         margin-right: 5px; 
     }
 
-    /* Drop Zone: Ocupa a mesma linha, fica alinhado com o texto */
+    /* Drop Zone */
     .drop-zone {
         min-width: 120px; 
         min-height: 2.2em; 
@@ -557,7 +553,7 @@
         background-color: #ffe6e6; 
     }
 
-    /* 3. Container de Palavras (Alinhado com a lista) */
+    /* 3. Draggable Words Container */
     .draggable-words-container {
         width: 100%; 
         display: flex;
@@ -571,7 +567,7 @@
         box-shadow: inset 0 1px 3px rgba(0,0,0,0.02); 
     }
 
-    /* Palavra Arrastável */
+    /* Draggable Word */
     .draggable-word {
         cursor: grab;
         background-color: #ffffff; 
@@ -596,7 +592,7 @@
         transform: scale(0.98);
     }
     
-    /* Estilo da Palavra quando Solta no Drop Zone */
+    /* Dropped Word Style */
     .drop-zone .draggable-word {
         cursor: default;
         box-shadow: none;
@@ -654,8 +650,6 @@
         text-decoration: none;
         cursor: pointer;
     }
-
-
 </style>
 </head>
 <body>
@@ -675,7 +669,7 @@
         <div class="hotspot" id="hotspot-2" style="top: 20%; left: 70%;" onclick="openNumberModal('tens')">+</div>
         <div class="hotspot" id="hotspot-3" style="top: 70%; left: 20%;" onclick="openNumberModal('teens')">+</div>
         <div class="hotspot" id="hotspot-4" style="top: 70%; left: 70%;" onclick="openNumberModal('combined')">+</div>
-        </div>
+    </div>
 
     <p id="question-text" style="display: none;"></p> 
     
@@ -726,7 +720,7 @@
         "https://images.pexels.com/photos/3401403/pexels-photo-3401403.jpeg?auto=compress&cs=tinysrgb&w=800",
     ];
     
-    // --- DADOS DO TÓPICO 8 ---
+    // --- TOPIC 8 DATA ---
     const DRAG_AND_DROP_WORDS = [
         { id: 'word-1', text: 'friend', correctTarget: 'drop-1' },
         { id: 'word-2', text: 'phone number', correctTarget: 'drop-2' },
@@ -774,14 +768,14 @@
     ];
 
     const QUESTIONS = [
-        // Tópicos 1 a 4 
+        // Topics 1 to 4 
         { id: 1, question: "What do you see in the image?", image: "numeros.jpg", options: { A: "The Alphabet", B: "Colors", C: "Numbers" }, correctAnswer: 'C', chapter: 1, title: "1. Numbers Overview" },
         { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', chapter: 1, title: "2. Verb 'To Be' (I am)" },
         { id: 3, question: `<h3 style="color: #007bff; font-size: 2em; margin-bottom: 20px;">Vocabulary:</h3>`, options: { "1.": `My <span style="color: #007bff;">address number</span> is 34.`, "2.": `I am a <span style="color: #007bff;">student</span>.`, "3.": `He is my new <span style="color: #007bff;">friend</span>, David.`, "4.": `Mr. David is a <span style="color: #007bff;">great</span> teacher.`, "5.": `My <span style="color: #007bff;">phone number</span> is: (987) 654-1234.`, "6.": `Sofia is <span style="color: #007bff;">American</span>.`, "7.": `I love my English <span style="color: #007bff;">teacher</span>.`, "8.": `Lucas is a <span style="color: #007bff;">new</span> student, too.`, "9.": `I am 18 <span style="color: #007bff;">years old</span>.`, "10.": `My <span style="color: #007bff;">nationality</span>? I'm French.`, }, correctAnswer: 'INFO', chapter: 1, title: "3. Lesson Vocabulary" },
         { id: 4, question: "PRONUNCIATION PRACTICE: Click the play button (▶️) to hear each word.", options: { "Address number": "addressnumber.mp3", "American": "American.mp3", "Friend": "friend.mp3", "Great": "great.mp3", "Nationality": "nationality.mp3", "New": "new.mp3", "Phone number": "phonenumber.mp3", "Student": "student.mp3", "Teacher": "teacher.mp3", "Years old": "yearsold.mp3" }, correctAnswer: 'PRONUNCIATION_SET', chapter: 1, title: "4. Word Pronunciation" },
-        // Tópico 5 
+        // Topic 5 
         { id: 5, question: "Click on the '+' signs to review the number groups.", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1, title: "5. Interactive Bingo Review" },
-        // Tópico 6 
+        // Topic 6 
         { id: 6, 
             question: "Listen and notice the difference between -teen and -ty.", 
             options: { "13: (Thirteen) – 30 (Thirty)": "teenety.mp3" }, 
@@ -789,7 +783,7 @@
             chapter: 1,
             title: "6. Pronunciation: Teen vs Ty"
         },
-        // Tópico 7 
+        // Topic 7 
         { 
             id: 7, 
             question: "Write the numbers in English:", 
@@ -809,7 +803,7 @@
                 { num: 16, correct: "sixteen" }
             ]
         },
-        // Tópico 8 
+        // Topic 8 
         { id: 8, question: "Drag the correct word to complete the sentences based on the images.", 
             correctAnswer: 'DRAG_AND_DROP', 
             chapter: 1, 
@@ -819,7 +813,7 @@
                 sentences: DRAG_AND_DROP_SENTENCES
             }
         },
-        // Tópicos 9 a 13 
+        // Topics 9 to 13 
         { id: 9, question: "What is the color of the sky on a sunny day?", image: "", options: { A: "Red", B: "Yellow", C: "Blue" }, correctAnswer: 'C', chapter: 1, title: "9. Quiz: Colors" },
         { id: 10, question: "What is the English word for 'cadeira'?", image: "", options: { A: "Book", B: "Chair", C: "Table" }, correctAnswer: 'B', chapter: 1, title: "10. Quiz: Objects" },
         { id: 11, question: "Identify the color of the object in the image:", image: "apple.jpg", options: { A: "Green", B: "Red", C: "Orange" }, correctAnswer: 'B', chapter: 1, title: "11. Quiz: Image Color" },
@@ -849,7 +843,7 @@
     
     let answerChecked = false;
     
-    // RENDERIZAÇÃO DOS CARDS NA HOME SCREEN
+    // RENDER CHAPTER CARDS ON HOME SCREEN
     const chapterGrid = document.querySelector('.chapter-grid');
     for (let i = 1; i <= 24; i++) {
         const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
@@ -868,7 +862,7 @@
         `;
     }
 
-    // --- FUNÇÕES GERAIS DE NAVEGAÇÃO E CARREGAMENTO ---
+    // --- GENERAL NAVIGATION AND LOADING FUNCTIONS ---
     function openNav() { sideMenu.classList.add('open'); }
     function closeNav() { sideMenu.classList.remove('open'); }
     window.onclick = function(event) {
@@ -918,35 +912,29 @@
         closeNav(); 
     }
 
-    // CORREÇÃO: Função goNext para lidar com verificação de Fill-in-Blanks e Drag-and-Drop
+    // UPDATED: goNext to advance immediately AND check answers for interactive topics (without blocking)
     function goNext() {
         const currentQ = lessonQuestions[currentQuestionIndex];
         
-        // 1. CHECAGEM INICIAL: Tópicos 7 e 8
+        // 1. CHECAGEM OBRIGATÓRIA ANTES DE AVANÇAR (APENAS PARA MARCAR A RESPOSTA)
+        // Se for um tópico de quiz interativo e ainda não foi checado, checa a resposta e re-renderiza.
+        // O usuário NÃO é bloqueado, apenas forçado a ver o feedback da sua tentativa.
         if (!answerChecked) {
-            
-            if (currentQ.correctAnswer === 'FILL_IN_BLANKS' && !fillInBlanksAnswered) {
+            if (currentQ.correctAnswer === 'FILL_IN_BLANKS') {
                 checkFillInBlanks(currentQ);
-                answerChecked = true; // Marca como checado (agora o Next prossegue)
-                // A correção é exibida no re-render de checkFillInBlanks
-                return; 
+                answerChecked = true; 
+                return; // Re-renderiza a correção, mas não avança ainda.
             }
             
-            if (currentQ.correctAnswer === 'DRAG_AND_DROP' && !dragAndDropAnswered) {
+            if (currentQ.correctAnswer === 'DRAG_AND_DROP') {
                 checkDragAndDrop(currentQ);
-                answerChecked = true; // Marca como checado (agora o Next prossegue)
-                // A correção é exibida no re-render de checkDragAndDrop
-                return; 
+                answerChecked = true; 
+                return; // Re-renderiza a correção, mas não avança ainda.
             }
             
-            // Para Múltipla Escolha e outros não-interativos que não exigem checagem manual:
-            if (currentQ.correctAnswer !== 'INFO' && currentQ.correctAnswer !== 'PRONUNCIATION_SET' && currentQ.correctAnswer !== 'INTERACTIVE_BINGO' && currentQ.correctAnswer !== 'FILL_IN_BLANKS' && currentQ.correctAnswer !== 'DRAG_AND_DROP') {
-                // Se for Múltipla Escolha e o usuário não clicou em nada, ele não pode prosseguir.
-                if (!answerChecked) {
-                    feedback.innerHTML = '⚠️ Please select an answer before proceeding.';
-                    return;
-                }
-            }
+            // Para Múltipla Escolha: se o usuário não clicou em nada, ele não tem 'answerChecked'.
+            // Não vamos forçar, apenas limpamos o feedback se houver.
+            feedback.innerHTML = '';
         }
 
         // 2. AVANÇA PARA A PRÓXIMA PERGUNTA
@@ -954,7 +942,7 @@
         if (currentQuestionIndex < lessonQuestions.length) {
             loadQuestion(lessonQuestions[currentQuestionIndex]);
         } else {
-            // Fim do módulo
+            // End of module
             alert(`Congratulations! You have completed the Beginner ${currentChapter} level.`);
             goHome();
         }
@@ -973,7 +961,7 @@
         answerChecked = false;
         fillInBlanksAnswered = false; 
         
-        // A flag dragAndDropAnswered é redefinida para false apenas ao sair do tópico 8
+        // The dragAndDropAnswered flag is reset to false only when exiting topic 8
         if(q.correctAnswer !== 'DRAG_AND_DROP') {
             dragAndDropAnswered = false;
         }
@@ -1023,39 +1011,57 @@
         }
     }
 
-    // --- FUNÇÕES AUXILIARES DE RENDERIZAÇÃO ---
+    // --- AUXILIARY RENDERING FUNCTIONS ---
     
     function renderMultipleChoice(q) {
         optionsContainer.style.display = 'block';
         let optionsHtml = '';
+        // If question was already answered, render with correction
+        const hasAnswered = q.userAnswer !== undefined; 
+
         for (const [key, value] of Object.entries(q.options)) {
-            optionsHtml += `<div class="option" data-answer="${key}" onclick="checkAnswer(this, '${q.correctAnswer}')">${key}. ${value}</div>`;
+            let classes = '';
+            let onClickHandler = `checkAnswer(this, '${q.correctAnswer}', ${q.id})`;
+
+            if (hasAnswered) {
+                onClickHandler = null; // Disable further clicking
+                if (key === q.userAnswer) {
+                    classes += (key === q.correctAnswer) ? ' correct' : ' incorrect';
+                } else if (key === q.correctAnswer) {
+                    classes += ' correct';
+                }
+            }
+
+            optionsHtml += `<div class="option${classes}" data-answer="${key}" onclick="${onClickHandler}">${key}. ${value}</div>`;
         }
         optionsContainer.innerHTML = optionsHtml;
+
+        if (hasAnswered) {
+            displayMultipleChoiceCorrection(q.userAnswer === q.correctAnswer, q.correctAnswer);
+        }
     }
     
-    function checkAnswer(selectedOption, correctAnswer) {
-        if (answerChecked) return;
-        answerChecked = true;
+    function checkAnswer(selectedOption, correctAnswer, qId) {
+        // Prevent re-checking if already answered
+        const currentQ = lessonQuestions.find(q => q.id === qId);
+        if (currentQ.userAnswer !== undefined) return;
         
         const selectedKey = selectedOption.getAttribute('data-answer');
         
-        if (selectedKey === correctAnswer) {
-            selectedOption.classList.add('correct');
+        // Store answer locally in the question object for re-rendering
+        currentQ.userAnswer = selectedKey; 
+        
+        // Re-render the question to show correction
+        loadQuestion(currentQ);
+        answerChecked = true; // Mark as checked for navigation purposes
+    }
+    
+    function displayMultipleChoiceCorrection(isCorrect, correctAnswer) {
+        if (isCorrect) {
             feedback.innerHTML = '✅ **Correct!** Great job!';
         } else {
-            selectedOption.classList.add('incorrect');
-            // Encontrar a opção correta para destacar
-            const correctOption = optionsContainer.querySelector(`[data-answer="${correctAnswer}"]`);
-            if (correctOption) {
-                correctOption.classList.add('correct');
-            }
             feedback.innerHTML = `❌ **Incorrect.** The correct answer is **${correctAnswer}**.`;
         }
-        
-        // Desabilitar todas as opções
-        optionsContainer.querySelectorAll('.option').forEach(opt => opt.onclick = null);
-        feedback.innerHTML += `<br><p style="margin-top: 10px;">Click **Next** to proceed to the next topic.</p>`;
     }
 
     function renderInfoScreen(q) {
@@ -1066,20 +1072,20 @@
         }
         optionsHtml += '</div>';
         optionsContainer.innerHTML = optionsHtml;
-        feedback.innerHTML = `This is a vocabulary review. Click **Next** to proceed.`;
+        feedback.innerHTML = ``; // No instruction
     }
 
     function renderPronunciationPractice(q) {
         document.getElementById('pronunciation-container').style.display = 'flex';
         
-        if (q.id === 6) { // Tópico 6: Teen vs Ty
+        if (q.id === 6) { // Topic 6: Teen vs Ty
             document.getElementById('current-instruction').textContent = 'Listen and notice the difference between -teen and -ty:';
             document.getElementById('audio-player-controls').style.display = 'block';
             document.getElementById('audio-player-controls').src = GITHUB_RAW_BASE_URL + q.options["13: (Thirteen) – 30 (Thirty)"];
             document.getElementById('comparison-table-container').innerHTML = generateTableHTML();
-            document.getElementById('pronunciation-list').innerHTML = ''; // Não usa a lista padrão
+            document.getElementById('pronunciation-list').innerHTML = ''; 
             
-        } else { // Tópico 4: Lista de Palavras
+        } else { // Topic 4: Word List
             document.getElementById('current-instruction').textContent = 'Click the play button (▶️) to hear each word:';
             document.getElementById('audio-player-controls').style.display = 'none';
             document.getElementById('comparison-table-container').innerHTML = '';
@@ -1096,7 +1102,7 @@
             document.getElementById('pronunciation-list').innerHTML = listHtml;
         }
 
-        feedback.innerHTML = `Practice your pronunciation! Click **Next** to proceed.`;
+        feedback.innerHTML = ``; // No instruction
     }
 
     function generateTableHTML() {
@@ -1127,9 +1133,9 @@
     }
     
     function renderInteractiveBingo(q) {
-        // Exibe os hotspots sobre a imagem
+        // Display hotspots over the image
         document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex');
-        feedback.innerHTML = `Explore os números clicando nos "+" na imagem. Clique **Next** para prosseguir.`;
+        feedback.innerHTML = ``; // No instruction
     }
     
     function openNumberModal(type) {
@@ -1168,22 +1174,20 @@
         document.getElementById('numberModal').style.display = "none";
     }
 
-    // --- FUNÇÕES DE PREENCHIMENTO DE ESPAÇOS (TÓPICO 7) ---
+    // --- FILL IN BLANKS FUNCTIONS (TOPIC 7) ---
     
     function renderFillInBlanks(q) {
         optionsContainer.style.display = 'block';
         let inputsHtml = '<div class="fill-in-blanks-container">';
         
+        const inputsDisabled = fillInBlanksAnswered ? 'disabled' : '';
+
         q.data.forEach((item, index) => {
             let resultHtml = '';
-            let inputValue = '';
-            let inputDisabled = '';
+            let inputValue = item.userAnswer || '';
             let resultClass = '';
             
             if (fillInBlanksAnswered) {
-                inputDisabled = 'disabled';
-                inputValue = item.userAnswer || '';
-                
                 if (item.isCorrect) {
                     resultClass = 'result-correct';
                     resultHtml = `(✅ Correct: ${item.correct})`;
@@ -1191,16 +1195,12 @@
                     resultClass = 'result-incorrect';
                     resultHtml = `(❌ Correct: ${item.correct})`;
                 }
-            } else {
-                // Estado inicial ou após voltar: limpa as respostas
-                delete item.userAnswer;
-                delete item.isCorrect;
-            }
+            } 
 
             inputsHtml += `
                 <div class="number-input-group">
                     <span>${item.num}:</span>
-                    <input type="text" id="num-input-${index}" value="${inputValue}" ${inputDisabled} placeholder="Write the number..." data-correct="${item.correct.toLowerCase()}">
+                    <input type="text" id="num-input-${index}" value="${inputValue}" ${inputsDisabled} placeholder="Write the number..." data-correct="${item.correct.toLowerCase()}">
                     <p class="number-result ${resultClass}">${resultHtml}</p>
                 </div>
             `;
@@ -1209,10 +1209,10 @@
         inputsHtml += '</div>';
         optionsContainer.innerHTML = inputsHtml;
 
-        if (!fillInBlanksAnswered) {
-             feedback.innerHTML = 'Write the number in English and click **Next** to check your answers.';
-        } else {
+        if (fillInBlanksAnswered) {
              displayFillInBlanksCorrection(q.data);
+        } else {
+             feedback.innerHTML = '';
         }
     }
     
@@ -1221,11 +1221,14 @@
         
         q.data.forEach((item, index) => {
             const input = document.getElementById(`num-input-${index}`);
-            const userAnswer = input.value.trim().toLowerCase();
-            const correct = item.correct.toLowerCase();
-            
-            item.userAnswer = userAnswer;
-            item.isCorrect = (userAnswer === correct);
+            // Check only if input exists and is not already answered
+            if(input && !fillInBlanksAnswered) {
+                const userAnswer = input.value.trim().toLowerCase();
+                const correct = item.correct.toLowerCase();
+                
+                item.userAnswer = userAnswer;
+                item.isCorrect = (userAnswer === correct);
+            }
             
             if (!item.isCorrect) {
                 allCorrect = false;
@@ -1233,7 +1236,7 @@
         });
         
         fillInBlanksAnswered = true;
-        renderFillInBlanks(q); // Re-renderiza para mostrar a correção
+        renderFillInBlanks(q); // Re-render to show correction
         
         return allCorrect;
     }
@@ -1247,14 +1250,14 @@
         } else {
             feedback.innerHTML = `❌ **Oops, that's not correct!** You got ${totalCorrect} out of ${totalQuestions} correct.`;
         }
-        feedback.innerHTML += `<br><p style="margin-top: 10px;">Click **Next** again to proceed to the next topic.</p>`;
     }
 
 
-    // --- FUNÇÕES DE DRAG AND DROP (TÓPICO 8) ---
+    // --- DRAG AND DROP FUNCTIONS (TOPIC 8) ---
     let draggedElement = null; 
 
     function handleDragStart(e) {
+        if (dragAndDropAnswered) return;
         draggedElement = e.target;
         e.dataTransfer.setData('text/plain', e.target.id);
         setTimeout(() => e.target.classList.add('dragging'), 0); 
@@ -1264,8 +1267,8 @@
         e.preventDefault(); 
         const dropZone = e.target.closest('.drop-zone');
         if (dropZone && !dragAndDropAnswered) {
-            // Verifica se a dropZone está vazia ou contém apenas texto de correção (caso tenha voltado)
-            if (dropZone.children.length === 0 || (dropZone.children.length === 1 && dropZone.children[0].tagName !== 'DIV')) {
+            // Check if the dropZone is empty or contains only correction text
+            if (dropZone.children.length === 0 || (dropZone.children.length > 0 && dropZone.querySelector('.draggable-word') === null)) {
                  dropZone.classList.add('drag-over');
             }
         }
@@ -1287,7 +1290,7 @@
         
         dropZone.classList.remove('drag-over');
 
-        // Se a drop zone já tem uma palavra dentro (que é um <div>.draggable-word), move-a de volta.
+        // Check if another word is already present
         const existingWord = dropZone.querySelector('.draggable-word');
         
         if (existingWord) {
@@ -1297,15 +1300,15 @@
                 wordsContainer.appendChild(existingWord); 
                 existingWord.setAttribute('draggable', 'true'); 
                 existingWord.classList.remove('dragging');
-                existingWord.onclick = null; 
+                existingWord.style.cssText = ''; 
             }
         }
         
-        // Move a nova palavra para a drop zone
+        // Move the new word to the drop zone
         if (draggedElement) {
             const originalParent = draggedElement.parentElement;
             
-            // Caso a palavra venha de outra drop zone, a remove de lá.
+            // If the word comes from another drop zone, remove it from there.
             if (originalParent && originalParent.classList.contains('drop-zone')) {
                 originalParent.removeChild(draggedElement);
             }
@@ -1320,7 +1323,7 @@
     }
     
     function handleDragEnd(e) {
-        e.target.classList.remove('dragging');
+        if(e.target) e.target.classList.remove('dragging');
         draggedElement = null;
     }
 
@@ -1331,9 +1334,8 @@
         questionImage.style.display = 'none'; 
         questionText.style.display = 'none'; 
         
-        // Estado temporário para evitar que os dados persistam se o usuário voltar
+        // State cleanup if not answered
         if (!dragAndDropAnswered) {
-            // Garante que o estado interno do QUIZ está limpo
             q.data.sentences.forEach(item => {
                 item.userAnswer = null;
                 item.isCorrect = false;
@@ -1342,7 +1344,7 @@
         
         let fullContentHTML = `<div class="drag-drop-overall-container">`;
 
-        // --- 1. GALERIA DE IMAGENS (TOPO) ---
+        // --- 1. IMAGE GALLERY ---
         fullContentHTML += `<div class="image-gallery-container">`;
         q.data.sentences.forEach((item, index) => {
             fullContentHTML += `
@@ -1354,7 +1356,7 @@
         });
         fullContentHTML += `</div>`; 
 
-        // --- 2. LISTA DE FRASES (MEIO) ---
+        // --- 2. SENTENCE LIST ---
         fullContentHTML += `<div class="sentence-list-container">`;
         q.data.sentences.forEach(item => {
             let dropZoneContent = '';
@@ -1362,7 +1364,6 @@
             let dropZoneEvents = `ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)"`;
             
             if (dragAndDropAnswered) {
-                // Se respondido, mostra a correção
                 dropZoneEvents = '';
                 dropClass = item.isCorrect ? 'correct-drop' : 'incorrect-drop';
                 
@@ -1373,7 +1374,6 @@
                                         <span style="color: #28a745; display: block; font-size: 0.75em; font-weight: 500;">(Correct: ${item.correct})</span>`;
                 }
             } else {
-                // Estado inicial: Garante que a drop zone está vazia
                  dropZoneContent = '';
             }
             
@@ -1391,25 +1391,36 @@
         });
         fullContentHTML += `</div>`; 
         
-        // --- 3. PALAVRAS ARRASTÁVEIS (BASE) ---
+        // --- 3. DRAGGABLE WORDS ---
         fullContentHTML += `<div class="draggable-words-container" id="draggable-words-container">`;
         
         if (!dragAndDropAnswered) {
-            // Renderiza todas as palavras livres.
+            // Render all free words
             const wordsToRender = DRAG_AND_DROP_WORDS.sort(() => Math.random() - 0.5); 
+            const droppedWords = new Set();
+            
+            // Collect words that are currently in a drop zone (to prevent re-rendering them here)
+            q.data.sentences.forEach(item => {
+                // If it's a new render, this check is mainly for consistency, but not strictly necessary since the list is cleared
+                if (item.userAnswer && q.data.words.some(w => w.text === item.userAnswer)) {
+                    droppedWords.add(item.userAnswer);
+                }
+            });
 
             wordsToRender.forEach(word => {
-                fullContentHTML += `
-                    <div 
-                        class="draggable-word" 
-                        id="${word.id}" 
-                        draggable="true" 
-                        data-word="${word.text}"
-                        data-target="${word.correctTarget}"
-                        ondragstart="handleDragStart(event)"
-                        ondragend="handleDragEnd(event)"
-                    >${word.text}</div>
-                `;
+                if (!droppedWords.has(word.text)) {
+                    fullContentHTML += `
+                        <div 
+                            class="draggable-word" 
+                            id="${word.id}" 
+                            draggable="true" 
+                            data-word="${word.text}"
+                            data-target="${word.correctTarget}"
+                            ondragstart="handleDragStart(event)"
+                            ondragend="handleDragEnd(event)"
+                        >${word.text}</div>
+                    `;
+                }
             });
         }
         fullContentHTML += `</div>`; 
@@ -1417,25 +1428,22 @@
         fullContentHTML += `</div>`; 
         optionsContainer.innerHTML = fullContentHTML;
         
-        // A flag de resposta é importante aqui para que o Next funcione corretamente
         answerChecked = dragAndDropAnswered; 
 
-        if (!dragAndDropAnswered) {
-            // Frase removida. A instrução é mantida como um lembrete conciso.
-            feedback.innerHTML = 'Complete as frases arrastando as palavras para as lacunas.';
-        } else {
+        if (dragAndDropAnswered) {
              displayDragAndDropCorrection(q.data.sentences);
+        } else {
+             feedback.innerHTML = '';
         }
     }
 
     function checkDragAndDrop(q) {
         let totalCorrect = 0;
-        const totalSentences = q.data.sentences.length;
         
-        // 1. Verifica e Armazena o resultado
+        // 1. Check and Store the result
         q.data.sentences.forEach(item => {
             const dropZone = document.getElementById(item.dropId);
-            const droppedWord = dropZone.querySelector('.draggable-word');
+            const droppedWord = dropZone ? dropZone.querySelector('.draggable-word') : null;
             
             let isCorrect = false;
             let userAnswer = '';
@@ -1453,11 +1461,11 @@
             }
         });
         
-        // 2. Atualiza o estado global e re-renderiza a correção
+        // 2. Update global state and re-render the correction
         dragAndDropAnswered = true;
         renderDragAndDrop(q); 
         
-        return totalCorrect === totalSentences;
+        return totalCorrect === q.data.sentences.length;
     }
 
     function displayDragAndDropCorrection(sentences) {
@@ -1467,15 +1475,13 @@
         if (totalCorrect === totalSentences) {
             feedback.innerHTML = '✅ **CONGRATULATIONS!** You got all answers correct! 🎉';
         } else {
-            feedback.innerHTML = `❌ **Oops, that's not correct!** Você acertou **${totalCorrect}** de **${totalSentences}** frases. As respostas corretas estão marcadas.`;
+            feedback.innerHTML = `❌ **Oops, that's not correct!** You got **${totalCorrect}** out of **${totalSentences}** sentences correct. The correct answers are marked.`;
         }
-        feedback.innerHTML += `<br><p style="margin-top: 10px;">Clique **Next** novamente para prosseguir.</p>`;
     }
 
-
-    // Iniciar a renderização dos cards da home
+    // Initialize home screen
     window.onload = () => {
-        // Nada a fazer aqui além de garantir que a home está visível por padrão, o que o HTML já faz.
+        // Ensure home screen is visible on load
     };
     
 </script>
