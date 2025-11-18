@@ -503,19 +503,22 @@
     .sentence-text {
         font-size: 1.15em;
         font-weight: 500;
-        text-align: center; /* Centraliza o bloco de texto */
+        text-align: center; 
         margin-bottom: 5px;
         min-height: 40px; 
-        display: flex; /* Flexbox para alinhar itens na mesma linha */
-        align-items: center; /* Alinha verticalmente */
-        justify-content: center; /* Centraliza horizontalmente se houver espaço */
-        flex-wrap: wrap; /* Permite que o texto e a drop zone quebrem a linha se necessário */
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        flex-wrap: nowrap; /* <-- CORREÇÃO PRINCIPAL: IMPEDE A QUEBRA DE LINHA DENTRO DESTE CONTÊINER */
         line-height: 1.5;
+        width: 100%; /* Garante que ocupe todo o espaço disponível para centralizar */
+        max-width: 95%; 
+        box-sizing: border-box; 
     }
 
     /* Estilo da Drop Zone (o espaço em branco) - LIMPO E DISCRETO */
     .drop-zone {
-        display: inline-flex; /* Permite que o span se comporte como inline mas com propriedades flex */
+        display: inline-block; /* <-- Ajuste para maior flexibilidade em linha */
         justify-content: center;
         align-items: center;
         min-width: 130px; /* Largura mínima maior */
@@ -528,6 +531,7 @@
         transition: background-color 0.1s, border-color 0.1s;
         vertical-align: middle; /* Alinha com o texto da frase */
         white-space: nowrap; /* Impede que o conteúdo do drop-zone quebre a linha */
+        line-height: 1.4; /* Ajuste para melhor alinhamento vertical */
     }
 
     .drop-zone.drag-over {
@@ -767,8 +771,8 @@
         },
         { 
             id: 'sent-4', 
-            text: '4. This is the ____.', // NOVA FRASE
-            image: 'addressnumber2topico8.png', // NOME DE ARQUIVO FINAL ATUALIZADO (PNG)
+            text: '4. It is an ____.', // <--- FRASE ATUALIZADA
+            image: 'addressnumber2topico8.png', 
             dropId: 'drop-4', 
             correct: 'address number' 
         }
@@ -807,7 +811,7 @@
             ]
         },
         
-        // TÓPICO 8: DRAG AND DROP (AGORA CONFIGURADO)
+        // TÓPICO 8: DRAG AND DROP
         { id: 8, question: "Drag the correct word to complete the sentences based on the images.", 
             correctAnswer: 'DRAG_AND_DROP', 
             chapter: 1, 
@@ -1255,7 +1259,7 @@
                 
             } 
             
-            // MUDANÇA CRÍTICA AQUI: O ponto final/interrogação está no item.text. REMOVEMOS O PONTO EXTRA DEPOIS DA SUBSTITUIÇÃO.
+            // O ponto final/interrogação está no item.text. REMOVEMOS O PONTO EXTRA DEPOIS DA SUBSTITUIÇÃO.
             htmlContent += `
                 <div class="sentence-block">
                     <img src="${GITHUB_RAW_BASE_URL + item.image}" alt="Image for ${item.correct}">
