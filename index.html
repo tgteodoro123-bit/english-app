@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Basic English Course</title>
+<title>Curso de Inglês Básico</title>
 <style>
     /* 1. Estilos Gerais */
     body {
@@ -295,19 +295,17 @@
     /* Content Styles */
     .quiz-question img {
         max-width: 100%; 
-        height: auto; 
+        height: 250px; /* Altura fixa para consistência */
         display: block;
         margin: 15px auto;
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        
         width: 100%; 
-        height: 250px; 
-        object-fit: cover; /* PADRÃO: Corta para preencher */
+        object-fit: cover; /* PADRÃO: Corta para preencher (Tópicos 1, 2, etc.) */
         background-color: #fcfcfc; 
     }
     
-    /* NOVO AJUSTE: Apenas a imagem do Tópico 5 (a do Bingo) deve usar 'contain' para caber inteira */
+    /* AJUSTE ESPECÍFICO: Apenas a imagem do Tópico 5 (a do Bingo) deve usar 'contain' para caber inteira */
     .quiz-question img.interactive-image {
         object-fit: contain; 
     }
@@ -787,7 +785,7 @@
 <div id="lesson-screen">
     
     <div class="quiz-question">
-        <img id="question-image" src="" alt="Lesson Image"> 
+        <img id="question-image" src="" alt="Lesson Image" class="interactive-image"> 
         
         <div class="hotspot" id="hotspot-1" style="top: 20%; left: 20%;" onclick="openNumberModal('one-to-ten')">+</div>
         <div class="hotspot" id="hotspot-2" style="top: 20%; left: 70%;" onclick="openNumberModal('tens')">+</div>
@@ -797,872 +795,726 @@
 
     <p id="question-text" style="display: none;"></p> 
     
-    <div id="options-container" style="display: none;"></div>
-    
-    <div id="pronunciation-container" style="display: none;">
-        <p class="word-to-practice" id="current-instruction"></p> 
-        <audio id="audio-player-controls" controls preload="auto"></audio> 
-        <div id="comparison-table-container"></div>
-        <ul id="pronunciation-list"></ul>
-    </div>
-    
-    <p id="feedback" style="font-weight: bold; margin-top: 15px; text-align: center;"></p>
-
-</div>
-
-<button class="menu-toggle" onclick="openNav()">☰</button>
-
-<div id="side-menu" class="side-menu">
-    <a href="javascript:void(0)" class="close-btn" onclick="closeNav()">&times;</a>
-    </div>
-
-<div class="nav-buttons">
-    <span id="progress-indicator"></span> 
-    <button id="back-btn" onclick="backQuestion()">Back</button>
-    <button id="next-btn" onclick="goNext()">Next</button>
 </div>
 
 <div id="numberModal" class="modal">
     <div class="modal-content">
         <div class="modal-content-wrapper">
-            <span class="close-button" onclick="closeNumberModal()">&times;</span>
-            <h3 id="modal-title" style="margin-top: 0; text-align: center;">Numbers</h3>
-            <div id="modal-body">
             </div>
-        </div>
     </div>
 </div>
 
+<div class="nav-buttons">
+    <span id="progress-indicator">0/0</span>
+    <button id="prev-button" onclick="navigate(-1)">Anterior</button>
+    <button id="next-button" onclick="navigate(1)">Próximo</button>
+</div>
+
+<button class="menu-toggle" onclick="toggleMenu()">☰</button>
+<div class="side-menu" id="side-menu">
+    </div>
+
 <script>
-    const GITHUB_RAW_BASE_URL = "https://raw.githubusercontent.com/tgteodoro123-bit/english-app/main/"; 
-    
-    const BACKGROUND_IMAGES = [
-        "https://images.pexels.com/photos/1036321/pexels-photo-1036321.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "https://images.pexels.com/photos/2076011/pexels-photo-2076011.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "https://images.pexels.com/photos/6684742/pexels-photo-6684742.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "https://images.pexels.com/photos/4144294/pexels-photo-4144294.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "https://images.pexels.com/photos/1481005/pexels-photo-1481005.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "https://images.pexels.com/photos/3401403/pexels-photo-3401403.jpeg?auto=compress&cs=tinysrgb&w=800",
-    ];
-    
-    // --- TOPIC 8 DATA ---
-    const DRAG_AND_DROP_WORDS = [
-        { id: 'word-1', text: 'friend', correctTarget: 'drop-1' },
-        { id: 'word-2', text: 'phone number', correctTarget: 'drop-2' },
-        { id: 'word-3', text: 'teacher', correctTarget: 'drop-3' },
-        { id: 'word-4', text: 'address number', correctTarget: 'drop-4' }
-    ];
-    
-    const DRAG_AND_DROP_SENTENCES = [
-        { 
-            id: 'sent-1', 
-            text: '1. This is my best ____.', 
-            image: 'friendtopico8.jpg', 
-            dropId: 'drop-1', 
-            correct: 'friend' ,
-            userAnswer: null, 
-            isCorrect: false
-        },
-        { 
-            id: 'sent-2', 
-            text: '2. It is a ____.', 
-            image: 'phonenumbertopico8.jpg', 
-            dropId: 'drop-2', 
-            correct: 'phone number' ,
-            userAnswer: null, 
-            isCorrect: false
-        },
-        { 
-            id: 'sent-3', 
-            text: '3. He is a math ____.', 
-            image: 'teachertopico8.jpg', 
-            dropId: 'drop-3', 
-            correct: 'teacher' ,
-            userAnswer: null, 
-            isCorrect: false
-        },
-        { 
-            id: 'sent-4', 
-            text: '4. It is an ____.', 
-            image: 'addressnumber2topico8.png', 
-            dropId: 'drop-4', 
-            correct: 'address number' ,
-            userAnswer: null, 
-            isCorrect: false
-        }
+    // --- Dados do Curso (Course Data) ---
+    const chapters = [
+        { id: 'topic-1', title: 'Tópico 1: Greetings & Introductions', description: 'Aprenda a dizer Olá e a se apresentar.', image: 'https://images.unsplash.com/photo-1544717297-fa95b878dee7?q=80&w=200&h=240&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+        { id: 'topic-2', title: 'Tópico 2: Basic Pronunciation (A-E)', description: 'Pratique sons e palavras essenciais em inglês.', image: 'https://images.unsplash.com/photo-1557804477-e070d55e09f5?q=80&w=200&h=240&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+        { id: 'topic-3', title: 'Tópico 3: Simple Verbs (to be)', description: 'O verbo SER e ESTAR (to be): afirmação, negação e perguntas.', image: 'https://images.unsplash.com/photo-1600861184920-569562768000?q=80&w=200&h=240&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+        { id: 'topic-4', title: 'Tópico 4: Vocabulary: Family', description: 'Aprenda e pratique o vocabulário sobre a família.', image: 'https://images.unsplash.com/photo-1542051841121-0a693c09191a?q=80&w=200&h=240&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+        { id: 'topic-5', title: 'Tópico 5: Numbers (1-100)', description: 'Domine a pronúncia e a escrita dos números.', image: 'https://i.imgur.com/G9c882O.png' }, // Imagem com as divisões para os hotspots
+        { id: 'topic-6', title: 'Tópico 6: Demonstrative Pronouns', description: 'Aprenda a usar THIS, THAT, THESE e THOSE.', image: 'https://images.unsplash.com/photo-1596707338006-03f49df74586?q=80&w=200&h=240&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+        { id: 'topic-7', title: 'Tópico 7: Vocabulary: Colors', description: 'Quiz de completar espaços sobre as cores em inglês.', image: 'https://images.unsplash.com/photo-1563303666-e822003c4f69?q=80&w=200&h=240&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+        { id: 'topic-8', title: 'Tópico 8: Simple Actions (Drag & Drop)', description: 'Relacione verbos de ação simples às imagens.', image: 'https://images.unsplash.com/photo-1581452445851-18e3c54d7e5d?q=80&w=200&h=240&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' }
     ];
 
-    const QUESTIONS = [
-        // Topics 1 to 4 
-        { id: 1, question: "What do you see in the image?", image: "numeros.jpg", options: { A: "The Alphabet", B: "Colors", C: "Numbers" }, correctAnswer: 'C', correctWord: 'Numbers', chapter: 1, title: "1. Numbers Overview" },
-        { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', correctWord: 'I am', chapter: 1, title: "2. Verb 'To Be' (I am)" },
-        
-        // Tópico 3 - Vocabulary 
-        { id: 3, 
-            question: `<h3 style="color: #333; font-size: 2em; margin-bottom: 20px; text-align: center;">Vocabulary</h3>`, 
-            options: [ 
-                { word: 'address number', example: 'My <span class="highlight">address number</span> is 34.' },
-                { word: 'student', example: 'I am a <span class="highlight">student</span>.' },
-                { word: 'friend', example: 'He is my new <span class="highlight">friend</span>, David.' },
-                { word: 'great', example: 'Mr. David is a <span class="highlight">great</span> teacher.' },
-                { word: 'phone number', example: 'My <span class="highlight">phone number</span> is: (987) 654-1234.' },
-                { word: 'American', example: 'Sofia is <span class="highlight">American</span>.' },
-                { word: 'teacher', example: 'I love my English <span class="highlight">teacher</span>.' },
-                { word: 'new', example: 'Lucas is a <span class="highlight">new</span> student, too.' },
-                { word: 'years old', example: 'I am 18 <span class="highlight">years old</span>.' },
-                { word: 'nationality', example: 'My <span class="highlight">nationality</span>? I\'m French.' }
-            ], 
-            correctAnswer: 'INFO_TABLE', chapter: 1, title: "3. Lesson Vocabulary" 
-        },
-        
-        // Tópico 4 - Pronúncia
-        { id: 4, 
-            question: "Click the play button (▶️) next to each word to listen and practice.", 
-            options: { "Address number": "addressnumber.mp3", "American": "American.mp3", "Friend": "friend.mp3", "Great": "great.mp3", "Nationality": "nationality.mp3", "New": "new.mp3", "Phone number": "phonenumber.mp3", "Student": "student.mp3", "Teacher": "teacher.mp3", "Years old": "yearsold.mp3" }, 
-            correctAnswer: 'PRONUNCIATION_SET', 
-            chapter: 1, 
-            title: "4. Word Pronunciation" 
-        },
-        
-        // Topic 5 - Interactive Bingo (Imagem com contain)
-        { id: 5, question: "Click on the '+' signs to review the number groups.", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1, title: "5. Interactive Bingo Review" },
-        
-        // Topic 6 
-        { id: 6, 
-            question: "Listen and notice the difference between -teen and -ty.", 
-            options: { "13: (Thirteen) – 30 (Thirty)": "teenety.mp3" }, 
-            correctAnswer: 'PRONUNCIATION_SET', 
-            chapter: 1,
-            title: "6. Pronunciation: Teen vs Ty"
-        },
-        
-        // Topic 7 
-        { 
-            id: 7, 
-            question: "Write the numbers in English:", 
-            correctAnswer: 'FILL_IN_BLANKS', 
-            chapter: 1, 
-            title: "7. Writing Numbers Practice",
-            data: [
-                { num: 10, correct: "ten" }, 
-                { num: 22, correct: "twenty-two" }, 
-                { num: 36, correct: "thirty-six" }, 
-                { num: 12, correct: "twelve" }, 
-                { num: 44, correct: "forty-four" }, 
-                { num: 99, correct: "ninety-nine" }, 
-                { num: 8, correct: "eight" }, 
-                { num: 57, correct: "fifty-seven" }, 
-                { num: 60, correct: "sixty" }, 
-                { num: 16, correct: "sixteen" }
-            ]
-        },
-        
-        // Topic 8 
-        { id: 8, question: "Drag the correct word to complete the sentences based on the images.", 
-            correctAnswer: 'DRAG_AND_DROP', 
-            chapter: 1, 
-            title: "8. Drag & Drop: Vocabulary",
-            data: {
-                words: DRAG_AND_DROP_WORDS,
-                sentences: DRAG_AND_DROP_SENTENCES
-            }
-        },
-        
-        // Topics 9 to 13 
-        { id: 9, question: "What is the color of the sky on a sunny day?", image: "", options: { A: "Red", B: "Yellow", C: "Blue" }, correctAnswer: 'C', correctWord: 'Blue', chapter: 1, title: "9. Quiz: Colors" },
-        { id: 10, question: "What is the English word for 'cadeira'?", image: "", options: { A: "Book", B: "Chair", C: "Table" }, correctAnswer: 'B', correctWord: 'Chair', chapter: 1, title: "10. Quiz: Objects" },
-        { id: 11, question: "Identify the color of the object in the image:", image: "apple.jpg", options: { A: "Green", B: "Red", C: "Orange" }, correctAnswer: 'B', correctWord: 'Red', chapter: 1, title: "11. Quiz: Image Color" },
-        { id: 12, question: "How do you ask 'Where are you from?'", image: "", options: { A: "What your name is?", B: "Where from you are?", C: "Where are you from?" }, correctAnswer: 'C', correctWord: 'Where are you from?', chapter: 1, title: "12. Quiz: Common Phrases" },
-        { id: 13, question: "Complete the sentence: 'I want ___ apple.'", image: "", options: { A: "a", B: "an", C: "the" }, correctAnswer: 'B', correctWord: 'an', chapter: 1, title: "13. Quiz: Articles" },
-    ];
+    // --- Conteúdo Dinâmico do Quiz (Dynamic Quiz Content) ---
+    const quizContent = {
+        'topic-1': [
+            { type: 'MCQ', question: 'Qual é a resposta mais comum para "How are you?"', image: 'https://images.unsplash.com/photo-1552254394-4b57444c1257?q=80&w=650&h=250&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', options: ['I am fine, thank you.', 'I am thirty years old.', 'My name is John.'], answer: 'I am fine, thank you.' },
+            { type: 'MCQ', question: 'Qual frase você usa ao se apresentar pela primeira vez?', image: 'https://images.unsplash.com/photo-1522204523234-8729aa6e993e?q=80&w=650&h=250&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', options: ['What is your name?', 'Nice to meet you.', 'I am from Brazil.'], answer: 'Nice to meet you.' }
+        ],
+        'topic-2': [
+            { type: 'PRONUNCIATION', question: 'Pratique a pronúncia da palavra:', image: 'https://images.unsplash.com/photo-1534000332856-11f2355523a7?q=80&w=650&h=250&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', words: ['Apple', 'Book', 'Cat', 'Dog', 'Elephant'], audioSources: ['t2-w1.mp3', 't2-w2.mp3', 't2-w3.mp3', 't2-w4.mp3', 't2-w5.mp3'] }
+        ],
+        'topic-3': [
+            { type: 'VOCABULARY_TENSE', question: 'Observe as conjugações do verbo "To Be" (Ser/Estar) no presente:', image: 'https://images.unsplash.com/photo-1498243691581-b145c3f5487f?q=80&w=650&h=250&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', sentences: [
+                { word: 'I am', pt: 'Eu sou/estou', example: 'I <span class="highlight">am</span> happy.' },
+                { word: 'You are', pt: 'Você é/está', example: 'You <span class="highlight">are</span> a student.' },
+                { word: 'He/She/It is', pt: 'Ele/Ela é/está', example: 'She <span class="highlight">is</span> smart.' },
+                { word: 'We are', pt: 'Nós somos/estamos', example: 'We <span class="highlight">are</span> friends.' },
+                { word: 'They are', pt: 'Eles/Elas são/estão', example: 'They <span class="highlight">are</span> at home.' }
+            ]}
+        ],
+        'topic-4': [
+            { type: 'MCQ', question: 'Como você chama o pai do seu pai (avô)?', image: 'https://images.unsplash.com/photo-1536761783857-e14b223c727d?q=80&w=650&h=250&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', options: ['Mother', 'Grandfather', 'Brother'], answer: 'Grandfather' },
+            { type: 'MCQ', question: 'Qual é a palavra para irmão ou irmã (em geral)?', image: 'https://images.unsplash.com/photo-1542050302838-8fa1947b971a?q=80&w=650&h=250&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', options: ['Uncle', 'Children', 'Siblings'], answer: 'Siblings' }
+        ],
+        'topic-5': [
+            { type: 'INTERACTIVE_IMAGE', question: 'Clique nos "+" para ver e praticar os números. Pense na pronúncia!', image: 'https://i.imgur.com/G9c882O.png' }
+        ],
+        'topic-6': [
+            { type: 'COMPARISON', question: 'Compare os pronomes demonstrativos:', data: [
+                { title: 'THIS (Este/Esta)', usage: 'Singular, perto', example: 'This is my pen.' },
+                { title: 'THAT (Aquele/Aquela)', usage: 'Singular, longe', example: 'That is your car.' },
+                { title: 'THESE (Estes/Estas)', usage: 'Plural, perto', example: 'These are my books.' },
+                { title: 'THOSE (Aqueles/Aquelas)', usage: 'Plural, longe', example: 'Those are your keys.' }
+            ]},
+            { type: 'MCQ', question: 'Qual pronome usar para algo singular e perto de você?', image: 'https://images.unsplash.com/photo-1517402127161-0d33e9b11925?q=80&w=650&h=250&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', options: ['That', 'This', 'These'], answer: 'This' }
+        ],
+        'topic-7': [
+            { type: 'FILL_IN_BLANKS', question: 'Escreva a cor correta em inglês para os números (sem acentos e minúsculo):', image: 'https://images.unsplash.com/photo-1563303666-e822003c4f69?q=80&w=650&h=250&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', items: [
+                { number: 1, pt: 'Vermelho', answer: 'red' },
+                { number: 2, pt: 'Azul', answer: 'blue' },
+                { number: 3, pt: 'Amarelo', answer: 'yellow' },
+                { number: 4, pt: 'Verde', answer: 'green' },
+                { number: 5, pt: 'Branco', answer: 'white' }
+            ]}
+        ],
+        'topic-8': [
+            { type: 'DRAG_AND_DROP', question: 'Arraste o verbo de ação correto para completar a frase, de acordo com a imagem:', image: 'NO_IMAGE', sentences: [
+                { id: 1, text: 'The boy is... a book.', answer: 'reading' },
+                { id: 2, text: 'The girl is... to music.', answer: 'listening' },
+                { id: 3, text: 'The dog is... in the park.', answer: 'running' },
+                { id: 4, text: 'The cat is... on the chair.', answer: 'sleeping' }
+            ], words: ['reading', 'listening', 'running', 'sleeping'], images: [
+                { id: 1, src: 'https://images.unsplash.com/photo-1456513080510-7bf3c8418296?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+                { id: 2, src: 'https://images.unsplash.com/photo-1510487059174-8b6038379c45?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+                { id: 3, src: 'https://images.unsplash.com/photo-1544941943-4e6f432729e8?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+                { id: 4, src: 'https://images.unsplash.com/photo-1616641883387-a2f260492822?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' }
+            ]}
+        ]
+    };
+
+    // --- Variáveis de Estado (State Variables) ---
+    let currentTopicId = null;
+    let currentQuizIndex = 0;
     
-    let currentQuestionIndex = 0;
-    let lessonQuestions = []; 
-    let currentChapter = 1; 
-    let selectedOption = null; 
-    
-    // Variáveis que você já definiu (DOM elements)
+    // --- Referências de Elementos (Element References) ---
     const homeScreen = document.getElementById('home-screen');
     const lessonScreen = document.getElementById('lesson-screen');
-    const optionsContainer = document.getElementById('options-container');
-    const feedback = document.getElementById('feedback');
-    const nextBtn = document.getElementById('next-btn');
-    const backBtn = document.getElementById('back-btn');
-    const questionText = document.getElementById('question-text');
-    const questionImage = document.getElementById('question-image');
-    const progressIndicator = document.getElementById('progress-indicator');
-    
-    const sideMenu = document.getElementById('side-menu'); 
-    const navButtonsContainer = document.querySelector('.nav-buttons'); 
-    const menuToggle = document.querySelector('.menu-toggle'); 
-    
-    let answerChecked = false; 
-    
-    // RENDER CHAPTER CARDS ON HOME SCREEN
     const chapterGrid = document.querySelector('.chapter-grid');
-    for (let i = 1; i <= 24; i++) {
-        const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
-        let cardTopicName = i === 1 ? 'Basic Foundations (13 Topics Ready!)' : `Module ${i} Content`; 
-        chapterGrid.innerHTML += `
-            <div class="chapter-card" id="card-${i}">
-                <div class="card-background-image" style="background-image: url('${bgUrl}');"></div>
-                <div class="card-text-area">
-                    <div class="text-content-wrapper">
-                        <h3>Beginner ${i}</h3>
-                        <p>${cardTopicName}</p> 
-                    </div>
-                    <button class="start-button" onclick="startLesson(${i}); event.stopPropagation();">Start</button>
-                </div>
-            </div>
+    const quizQuestionContainer = document.querySelector('.quiz-question');
+    const navButtons = document.querySelector('.nav-buttons');
+    const progressIndicator = document.getElementById('progress-indicator');
+    const menuToggle = document.querySelector('.menu-toggle');
+    const sideMenu = document.querySelector('.side-menu');
+
+
+    // --- Funções de Inicialização e Navegação (Core Functions) ---
+
+    function createCard(chapter) {
+        const card = document.createElement('div');
+        card.className = 'chapter-card';
+        card.setAttribute('data-topic-id', chapter.id);
+        
+        const imageDiv = document.createElement('div');
+        imageDiv.className = 'card-background-image';
+        imageDiv.style.backgroundImage = `url('${chapter.image}')`;
+        
+        const textArea = document.createElement('div');
+        textArea.className = 'card-text-area';
+        
+        const contentWrapper = document.createElement('div');
+        contentWrapper.className = 'text-content-wrapper';
+        contentWrapper.innerHTML = `
+            <h3>${chapter.title}</h3>
+            <p>${chapter.description}</p>
+        `;
+        
+        const button = document.createElement('button');
+        button.className = 'start-button';
+        button.textContent = 'Começar';
+        
+        textArea.appendChild(contentWrapper);
+        textArea.appendChild(button);
+        card.appendChild(imageDiv);
+        card.appendChild(textArea);
+        
+        card.addEventListener('click', () => startLesson(chapter.id));
+        return card;
+    }
+
+    function renderChapterGrid() {
+        chapterGrid.innerHTML = '';
+        chapters.forEach(chapter => {
+            chapterGrid.appendChild(createCard(chapter));
+        });
+        renderSideMenu();
+    }
+
+    function renderSideMenu() {
+        const menuContent = document.querySelector('.side-menu-content');
+        if (!menuContent) {
+            const menuDiv = document.createElement('div');
+            menuDiv.className = 'side-menu-content';
+            sideMenu.appendChild(menuDiv);
+        }
+        document.querySelector('.side-menu-content').innerHTML = `
+            <a href="#" class="close-btn" onclick="toggleMenu()">&times;</a>
+            <h3>Conteúdo do Curso</h3>
+            ${chapters.map(chapter => `
+                <a href="#" onclick="navigateToTopic('${chapter.id}')">${chapter.title.split(': ')[1]}</a>
+            `).join('')}
         `;
     }
 
-    // --- GENERAL NAVIGATION AND LOADING FUNCTIONS ---
-    function openNav() { sideMenu.classList.add('open'); }
-    function closeNav() { sideMenu.classList.remove('open'); }
-    
-    window.onclick = function(event) {
-        if (sideMenu.classList.contains('open') && !event.target.closest('.side-menu') && !event.target.closest('.menu-toggle')) {
-            closeNav();
-        }
-        const modal = document.getElementById('numberModal');
-        if (event.target == modal) { 
-            closeNumberModal(); 
-        }
-    }
-    
-    function loadQuestionFromMenu(index) { closeNav(); currentQuestionIndex = index; loadQuestion(lessonQuestions[currentQuestionIndex]); }
-    function populateMenu() {
-        sideMenu.querySelectorAll('a:not(.close-btn)').forEach(a => a.remove()); 
-        lessonQuestions.forEach((q, index) => {
-            const link = document.createElement('a');
-            link.textContent = q.title; 
-            link.href = `javascript:void(0)`;
-            link.onclick = () => loadQuestionFromMenu(index);
-            sideMenu.appendChild(link);
-        });
+    function toggleMenu() {
+        sideMenu.classList.toggle('open');
     }
 
-    function startLesson(chapterNumber) {
-        currentChapter = chapterNumber;
-        lessonQuestions = QUESTIONS.filter(q => q.chapter === chapterNumber);
+    function navigateToTopic(topicId) {
+        startLesson(topicId, 0); 
+        toggleMenu(); 
+    }
 
-        if (lessonQuestions.length === 0) {
-            alert(`The Beginner ${chapterNumber} level does not have content yet.`);
-            return;
-        }
-
+    function startLesson(topicId, startIndex = 0) {
+        currentTopicId = topicId;
+        currentQuizIndex = startIndex;
         homeScreen.style.display = 'none';
         lessonScreen.style.display = 'block';
-        navButtonsContainer.style.display = 'flex'; 
-        menuToggle.style.display = 'block'; 
-        
-        populateMenu(); 
-        
-        currentQuestionIndex = 0;
-        loadQuestion(lessonQuestions[currentQuestionIndex]);
+        navButtons.style.display = 'flex';
+        menuToggle.style.display = 'block';
+        displayQuizContent(currentTopicId);
+    }
+
+    function navigate(direction) {
+        const totalItems = quizContent[currentTopicId].length;
+        let newIndex = currentQuizIndex + direction;
+
+        if (newIndex >= 0 && newIndex < totalItems) {
+            currentQuizIndex = newIndex;
+            displayQuizContent(currentTopicId);
+        } else if (newIndex >= totalItems) {
+            alert('Parabéns! Você concluiu este tópico.');
+            goHome();
+        } else if (newIndex < 0) {
+            goHome(); 
+        }
     }
 
     function goHome() {
         homeScreen.style.display = 'block';
         lessonScreen.style.display = 'none';
-        navButtonsContainer.style.display = 'none'; 
-        menuToggle.style.display = 'none'; 
-        closeNav(); 
+        navButtons.style.display = 'none';
+        menuToggle.style.display = 'none';
+        currentTopicId = null;
+        currentQuizIndex = 0;
+        document.getElementById('side-menu').classList.remove('open');
     }
 
-    function goNext() {
-        const currentQ = lessonQuestions[currentQuestionIndex];
-        
-        // 1. LÓGICA DE CHECK/AVANÇO PARA MÚLTIPLA ESCOLHA
-        if (currentQ.correctAnswer.length === 1) {
-            if (selectedOption) {
-                // Se uma opção foi selecionada: faz o check
-                if (!answerChecked) {
-                    checkAnswer(selectedOption, currentQ.correctAnswer, currentQ.options);
-                    answerChecked = true;
-                    // Fica na tela para o usuário ver o feedback antes de avançar
-                    return; 
-                } else {
-                    // Se já fez o check, avança
-                    currentQuestionIndex++;
-                }
-            } else {
-                // Se não selecionou nada E clicou em Next: pula a questão.
-                currentQuestionIndex++;
-            }
-        
-        // 2. LÓGICA DE CHECK/AVANÇO PARA EXERCÍCIOS INTERATIVOS
-        } else if (['FILL_IN_BLANKS', 'DRAG_AND_DROP'].includes(currentQ.correctAnswer)) {
-            if (!answerChecked) {
-                // Check obrigatório para exercícios interativos
-                if (currentQ.correctAnswer === 'FILL_IN_BLANKS') {
-                    checkFillInBlanks(currentQ);
-                } else if (currentQ.correctAnswer === 'DRAG_AND_DROP') {
-                    checkDragAndDrop(currentQ);
-                }
-                answerChecked = true; 
-                return; // Re-renderiza a correção, mas não avança.
-            } else {
-                // Se já fez o check, avança
-                currentQuestionIndex++;
-            }
-        
-        // 3. LÓGICA DE AVANÇO PARA SLIDES INFORMATIVOS/PRONÚNCIA
-        } else {
-            currentQuestionIndex++;
-        }
 
-        // FIM DO MÓDULO OU PRÓXIMA PERGUNTA
-        if (currentQuestionIndex < lessonQuestions.length) {
-            loadQuestion(lessonQuestions[currentQuestionIndex]);
-        } else {
-            // End of module
-            alert(`Congratulations! You have completed the Beginner ${currentChapter} level.`);
-            goHome();
-        }
+    // --- Funções Específicas de Renderização de Conteúdo (Content Renderers) ---
+
+    function displayMultipleChoice(item) {
+        
+        let optionsHTML = item.options.map(option => `
+            <div class="option" onclick="checkMultipleChoice('${item.answer}', '${option}', this)">${option}</div>
+        `).join('');
+        
+        // Renderiza a imagem primeiro, e o resto do conteúdo depois, mantendo a ordem
+        quizQuestionContainer.innerHTML = `
+            <img id="question-image" src="${item.image}" alt="Lesson Image">
+            <p id="question-text">${item.question}</p>
+            ${optionsHTML}
+        `;
+        // Reatribui o ID para a imagem recém-criada (necessário para o CSS de imagem)
+        document.getElementById('question-image').id = 'question-image-temp';
+        document.getElementById('question-image-temp').id = 'question-image'; 
     }
     
-    function backQuestion() {
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex--;
-            loadQuestion(lessonQuestions[currentQuestionIndex]);
-        } else {
-            goHome();
-        }
+    function checkMultipleChoice(correctAnswer, selectedOption, element) {
+        const options = quizQuestionContainer.querySelectorAll('.option');
+        options.forEach(opt => {
+            opt.onclick = null; 
+            if (opt.textContent === correctAnswer) {
+                opt.classList.add('correct');
+            } else if (opt === element) {
+                opt.classList.add('incorrect');
+            }
+        });
+
+        // Adiciona um pequeno atraso para feedback visual antes de avançar
+        setTimeout(() => navigate(1), 2500);
     }
 
-    // --- FUNÇÕES AUXILIARES DE CARREGAMENTO ---
-
-    function loadQuizSlide(q) {
-        optionsContainer.style.display = 'block';
-        optionsContainer.innerHTML = '';
-        selectedOption = null; 
+    function displayPronunciation(item) {
         
-        for (const [key, value] of Object.entries(q.options)) {
-            const optionDiv = document.createElement('div');
-            optionDiv.className = 'option';
-            optionDiv.innerHTML = `${key}. ${value}`;
-            optionDiv.setAttribute('data-key', key);
-            optionDiv.onclick = (e) => {
-                if (answerChecked) return;
-                
-                // Limpa seleção anterior
-                Array.from(optionsContainer.children).forEach(div => div.classList.remove('selected'));
-                
-                // Marca nova seleção
-                optionDiv.classList.add('selected');
-                selectedOption = optionDiv;
-                
-                // NOVO: Remove feedback interativo
-                feedback.innerHTML = ''; 
-            };
-            optionsContainer.appendChild(optionDiv);
-        }
-    }
+        let listHTML = item.words.map((word, index) => `
+            <li>
+                <span class="word-to-practice">${word}</span>
+                <button class="play-button" onclick="playAudio('audio/${item.audioSources[index]}')">▶️</button>
+            </li>
+        `).join('');
 
-    // Função para carregar Tabela de Informação (Tópico 3)
-    function loadInfoTable(q) {
-        optionsContainer.style.display = 'block';
-        optionsContainer.innerHTML = `<div class="lesson-vocabulary"></div>`; 
-        const container = optionsContainer.querySelector('.lesson-vocabulary');
-
-        const tableHTML = `
-            <table class="info-table">
-                <tbody>
-                    ${q.options.map(item => `
-                        <tr>
-                            <td class="sentence-cell">${item.example}</td>
-                        </tr>
-                    `).join('')}
-                </tbody>
-            </table>
+        const contentHTML = `
+            <img id="question-image" src="${item.image}" alt="Lesson Image">
+            <p id="question-text">${item.question}</p>
+            <div id="pronunciation-container">
+                <audio id="audio-player" src=""></audio>
+                <ul id="pronunciation-list">${listHTML}</ul>
+            </div>
         `;
-
-        container.innerHTML = q.question + tableHTML; 
-        questionText.style.display = 'none'; 
-        optionsContainer.style.display = 'block';
+        
+        quizQuestionContainer.innerHTML = contentHTML;
+        document.getElementById('question-image').id = 'question-image-temp';
+        document.getElementById('question-image-temp').id = 'question-image';
+    }
+    
+    function playAudio(src) {
+        const audioPlayer = document.getElementById('audio-player');
+        if (audioPlayer) {
+            // Em um ambiente real, você carregaria o arquivo de áudio
+            audioPlayer.src = src; 
+            audioPlayer.play();
+        } else {
+             console.log(`Simulando áudio: ${src}`);
+             alert(`Simulando áudio da palavra. Você precisaria de um arquivo ${src} real.`);
+        }
     }
 
-
-    // Tópico 4 e 6 - Pronunciation Slide 
-    function loadPronunciationSlide(q) {
-        document.getElementById('pronunciation-container').style.display = 'flex';
-        questionText.innerHTML = ''; 
-        questionText.style.display = 'none';
-        optionsContainer.style.display = 'none';
-
-        const list = document.getElementById('pronunciation-list');
-        list.innerHTML = '';
+    function displayVocabularyTense(item) {
         
-        const audioPlayer = document.getElementById('audio-player-controls');
-        audioPlayer.style.display = (q.id === 4) ? 'none' : 'block';
-        audioPlayer.src = ''; 
-        
-        document.getElementById('comparison-table-container').innerHTML = ''; 
-
-        if (q.id === 6) {
-            const tableContainer = document.getElementById('comparison-table-container');
-            tableContainer.innerHTML = `
-                <table class="comparison-table">
-                    <thead>
-                        <tr>
-                            <th>-TEEN</th>
-                            <th>-TY</th>
-                        </tr>
-                    </thead>
+        let tableHTML = `
+            <div class="lesson-vocabulary">
+                <h3>Conjugação de To Be (Presente)</h3>
+                <table class="info-table">
                     <tbody>
-                        <tr><td>Thirteen (13)</td><td>Thirty (30)</td></tr>
-                        <tr><td>Fourteen (14)</td><td>Forty (40)</td></tr>
-                        <tr><td>Fifteen (15)</td><td>Fifty (50)</td></tr>
-                        <tr><td>Sixteen (16)</td><td>Sixty (60)</td></tr>
-                        <tr><td>Seventeen (17)</td><td>Seventy (70)</td></tr>
-                        <tr><td>Eighteen (18)</td><td>Eighty (80)</td></tr>
-                        <tr><td>Nineteen (19)</td><td>Ninety (90)</td></tr>
+                        ${item.sentences.map(s => `
+                            <tr>
+                                <td>${s.word}</td>
+                                <td>${s.pt}</td>
+                                <td class="sentence-cell">${s.example}</td>
+                            </tr>
+                        `).join('')}
                     </tbody>
                 </table>
-            `;
-            document.getElementById('current-instruction').textContent = q.question;
-            audioPlayer.src = GITHUB_RAW_BASE_URL + q.options[Object.keys(q.options)[0]];
-        } else {
-            document.getElementById('current-instruction').textContent = q.question;
-            for (const [word, audioFile] of Object.entries(q.options)) {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <span>${word}</span>
-                    <button class="play-button" onclick="playAudio('${GITHUB_RAW_BASE_URL}${audioFile}')">▶️</button>
-                `;
-                list.appendChild(li);
-            }
-        }
+            </div>
+        `;
+
+        quizQuestionContainer.innerHTML = `
+            <img id="question-image" src="${item.image}" alt="Lesson Image">
+            <p id="question-text">${item.question}</p>
+            ${tableHTML}
+        `;
+        document.getElementById('question-image').id = 'question-image-temp';
+        document.getElementById('question-image-temp').id = 'question-image'; 
+    }
+    
+    function displayInteractiveImage(item) {
+        
+        // A imagem já está no HTML base (na div quiz-question), só precisamos definir a src
+        // e recolocar os hotspots após a limpeza
+        
+        quizQuestionContainer.innerHTML = `
+            <img id="question-image" src="${item.image}" alt="Lesson Image" class="interactive-image">
+            <p id="question-text" style="display: block;">${item.question}</p>
+        `;
+        
+        // Reinsere os hotspots (existem no HTML base)
+        const hotspot1 = document.getElementById('hotspot-1');
+        const hotspot2 = document.getElementById('hotspot-2');
+        const hotspot3 = document.getElementById('hotspot-3');
+        const hotspot4 = document.getElementById('hotspot-4');
+        
+        quizQuestionContainer.appendChild(hotspot1);
+        quizQuestionContainer.appendChild(hotspot2);
+        quizQuestionContainer.appendChild(hotspot3);
+        quizQuestionContainer.appendChild(hotspot4);
+        
+        showHotspots();
+    }
+    
+    function showHotspots() {
+        document.getElementById('hotspot-1').style.display = 'flex';
+        document.getElementById('hotspot-2').style.display = 'flex';
+        document.getElementById('hotspot-3').style.display = 'flex';
+        document.getElementById('hotspot-4').style.display = 'flex';
     }
 
-    // Função para tocar áudio individual (usado no Tópico 4)
-    function playAudio(src) {
-        const tempAudio = new Audio(src);
-        tempAudio.play();
+    function hideHotspots() {
+        const hotspots = document.querySelectorAll('.hotspot');
+        hotspots.forEach(h => h.style.display = 'none');
     }
 
-    function checkAnswer(selectedDiv, correctAnswerKey, options) {
-        if (answerChecked) return; 
-        
-        const correctWord = options[correctAnswerKey]; 
-        
-        // Limpa todas as opções
-        Array.from(optionsContainer.children).forEach(div => {
-            div.style.pointerEvents = 'none'; 
-            div.classList.remove('selected', 'correct', 'incorrect');
-        });
+    // Modal para Tópico 5 (Números)
+    const numbersData = {
+        'one-to-ten': [{ num: 1, word: 'One' }, { num: 2, word: 'Two' }, { num: 3, word: 'Three' }, { num: 4, word: 'Four' }, { num: 5, word: 'Five' }, { num: 6, word: 'Six' }, { num: 7, word: 'Seven' }, { num: 8, word: 'Eight' }, { num: 9, word: 'Nine' }, { num: 10, word: 'Ten' }],
+        'tens': [{ num: 10, word: 'Ten' }, { num: 20, word: 'Twenty' }, { num: 30, word: 'Thirty' }, { num: 40, word: 'Forty' }, { num: 50, word: 'Fifty' }, { num: 60, word: 'Sixty' }, { num: 70, word: 'Seventy' }, { num: 80, word: 'Eighty' }, { num: 90, word: 'Ninety' }, { num: 100, word: 'One hundred' }],
+        'teens': [{ num: 11, word: 'Eleven' }, { num: 12, word: 'Twelve' }, { num: 13, word: 'Thirteen' }, { num: 14, word: 'Fourteen' }, { num: 15, word: 'Fifteen' }, { num: 16, word: 'Sixteen' }, { num: 17, word: 'Seventeen' }, { num: 18, word: 'Eighteen' }, { num: 19, word: 'Nineteen' }],
+        'combined': [{ num: 21, word: 'Twenty-one' }, { num: 35, word: 'Thirty-five' }, { num: 48, word: 'Forty-eight' }, { num: 59, word: 'Fifty-nine' }, { num: 73, word: 'Seventy-three' }, { num: 99, word: 'Ninety-nine' }]
+    };
 
-        // Marca a opção correta e a selecionada
-        Array.from(optionsContainer.children).forEach(div => {
-            const optionKey = div.getAttribute('data-key'); 
-            if (optionKey === correctAnswerKey) {
-                div.classList.add('correct');
-            } else if (selectedDiv && div === selectedDiv) {
-                div.classList.add('incorrect');
-            }
-        });
-        
-        if (selectedDiv && selectedDiv.getAttribute('data-key') === correctAnswerKey) {
-            feedback.innerHTML = `<span style="color: #28a745;">**Correct!** Click Next to advance.</span>`;
-        } else {
-            feedback.innerHTML = `<span style="color: #dc3545;">**Incorrect.** The correct answer is: **${correctWord}**. Click Next.</span>`;
-            Array.from(optionsContainer.children).forEach(div => {
-                const optionKey = div.getAttribute('data-key'); 
-                if (optionKey === correctAnswerKey) {
-                    div.classList.add('correct');
-                }
-            });
-        }
-        answerChecked = true;
-    }
-
-    // O código para o Tópico 5 (Interactive Bingo Review) - Modal
-    function openNumberModal(group) {
+    function openNumberModal(category) {
         const modal = document.getElementById('numberModal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalBody = document.getElementById('modal-body');
-        modalBody.innerHTML = '';
-
-        let title = '';
-        let numbers = [];
+        const modalContent = document.querySelector('#numberModal .modal-content-wrapper');
+        const data = numbersData[category];
         
-        // NOVO FORMATO: [Escrita, Número]
-        switch (group) {
-            case 'one-to-ten':
-                title = 'Numbers 1 - 10';
-                numbers = [['One', '1'], ['Two', '2'], ['Three', '3'], ['Four', '4'], ['Five', '5'], ['Six', '6'], ['Seven', '7'], ['Eight', '8'], ['Nine', '9'], ['Ten', '10']];
-                break;
-            case 'tens':
-                title = 'Tens (10, 20, 30...)';
-                numbers = [['Ten', '10'], ['Twenty', '20'], ['Thirty', '30'], ['Forty', '40'], ['Fifty', '50'], ['Sixty', '60'], ['Seventy', '70'], ['Eighty', '80'], ['Ninety', '90']];
-                break;
-            case 'teens':
-                title = 'Teens (13 - 19)';
-                numbers = [['Thirteen', '13'], ['Fourteen', '14'], ['Fifteen', '15'], ['Sixteen', '16'], ['Seventeen', '17'], ['Eighteen', '18'], ['Nineteen', '19']];
-                break;
-            case 'combined':
-                title = 'Combined (1-99) - Examples';
-                numbers = [['Twenty-one', '21'], ['Thirty-five', '35'], ['Forty-eight', '48'], ['Sixty-three', '63'], ['Eighty-nine', '89'], ['Ninety-nine', '99']];
-                break;
-        }
+        let title;
+        if (category === 'one-to-ten') title = 'Números (1-10)';
+        else if (category === 'tens') title = 'Dezenas (10-100)';
+        else if (category === 'teens') title = 'Números (11-19)';
+        else if (category === 'combined') title = 'Números Compostos';
 
-        modalTitle.textContent = title;
-        
-        const tableHTML = `
+        let tableHTML = `
+            <h3>${title}</h3>
             <table class="info-table">
-                <thead>
-                    <tr>
-                        <th>Word</th>
-                        <th>Number</th>
-                    </tr>
-                </thead>
                 <tbody>
-                    ${numbers.map(item => `
+                    ${data.map(item => `
                         <tr>
-                            <td>${item[0]}</td>
-                            <td>${item[1]}</td>
+                            <td>${item.num}</td>
+                            <td>${item.word}</td>
                         </tr>
                     `).join('')}
                 </tbody>
             </table>
         `;
 
-        modalBody.innerHTML = tableHTML;
+        modalContent.innerHTML = `
+            <span class="close-button" onclick="closeNumberModal()">&times;</span>
+            ${tableHTML}
+        `;
         
         modal.style.display = 'flex';
-        setTimeout(() => modal.classList.add('show-modal'), 10);
+        setTimeout(() => modal.classList.add('show-modal'), 10); 
     }
 
     function closeNumberModal() {
         const modal = document.getElementById('numberModal');
-        
         modal.classList.remove('show-modal');
-        
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 310);
+        setTimeout(() => modal.style.display = 'none', 300); 
     }
 
-    // O código para o Tópico 7 (FILL_IN_BLANKS)
-    function loadFillInBlanks(q) {
-        optionsContainer.style.display = 'block';
-        optionsContainer.innerHTML = `<div class="fill-in-blanks-container"></div>`;
+    function displayComparison(item) {
         
-        const container = optionsContainer.querySelector('.fill-in-blanks-container');
+        let tableHTML = `
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Pronome</th>
+                        <th>Uso</th>
+                        <th>Exemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${item.data.map(row => `
+                        <tr>
+                            <td><strong>${row.title}</strong></td>
+                            <td>${row.usage}</td>
+                            <td><em>${row.example}</em></td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
         
-        q.data.forEach((item, index) => {
-            const group = document.createElement('div');
-            group.className = 'number-input-group';
-            
-            const span = document.createElement('span');
-            span.textContent = item.num;
-            
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.id = `input-${index}`;
-            input.placeholder = 'Write the word...';
-            
-            const resultDiv = document.createElement('div');
+        // Como este quiz é o segundo do Tópico 6, pegamos a imagem do primeiro item para o card
+        const topicImage = chapters.find(c => c.id === currentTopicId).image;
+
+        quizQuestionContainer.innerHTML = `
+            <img id="question-image" src="${topicImage}" alt="Lesson Image"> 
+            <p id="question-text">${item.question}</p>
+            ${tableHTML}
+        `;
+        document.getElementById('question-image').id = 'question-image-temp';
+        document.getElementById('question-image-temp').id = 'question-image'; 
+    }
+    
+    function displayFillInBlanks(item) {
+        
+        let inputsHTML = item.items.map(i => `
+            <div class="number-input-group">
+                <span>${i.pt} (${i.number}):</span>
+                <input type="text" data-answer="${i.answer}" oninput="checkFillInBlanks(this)">
+                <div class="number-result" id="result-${i.number}"></div>
+            </div>
+        `).join('');
+
+        const buttonHTML = `<button class="start-button" style="opacity: 1; transform: scale(1); margin-top: 20px;" onclick="checkAllFillInBlanks()">Corrigir Tudo</button>`;
+
+        quizQuestionContainer.innerHTML = `
+            <img id="question-image" src="${item.image}" alt="Lesson Image">
+            <p id="question-text">${item.question}</p>
+            <div class="fill-in-blanks-container">${inputsHTML}</div>
+            ${buttonHTML}
+        `;
+        document.getElementById('question-image').id = 'question-image-temp';
+        document.getElementById('question-image-temp').id = 'question-image'; 
+    }
+
+    function checkFillInBlanks(inputElement) {
+        const userAnswer = inputElement.value.trim().toLowerCase();
+        const correctAnswer = inputElement.getAttribute('data-answer').toLowerCase();
+        const resultDiv = inputElement.nextElementSibling; 
+
+        if (userAnswer === correctAnswer) {
+            resultDiv.textContent = 'Correto!';
+            resultDiv.className = 'number-result result-correct';
+            inputElement.style.borderColor = '#28a745';
+        } else if (userAnswer.length > 0) {
+            resultDiv.textContent = 'Incorreto, tente novamente.';
+            resultDiv.className = 'number-result result-incorrect';
+            inputElement.style.borderColor = '#dc3545';
+        } else {
+            resultDiv.textContent = '';
             resultDiv.className = 'number-result';
-            resultDiv.id = `result-${index}`;
-            
-            group.appendChild(span);
-            group.appendChild(input);
-            group.appendChild(resultDiv);
-            container.appendChild(group);
-        });
-
-        // NOVO: Remove feedback interativo
-        feedback.innerHTML = '';
-        
-        optionsContainer.style.display = 'flex';
-        optionsContainer.style.justifyContent = 'center';
+            inputElement.style.borderColor = '#ccc';
+        }
     }
 
-    function checkFillInBlanks(q) {
+    function checkAllFillInBlanks() {
+        const inputs = quizQuestionContainer.querySelectorAll('.number-input-group input');
         let allCorrect = true;
-        
-        q.data.forEach((item, index) => {
-            const input = document.getElementById(`input-${index}`);
-            const resultDiv = document.getElementById(`result-${index}`);
-            const userAnswer = input.value.trim().toLowerCase().replace(/[^a-z-]/g, ''); 
-            const correctAnswer = item.correct.toLowerCase().replace(/[^a-z-]/g, ''); 
 
-            input.disabled = true;
-            
+        inputs.forEach(inputElement => {
+            const userAnswer = inputElement.value.trim().toLowerCase();
+            const correctAnswer = inputElement.getAttribute('data-answer').toLowerCase();
+            const resultDiv = inputElement.nextElementSibling;
+
             if (userAnswer === correctAnswer) {
-                resultDiv.innerHTML = 'Correct!';
+                resultDiv.textContent = 'Correto!';
                 resultDiv.className = 'number-result result-correct';
+                inputElement.disabled = true;
+                inputElement.style.borderColor = '#28a745';
             } else {
-                resultDiv.innerHTML = `Incorrect. Correct answer: <strong>${item.correct}</strong>`;
+                resultDiv.textContent = `A resposta correta é: ${correctAnswer}`;
                 resultDiv.className = 'number-result result-incorrect';
+                inputElement.style.borderColor = '#dc3545';
                 allCorrect = false;
             }
         });
-        
+
         if (allCorrect) {
-            feedback.innerHTML = '<span style="color: #28a745; font-size: 1.2em;">All answers are **correct**! Click **Next**.</span>';
+            setTimeout(() => navigate(1), 2000); 
         } else {
-            feedback.innerHTML = '<span style="color: #dc3545; font-size: 1.2em;">Review the incorrect answers and click **Next**.</span>';
+            alert('Ainda há erros. Por favor, revise as cores.');
         }
     }
 
-    // O código para o Tópico 8 (DRAG_AND_DROP)
-    let currentDraggedElement = null;
-
-    function loadDragAndDrop(q) {
-        optionsContainer.style.display = 'block';
-        optionsContainer.innerHTML = '';
+    function displayDragAndDrop(item) {
         
-        // Reset the data state for redrawing
-        q.data.sentences.forEach(s => {
-            s.userAnswer = null;
-            s.isCorrect = false;
-        });
+        // 1. Galeria de Imagens
+        const imageGalleryHTML = `<div class="image-gallery-container">${item.images.map(img => `
+            <div class="gallery-image-wrapper">
+                <span class="image-number-label">${img.id}</span>
+                <img src="${img.src}" alt="Image for action ${img.id}">
+            </div>
+        `).join('')}</div>`;
 
-        const mainContainer = document.createElement('div');
-        mainContainer.className = 'drag-drop-overall-container';
+        // 2. Sentenças com Drop Zones
+        const sentenceListHTML = `<div class="sentence-list-container">${item.sentences.map(sentence => `
+            <p class="sentence-item">
+                <span class="sentence-text-before">(${sentence.id}) ${sentence.text.split('...')[0]}</span>
+                <div class="drop-zone" data-target-answer="${sentence.answer}" 
+                     ondragover="dragOver(event)" ondrop="drop(event)" ondragleave="dragLeave(event)"></div>
+                <span class="sentence-text-after">${sentence.text.split('...')[1]}</span>
+            </p>
+        `).join('')}</div>`;
 
-        // 1. Image Gallery (Left/Top)
-        const imageGallery = document.createElement('div');
-        imageGallery.className = 'image-gallery-container';
+        // 3. Palavras arrastáveis
+        const wordsHTML = `<div class="draggable-words-container">${item.words.map(word => `
+            <div class="draggable-word" draggable="true" ondragstart="dragStart(event)" data-word="${word}">${word}</div>
+        `).join('')}</div>`;
         
-        q.data.sentences.forEach((sent, index) => {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'gallery-image-wrapper';
-            wrapper.innerHTML = `
-                <span class="image-number-label">${index + 1}</span>
-                <img src="${GITHUB_RAW_BASE_URL}${sent.image}" alt="Image for sentence ${index + 1}">
-            `;
-            imageGallery.appendChild(wrapper);
-        });
-        mainContainer.appendChild(imageGallery);
+        const buttonHTML = `<button class="start-button" style="opacity: 1; transform: scale(1); margin-top: 20px;" onclick="checkDragAndDropAnswers()">Corrigir</button>`;
 
-        // 2. Sentence List (Middle)
-        const sentenceList = document.createElement('div');
-        sentenceList.className = 'sentence-list-container';
-        
-        q.data.sentences.forEach(sent => {
-            const item = document.createElement('p');
-            item.className = 'sentence-item';
-            item.innerHTML = `
-                <span class="sentence-text-before">${sent.text.split('____')[0]}</span>
-                <div class="drop-zone" id="${sent.dropId}" data-correct-word="${sent.correct}" data-sentence-id="${sent.id}"></div>
-                <span class="sentence-text-after">${sent.text.split('____')[1] || ''}</span>
-            `;
-            sentenceList.appendChild(item);
-        });
-        mainContainer.appendChild(sentenceList);
-        
-        // 3. Draggable Words (Bottom)
-        const wordsContainer = document.createElement('div');
-        wordsContainer.className = 'draggable-words-container';
 
-        q.data.words.forEach(word => {
-            const draggable = document.createElement('div');
-            draggable.className = 'draggable-word';
-            draggable.id = word.id;
-            draggable.textContent = word.text;
-            draggable.draggable = true;
-            draggable.addEventListener('dragstart', dragStart);
-            wordsContainer.appendChild(draggable);
-        });
-        mainContainer.appendChild(wordsContainer);
-
-        optionsContainer.appendChild(mainContainer);
-
-        // Adiciona listeners aos drop zones
-        document.querySelectorAll('.drop-zone').forEach(dropZone => {
-            dropZone.addEventListener('dragover', dragOver);
-            dropZone.addEventListener('dragleave', dragLeave);
-            dropZone.addEventListener('drop', drop);
-        });
-        
-        // NOVO: Remove feedback interativo
-        feedback.innerHTML = '';
-        
-        // Adiciona listeners para retornar a palavra ao container de palavras
-        wordsContainer.addEventListener('dragover', dragOver);
-        wordsContainer.addEventListener('dragleave', dragLeave);
-        wordsContainer.addEventListener('drop', returnWordToContainer);
+        quizQuestionContainer.innerHTML = `
+            ${imageGalleryHTML}
+            <p id="question-text" style="display: block;">${item.question}</p>
+            ${sentenceListHTML}
+            ${wordsHTML}
+            ${buttonHTML}
+        `;
     }
-
+    
     // Funções Drag and Drop
-    function dragStart(e) {
-        currentDraggedElement = e.target;
-        e.dataTransfer.setData('text/plain', e.target.id);
-        setTimeout(() => e.target.classList.add('dragging'), 0);
-    }
-    function dragOver(e) {
-        e.preventDefault();
-        if (e.target.classList.contains('drop-zone')) {
-            e.target.classList.add('drag-over');
-        } else if (e.target.classList.contains('draggable-words-container')) {
-             e.target.classList.add('drag-over');
-        }
-    }
-    function dragLeave(e) {
-        if (e.target.classList.contains('drop-zone')) {
-            e.target.classList.remove('drag-over');
-        } else if (e.target.classList.contains('draggable-words-container')) {
-             e.target.classList.remove('drag-over');
-        }
-    }
-    function drop(e) {
-        e.preventDefault();
-        e.target.classList.remove('drag-over');
-        const data = e.dataTransfer.getData('text/plain');
-        const draggable = document.getElementById(data);
-        
-        if (e.target.classList.contains('drop-zone')) {
-            // Se já houver uma palavra, move-a de volta para o container
-            if (e.target.children.length > 0) {
-                const existingWord = e.target.children[0];
-                document.querySelector('.draggable-words-container').appendChild(existingWord);
-                existingWord.classList.remove('dragging');
-                existingWord.style.cursor = 'grab';
-            }
-            // Move a nova palavra para a zona de drop
-            e.target.appendChild(draggable);
-            draggable.classList.remove('dragging');
-            draggable.style.cursor = 'default';
-        }
-    }
-    
-    function returnWordToContainer(e) {
-        e.preventDefault();
-        e.target.classList.remove('drag-over');
-        const data = e.dataTransfer.getData('text/plain');
-        const draggable = document.getElementById(data);
+    let draggedElement = null;
 
-        if (e.target.classList.contains('draggable-words-container') && draggable && draggable.parentElement.classList.contains('drop-zone')) {
-            e.target.appendChild(draggable);
-            draggable.classList.remove('dragging');
-            draggable.style.cursor = 'grab';
+    function dragStart(event) {
+        draggedElement = event.target;
+        event.dataTransfer.setData('text/plain', event.target.dataset.word);
+        setTimeout(() => event.target.classList.add('dragging'), 0);
+    }
+
+    function dragOver(event) {
+        event.preventDefault(); 
+        if (event.target.classList.contains('drop-zone')) {
+            event.target.classList.add('drag-over');
         }
     }
     
-    function checkDragAndDrop(q) {
+    function dragLeave(event) {
+        if (event.target.classList.contains('drop-zone')) {
+            event.target.classList.remove('drag-over');
+        }
+    }
+
+    function drop(event) {
+        event.preventDefault();
+        event.target.classList.remove('drag-over');
+        
+        if (event.target.classList.contains('drop-zone') && draggedElement) {
+            // Remove qualquer palavra existente na drop zone
+            event.target.innerHTML = '';
+            
+            // Move a palavra para a drop zone
+            const newWordElement = draggedElement.cloneNode(true);
+            newWordElement.classList.remove('dragging');
+            newWordElement.draggable = false;
+            newWordElement.ondragstart = null; 
+            newWordElement.onclick = () => removeWordFromDropZone(newWordElement, draggedElement);
+            
+            event.target.appendChild(newWordElement);
+            draggedElement.style.display = 'none'; 
+            draggedElement = null; 
+        }
+    }
+    
+    function removeWordFromDropZone(droppedElement) {
+        const dropZone = droppedElement.parentNode;
+        
+        // Remove a palavra da drop zone
+        dropZone.innerHTML = '';
+        
+        // Faz o elemento original reaparecer no container de palavras
+        const wordContainer = document.querySelector('.draggable-words-container');
+        const original = wordContainer.querySelector(`[data-word="${droppedElement.dataset.word}"]`);
+        if (original) {
+            original.style.display = 'block';
+        }
+        
+        // Limpa classes de correção se houver
+        dropZone.classList.remove('correct-drop', 'incorrect-drop');
+    }
+
+    function checkDragAndDropAnswers() {
+        const dropZones = quizQuestionContainer.querySelectorAll('.drop-zone');
         let allCorrect = true;
-        
-        document.querySelectorAll('.drop-zone').forEach(dropZone => {
-            const correctWord = dropZone.getAttribute('data-correct-word');
-            const sentenceId = dropZone.getAttribute('data-sentence-id');
-            const sentenceData = q.data.sentences.find(s => s.id === sentenceId);
 
-            if (dropZone.children.length === 0) {
-                // Se estiver vazio
-                dropZone.classList.add('incorrect-drop');
-                dropZone.innerHTML = `<span class="correct-word-display">${correctWord}</span>`;
-                allCorrect = false;
-                sentenceData.isCorrect = false;
-            } else {
-                const droppedWord = dropZone.children[0];
-                const droppedText = droppedWord.textContent;
+        dropZones.forEach(dropZone => {
+            const droppedWordElement = dropZone.querySelector('.draggable-word');
+            const targetAnswer = dropZone.getAttribute('data-target-answer');
+            dropZone.classList.remove('correct-drop', 'incorrect-drop'); 
+
+            if (droppedWordElement) {
+                const userAnswer = droppedWordElement.getAttribute('data-word');
+                // Remove qualquer feedback antigo (como a palavra correta em parênteses)
+                dropZone.innerHTML = ''; 
                 
-                if (droppedText === correctWord) {
-                    // Correto
+                if (userAnswer === targetAnswer) {
                     dropZone.classList.add('correct-drop');
-                    droppedWord.style.backgroundColor = '#e6f7e8'; 
-                    droppedWord.style.color = '#1f793b'; 
-                    droppedWord.style.border = '1px solid #28a745';
-                    sentenceData.isCorrect = true;
+                    droppedWordElement.style.backgroundColor = 'transparent'; 
+                    droppedWordElement.style.color = '#28a745';
+                    droppedWordElement.onclick = null; // Desabilita o clique para remover
+                    dropZone.appendChild(droppedWordElement);
                 } else {
-                    // Incorreto
                     dropZone.classList.add('incorrect-drop');
-                    droppedWord.style.display = 'none'; // Esconde a palavra errada
-                    dropZone.innerHTML += `<span class="correct-word-display">${correctWord}</span>`; // Mostra a correta
+                    // Mostra a palavra do usuário (errada)
+                    droppedWordElement.style.backgroundColor = 'transparent'; 
+                    droppedWordElement.style.color = '#dc3545';
+                    dropZone.appendChild(droppedWordElement);
+                    
+                    // Mostra a resposta correta abaixo
+                    const correctDisplay = document.createElement('span');
+                    correctDisplay.className = 'correct-word-display';
+                    correctDisplay.textContent = `(${targetAnswer})`;
+                    dropZone.appendChild(correctDisplay);
+                    
                     allCorrect = false;
-                    sentenceData.isCorrect = false;
                 }
+                
+                // Desabilita a remoção e arrasto
+                dropZone.ondrop = null;
+            } else {
+                dropZone.classList.add('incorrect-drop');
+                dropZone.innerHTML = `<span class="correct-word-display">(${targetAnswer})</span>`;
+                allCorrect = false;
             }
-            dropZone.style.pointerEvents = 'none'; // Impede alteração após o check
         });
         
-        document.querySelectorAll('.draggable-word').forEach(word => word.style.pointerEvents = 'none');
-        
+        // Desabilita as palavras arrastáveis
+        quizQuestionContainer.querySelectorAll('.draggable-word').forEach(word => {
+            word.draggable = false;
+            word.ondragstart = null;
+        });
+
         if (allCorrect) {
-            feedback.innerHTML = '<span style="color: #28a745; font-size: 1.2em;">All sentences are **correct**! Click **Next**.</span>';
+            setTimeout(() => navigate(1), 2500);
         } else {
-            feedback.innerHTML = '<span style="color: #dc3545; font-size: 1.2em;">Review the corrected sentences and click **Next**.</span>';
+            alert('Ainda há erros. Veja as palavras corretas em parênteses. Clique em "Anterior" para recomeçar.');
         }
     }
-
-    // --- FUNÇÃO PRINCIPAL DE CARREGAMENTO (COMPLETA) ---
-
-    function loadQuestion(q) {
-        answerChecked = false;
-        selectedOption = null;
-
-        feedback.innerHTML = '';
-        optionsContainer.innerHTML = '';
+    
+    // --- Função Central de Display (Main Display Function) ---
+    function displayQuizContent(topicId) {
+        const item = quizContent[topicId][currentQuizIndex];
+        const total = quizContent[topicId].length;
         
-        progressIndicator.textContent = `${currentQuestionIndex + 1}/${lessonQuestions.length}`;
+        // Atualiza a navegação
+        progressIndicator.textContent = `${currentQuizIndex + 1}/${total}`;
+        document.getElementById('prev-button').disabled = (currentQuizIndex === 0 && topicId !== 'topic-1');
         
-        nextBtn.style.display = 'block';
-        backBtn.style.display = 'block';
+        // Limpa o container principal antes de renderizar o novo conteúdo
+        quizQuestionContainer.innerHTML = '';
         
-        document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'none'); 
-        document.getElementById('pronunciation-container').style.display = 'none';
-        document.getElementById('comparison-table-container').innerHTML = '';
+        // --- LÓGICA DE TRATAMENTO DE IMAGEM (CORRIGIDO E UNIFICADO) ---
+        // 1. Oculta os hotspots
+        hideHotspots();
         
-        const audioControls = document.getElementById('audio-player-controls');
-        audioControls.style.display = 'none';
-        audioControls.src = ''; 
-        
-        questionText.innerHTML = q.question; 
-        questionText.style.display = 'block';
-        optionsContainer.style.display = 'none';
-
-        if (q.image) {
-            questionImage.src = GITHUB_RAW_BASE_URL + q.image; 
-            questionImage.style.display = 'block';
-            
-            // NOVO: Adiciona/Remove classe para controle do object-fit (contain vs cover)
-            if (q.id === 5) {
-                questionImage.classList.add('interactive-image');
-            } else {
-                questionImage.classList.remove('interactive-image');
-            }
-            
-        } else {
-            questionImage.style.display = 'none';
-        }
-
-        switch (q.correctAnswer) {
-            case 'INFO_TABLE': 
-                loadInfoTable(q);
+        // 2. Renderiza o conteúdo (que inclui a tag <img id="question-image">)
+        switch (item.type) {
+            case 'MCQ':
+                displayMultipleChoice(item);
                 break;
-            case 'PRONUNCIATION_SET':
-                loadPronunciationSlide(q);
+            case 'PRONUNCIATION':
+                displayPronunciation(item);
                 break;
-            case 'INTERACTIVE_BINGO':
-                questionImage.style.display = 'block';
-                document.getElementById('hotspot-1').style.display = 'flex';
-                document.getElementById('hotspot-2').style.display = 'flex';
-                document.getElementById('hotspot-3').style.display = 'flex';
-                document.getElementById('hotspot-4').style.display = 'flex';
-                optionsContainer.innerHTML = '';
-                optionsContainer.style.display = 'none';
-                feedback.innerHTML = ''; 
+            case 'VOCABULARY_TENSE':
+                displayVocabularyTense(item);
+                break;
+            case 'INTERACTIVE_IMAGE':
+                displayInteractiveImage(item);
+                break;
+            case 'COMPARISON':
+                displayComparison(item);
                 break;
             case 'FILL_IN_BLANKS':
-                loadFillInBlanks(q);
+                displayFillInBlanks(item);
                 break;
             case 'DRAG_AND_DROP':
-                loadDragAndDrop(q);
-                questionImage.style.display = 'none';
+                displayDragAndDrop(item);
                 break;
-            default: // Múltipla Escolha
-                loadQuizSlide(q);
-                feedback.innerHTML = ''; 
-                break;
+            default:
+                quizQuestionContainer.innerHTML = `<p>Tipo de conteúdo desconhecido: ${item.type}</p>`;
         }
+        
+        // 3. Aplica a classe de estilo de imagem APÓS a renderização
+        const imgElement = document.getElementById('question-image');
 
-        backBtn.style.display = 'block';
+        if (imgElement) {
+            // Remove o estilo de exceção para garantir o padrão 'cover'
+            imgElement.classList.remove('interactive-image'); 
+            
+            if (topicId === 'topic-5') {
+                // Aplica o estilo de exceção 'contain' apenas para o Tópico 5
+                imgElement.classList.add('interactive-image');
+            }
+        }
+        
+        // Reabilita o texto da questão, que pode ter sido escondido
+        const questionTextElement = document.getElementById('question-text');
+        if (questionTextElement) {
+            questionTextElement.textContent = item.question;
+            questionTextElement.style.display = 'block';
+        }
     }
+
+
+    // --- Inicialização (Initialization) ---
+    document.addEventListener('DOMContentLoaded', () => {
+        renderChapterGrid();
+    });
 </script>
+
 </body>
 </html>
