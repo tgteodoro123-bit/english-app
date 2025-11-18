@@ -42,7 +42,7 @@
         }
     }
 
-    /* 3. Estilos do Card (Sem alterações significativas aqui) */
+    /* 3. Estilos do Card */
     .chapter-card {
         background-color: #f7f7f7; 
         border-radius: 6px; 
@@ -161,7 +161,33 @@
         position: relative; 
     }
     
-    /* Botões de Navegação Fixos */
+    /* Hotspot para o Tópico 5 (O círculo com o +) - ESTILO CLEAN */
+    .hotspot {
+        position: absolute;
+        width: 35px; 
+        height: 35px;
+        background-color: #ffffff; 
+        border: 2px solid #333; 
+        color: #333; 
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.8em; 
+        font-weight: 500;
+        cursor: pointer;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        z-index: 5;
+        transition: transform 0.2s, background-color 0.2s;
+        line-height: 0.8; 
+    }
+    
+    .hotspot:hover {
+        background-color: #f0f0f0; 
+        transform: scale(1.1);
+    }
+
+    /* Botões de Navegação Fixos (Canto Direito) */
     .nav-buttons {
         position: fixed; 
         top: 20px; 
@@ -172,6 +198,7 @@
         align-items: center; 
     }
     
+    /* Estilo dos botões Back e Next */
     .nav-buttons button {
         padding: 12px 20px; 
         border: none;
@@ -187,7 +214,7 @@
         background-color: #0056b3;
     }
     
-    /* Indicador de progresso mais fino e menor */
+    /* Indicador de progresso */
     #progress-indicator {
         font-weight: 400; 
         color: #333;
@@ -195,63 +222,80 @@
         margin-right: 15px; 
     }
 
-    /* Botão Hamburguer - Apenas o ícone azul, sem fundo (Clean) */
+    /* ******************************************************************* */
+    /* Botão Hamburguer no canto superior esquerdo (OCULTO POR PADRÃO) */
     .menu-toggle {
-        font-size: 1.8em; 
+        display: none; 
+        position: fixed; 
+        top: 20px;
+        left: 20px; 
+        font-size: 2.2em; 
         background: none; 
         border: none;
         cursor: pointer;
-        color: #007bff; 
+        color: #333; 
         line-height: 1; 
-        padding: 0 10px;
-        margin-right: 5px; 
-        position: relative; 
-        transition: color 0.2s ease;
+        padding: 5px 10px; 
+        z-index: 1001; 
+        transition: color 0.2s ease, background-color 0.2s ease;
+        border-radius: 4px;
     }
 
     .menu-toggle:hover {
-        color: #0056b3; 
+        color: #555; 
+        background-color: #f0f0f0; 
     }
 
-    /* Menu Dropdown - Mais clean, mais largo e rolável */
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 45px; 
-        right: 0; 
+    /* Side Menu (Lateral Esquerda) - Clean */
+    .side-menu {
+        height: 100%; 
+        width: 0; 
+        position: fixed; 
+        z-index: 1000; 
+        top: 0;
+        left: 0;
         background-color: #ffffff;
-        min-width: 280px; 
-        max-height: 300px; 
-        overflow-y: auto;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
-        z-index: 100;
-        border-radius: 6px;
-        border: 1px solid #e0e0e0; 
-        padding: 0; 
+        overflow-x: hidden; 
+        transition: 0.3s; 
+        padding-top: 60px; 
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1); 
+        border-right: 1px solid #eee;
+        overflow-y: auto; 
     }
 
-    .dropdown-menu a {
-        color: #333; 
-        padding: 10px 15px;
+    .side-menu.open {
+        width: 280px; 
+    }
+
+    .side-menu a {
+        padding: 15px 25px; 
         text-decoration: none;
+        font-size: 1.1em; 
+        color: #333; 
         display: block;
-        font-size: 0.9em; 
-        white-space: nowrap; 
+        transition: 0.3s;
         border-bottom: 1px solid #f0f0f0; 
         font-weight: 400; 
-        transition: background-color 0.2s, color 0.2s;
     }
 
-    .dropdown-menu a:last-child {
-        border-bottom: none; 
-    }
-
-    .dropdown-menu a:hover {
+    .side-menu a:hover {
         background-color: #f6f9fc; 
         color: #007bff; 
     }
 
-    /* Estilos de Texto e Questão */
+    .side-menu .close-btn {
+        position: absolute;
+        top: 0;
+        right: 15px;
+        font-size: 36px;
+        margin-left: 50px;
+        color: #aaa;
+        cursor: pointer;
+    }
+    /* ******************************************************************* */
+
+
+    /* Estilos de Conteúdo */
     .quiz-question img {
         max-width: 100%; 
         height: auto; 
@@ -337,6 +381,184 @@
         background-color: #f9f9f9; 
     }
     
+    /* Estilos Específicos para o Tópico 7 (FILL_IN_BLANKS) */
+    .fill-in-blanks-container {
+        display: flex;
+        flex-direction: column; 
+        align-items: center; 
+        gap: 4px; 
+        padding: 5px 0; 
+    }
+
+    .number-input-group {
+        display: flex;
+        flex-direction: column; 
+        align-items: flex-start;
+        gap: 2px; 
+        width: 80%; 
+        max-width: 200px; 
+        padding: 3px; 
+        border: 1px solid #eee;
+        border-radius: 6px;
+        background-color: #f9f9f9;
+        transition: background-color 0.2s;
+    }
+
+    .number-input-group span {
+        font-size: 1.1em; 
+        font-weight: 700;
+        color: #333; 
+        width: 100%; 
+        text-align: left;
+        margin-bottom: 2px;
+    }
+
+    .number-input-group input {
+        width: 100%; 
+        padding: 8px 8px; 
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 0.9em; 
+        transition: border-color 0.2s;
+        text-transform: lowercase; 
+        box-sizing: border-box; 
+    }
+
+    .number-input-group input:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+    
+    .number-result {
+        margin-top: 3px; 
+        font-weight: bold;
+        text-align: left; 
+        width: 100%; 
+        font-size: 0.85em; 
+    }
+
+    .result-correct { color: #28a745; }
+    .result-incorrect { color: #dc3545; }
+
+    /* *************************************************************** */
+    /* NOVO: Estilos Drag and Drop (Tópico 8) */
+    .drag-drop-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding: 10px;
+    }
+    
+    /* Container principal das frases e imagens */
+    .drag-drop-sentences {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap; 
+        justify-content: center;
+        gap: 20px;
+    }
+
+    /* Estilo de cada bloco de frase/imagem */
+    .sentence-block {
+        width: 45%; 
+        max-width: 300px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        background-color: #fff;
+    }
+
+    .sentence-block img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        border: 1px solid #eee;
+    }
+    
+    /* Estilo da frase com o espaço em branco */
+    .sentence-text {
+        font-size: 1.1em;
+        font-weight: 500;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    /* Estilo da Drop Zone (o espaço em branco) */
+    .drop-zone {
+        display: inline-block;
+        min-width: 100px;
+        min-height: 1.2em; 
+        border: 2px dashed #ccc;
+        border-radius: 4px;
+        padding: 2px 5px;
+        background-color: #f0f0f0;
+        margin: 0 5px;
+        text-align: center;
+        transition: background-color 0.1s, border-color 0.1s;
+        vertical-align: middle; /* Para alinhar o conteúdo dropado */
+    }
+
+    .drop-zone.drag-over {
+        background-color: #e0f7fa; 
+        border-color: #00bcd4; 
+    }
+
+    /* Container das Palavras Arrastáveis */
+    .draggable-words-container {
+        width: 90%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        padding: 15px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        background-color: #fcfcfc;
+    }
+
+    /* Estilo da Palavra Arrastável */
+    .draggable-word {
+        cursor: grab;
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: opacity 0.2s;
+    }
+    
+    .draggable-word.dragging {
+        opacity: 0.4;
+    }
+
+    /* Estilo da Palavra quando Solta no Drop Zone */
+    .drop-zone .draggable-word {
+        cursor: default;
+        box-shadow: none;
+        margin: 0; 
+        padding: 5px 10px; 
+        font-size: 0.9em;
+    }
+    
+    .drop-zone.correct-drop {
+        border-color: #28a745;
+        background-color: #e6ffed;
+    }
+
+    .drop-zone.incorrect-drop {
+        border-color: #dc3545;
+        background-color: #ffe6e6;
+    }
+    /* *************************************************************** */
+
     /* Estilos do Modal (Bingo) */
     .modal {
         display: none; 
@@ -359,7 +581,7 @@
         border: 1px solid #888;
         border-radius: 10px;
         width: 80%;
-        max-width: 400px; 
+        max-width: 450px; 
         box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         position: relative;
     }
@@ -382,14 +604,17 @@
 
     .number-table th, .number-table td {
         border: 1px solid #ddd;
-        padding: 8px;
+        padding: 10px;
         text-align: left;
-        font-size: 0.95em; 
+        font-size: 1em; 
+        font-weight: 400; 
     }
 
     .number-table th {
         background-color: #f2f2f2;
+        font-weight: bold;
     }
+
 </style>
 </head>
 <body>
@@ -412,15 +637,13 @@
     </div>
 
     <p id="question-text" style="display: none;"></p> 
+    
     <div id="options-container" style="display: none;"></div>
     
     <div id="pronunciation-container" style="display: none;">
         <p class="word-to-practice" id="current-instruction"></p> 
-        
         <audio id="audio-player-controls" controls preload="auto"></audio> 
-        
         <div id="comparison-table-container"></div>
-
         <ul id="pronunciation-list"></ul>
     </div>
     
@@ -428,14 +651,14 @@
 
 </div>
 
+<button class="menu-toggle" onclick="openNav()">☰</button>
+
+<div id="side-menu" class="side-menu">
+    <a href="javascript:void(0)" class="close-btn" onclick="closeNav()">&times;</a>
+    </div>
+
 <div class="nav-buttons">
     <span id="progress-indicator"></span> 
-    
-    <button class="menu-toggle" onclick="toggleMenu()">☰
-        <div id="dropdown-menu" class="dropdown-menu">
-            </div>
-    </button>
-    
     <button id="back-btn" onclick="backQuestion()">Back</button>
     <button id="next-btn" onclick="goNext()">Next</button>
 </div>
@@ -450,6 +673,7 @@
 </div>
 
 <script>
+    // Se você estiver rodando localmente, mude esta URL para o caminho do seu disco, ou mantenha esta URL base se estiver usando o seu GitHub.
     const GITHUB_RAW_BASE_URL = "https://raw.githubusercontent.com/tgteodoro123-bit/english-app/main/"; 
     
     const BACKGROUND_IMAGES = [
@@ -460,32 +684,97 @@
         "https://images.pexels.com/photos/1481005/pexels-photo-1481005.jpeg?auto=compress&cs=tinysrgb&w=800",
         "https://images.pexels.com/photos/3401403/pexels-photo-3401403.jpeg?auto=compress&cs=tinysrgb&w=800",
     ];
+    
+    // --- DADOS DO TÓPICO 8 (ATUALIZADOS) ---
+    // Palavras que serão arrastadas, coesas com o Tópico 3
+    const DRAG_AND_DROP_WORDS = [
+        { id: 'word-1', text: 'friend', correctTarget: 'drop-1' },
+        { id: 'word-2', text: 'phone number', correctTarget: 'drop-2' },
+        { id: 'word-3', text: 'teacher', correctTarget: 'drop-3' },
+        { id: 'word-4', text: 'address number', correctTarget: 'drop-4' }
+    ];
+    
+    // Frases e Imagens que dão o contexto (coeso com Tópico 3).
+    const DRAG_AND_DROP_SENTENCES = [
+        { 
+            id: 'sent-1', 
+            text: '1. This is my best ____.', 
+            image: 'friendtopico8.jpg', // Seu arquivo de imagem
+            dropId: 'drop-1', 
+            correct: 'friend' 
+        },
+        { 
+            id: 'sent-2', 
+            text: '2. What is your ____?', 
+            image: 'phonenumbertopico8.jpg', // Seu arquivo de imagem
+            dropId: 'drop-2', 
+            correct: 'phone number' 
+        },
+        { 
+            id: 'sent-3', 
+            text: '3. She is a math ____.', 
+            image: 'teachertopico8.jpg', // Seu arquivo de imagem
+            dropId: 'drop-3', 
+            correct: 'teacher' 
+        },
+        { 
+            id: 'sent-4', 
+            text: '4. Write your ____ here.', 
+            image: 'addressnumbertopico8.jpg', // Seu arquivo de imagem
+            dropId: 'drop-4', 
+            correct: 'address number' 
+        }
+    ];
 
     const QUESTIONS = [
         { id: 1, question: "What do you see in the image?", image: "numeros.jpg", options: { A: "The Alphabet", B: "Colors", C: "Numbers" }, correctAnswer: 'C', chapter: 1, title: "1. Numbers Overview" },
         { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', chapter: 1, title: "2. Verb 'To Be' (I am)" },
         { id: 3, question: `<h3 style="color: #007bff; font-size: 2em; margin-bottom: 20px;">Vocabulary:</h3>`, options: { "1.": `My <span style="color: #007bff;">address number</span> is 34.`, "2.": `I am a <span style="color: #007bff;">student</span>.`, "3.": `He is my new <span style="color: #007bff;">friend</span>, David.`, "4.": `Mr. David is a <span style="color: #007bff;">great</span> teacher.`, "5.": `My <span style="color: #007bff;">phone number</span> is: (987) 654-1234.`, "6.": `Sofia is <span style="color: #007bff;">American</span>.`, "7.": `I love my English <span style="color: #007bff;">teacher</span>.`, "8.": `Lucas is a <span style="color: #007bff;">new</span> student, too.`, "9.": `I am 18 <span style="color: #007bff;">years old</span>.`, "10.": `My <span style="color: #007bff;">nationality</span>? I'm French.`, }, correctAnswer: 'INFO', chapter: 1, title: "3. Lesson Vocabulary" },
         { id: 4, question: "PRONUNCIATION PRACTICE: Click the play button (▶️) to hear each word.", options: { "Address number": "addressnumber.mp3", "American": "American.mp3", "Friend": "friend.mp3", "Great": "great.mp3", "Nationality": "nationality.mp3", "New": "new.mp3", "Phone number": "phonenumber.mp3", "Student": "student.mp3", "Teacher": "teacher.mp3", "Years old": "yearsold.mp3" }, correctAnswer: 'PRONUNCIATION_SET', chapter: 1, title: "4. Word Pronunciation" },
-        
-        // Tópico 5: MODO INTERATIVO DE BINGO
         { id: 5, question: "Click on the '+' signs to review the number groups.", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1, title: "5. Interactive Bingo Review" },
-        
-        // TÓPICO 6: PRONÚNCIA TEEN vs TY (CORREÇÃO FINAL da Duplicação)
         { id: 6, 
-            question: "Listen and notice the difference. Don't confuse 'Teen' with 'Ty'.", 
-            options: { 
-                "13: (Thirteen) – 30 (Thirty)": "teenety.mp3"
-            }, 
+            question: "Listen and notice the difference between -teen and -ty.", 
+            options: { "13: (Thirteen) – 30 (Thirty)": "teenety.mp3" }, 
             correctAnswer: 'PRONUNCIATION_SET', 
             chapter: 1,
             title: "6. Pronunciation: Teen vs Ty"
         },
+        { 
+            id: 7, 
+            question: "Write the numbers in English:", 
+            correctAnswer: 'FILL_IN_BLANKS', 
+            chapter: 1, 
+            title: "7. Writing Numbers Practice",
+            data: [
+                { num: 10, correct: "ten" }, 
+                { num: 22, correct: "twenty-two" }, 
+                { num: 36, correct: "thirty-six" }, 
+                { num: 12, correct: "twelve" }, 
+                { num: 44, correct: "forty-four" }, 
+                { num: 99, correct: "ninety-nine" }, 
+                { num: 8, correct: "eight" }, 
+                { num: 57, correct: "fifty-seven" }, 
+                { num: 60, correct: "sixty" }, 
+                { num: 16, correct: "sixteen" }
+            ]
+        },
         
-        { id: 7, question: "What is the color of the sky on a sunny day?", image: "", options: { A: "Red", B: "Yellow", C: "Blue" }, correctAnswer: 'C', chapter: 1, title: "7. Quiz: Colors" },
-        { id: 8, question: "What is the English word for 'cadeira'?", image: "", options: { A: "Book", B: "Chair", C: "Table" }, correctAnswer: 'B', chapter: 1, title: "8. Quiz: Objects" },
-        { id: 9, question: "Identify the color of the object in the image:", image: "apple.jpg", options: { A: "Green", B: "Red", C: "Orange" }, correctAnswer: 'B', chapter: 1, title: "9. Quiz: Image Color" },
-        { id: 10, question: "How do you ask 'Where are you from?'", image: "", options: { A: "What your name is?", B: "Where from you are?", C: "Where are you from?" }, correctAnswer: 'C', chapter: 1, title: "10. Quiz: Common Phrases" },
-        { id: 11, question: "Complete the sentence: 'I want ___ apple.'", image: "", options: { A: "a", B: "an", C: "the" }, correctAnswer: 'B', chapter: 1, title: "11. Quiz: Articles" },
+        // TÓPICO 8: DRAG AND DROP (AGORA CONFIGURADO)
+        { id: 8, question: "Drag the correct word to complete the sentences based on the images (Vocabulary Review).", 
+            correctAnswer: 'DRAG_AND_DROP', 
+            chapter: 1, 
+            title: "8. Drag & Drop: Vocabulary Review",
+            data: {
+                words: DRAG_AND_DROP_WORDS,
+                sentences: DRAG_AND_DROP_SENTENCES
+            }
+        },
+        
+        { id: 9, question: "What is the color of the sky on a sunny day?", image: "", options: { A: "Red", B: "Yellow", C: "Blue" }, correctAnswer: 'C', chapter: 1, title: "9. Quiz: Colors" },
+        { id: 10, question: "What is the English word for 'cadeira'?", image: "", options: { A: "Book", B: "Chair", C: "Table" }, correctAnswer: 'B', chapter: 1, title: "10. Quiz: Objects" },
+        { id: 11, question: "Identify the color of the object in the image:", image: "apple.jpg", options: { A: "Green", B: "Red", C: "Orange" }, correctAnswer: 'B', chapter: 1, title: "11. Quiz: Image Color" },
+        { id: 12, question: "How do you ask 'Where are you from?'", image: "", options: { A: "What your name is?", B: "Where from you are?", C: "Where are you from?" }, correctAnswer: 'C', chapter: 1, title: "12. Quiz: Common Phrases" },
+        { id: 13, question: "Complete the sentence: 'I want ___ apple.'", image: "", options: { A: "a", B: "an", C: "the" }, correctAnswer: 'B', chapter: 1, title: "13. Quiz: Articles" },
     ];
     
     // Dados para a tabela de comparação do Tópico 6
@@ -523,11 +812,12 @@
             { word: 'Eighty-seven', number: 87 }, { word: 'Ninety-eight', number: 98 }
         ]
     };
-    // --- FIM DOS DADOS DE BINGO ---
     
     let currentQuestionIndex = 0;
     let lessonQuestions = []; 
-    let currentChapter = 1; // Inicializa o capítulo atual
+    let currentChapter = 1; 
+    let fillInBlanksAnswered = false; 
+    let dragAndDropAnswered = false; 
     
     const homeScreen = document.getElementById('home-screen');
     const lessonScreen = document.getElementById('lesson-screen');
@@ -538,17 +828,18 @@
     const questionText = document.getElementById('question-text');
     const questionImage = document.getElementById('question-image');
     const progressIndicator = document.getElementById('progress-indicator');
-    const dropdownMenu = document.getElementById('dropdown-menu'); 
     
+    const sideMenu = document.getElementById('side-menu'); 
     const navButtonsContainer = document.querySelector('.nav-buttons'); 
+    const menuToggle = document.querySelector('.menu-toggle'); 
     
     let answerChecked = false;
     
-    // RENDERIZAÇÃO DOS CARDS NA HOME SCREEN
+    // RENDERIZAÇÃO DOS CARDS NA HOME SCREEN (MANTIDA)
     const chapterGrid = document.querySelector('.chapter-grid');
     for (let i = 1; i <= 24; i++) {
         const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
-        let cardTopicName = i === 1 ? 'Basic Foundations (11 Topics Ready!)' : `Module ${i} Content`;
+        let cardTopicName = i === 1 ? 'Basic Foundations (13 Topics Ready!)' : `Module ${i} Content`; 
         chapterGrid.innerHTML += `
             <div class="chapter-card" id="card-${i}">
                 <div class="card-background-image" style="background-image: url('${bgUrl}');"></div>
@@ -563,41 +854,25 @@
         `;
     }
 
-    // --- FUNÇÕES DE NAVEGAÇÃO E DROPDOWN ---
-    
-    function toggleMenu() {
-        dropdownMenu.style.display = (dropdownMenu.style.display === 'block') ? 'none' : 'block';
-    }
-
-    // Fechar o menu se clicar fora
+    // --- FUNÇÕES DO SIDE MENU (MANTIDAS) ---
+    function openNav() { sideMenu.classList.add('open'); }
+    function closeNav() { sideMenu.classList.remove('open'); }
     window.onclick = function(event) {
-        // Verifica se o clique não foi no botão hamburguer nem dentro do menu dropdown
-        if (!event.target.closest('.menu-toggle')) {
-            if (dropdownMenu.style.display === 'block') {
-                dropdownMenu.style.display = 'none';
-            }
+        if (sideMenu.classList.contains('open') && !event.target.closest('.side-menu') && !event.target.closest('.menu-toggle')) {
+            closeNav();
         }
-        // Também trata o modal do Bingo
         const modal = document.getElementById('numberModal');
-        if (event.target == modal) {
-            closeNumberModal();
-        }
+        if (event.target == modal) { closeNumberModal(); }
     }
-    
-    function loadQuestionFromMenu(index) {
-        dropdownMenu.style.display = 'none';
-        currentQuestionIndex = index;
-        loadQuestion(lessonQuestions[currentQuestionIndex]);
-    }
-    
+    function loadQuestionFromMenu(index) { closeNav(); currentQuestionIndex = index; loadQuestion(lessonQuestions[currentQuestionIndex]); }
     function populateMenu() {
-        dropdownMenu.innerHTML = '';
+        sideMenu.querySelectorAll('a:not(.close-btn)').forEach(a => a.remove()); 
         lessonQuestions.forEach((q, index) => {
             const link = document.createElement('a');
             link.textContent = q.title; 
             link.href = `javascript:void(0)`;
             link.onclick = () => loadQuestionFromMenu(index);
-            dropdownMenu.appendChild(link);
+            sideMenu.appendChild(link);
         });
     }
 
@@ -614,6 +889,7 @@
         homeScreen.style.display = 'none';
         lessonScreen.style.display = 'block';
         navButtonsContainer.style.display = 'flex'; 
+        menuToggle.style.display = 'block'; 
         
         populateMenu(); 
         
@@ -625,21 +901,22 @@
         homeScreen.style.display = 'block';
         lessonScreen.style.display = 'none';
         navButtonsContainer.style.display = 'none'; 
-        dropdownMenu.style.display = 'none';
+        menuToggle.style.display = 'none'; 
+        closeNav(); 
     }
 
     function loadQuestion(q) {
         answerChecked = false;
+        fillInBlanksAnswered = false; 
+        dragAndDropAnswered = false;
         feedback.innerHTML = '';
         optionsContainer.innerHTML = '';
         
-        // Atualiza o indicador de progresso
         progressIndicator.textContent = `(${currentQuestionIndex + 1}/${lessonQuestions.length})`;
         
         nextBtn.style.display = 'block';
         backBtn.style.display = 'block';
-        questionText.style.display = 'block'; 
-
+        
         document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'none'); 
         document.getElementById('pronunciation-container').style.display = 'none';
         document.getElementById('comparison-table-container').innerHTML = '';
@@ -660,41 +937,63 @@
         
         optionsContainer.style.display = 'none';
         
+        if (q.correctAnswer === 'PRONUNCIATION_SET' || q.correctAnswer === 'INFO' || q.correctAnswer === 'FILL_IN_BLANKS' || q.correctAnswer === 'DRAG_AND_DROP') {
+            questionText.style.display = 'block'; 
+        } else {
+            questionText.style.display = 'block';
+        }
+        
+        
         if (q.correctAnswer === 'INFO') {
-            optionsContainer.style.display = 'block'; 
-            optionsContainer.style.backgroundColor = '#f4f4f4'; 
-            optionsContainer.style.padding = '20px';
-            optionsContainer.style.borderRadius = '8px';
-            
-            let htmlContent = '<ul style="list-style-type: none; padding: 0;">';
-            for (const key in q.options) {
-                htmlContent += `<li style="margin: 10px 0; font-size: 1.1em; border-bottom: 1px dashed #ddd; padding-bottom: 5px;">
-                                    <strong>${key}:</strong> ${q.options[key]}
-                                </li>`;
-            }
-            htmlContent += '</ul>';
-            optionsContainer.innerHTML = htmlContent;
-            
+            renderInfoScreen(q);
         } else if (q.correctAnswer === 'PRONUNCIATION_SET') {
             renderPronunciationPractice(q);
         } else if (q.correctAnswer === 'INTERACTIVE_BINGO') {
-            optionsContainer.innerHTML = '';
-            questionText.style.display = 'block'; 
-            document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex'); 
+            renderInteractiveBingo(q);
+        } else if (q.correctAnswer === 'FILL_IN_BLANKS') {
+            renderFillInBlanks(q);
+        } else if (q.correctAnswer === 'DRAG_AND_DROP') {
+            renderDragAndDrop(q);
         }
         else {
-            optionsContainer.style.display = 'block';
-            optionsContainer.style.backgroundColor = 'transparent'; 
-            optionsContainer.style.padding = '0';
-            
-            for (const key in q.options) {
-                const optionDiv = document.createElement('div');
-                optionDiv.className = 'option';
-                optionDiv.textContent = `${key}: ${q.options[key]}`; 
-                optionDiv.setAttribute('data-answer', key);
-                optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer, q); 
-                optionsContainer.appendChild(optionDiv);
-            }
+            renderMultipleChoice(q);
+        }
+    }
+
+    function renderInfoScreen(q) {
+        optionsContainer.style.display = 'block'; 
+        optionsContainer.style.backgroundColor = '#f4f4f4'; 
+        optionsContainer.style.padding = '20px';
+        optionsContainer.style.borderRadius = '8px';
+        
+        let htmlContent = '<ul style="list-style-type: none; padding: 0;">';
+        for (const key in q.options) {
+            htmlContent += `<li style="margin: 10px 0; font-size: 1.1em; border-bottom: 1px dashed #ddd; padding-bottom: 5px;">
+                                <strong>${key}:</strong> ${q.options[key]}
+                            </li>`;
+        }
+        htmlContent += '</ul>';
+        optionsContainer.innerHTML = htmlContent;
+    }
+
+    function renderInteractiveBingo(q) {
+        optionsContainer.innerHTML = '';
+        document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex'); 
+        questionImage.style.display = 'block'; 
+    }
+    
+    function renderMultipleChoice(q) {
+        optionsContainer.style.display = 'block';
+        optionsContainer.style.backgroundColor = 'transparent'; 
+        optionsContainer.style.padding = '0';
+        
+        for (const key in q.options) {
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'option';
+            optionDiv.textContent = `${key}: ${q.options[key]}`; 
+            optionDiv.setAttribute('data-answer', key);
+            optionDiv.onclick = () => checkAnswer(optionDiv, key, q.correctAnswer, q); 
+            optionsContainer.appendChild(optionDiv);
         }
     }
 
@@ -727,8 +1026,333 @@
         nextBtn.disabled = false;
     }
     
+    // --- FUNÇÃO PARA RENDERIZAR O EXERCÍCIO DE DIGITAÇÃO (FILL_IN_BLANKS) (MANTIDA) ---
+    function renderFillInBlanks(q) {
+        optionsContainer.style.display = 'block'; 
+        optionsContainer.style.backgroundColor = 'transparent';
+        optionsContainer.style.padding = '0';
+        
+        let htmlContent = '<div class="fill-in-blanks-container">';
+        q.data.forEach((item, index) => {
+            const value = item.lastInput || "";
+            const disabled = fillInBlanksAnswered ? 'disabled' : '';
+
+            htmlContent += `
+                <div class="number-input-group">
+                    <span>${item.num}:</span>
+                    <input type="text" id="input-${index}" value="${value}" ${disabled}>
+                </div>
+            `;
+        });
+        htmlContent += '</div>';
+        optionsContainer.innerHTML = htmlContent;
+        
+        optionsContainer.innerHTML += `<div id="fill-in-blanks-results"></div>`;
+
+        if (fillInBlanksAnswered) {
+             displayFillInBlanksCorrection(q.data);
+        }
+    }
+
+    function checkFillInBlanks(q) {
+        let totalCorrect = 0;
+        
+        q.data.forEach((item, index) => {
+            const inputElement = document.getElementById(`input-${index}`);
+            const userAnswer = inputElement.value.toLowerCase().trim().replace(/ +/g, ' '); 
+            const correctedAnswer = item.correct.toLowerCase().trim().replace(/ +/g, ' ');
+
+            const isCorrect = userAnswer === correctedAnswer;
+            
+            if (isCorrect) {
+                totalCorrect++;
+                item.feedback = '✅ ' + correctedAnswer;
+                item.isCorrect = true;
+            } else {
+                item.feedback = '❌ ' + correctedAnswer;
+                item.isCorrect = false;
+            }
+            item.lastInput = inputElement.value; 
+        });
+        
+        fillInBlanksAnswered = true;
+        displayFillInBlanksCorrection(q.data, totalCorrect);
+        return totalCorrect === q.data.length; 
+    }
+    
+    function displayFillInBlanksCorrection(data, totalCorrect) {
+        const resultsContainer = document.getElementById('fill-in-blanks-results');
+        const totalItems = data.length;
+        const totalCorrectFinal = totalCorrect !== undefined ? totalCorrect : data.filter(item => item.isCorrect).length;
+        
+        let overallMessage;
+        
+        if (totalCorrectFinal === totalItems) {
+            overallMessage = `<p class="result-correct" style="font-size: 1.4em; margin-top: 20px;">**CONGRATULATIONS!** You got all answers correct! 🎉</p>`;
+            feedback.innerHTML = ""; 
+        } else {
+             overallMessage = `<p class="result-incorrect" style="font-size: 1.4em; margin-top: 20px;">**Keep practicing!** You got ${totalCorrectFinal} out of ${totalItems} correct. 😥</p>`;
+             feedback.innerHTML = "Click **Next** to proceed to the next topic.";
+        }
+        
+        resultsContainer.innerHTML = overallMessage;
+
+        const inputContainer = optionsContainer.querySelector('.fill-in-blanks-container');
+        inputContainer.innerHTML = '';
+        data.forEach((item, index) => {
+             inputContainer.innerHTML += `
+                <div class="number-input-group">
+                    <span>${item.num}:</span>
+                    <input type="text" id="input-${index}" value="${item.lastInput}" disabled>
+                    <div class="number-result ${item.isCorrect ? 'result-correct' : 'result-incorrect'}">
+                         ${item.feedback}
+                    </div>
+                </div>
+            `;
+        });
+    }
+    // ----------------------------------------------------------------------
+
+    // --- FUNÇÕES DE DRAG AND DROP (TÓPICO 8) ---
+    let draggedElement = null; // Variável global para armazenar o elemento que está sendo arrastado
+
+    function handleDragStart(e) {
+        // Armazena o ID do elemento arrastado
+        draggedElement = e.target;
+        e.dataTransfer.setData('text/plain', e.target.id);
+        
+        // Adiciona classe para feedback visual
+        setTimeout(() => e.target.classList.add('dragging'), 0); 
+    }
+
+    function handleDragOver(e) {
+        // Impede o comportamento padrão para permitir o drop
+        e.preventDefault(); 
+        
+        // Adiciona feedback visual à zona de soltura
+        if (e.target.classList.contains('drop-zone')) {
+            e.target.classList.add('drag-over');
+        }
+    }
+    
+    function handleDragLeave(e) {
+        // Remove feedback visual
+        if (e.target.classList.contains('drop-zone')) {
+            e.target.classList.remove('drag-over');
+        }
+    }
+
+    function handleDrop(e) {
+        e.preventDefault(); 
+        
+        // A drop zone é o target
+        const dropZone = e.target;
+        
+        if (dropZone.classList.contains('drop-zone') && draggedElement) {
+            
+            // Remove qualquer palavra que já esteja na drop zone (evita duplicidade)
+            while (dropZone.firstChild) {
+                const existingWord = dropZone.firstChild;
+                // Move a palavra de volta para o contêiner de palavras, se existir
+                const wordsContainer = document.getElementById('draggable-words-container');
+                if (wordsContainer) {
+                    wordsContainer.appendChild(existingWord);
+                    existingWord.style.opacity = 1;
+                    existingWord.classList.remove('dragging');
+                    existingWord.setAttribute('draggable', 'true'); // Reabilita o arrastar
+                }
+            }
+            
+            // Move o elemento arrastado para a drop zone
+            dropZone.appendChild(draggedElement);
+            
+            // Limpa o estado
+            dropZone.classList.remove('drag-over');
+            draggedElement.classList.remove('dragging');
+            draggedElement = null;
+        }
+    }
+    
+    function handleDragEnd(e) {
+        e.target.classList.remove('dragging');
+    }
+
+
+    function renderDragAndDrop(q) {
+        optionsContainer.style.display = 'block'; 
+        optionsContainer.innerHTML = '';
+        questionImage.style.display = 'none'; // A imagem principal é desabilitada para o conteúdo D&D
+        
+        let htmlContent = `<div class="drag-drop-content">
+                                <div class="drag-drop-sentences">`;
+        
+        // 1. Renderiza as frases/imagens e drop zones
+        q.data.sentences.forEach(item => {
+            const wordContent = dragAndDropAnswered 
+                ? `<div class="draggable-word" id="dropped-${item.correct}" data-word="${item.correct}">${item.correct}</div>`
+                : '';
+                
+            const dropClass = dragAndDropAnswered 
+                ? (item.isCorrect ? 'correct-drop' : 'incorrect-drop')
+                : '';
+
+            htmlContent += `
+                <div class="sentence-block">
+                    <img src="${GITHUB_RAW_BASE_URL + item.image}" alt="Image for ${item.correct}">
+                    <p class="sentence-text">${item.text.replace('____', `
+                        <span 
+                            class="drop-zone ${dropClass}" 
+                            id="${item.dropId}" 
+                            data-correct="${item.correct}"
+                            ${!dragAndDropAnswered ? `ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)"` : ''}
+                        >${wordContent}</span>
+                    `)}</p>
+                </div>
+            `;
+        });
+
+        htmlContent += `</div>
+                        <div class="draggable-words-container" id="draggable-words-container">`;
+
+        // 2. Renderiza as palavras arrastáveis
+        const shuffledWords = [...q.data.words].sort(() => Math.random() - 0.5); 
+        
+        shuffledWords.forEach(word => {
+            // Se já foi respondido e a palavra foi usada, ela não é re-renderizada aqui
+            const isUsed = q.data.sentences.some(s => s.correct === word.text && s.isCorrect); 
+
+            if (!dragAndDropAnswered || !isUsed) {
+                htmlContent += `
+                    <div 
+                        class="draggable-word" 
+                        id="${word.id}" 
+                        draggable="${!dragAndDropAnswered}" 
+                        data-word="${word.text}"
+                        data-target="${word.correctTarget}"
+                        ondragstart="handleDragStart(event)"
+                        ondragend="handleDragEnd(event)"
+                    >${word.text}</div>
+                `;
+            }
+        });
+
+        htmlContent += `</div></div>`;
+        optionsContainer.innerHTML = htmlContent;
+        
+        if (dragAndDropAnswered) {
+             // Se já foi respondido, exibe o feedback
+             displayDragAndDropCorrection(q.data);
+        }
+    }
+
+    function checkDragAndDrop(q) {
+        let totalCorrect = 0;
+        const totalSentences = q.data.sentences.length;
+        
+        q.data.sentences.forEach(item => {
+            const dropZone = document.getElementById(item.dropId);
+            const droppedWord = dropZone.querySelector('.draggable-word');
+            
+            let isCorrect = false;
+            let userAnswer = '';
+            
+            // 1. Verifica a resposta
+            if (droppedWord) {
+                userAnswer = droppedWord.getAttribute('data-word');
+                isCorrect = userAnswer === item.correct;
+            }
+            
+            // Armazena o resultado no objeto da pergunta para re-renderização
+            item.isCorrect = isCorrect;
+            item.userAnswer = userAnswer;
+
+            // 2. Aplica as classes de feedback e bloqueia o dropZone
+            dropZone.classList.remove('drag-over');
+            dropZone.ondragover = null;
+            dropZone.ondragleave = null;
+            dropZone.ondrop = null;
+            
+            if (isCorrect) {
+                totalCorrect++;
+                dropZone.classList.add('correct-drop');
+            } else {
+                dropZone.classList.add('incorrect-drop');
+            }
+            
+            // 3. Adiciona a correção visual se incorreto ou vazio
+            if (!isCorrect) {
+                 if (droppedWord) {
+                    // Mantém a palavra errada, mas adiciona a correção
+                    droppedWord.innerHTML += `<span style="color: #28a745; display: block; font-size: 0.7em;">(Correct: ${item.correct})</span>`;
+                 } else {
+                    // Drop zone vazia
+                    dropZone.innerHTML = `<span style="color: #dc3545;">❌ (Missing)</span>
+                                          <span style="color: #28a745; display: block; font-size: 0.7em;">(Correct: ${item.correct})</span>`;
+                 }
+            }
+            
+            if (droppedWord) {
+                droppedWord.setAttribute('draggable', 'false'); // Desativa o arrastar após checagem
+                droppedWord.style.cursor = 'default';
+            }
+        });
+        
+        // Desativa o arrastar de todas as palavras restantes
+        document.querySelectorAll('.draggable-word').forEach(word => {
+            word.setAttribute('draggable', 'false');
+            word.style.cursor = 'default';
+        });
+
+        dragAndDropAnswered = true;
+        
+        if (totalCorrect === totalSentences) {
+            feedback.innerHTML = '✅ **CONGRATULATIONS!** You got all answers correct! 🎉';
+        } else {
+            feedback.innerHTML = `❌ **Oops, that's not correct!** You got ${totalCorrect} out of ${totalSentences} correct. The correct answers are marked.`;
+        }
+        
+        return totalCorrect === totalSentences;
+    }
+
+    function displayDragAndDropCorrection(q) {
+        // A lógica é reexecutada no renderDragAndDrop, que usa o estado 'dragAndDropAnswered' e 'item.isCorrect'
+        // Mas a mensagem final de feedback é reexibida aqui.
+        const totalCorrect = q.sentences.filter(item => item.isCorrect).length;
+        const totalSentences = q.sentences.length;
+        
+        if (totalCorrect === totalSentences) {
+            feedback.innerHTML = '✅ **CONGRATULATIONS!** You got all answers correct! 🎉';
+        } else {
+            feedback.innerHTML = `❌ **Oops, that's not correct!** You got ${totalCorrect} out of ${totalSentences} correct. The correct answers are marked.`;
+        }
+    }
+
+    // --- FUNÇÕES DE NAVEGAÇÃO (ALTERADAS PARA INCLUIR D&D) ---
     function goNext() {
-        currentQuestionIndex++;
+        const currentQuestion = lessonQuestions[currentQuestionIndex];
+        
+        if (currentQuestion.correctAnswer === 'FILL_IN_BLANKS') {
+            if (!fillInBlanksAnswered) {
+                checkFillInBlanks(currentQuestion);
+                return; 
+            } else {
+                currentQuestionIndex++;
+            }
+        } 
+        else if (currentQuestion.correctAnswer === 'DRAG_AND_DROP') {
+             if (!dragAndDropAnswered) {
+                // Checa as respostas D&D e exibe feedback
+                checkDragAndDrop(currentQuestion.data); 
+                return;
+             } else {
+                 // Avança para o próximo tópico
+                 currentQuestionIndex++;
+             }
+        }
+        else {
+             currentQuestionIndex++;
+        }
+        
         if (currentQuestionIndex < lessonQuestions.length) {
             loadQuestion(lessonQuestions[currentQuestionIndex]);
         } else {
@@ -746,6 +1370,7 @@
         }
     }
     
+    // --- FUNÇÕES DE PRONÚNCIA E MODAL (MANTIDAS) ---
     function renderPronunciationPractice(q) {
         const pronContainer = document.getElementById('pronunciation-container');
         const audioControls = document.getElementById('audio-player-controls');
@@ -757,29 +1382,21 @@
         feedback.innerHTML = ``; 
         listContainer.innerHTML = '';
         tableContainer.innerHTML = '';
+        
+        document.getElementById('current-instruction').textContent = q.question; 
+
 
         if (q.id === 6) {
-            // Tópico 6: Teen vs Ty (Áudio Único com barra de controle e Tabela Visual)
             audioControls.style.display = 'block';
             audioControls.src = GITHUB_RAW_BASE_URL + Object.values(q.options)[0]; 
 
-            // Geração da Tabela Visual
             let tableHTML = '<table class="comparison-table"><thead><tr><th>Teen Numbers</th><th>Ty Numbers</th></tr></thead><tbody>';
-            teenTyData.forEach(item => {
-                tableHTML += `<tr><td>${item.teen}</td><td>${item.ty}</td></tr>`;
-            });
+            teenTyData.forEach(item => { tableHTML += `<tr><td>${item.teen}</td><td>${item.ty}</td></tr>`; });
             tableHTML += '</tbody></table>'; 
-            
             tableContainer.innerHTML = tableHTML;
-            
-            // A instrução principal já está em questionText, mas repetimos aqui para o campo de instrução da pronúncia
-            document.getElementById('current-instruction').textContent = q.question; 
-
 
         } else if (q.id === 4) {
-            // Tópico 4: Palavras individuais (Formato com vários botões de play)
             audioControls.style.display = 'none'; 
-            document.getElementById('current-instruction').textContent = q.question;
             
             pronunciationWords = Object.keys(q.options).map((word) => ({ word: word, audioPath: q.options[word] }));
             updatePronunciationUI(); 
@@ -807,8 +1424,6 @@
         tempAudio.play().catch(error => { console.error("Audio playback blocked:", error); });
     }
 
-
-    // --- FUNÇÕES DE MODAL PARA O BINGO ---
     function generateTableHTML(data) {
         let html = '<table class="number-table"><thead><tr><th>English Word</th><th>Number</th></tr></thead><tbody>';
         data.forEach(item => {
