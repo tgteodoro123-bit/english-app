@@ -441,7 +441,7 @@
     .result-incorrect { color: #dc3545; }
 
     /* *************************************************************** */
-    /* NOVO: Estilos Drag and Drop (Tópico 8) - REVISADO */
+    /* Estilos Drag and Drop (Tópico 8) */
 
     .drag-drop-content {
         display: flex;
@@ -742,33 +742,33 @@
         { id: 'word-4', text: 'address number', correctTarget: 'drop-4' }
     ];
     
-    // Frases e Imagens que dão o contexto.
+    // Frases e Imagens que dão o contexto (PONTUAÇÃO INCLUÍDA NO FINAL DA STRING TEXT PARA ALINHAMENTO)
     const DRAG_AND_DROP_SENTENCES = [
         { 
             id: 'sent-1', 
             text: '1. This is my best ____.', 
-            image: 'friendtopico8.jpg', // Seu arquivo de imagem existente
+            image: 'friendtopico8.jpg', 
             dropId: 'drop-1', 
             correct: 'friend' 
         },
         { 
             id: 'sent-2', 
             text: '2. What is your ____?', 
-            image: 'phonenumbertopico8.jpg', // Seu arquivo de imagem existente
+            image: 'phonenumbertopico8.jpg', 
             dropId: 'drop-2', 
             correct: 'phone number' 
         },
         { 
             id: 'sent-3', 
-            text: '3. He is a math ____.', // FRASE: "He" para o professor homem
-            image: 'teachertopico8.jpg', // Seu arquivo de imagem do professor homem
+            text: '3. He is a math ____.', 
+            image: 'teachertopico8.jpg', 
             dropId: 'drop-3', 
             correct: 'teacher' 
         },
         { 
             id: 'sent-4', 
-            text: '4. What is your ____?', // NOVA FRASE: Para identificação do número de endereço
-            image: 'adressnumber2topico8.jpg', // **NOME DO ARQUIVO ATUALIZADO**
+            text: '4. This is the ____.', // NOVA FRASE
+            image: 'addressnumber2topico8.png', // NOME DE ARQUIVO FINAL ATUALIZADO (PNG)
             dropId: 'drop-4', 
             correct: 'address number' 
         }
@@ -1255,6 +1255,7 @@
                 
             } 
             
+            // MUDANÇA CRÍTICA AQUI: O ponto final/interrogação está no item.text. REMOVEMOS O PONTO EXTRA DEPOIS DA SUBSTITUIÇÃO.
             htmlContent += `
                 <div class="sentence-block">
                     <img src="${GITHUB_RAW_BASE_URL + item.image}" alt="Image for ${item.correct}">
@@ -1265,7 +1266,7 @@
                             data-correct="${item.correct}"
                             ${dropZoneEvents}
                         >${dropZoneContent}</span>
-                    `)}.</p>
+                    `)}</p>
                 </div>
             `;
         });
