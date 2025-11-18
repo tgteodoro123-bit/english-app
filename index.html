@@ -469,7 +469,7 @@
     .gallery-image-wrapper img {
         width: 100%;
         height: 100%;
-        object-fit: cover; 
+        object-fit: contain; /* Ajustado para CONTER a imagem inteira (sem cortes) */
         object-position: center; 
         background-color: #fcfcfc;
         display: block;
@@ -519,6 +519,12 @@
 
     .sentence-text-before {
         margin-right: 5px; 
+    }
+    
+    .sentence-text-after { 
+        margin-left: 3px;
+        font-size: 1.1em;
+        font-weight: 500;
     }
 
     /* Drop Zone */
@@ -731,8 +737,10 @@
     const DRAG_AND_DROP_SENTENCES = [
         { 
             id: 'sent-1', 
-            text: '1. This is my best ____.', 
-            image: 'friendtopico8.jpg', 
+            text_before: '1. This is my best', 
+            text_after: '.', // Ponto final movido
+            // Substituída a imagem por um exemplo mais genérico que funciona bem com object-fit: contain
+            image: 'https://images.pexels.com/photos/316466/pexels-photo-316466.jpeg?auto=compress&cs=tinysrgb&w=800', 
             dropId: 'drop-1', 
             correct: 'friend' ,
             userAnswer: null, 
@@ -740,7 +748,8 @@
         },
         { 
             id: 'sent-2', 
-            text: '2. It is a ____.', 
+            text_before: '2. It is a', 
+            text_after: '.', 
             image: 'phonenumbertopico8.jpg', 
             dropId: 'drop-2', 
             correct: 'phone number' ,
@@ -749,7 +758,8 @@
         },
         { 
             id: 'sent-3', 
-            text: '3. He is a math ____.', 
+            text_before: '3. He is a math', 
+            text_after: '.', 
             image: 'teachertopico8.jpg', 
             dropId: 'drop-3', 
             correct: 'teacher' ,
@@ -758,7 +768,8 @@
         },
         { 
             id: 'sent-4', 
-            text: '4. It is an ____.', 
+            text_before: '4. It is an', 
+            text_after: '.', 
             image: 'addressnumber2topico8.png', 
             dropId: 'drop-4', 
             correct: 'address number' ,
@@ -1347,10 +1358,11 @@
         // --- 1. IMAGE GALLERY ---
         fullContentHTML += `<div class="image-gallery-container">`;
         q.data.sentences.forEach((item, index) => {
+            let imgSrc = item.image.startsWith('http') ? item.image : GITHUB_RAW_BASE_URL + item.image;
             fullContentHTML += `
                 <div class="gallery-image-wrapper">
                     <span class="image-number-label">${index + 1}</span>
-                    <img src="${GITHUB_RAW_BASE_URL + item.image}" alt="Image for ${item.correct}">
+                    <img src="${imgSrc}" alt="Image for ${item.correct}">
                 </div>
             `;
         });
@@ -1374,19 +1386,25 @@
                                         <span style="color: #28a745; display: block; font-size: 0.75em; font-weight: 500;">(Correct: ${item.correct})</span>`;
                 }
             } else {
-                 dropZoneContent = '';
+                 // Check if the word is currently in the drop zone
+                 const wordInDropZone = q.data.words.find(w => w.correctTarget === item.dropId && !dragAndDropAnswered);
+                 if (wordInDropZone) {
+                      dropZoneContent = `<div class="draggable-word" id="${wordInDropZone.id}" draggable="false" data-word="${wordInDropZone.text}" data-target="${wordInDropZone.correctTarget}">${wordInDropZone.text}</div>`;
+                 } else {
+                     dropZoneContent = '';
+                 }
             }
             
             fullContentHTML += `
                 <p class="sentence-item">
-                    <span class="sentence-text-before">${item.text.replace('____', '')}</span>
+                    <span class="sentence-text-before">${item.text_before}</span>
                     <span 
                         class="drop-zone ${dropClass}" 
                         id="${item.dropId}" 
                         data-correct="${item.correct}"
                         ${dropZoneEvents}
                     >${dropZoneContent}</span>
-                </p>
+                    <span class="sentence-text-after">${item.text_after}</span> </p>
             `;
         });
         fullContentHTML += `</div>`; 
@@ -1395,20 +1413,27 @@
         fullContentHTML += `<div class="draggable-words-container" id="draggable-words-container">`;
         
         if (!dragAndDropAnswered) {
-            // Render all free words
-            const wordsToRender = DRAG_AND_DROP_WORDS.sort(() => Math.random() - 0.5); 
-            const droppedWords = new Set();
             
-            // Collect words that are currently in a drop zone (to prevent re-rendering them here)
-            q.data.sentences.forEach(item => {
-                // If it's a new render, this check is mainly for consistency, but not strictly necessary since the list is cleared
-                if (item.userAnswer && q.data.words.some(w => w.text === item.userAnswer)) {
-                    droppedWords.add(item.userAnswer);
+            // Get all drop zone IDs that currently have a word
+            const dropZones = document.querySelectorAll('.drop-zone');
+            const occupiedDrops = new Set();
+            dropZones.forEach(dz => {
+                const word = dz.querySelector('.draggable-word');
+                if (word) {
+                    occupiedDrops.add(word.getAttribute('data-word'));
                 }
             });
 
-            wordsToRender.forEach(word => {
-                if (!droppedWords.has(word.text)) {
+            // Render all free words
+            const wordsToRender = DRAG_AND_DROP_WORDS.filter(word => {
+                // Check if the word is already visually rendered in a drop zone
+                return !occupiedDrops.has(word.text) && word.id === document.getElementById(word.id)?.id;
+            }).sort(() => Math.random() - 0.5); 
+            
+            DRAG_AND_DROP_WORDS.forEach(word => {
+                const isDropped = q.data.sentences.some(s => s.dropId === word.correctTarget && s.userAnswer === word.text);
+                
+                if (!isDropped) {
                     fullContentHTML += `
                         <div 
                             class="draggable-word" 
@@ -1434,6 +1459,21 @@
              displayDragAndDropCorrection(q.data.sentences);
         } else {
              feedback.innerHTML = '';
+        }
+
+        // Re-attach existing words if they were present before re-render
+        if (!dragAndDropAnswered) {
+             q.data.sentences.forEach(item => {
+                 const dropZone = document.getElementById(item.dropId);
+                 if (dropZone && item.userAnswer) {
+                     const wordElement = document.getElementById(q.data.words.find(w => w.text === item.userAnswer)?.id);
+                     if (wordElement) {
+                         dropZone.appendChild(wordElement);
+                         wordElement.setAttribute('draggable', 'false');
+                         wordElement.classList.remove('dragging');
+                     }
+                 }
+             });
         }
     }
 
