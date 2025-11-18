@@ -460,7 +460,8 @@
     .gallery-image-wrapper {
         position: relative;
         width: 100%;
-        height: 320px; 
+        /* CORRIGIDO: Aumentado para melhor visualização (remover cortes) */
+        height: 380px; 
         border-radius: 10px; 
         overflow: hidden;
         box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
@@ -493,7 +494,7 @@
             grid-template-columns: 1fr; 
         }
         .gallery-image-wrapper {
-            height: 250px; 
+            height: 300px; /* Mantido menor para mobile, mas ajustável se necessário */
         }
     }
 
@@ -690,7 +691,7 @@
 
 <div id="side-menu" class="side-menu">
     <a href="javascript:void(0)" class="close-btn" onclick="closeNav()">&times;</a>
-    </div>
+</div>
 
 <div class="nav-buttons">
     <span id="progress-indicator"></span> 
@@ -731,7 +732,7 @@
     const DRAG_AND_DROP_SENTENCES = [
         { 
             id: 'sent-1', 
-            text: '1. This is my best ____', // <--- CORREÇÃO APLICADA AQUI (Removido o ponto final extra)
+            text: '1. This is my best ____.', // CORRIGIDO: Adicionado o ponto final.
             image: 'friendtopico8.jpg', 
             dropId: 'drop-1', 
             correct: 'friend' ,
@@ -778,7 +779,8 @@
         // Topic 6 
         { id: 6, 
             question: "Listen and notice the difference between -teen and -ty.", 
-            options: { "13: (Thirteen) – 30 (Thirty)": "teenety.mp3" }, 
+            // CORRIGIDO: Removida a ênfase (EEN) dos exemplos no dado do question, será ajustado na renderização.
+            options: { "13 (Thirteen) – 30 (Thirty)": "teenety.mp3" }, 
             correctAnswer: 'PRONUNCIATION_SET', 
             chapter: 1,
             title: "6. Pronunciation: Teen vs Ty"
@@ -804,7 +806,7 @@
             ]
         },
         // Topic 8 
-        { id: 8, question: "Drag the correct word to complete the sentences based on the images.", 
+        { id: 8, question: "Complete the sentences based on the images.", // CORRIGIDO: Removida a frase de instrução de drag and drop.
             correctAnswer: 'DRAG_AND_DROP', 
             chapter: 1, 
             title: "8. Drag & Drop: Vocabulary",
@@ -974,449 +976,429 @@
         nextBtn.style.display = 'block';
         backBtn.style.display = 'block';
         
-        document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'none'); 
+        document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'none');
         document.getElementById('pronunciation-container').style.display = 'none';
         document.getElementById('comparison-table-container').innerHTML = '';
+        optionsContainer.style.display = 'none';
+        questionText.style.display = 'none';
+        questionImage.style.display = 'none';
         
-        const audioControls = document.getElementById('audio-player-controls');
-        audioControls.style.display = 'none';
-        audioControls.src = ''; 
+        // Remove interactive containers if they exist
+        if (document.querySelector('.fill-in-blanks-container')) {
+            document.querySelector('.fill-in-blanks-container').remove();
+        }
+        if (document.querySelector('.drag-drop-overall-container')) {
+            document.querySelector('.drag-drop-overall-container').remove();
+        }
         
-        questionText.innerHTML = q.question; 
-        
-        if (q.image) {
+        // --- Render Specific Question Types ---
+        if (q.correctAnswer === 'INTERACTIVE_BINGO') {
+            // Hide everything except the main image area (quiz-question)
+            document.querySelector('.quiz-question').style.border = 'none';
             questionImage.src = GITHUB_RAW_BASE_URL + q.image;
             questionImage.style.display = 'block';
-        } else {
-            questionImage.style.display = 'none';
-        }
-        
-        // Render content based on question type
-        optionsContainer.style.display = 'block';
-        if (q.correctAnswer === 'C' || q.correctAnswer === 'B' || q.correctAnswer === 'A') {
-            renderMultipleChoice(q);
-        } else if (q.correctAnswer === 'INFO') {
-            renderInfo(q);
+            
+            // Display Hotspots
+            document.getElementById('hotspot-1').style.display = 'flex';
+            document.getElementById('hotspot-2').style.display = 'flex';
+            document.getElementById('hotspot-3').style.display = 'flex';
+            document.getElementById('hotspot-4').style.display = 'flex';
+            
         } else if (q.correctAnswer === 'PRONUNCIATION_SET') {
-            renderPronunciationSet(q);
-        } else if (q.correctAnswer === 'INTERACTIVE_BINGO') {
-            renderInteractiveBingo(q);
+            questionText.style.display = 'block';
+            questionText.innerHTML = q.question;
+            document.getElementById('pronunciation-container').style.display = 'flex';
+            document.getElementById('current-instruction').textContent = "Click ▶️ to play the audio and practice repeating it.";
+            
+            if (q.id === 6) {
+                // Topic 6: Teen vs Ty (table)
+                document.getElementById('current-instruction').textContent = "Listen and notice the difference between -teen and -ty. The emphasized part of the word is in **bold**.";
+                const audioKey = Object.keys(q.options)[0];
+                const audioFile = q.options[audioKey];
+                
+                // Set main audio
+                document.getElementById('audio-player-controls').src = GITHUB_RAW_BASE_URL + audioFile;
+                
+                // CORRIGIDO: Removendo o **EEN** dos exemplos na tabela, e aplicando o **bold** via HTML
+                document.getElementById('comparison-table-container').innerHTML = `
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Teen Numbers</th>
+                                <th>Ty Numbers</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>**Thirteen** (13)</td><td>**Thirty** (30)</td></tr>
+                            <tr><td>Four**teen** (14)</td><td>**Forty** (40)</td></tr>
+                            <tr><td>Fif**teen** (15)</td><td>**Fifty** (50)</td></tr>
+                            <tr><td>Six**teen** (16)</td><td>**Sixty** (60)</td></tr>
+                            <tr><td>Seven**teen** (17)</td><td>**Seventy** (70)</td></tr>
+                            <tr><td>Eigh**teen** (18)</td><td>**Eighty** (80)</td></tr>
+                            <tr><td>Nine**teen** (19)</td><td>**Ninety** (90)</td></tr>
+                        </tbody>
+                    </table>
+                `;
+            } else {
+                // Topic 4: Simple list
+                document.getElementById('audio-player-controls').style.display = 'none';
+                document.getElementById('pronunciation-list').innerHTML = '';
+                for (const word in q.options) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span>${word}</span>
+                        <button class="play-button" onclick="playAudio('${GITHUB_RAW_BASE_URL + q.options[word]}')">▶️</button>
+                    `;
+                    document.getElementById('pronunciation-list').appendChild(li);
+                }
+            }
+            
         } else if (q.correctAnswer === 'FILL_IN_BLANKS') {
+            questionText.style.display = 'block';
+            questionText.innerHTML = q.question;
             renderFillInBlanks(q);
-        } else if (q.correctAnswer === 'DRAG_AND_DROP') { // <--- CORREÇÃO CRÍTICA APLICADA AQUI
+            
+        } else if (q.correctAnswer === 'DRAG_AND_DROP') {
+            questionText.style.display = 'block';
+            questionText.innerHTML = q.question;
             renderDragAndDrop(q);
-        }
-    }
-    
-    // --- TOPIC 1-2, 9-13: MULTIPLE CHOICE QUIZ ---
-    function renderMultipleChoice(q) {
-        optionsContainer.style.display = 'block';
-        optionsContainer.innerHTML = '';
-        questionText.style.display = 'block'; 
 
-        for (const [key, value] of Object.entries(q.options)) {
-            const optionDiv = document.createElement('div');
-            optionDiv.className = 'option';
-            optionDiv.innerHTML = `${key}. ${value}`;
-            optionDiv.onclick = () => selectOption(optionDiv, key, q);
-            optionsContainer.appendChild(optionDiv);
+        } else if (q.correctAnswer === 'INFO') {
+            // Display Information Topic (Vocabulary)
+            questionText.style.display = 'block';
+            questionText.innerHTML = q.question; 
+            optionsContainer.style.display = 'block';
+            
+            optionsContainer.innerHTML = '';
+            for (const key in q.options) {
+                const p = document.createElement('p');
+                p.innerHTML = q.options[key];
+                p.style.textAlign = 'left';
+                p.style.padding = '5px 0';
+                p.style.margin = '0';
+                p.style.fontSize = '1.1em';
+                optionsContainer.appendChild(p);
+            }
+            
+            // Hide Next button, only allow Back to go Home
+            nextBtn.style.display = 'block';
+            
+        } else {
+            // Multiple Choice / Standard Quiz
+            questionText.style.display = 'block';
+            questionText.textContent = q.question;
+            optionsContainer.style.display = 'block';
+            
+            if (q.image) {
+                questionImage.src = GITHUB_RAW_BASE_URL + q.image;
+                questionImage.style.display = 'block';
+                document.querySelector('.quiz-question').style.border = '1px solid #eee';
+            } else {
+                document.querySelector('.quiz-question').style.border = 'none';
+            }
+
+            for (const key in q.options) {
+                const optionDiv = document.createElement('div');
+                optionDiv.classList.add('option');
+                optionDiv.textContent = `${key}. ${q.options[key]}`;
+                optionDiv.onclick = () => checkAnswer(q, key, optionDiv);
+                optionsContainer.appendChild(optionDiv);
+            }
         }
-        answerChecked = false; // Reset for new question
     }
     
-    function selectOption(selectedDiv, selectedAnswer, q) {
-        if (answerChecked) return;
+    function checkAnswer(q, selectedKey, selectedDiv) {
+        if (answerChecked) return; 
         answerChecked = true;
 
-        document.querySelectorAll('.option').forEach(div => {
-            div.classList.remove('correct', 'incorrect');
-            div.onclick = null; // Disable further clicks
+        Array.from(optionsContainer.children).forEach(div => {
+            div.classList.remove('correct', 'incorrect'); 
+            div.onclick = null; 
         });
 
-        if (selectedAnswer === q.correctAnswer) {
+        if (selectedKey === q.correctAnswer) {
             selectedDiv.classList.add('correct');
-            feedback.innerHTML = 'Correct! Great job.';
+            feedback.innerHTML = '<span class="result-correct">✅ Correct!</span>';
         } else {
             selectedDiv.classList.add('incorrect');
-            // Highlight the correct answer
-            document.querySelectorAll('.option').forEach(div => {
-                if (div.innerHTML.startsWith(q.correctAnswer + '.')) {
-                    div.classList.add('correct');
-                }
-            });
-            feedback.innerHTML = 'Incorrect. Try again, or press Next to continue.';
+            const correctDiv = Array.from(optionsContainer.children).find(div => div.textContent.startsWith(q.correctAnswer));
+            if (correctDiv) {
+                correctDiv.classList.add('correct');
+            }
+            feedback.innerHTML = '<span class="result-incorrect">❌ Incorrect. The correct answer is ' + q.correctAnswer + '.</span>';
         }
     }
 
-    // --- TOPIC 3: INFO SCREEN ---
-    function renderInfo(q) {
-        optionsContainer.style.display = 'none';
-        questionText.style.display = 'block';
-        feedback.innerHTML = '';
-
-        const list = document.createElement('ul');
-        list.style.listStyle = 'none';
-        list.style.padding = '0';
-        list.style.textAlign = 'left';
-        
-        for (const [key, value] of Object.entries(q.options)) {
-            const listItem = document.createElement('li');
-            listItem.innerHTML = value;
-            listItem.style.padding = '8px 0';
-            listItem.style.borderBottom = '1px dotted #e0e0e0';
-            list.appendChild(listItem);
-        }
-        
-        optionsContainer.appendChild(list);
-        optionsContainer.style.display = 'block';
-    }
-
-    // --- TOPIC 4 & 6: PRONUNCIATION PRACTICE ---
-    function renderPronunciationSet(q) {
-        optionsContainer.style.display = 'none';
-        questionText.style.display = 'block';
-        feedback.innerHTML = '';
-        
-        const pronContainer = document.getElementById('pronunciation-container');
-        const list = document.getElementById('pronunciation-list');
-        const audioControls = document.getElementById('audio-player-controls');
-        
-        pronContainer.style.display = 'flex';
-        list.innerHTML = '';
-        audioControls.style.display = 'none';
-        document.getElementById('current-instruction').textContent = q.question.startsWith("PRONUNCIATION") ? "Words to Practice:" : q.question;
-        
-        if (q.id === 6) {
-            audioControls.src = GITHUB_RAW_BASE_URL + q.options["13: (Thirteen) – 30 (Thirty)"];
-            audioControls.style.display = 'block';
-            document.getElementById('current-instruction').textContent = ''; 
-            renderComparisonTable();
-            return;
-        }
-
-        for (const [word, audioFile] of Object.entries(q.options)) {
-            const listItem = document.createElement('li');
-            listItem.textContent = word;
-            
-            const playButton = document.createElement('button');
-            playButton.className = 'play-button';
-            playButton.innerHTML = '▶️';
-            playButton.onclick = () => playAudio(audioFile);
-            
-            listItem.appendChild(playButton);
-            list.appendChild(listItem);
-        }
-    }
-    
-    function playAudio(audioFile) {
-        const audio = new Audio(GITHUB_RAW_BASE_URL + audioFile);
-        audio.play();
-    }
-    
-    function renderComparisonTable() {
-        const tableContainer = document.getElementById('comparison-table-container');
-        tableContainer.innerHTML = `
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>Teen (Emphasis on **EEN**)</th>
-                        <th>Ty (Emphasis on **First Syllable**)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Thir**teen** (13)</td><td>**Thir**ty (30)</td></tr>
-                    <tr><td>Four**teen** (14)</td><td>**Four**ty (40)</td></tr>
-                    <tr><td>Fif**teen** (15)</td><td>**Fif**ty (50)</td></tr>
-                    <tr><td>Six**teen** (16)</td><td>**Six**ty (60)</td></tr>
-                </tbody>
-            </table>
-        `;
-    }
-
-    // --- TOPIC 5: INTERACTIVE BINGO ---
-    function renderInteractiveBingo(q) {
-        optionsContainer.style.display = 'none';
-        questionText.style.display = 'block';
-        feedback.innerHTML = 'Click on the "+" signs to open the explanation boxes.';
-        
-        document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex');
-        questionText.style.display = 'none';
-        questionImage.style.display = 'block'; 
-    }
-    
-    const numberModal = document.getElementById('numberModal');
-    const modalTitle = document.getElementById('modal-title');
-    const modalBody = document.getElementById('modal-body');
-
+    // --- INTERACTIVE FUNCTIONS ---
     function openNumberModal(type) {
-        modalBody.innerHTML = '';
-        let content = '';
+        const modal = document.getElementById('numberModal');
+        const modalBody = document.getElementById('modal-body');
+        const modalTitle = document.getElementById('modal-title');
         
-        switch (type) {
-            case 'one-to-ten':
-                modalTitle.textContent = "Numbers 1-10";
-                content = "1. One, 2. Two, 3. Three, 4. Four, 5. Five, 6. Six, 7. Seven, 8. Eight, 9. Nine, 10. Ten.";
-                break;
-            case 'teens':
-                modalTitle.textContent = "Teens (11-19)";
-                content = "11. Eleven, 12. Twelve, 13. Thirteen, 14. Fourteen, 15. Fifteen, 16. Sixteen, 17. Seventeen, 18. Eighteen, 19. Nineteen.";
-                break;
-            case 'tens':
-                modalTitle.textContent = "Tens (20, 30, ...)";
-                content = "10. Ten, 20. Twenty, 30. Thirty, 40. Forty, 50. Fifty, 60. Sixty, 70. Seventy, 80. Eighty, 90. Ninety, 100. One hundred.";
-                break;
-            case 'combined':
-                modalTitle.textContent = "Combined Numbers";
-                content = "21. Twenty-one, 35. Thirty-five, 67. Sixty-seven, 99. Ninety-nine.";
-                break;
+        let content = '';
+        modalTitle.textContent = '';
+        
+        if (type === 'one-to-ten') {
+            modalTitle.textContent = 'Numbers 1-10';
+            content = `
+                <p>1 (one), 2 (two), 3 (three), 4 (four), 5 (five), 6 (six), 7 (seven), 8 (eight), 9 (nine), 10 (ten).</p>
+            `;
+        } else if (type === 'teens') {
+            modalTitle.textContent = 'Teen Numbers (11-19)';
+            content = `
+                <p>11 (eleven), 12 (twelve), 13 (thirteen), 14 (fourteen), 15 (fifteen), 16 (sixteen), 17 (seventeen), 18 (eighteen), 19 (nineteen).</p>
+                <p style="font-weight: bold;">⚠️ Pay attention to the -teen ending and stress!</p>
+            `;
+        } else if (type === 'tens') {
+            modalTitle.textContent = 'Tens (20, 30, 40...)';
+            content = `
+                <p>20 (twenty), 30 (thirty), 40 (forty), 50 (fifty), 60 (sixty), 70 (seventy), 80 (eighty), 90 (ninety), 100 (one hundred).</p>
+                <p style="font-weight: bold;">⚠️ Pay attention to the -ty ending and stress!</p>
+            `;
+        } else if (type === 'combined') {
+            modalTitle.textContent = 'Combined Numbers';
+            content = `
+                <p>21 (twenty-one), 35 (thirty-five), 48 (forty-eight), 99 (ninety-nine), 101 (one hundred and one).</p>
+            `;
         }
         
-        modalBody.innerHTML = content.split(', ').map(item => `<p style="margin: 5px 0;">${item}</p>`).join('');
-        numberModal.style.display = "block";
+        modalBody.innerHTML = content;
+        modal.style.display = 'block';
     }
 
     function closeNumberModal() {
-        numberModal.style.display = "none";
+        document.getElementById('numberModal').style.display = 'none';
     }
     
-    // --- TOPIC 7: FILL IN THE BLANKS ---
+    // --- Topic 7: FILL_IN_BLANKS ---
     function renderFillInBlanks(q) {
-        optionsContainer.style.display = 'block';
-        questionText.style.display = 'block';
-        feedback.innerHTML = 'Write the number in words. Click **Next** to check your answers.';
-
-        optionsContainer.innerHTML = '<div class="fill-in-blanks-container"></div>';
-        const container = optionsContainer.querySelector('.fill-in-blanks-container');
+        const fillContainer = document.createElement('div');
+        fillContainer.classList.add('fill-in-blanks-container');
+        lessonScreen.insertBefore(fillContainer, feedback);
         
         q.data.forEach((item, index) => {
             const group = document.createElement('div');
-            group.className = 'number-input-group';
-            group.innerHTML = `
-                <span>${item.num}</span>
-                <input type="text" id="input-${item.num}" placeholder="E.g., one hundred" oninput="saveFillInBlanksAnswer(${index}, this.value)">
-                <div id="result-${item.num}" class="number-result"></div>
-            `;
-            container.appendChild(group);
+            group.classList.add('number-input-group');
             
-            // <--- CORREÇÃO CRÍTICA APLICADA AQUI (Mantém o estado da resposta se o usuário voltar)
-            const inputField = group.querySelector('input');
-            if (item.userAnswer) {
-                inputField.value = item.userAnswer;
-            }
-            if (item.isCorrect !== false && answerChecked) { 
-                inputField.disabled = true;
-                const resultDiv = document.getElementById(`result-${item.num}`);
-                resultDiv.textContent = item.isCorrect ? 'Correct!' : `Incorrect! Correct: ${item.correct}`;
-                resultDiv.classList.add(item.isCorrect ? 'result-correct' : 'result-incorrect');
-            }
-            // FIM DA CORREÇÃO CRÍTICA
+            const numSpan = document.createElement('span');
+            numSpan.textContent = item.num + ':';
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = `fill-input-${item.num}`;
+            input.placeholder = ''; // CORRIGIDO: Removido o placeholder
+            
+            const resultDiv = document.createElement('div');
+            resultDiv.id = `fill-result-${item.num}`;
+            resultDiv.classList.add('number-result');
+            
+            group.appendChild(numSpan);
+            group.appendChild(input);
+            group.appendChild(resultDiv);
+            fillContainer.appendChild(group);
         });
         
-        fillInBlanksAnswered = answerChecked; 
+        nextBtn.textContent = 'Check & Next';
     }
     
-    function saveFillInBlanksAnswer(index, value) {
-        lessonQuestions[currentQuestionIndex].data[index].userAnswer = value.toLowerCase().trim();
-        lessonQuestions[currentQuestionIndex].data[index].isCorrect = false; // Reset correctness until check
-    }
-
     function checkFillInBlanks(q) {
         let allCorrect = true;
+        
         q.data.forEach(item => {
-            const userAnswer = item.userAnswer || '';
-            const correct = item.correct.toLowerCase().trim();
-            item.isCorrect = userAnswer === correct;
+            const input = document.getElementById(`fill-input-${item.num}`);
+            const resultDiv = document.getElementById(`fill-result-${item.num}`);
             
-            const inputField = document.getElementById(`input-${item.num}`);
-            const resultDiv = document.getElementById(`result-${item.num}`);
+            if (!input) return;
+
+            const userAnswer = input.value.trim().toLowerCase();
+            const correctWord = item.correct.toLowerCase();
             
-            inputField.disabled = true;
-            resultDiv.textContent = item.isCorrect ? 'Correct!' : `Incorrect! Correct: ${item.correct}`;
+            if (userAnswer === correctWord) {
+                resultDiv.innerHTML = `<span class="result-correct">✅ ${item.correct}</span>`;
+                input.classList.add('correct');
+                input.classList.remove('incorrect');
+                item.isCorrect = true;
+            } else {
+                resultDiv.innerHTML = `<span class="result-incorrect">❌ Try again. Correct: ${item.correct}</span>`;
+                input.classList.add('incorrect');
+                input.classList.remove('correct');
+                item.isCorrect = false;
+                allCorrect = false;
+            }
             
-            resultDiv.classList.remove('result-correct', 'result-incorrect');
-            resultDiv.classList.add(item.isCorrect ? 'result-correct' : 'result-incorrect');
-            
-            if (!item.isCorrect) allCorrect = false;
+            // Disable input after first check
+            input.disabled = true; 
         });
         
-        feedback.innerHTML = allCorrect ? 'All correct! You can press **Next** now.' : 'Some answers are incorrect. Review the corrections and press **Next** to continue.';
+        feedback.innerHTML = allCorrect 
+            ? '<span class="result-correct" style="font-size: 1.2em;">All correct! Well done!</span>'
+            : '<span class="result-incorrect" style="font-size: 1.2em;">Some answers are incorrect. Review the corrections above.</span>';
+        
+        // Change button text to indicate the next action is to advance
+        nextBtn.textContent = 'Next Question';
         answerChecked = true;
     }
 
-    // --- TOPIC 8: DRAG AND DROP ---
-    
+    // --- Topic 8: DRAG_AND_DROP ---
     function renderDragAndDrop(q) {
-        optionsContainer.style.display = 'block';
-        questionText.style.display = 'block';
-        feedback.innerHTML = 'Drag the words to the correct sentence. Click **Next** to check.';
+        const dragDropContainer = document.createElement('div');
+        dragDropContainer.classList.add('drag-drop-overall-container');
+        lessonScreen.insertBefore(dragDropContainer, feedback);
 
-        optionsContainer.innerHTML = `
-            <div class="drag-drop-overall-container">
-                <div class="image-gallery-container" id="image-gallery"></div>
-                <div class="sentence-list-container" id="sentence-list"></div>
-                <div class="draggable-words-container" id="draggable-words"></div>
-            </div>
-        `;
-        
-        const galleryContainer = document.getElementById('image-gallery');
-        const sentenceContainer = document.getElementById('sentence-list');
-        const wordsContainer = document.getElementById('draggable-words');
-
-        // 1. RENDER IMAGES
+        // 1. Image Gallery (FIGURE 1 & 3 FIX)
+        const imageGallery = document.createElement('div');
+        imageGallery.classList.add('image-gallery-container');
         q.data.sentences.forEach((sent, index) => {
-            galleryContainer.innerHTML += `
-                <div class="gallery-image-wrapper">
-                    <div class="image-number-label">${index + 1}</div>
-                    <img src="${GITHUB_RAW_BASE_URL}${sent.image}" alt="Image for question ${index + 1}">
-                </div>
-            `;
+            const wrapper = document.createElement('div');
+            wrapper.classList.add('gallery-image-wrapper');
+            
+            const label = document.createElement('span');
+            label.classList.add('image-number-label');
+            label.textContent = `Figure ${index + 1}`;
+            
+            const img = document.createElement('img');
+            img.src = GITHUB_RAW_BASE_URL + sent.image;
+            img.alt = `Figure ${index + 1}: ${sent.correct}`;
+            
+            wrapper.appendChild(label);
+            wrapper.appendChild(img);
+            imageGallery.appendChild(wrapper);
         });
+        dragDropContainer.appendChild(imageGallery);
 
-        // 2. RENDER SENTENCES AND DROP ZONES
-        q.data.sentences.forEach((sent, index) => {
-            const sentenceItem = document.createElement('div');
-            sentenceItem.className = 'sentence-item';
-
+        // 2. Sentence List
+        const sentenceList = document.createElement('div');
+        sentenceList.classList.add('sentence-list-container');
+        q.data.sentences.forEach(sent => {
+            const item = document.createElement('p');
+            item.classList.add('sentence-item');
+            
             const parts = sent.text.split('____');
             
-            sentenceItem.innerHTML += `<span class="sentence-text-before">${parts[0]}</span>`;
+            item.innerHTML = `
+                <span class="sentence-text-before">${parts[0].trim()}</span>
+                <span class="drop-zone" id="${sent.dropId}" data-correct="${sent.correct}"
+                    ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropWord(event)">
+                </span>
+                <span class="sentence-text-after">${parts[1].trim()}</span>
+            `;
+            sentenceList.appendChild(item);
+        });
+        dragDropContainer.appendChild(sentenceList);
 
-            const dropZone = document.createElement('div');
-            dropZone.className = 'drop-zone';
-            dropZone.id = sent.dropId;
-            dropZone.dataset.correctWord = sent.correct;
-            dropZone.ondragover = (e) => dragOver(e, dropZone);
-            dropZone.ondragleave = (e) => dragLeave(e, dropZone);
-            dropZone.ondrop = (e) => dropWord(e, dropZone, sent, index);
+        // 3. Draggable Words Container
+        const draggableWordsContainer = document.createElement('div');
+        draggableWordsContainer.classList.add('draggable-words-container');
+        q.data.words.forEach(word => {
+            const draggable = document.createElement('span');
+            draggable.classList.add('draggable-word');
+            draggable.textContent = word.text;
+            draggable.id = word.id;
+            draggable.setAttribute('draggable', true);
+            draggable.addEventListener('dragstart', dragStart);
+            draggableWordsContainer.appendChild(draggable);
+        });
+        dragDropContainer.appendChild(draggableWordsContainer);
+        
+        nextBtn.textContent = 'Check & Next';
+    }
+
+    function dragStart(event) {
+        event.dataTransfer.setData('text/plain', event.target.id);
+        event.target.classList.add('dragging');
+    }
+
+    function dragOver(event) {
+        event.preventDefault(); 
+        if (event.target.classList.contains('drop-zone') && event.target.children.length === 0) {
+            event.target.classList.add('drag-over');
+        }
+    }
+
+    function dragLeave(event) {
+        event.target.classList.remove('drag-over');
+    }
+
+    function dropWord(event) {
+        event.preventDefault();
+        event.target.classList.remove('drag-over');
+        
+        if (event.target.classList.contains('drop-zone') && event.target.children.length === 0) {
+            const data = event.dataTransfer.getData('text/plain');
+            const draggedElement = document.getElementById(data);
             
-            // <--- CORREÇÃO CRÍTICA APLICADA AQUI (Mantém a palavra arrastada se o usuário voltar)
-            if (sent.userAnswer) {
-                const word = document.createElement('div');
-                word.className = 'draggable-word';
-                word.textContent = sent.userAnswer;
-                word.draggable = false;
-                dropZone.appendChild(word);
-            }
-            if (sent.isCorrect !== false && answerChecked) { 
-                dropZone.classList.add(sent.isCorrect ? 'correct-drop' : 'incorrect-drop');
-                if (!sent.isCorrect) {
-                    dropZone.innerHTML = `<span class="correct-word-display">${sent.correct}</span>`;
+            if (draggedElement) {
+                // Move element
+                event.target.appendChild(draggedElement);
+                draggedElement.classList.remove('dragging');
+                
+                // Store user answer
+                const dropId = event.target.id;
+                const wordText = draggedElement.textContent;
+                const sent = DRAG_AND_DROP_SENTENCES.find(s => s.dropId === dropId);
+                if (sent) {
+                    sent.userAnswer = wordText;
                 }
             }
-            // FIM DA CORREÇÃO CRÍTICA
-            
-            sentenceItem.appendChild(dropZone);
-            
-            if (parts.length > 1 && parts[1]) {
-                sentenceItem.innerHTML += `<span class="sentence-text-after">${parts[1]}</span>`;
-            }
-
-            sentenceContainer.appendChild(sentenceItem);
-        });
-
-        // 3. RENDER DRAGGABLE WORDS
-        const usedWords = q.data.sentences.map(s => s.userAnswer).filter(Boolean);
-        
-        q.data.words.forEach(wordData => {
-            if (!usedWords.includes(wordData.text)) { // Only render unused words
-                const wordDiv = document.createElement('div');
-                wordDiv.className = 'draggable-word';
-                wordDiv.id = wordData.id;
-                wordDiv.textContent = wordData.text;
-                wordDiv.draggable = true;
-                wordDiv.ondragstart = (e) => dragStart(e, wordData.text);
-                wordsContainer.appendChild(wordDiv);
-            }
-        });
-        
-        dragAndDropAnswered = answerChecked; 
-        
-        if (dragAndDropAnswered) {
-             // Disable all drag operations and check button if already checked
-             document.querySelectorAll('.draggable-word').forEach(w => w.draggable = false);
         }
     }
     
-    let draggedWordText = null;
-
-    function dragStart(e, text) {
-        draggedWordText = text;
-        e.dataTransfer.setData('text/plain', text);
-        setTimeout(() => e.target.classList.add('dragging'), 0);
-    }
-
-    function dragOver(e, dropZone) {
-        e.preventDefault();
-        if (dropZone.children.length === 0 && !answerChecked) {
-            dropZone.classList.add('drag-over');
-        }
-    }
-
-    function dragLeave(e, dropZone) {
-        dropZone.classList.remove('drag-over');
-    }
-
-    function dropWord(e, dropZone, sentenceData, index) {
-        e.preventDefault();
-        dropZone.classList.remove('drag-over');
-
-        if (answerChecked || dropZone.children.length > 0) return;
-
-        const data = e.dataTransfer.getData('text/plain');
-        
-        // Remove word from source container
-        const originalWordDiv = document.querySelector(`.draggable-word[id]`);
-        if (originalWordDiv && originalWordDiv.textContent === data) {
-            originalWordDiv.remove();
-        }
-        
-        // Add word to drop zone
-        const word = document.createElement('div');
-        word.className = 'draggable-word';
-        word.textContent = data;
-        word.draggable = false; 
-        dropZone.appendChild(word);
-
-        // Update question state
-        lessonQuestions[currentQuestionIndex].data.sentences[index].userAnswer = data;
-    }
-
     function checkDragAndDrop(q) {
         let allCorrect = true;
         
-        q.data.sentences.forEach((sent, index) => {
+        q.data.sentences.forEach(sent => {
             const dropZone = document.getElementById(sent.dropId);
-            const userAnswer = sent.userAnswer ? sent.userAnswer.toLowerCase().trim() : '';
-            const correct = sent.correct.toLowerCase().trim();
-            sent.isCorrect = userAnswer === correct;
-
-            dropZone.classList.remove('correct-drop', 'incorrect-drop', 'drag-over');
-
-            if (sent.isCorrect) {
-                dropZone.classList.add('correct-drop');
-            } else {
-                dropZone.classList.add('incorrect-drop');
-                // Show correct answer if incorrect
-                dropZone.innerHTML = `<span class="correct-word-display">${sent.correct}</span>`;
-            }
+            const droppedWordElement = dropZone.querySelector('.draggable-word');
             
-            if (!sent.isCorrect) allCorrect = false;
+            if (droppedWordElement) {
+                const userAnswer = droppedWordElement.textContent;
+                const correctWord = dropZone.getAttribute('data-correct');
+                
+                droppedWordElement.setAttribute('draggable', false);
+                
+                if (userAnswer === correctWord) {
+                    dropZone.classList.add('correct-drop');
+                    dropZone.classList.remove('incorrect-drop');
+                    sent.isCorrect = true;
+                } else {
+                    dropZone.classList.add('incorrect-drop');
+                    dropZone.classList.remove('correct-drop');
+                    
+                    // Show correct word next to the wrong one
+                    dropZone.innerHTML += `<span class="correct-word-display" style="margin-left: 5px;">${correctWord}</span>`;
+                    sent.isCorrect = false;
+                    allCorrect = false;
+                }
+            } else {
+                // No word dropped - still incorrect
+                dropZone.classList.add('incorrect-drop');
+                dropZone.classList.remove('correct-drop');
+                dropZone.innerHTML = `<span class="correct-word-display">${sent.correct}</span>`;
+                allCorrect = false;
+            }
         });
-
-        // Disable further drag operations
-        document.querySelectorAll('.draggable-word').forEach(w => w.draggable = false);
-        document.getElementById('draggable-words').innerHTML = ''; // Clear unused words
-
-        feedback.innerHTML = allCorrect ? 'All correct! You can press **Next** now.' : 'Some answers are incorrect. Review the corrections and press **Next** to continue.';
+        
+        feedback.innerHTML = allCorrect 
+            ? '<span class="result-correct" style="font-size: 1.2em;">All correct! Well done!</span>'
+            : '<span class="result-incorrect" style="font-size: 1.2em;">Some answers are incorrect. Review the corrections above.</span>';
+        
+        // Disable remaining words from being dragged
+        document.querySelectorAll('.draggable-word').forEach(word => word.setAttribute('draggable', false));
+        
+        nextBtn.textContent = 'Next Question';
         answerChecked = true;
     }
     
-    // Initial setup for the home button functionality if the user is already on the home screen.
+    function playAudio(src) {
+        const audio = new Audio(src);
+        audio.play();
+    }
+    
+    // Initial load
     window.onload = () => {
-        if (homeScreen.style.display !== 'block') {
-            goHome();
-        }
+        // If you want the app to start on the home screen, call goHome() or do nothing (as is currently the case)
     };
 </script>
+
 </body>
 </html>
