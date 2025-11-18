@@ -706,7 +706,7 @@
 
     /* Estilos do Modal (Tópico 5) */
     .modal {
-        display: none; 
+        display: none; /* CORRIGIDO: Esconde por padrão */
         position: fixed; 
         z-index: 1002; 
         left: 0;
@@ -715,11 +715,19 @@
         height: 100%; 
         overflow: auto; 
         background-color: rgba(0,0,0,0.4); 
-        display: flex; 
+        /* Novos estilos para animação/esconder instantaneamente */
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
         justify-content: center; 
         align-items: center; 
     }
     
+    /* Nova classe para exibir o modal com animação */
+    .modal.show-modal {
+        display: flex; /* Usa flex para centralizar APENAS quando show-modal é ativado */
+        opacity: 1;
+    }
+
     .modal-content {
         background-color: transparent; 
         padding: 0; 
@@ -998,13 +1006,19 @@
     // --- GENERAL NAVIGATION AND LOADING FUNCTIONS ---
     function openNav() { sideMenu.classList.add('open'); }
     function closeNav() { sideMenu.classList.remove('open'); }
+    
+    // ATUALIZADO: Usando closeNumberModal para fechar o modal.
     window.onclick = function(event) {
         if (sideMenu.classList.contains('open') && !event.target.closest('.side-menu') && !event.target.closest('.menu-toggle')) {
             closeNav();
         }
         const modal = document.getElementById('numberModal');
-        if (event.target == modal) { closeNumberModal(); }
+        // Se o clique foi no background do modal, fechar
+        if (event.target == modal) { 
+            closeNumberModal(); 
+        }
     }
+    
     function loadQuestionFromMenu(index) { closeNav(); currentQuestionIndex = index; loadQuestion(lessonQuestions[currentQuestionIndex]); }
     function populateMenu() {
         sideMenu.querySelectorAll('a:not(.close-btn)').forEach(a => a.remove()); 
@@ -1061,11 +1075,11 @@
         }
         
         // 1.2. MÚLTIPLA ESCOLHA (Checa se respondeu no caso de não ter feito o check ainda)
-        if (!answerChecked && selectedOption && currentQ.correctAnswer.length === 1) {
-            // Se respondeu mas não checou (clicou next sem clicar na opção)
-             checkAnswer(selectedOption, currentQ.correctAnswer, currentQ.options);
-             answerChecked = true;
-             return; 
+        if (!answerChecked && currentQ.correctAnswer.length === 1) {
+            // Se respondeu ou não, faz o check e exibe feedback antes de avançar.
+            checkAnswer(selectedOption, currentQ.correctAnswer, currentQ.options);
+            answerChecked = true;
+            return; 
         }
 
         // 2. AVANÇA PARA A PRÓXIMA PERGUNTA
@@ -1216,7 +1230,7 @@
             const optionKey = div.getAttribute('data-key'); 
             if (optionKey === correctAnswerKey) {
                 div.classList.add('correct');
-            } else if (div === selectedDiv) {
+            } else if (selectedDiv && div === selectedDiv) {
                 div.classList.add('incorrect');
             }
         });
@@ -1225,12 +1239,13 @@
             feedback.innerHTML = `<span style="color: #28a745;">Correct! The answer is **${correctWord}**. Click Next to continue.</span>`;
         } else {
             // Se selectedDiv for null, significa que o usuário não selecionou e clicou next.
+            // OU se selecionou, mas estava incorreto.
             if (!selectedDiv) {
                  feedback.innerHTML = `<span style="color: #dc3545;">Skipped.</span> The correct answer is: **${correctWord}**. Click Next to continue.`;
             } else {
                  feedback.innerHTML = `<span style="color: #dc3545;">Incorrect.</span> The correct answer is: **${correctWord}**. Click Next to continue.`;
             }
-            // Garante que a correta seja marcada mesmo se for pulada
+            // Garante que a correta seja marcada
             Array.from(optionsContainer.children).forEach(div => {
                 const optionKey = div.getAttribute('data-key'); 
                 if (optionKey === correctAnswerKey) {
@@ -1293,11 +1308,23 @@
         `;
 
         modalBody.innerHTML = tableHTML;
-        modal.style.display = 'flex'; // Usa flex para centralizar
+        
+        // CORRIGIDO: Garante que o display seja ativado antes da transição.
+        modal.style.display = 'flex';
+        // Timeout para garantir que o CSS entenda que o display mudou, permitindo a transição de opacidade
+        setTimeout(() => modal.classList.add('show-modal'), 10);
     }
 
     function closeNumberModal() {
-        document.getElementById('numberModal').style.display = 'none';
+        const modal = document.getElementById('numberModal');
+        
+        // CORRIGIDO: Remove a classe para acionar o fade-out
+        modal.classList.remove('show-modal');
+        
+        // CORRIGIDO: Esconde completamente após a transição (300ms + 10ms de margem)
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 310);
     }
 
     // O código para o Tópico 7 (FILL_IN_BLANKS)
