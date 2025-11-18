@@ -363,14 +363,15 @@
         overflow: hidden; 
     }
     
-    /* MODIFICAÇÃO Tópico 5: Reduz o tamanho da tabela do Modal */
+    /* MODIFICAÇÃO Tópico 5: Diminui o tamanho da tabela do Modal */
     .modal-content .info-table {
-        max-width: 200px; 
-        margin: 15px auto; 
+        max-width: 180px; /* Reduz de 200px para 180px */
+        margin: 10px auto; /* Reduz a margem superior/inferior */
+        font-size: 0.9em; /* Diminui a fonte um pouco */
     }
 
     .info-table th, .info-table td {
-        padding: 12px 15px; 
+        padding: 8px 10px; /* Reduz padding para diminuir a altura das células */
         text-align: left;
         border-bottom: 1px solid #f0f0f0; 
         font-size: 1em; 
@@ -660,6 +661,7 @@
         font-size: 1em;
     }
 
+    /* Estilos do Modal */
     .modal {
         display: none; 
         position: fixed; 
@@ -681,8 +683,13 @@
         max-width: 500px; 
         border-radius: 10px;
         box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        
+        /* MODIFICAÇÃO Tópico 5: Ajusta o tamanho do modal ao conteúdo */
+        max-height: 80vh; 
+        overflow-y: auto; 
+        width: auto; /* Permite que a largura se ajuste */
     }
-    
+
     .close-button {
         color: #aaa;
         float: right;
@@ -817,7 +824,7 @@
         { id: 1, question: "What do you see in the image?", image: "numeros.jpg", options: { A: "The Alphabet", B: "Colors", C: "Numbers" }, correctAnswer: 'C', chapter: 1, title: "1. Numbers Overview" },
         { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', chapter: 1, title: "2. Verb 'To Be' (I am)" },
         
-        // Tópico 3 - Vocabulary (MODIFICADO para 1 coluna com highlight)
+        // Tópico 3 - Vocabulary (MODIFICADO para remover "Listen and practice each word.")
         { id: 3, 
             question: `<h3 style="color: #007bff; font-size: 2em; margin-bottom: 20px;">Vocabulary</h3>`, 
             options: [ 
@@ -835,9 +842,9 @@
             correctAnswer: 'INFO_TABLE', chapter: 1, title: "3. Lesson Vocabulary" 
         },
         
-        // Tópico 4 - Pronúncia (MODIFICADO para remover instrução duplicada)
+        // Tópico 4 - Pronúncia 
         { id: 4, 
-            question: "Listen and practice each word.", // Título da instrução
+            question: "Listen and practice each word.", 
             options: { "Address number": "addressnumber.mp3", "American": "American.mp3", "Friend": "friend.mp3", "Great": "great.mp3", "Nationality": "nationality.mp3", "New": "new.mp3", "Phone number": "phonenumber.mp3", "Student": "student.mp3", "Teacher": "teacher.mp3", "Years old": "yearsold.mp3" }, 
             correctAnswer: 'PRONUNCIATION_SET', 
             chapter: 1, 
@@ -847,7 +854,7 @@
         // Topic 5 
         { id: 5, question: "Click on the '+' signs to review the number groups.", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1, title: "5. Interactive Bingo Review" },
         
-        // Topic 6 (MODIFICADO para remover acentuação e negrito, e ajustar instrução)
+        // Topic 6 
         { id: 6, 
             question: "Listen and notice the difference between -teen and -ty.", 
             options: { "13: (Thirteen) – 30 (Thirty)": "teenety.mp3" }, 
@@ -1043,11 +1050,13 @@
         }
     }
 
-    // NOVO: Função para carregar Tabela de Informação (Tópico 3) - MODIFICADA PARA 1 COLUNA
+    // Função para carregar Tabela de Informação (Tópico 3)
     function loadInfoTable(q) {
         optionsContainer.style.display = 'block';
         optionsContainer.innerHTML = ''; 
 
+        // Tópico 3: Removemos a instrução "Listen and practice each word." no questionText
+        
         const tableHTML = `
             <table class="info-table" style="max-width: 500px; margin: 20px auto;">
                 <tbody>
@@ -1065,7 +1074,7 @@
     }
 
 
-    // Tópico 4 e 6 - Pronunciation Slide (MODIFICADO)
+    // Tópico 4 e 6 - Pronunciation Slide 
     function loadPronunciationSlide(q) {
         document.getElementById('pronunciation-container').style.display = 'flex';
         questionText.innerHTML = q.question; 
@@ -1082,7 +1091,7 @@
         document.getElementById('comparison-table-container').innerHTML = ''; // Limpa tabela
 
         if (q.id === 6) {
-            // Lógica específica para o Tópico 6 (Teen vs Ty) - Tabela de Comparação (MODIFICADA)
+            // Lógica específica para o Tópico 6 (Teen vs Ty) - Tabela de Comparação
             const tableContainer = document.getElementById('comparison-table-container');
             tableContainer.innerHTML = `
                 <table class="comparison-table">
@@ -1103,11 +1112,10 @@
                     </tbody>
                 </table>
             `;
-            // MODIFICAÇÃO: Nova instrução para o Tópico 6
             document.getElementById('current-instruction').textContent = 'Listen and notice the difference between -teen and -ty.';
             audioPlayer.src = GITHUB_RAW_BASE_URL + q.options[Object.keys(q.options)[0]];
         } else {
-            // Lógica para o Tópico 4 (Lista de Pronúncias Individuais) - MODIFICADO O TEXTO DA INSTRUÇÃO
+            // Lógica para o Tópico 4 (Lista de Pronúncias Individuais)
             document.getElementById('current-instruction').textContent = 'Click the play button (▶️) next to each word to listen and practice.';
             for (const [word, audioFile] of Object.entries(q.options)) {
                 const li = document.createElement('li');
@@ -1147,7 +1155,7 @@
         answerChecked = true;
     }
 
-    // O código para o Tópico 5 (Interactive Bingo Review) - MODIFICADO PARA TABELA MENOR
+    // O código para o Tópico 5 (Interactive Bingo Review) - CSS para o modal já foi ajustado
     function openNumberModal(group) {
         const modal = document.getElementById('numberModal');
         const modalTitle = document.getElementById('modal-title');
