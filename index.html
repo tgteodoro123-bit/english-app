@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>English App</title>
+<title>English Course - Home</title>
 <style>
     body {
-        font-family: Arial, sans-serif;
         margin: 0;
-        background: #f5f5f5;
+        font-family: Arial, sans-serif;
+        background-color: #f1f1f1; /* cinza claro */
     }
 
     header {
-        background: #1e40af;
+        background-color: #3a3a3a; /* cinza escuro */
         color: white;
         padding: 20px;
         text-align: center;
@@ -19,154 +19,166 @@
         font-weight: bold;
     }
 
-    /* GRID DOS CARDS */
     .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
         gap: 15px;
         padding: 20px;
     }
 
     .card {
-        background: white;
-        padding: 25px;
-        border-radius: 12px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
         text-align: center;
-        font-size: 16px;
+        font-size: 18px;
         font-weight: bold;
-        box-shadow: 0px 3px 6px rgba(0,0,0,0.1);
         cursor: pointer;
         transition: 0.2s;
+        border: 2px solid #d4d4d4;
     }
 
     .card:hover {
         transform: scale(1.05);
+        border-color: #3a3a3a;
     }
 
-    /* TELA DA LIÇÃO */
-    #lessonScreen {
-        display: none;
-        padding: 20px;
-    }
-
-    .backBtn {
-        background: #1e3a8a;
-        color: white;
-        padding: 10px 18px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        margin-bottom: 15px;
-    }
-
-    .question-block {
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0px 3px 6px rgba(0,0,0,0.15);
-    }
-
-    button.option {
-        width: 100%;
-        padding: 12px;
-        margin: 8px 0;
-        border: 1px solid #aaa;
-        border-radius: 8px;
-        background: white;
-        cursor: pointer;
-        transition: 0.2s;
-    }
-
-    button.option:hover {
-        background: #e5e7eb;
+    .card img {
+        width: 60px;
+        margin-bottom: 10px;
     }
 </style>
 </head>
 
 <body>
 
-<header>English Course</header>
+<header>
+    English Course – 24 Lessons
+</header>
 
-<!-- TELA INICIAL -->
-<div id="homeScreen">
-    <div class="grid">
-        <!-- Gera os 24 cards -->
-        <script>
-            for (let i = 1; i <= 24; i++) {
-                document.write(`
-                    <div class="card" onclick="openLesson(${i})">
-                        Lesson ${i}
-                    </div>
-                `);
-            }
-        </script>
-    </div>
-</div>
+<div class="grid">
 
-<!-- TELA DA LIÇÃO -->
-<div id="lessonScreen">
-    <button class="backBtn" onclick="goHome()">← Back</button>
-    <h2 id="lessonTitle"></h2>
-
-    <div class="question-block">
-        <p id="lessonContent"></p>
-
-        <button class="option" onclick="selectOption('A')">A</button>
-        <button class="option" onclick="selectOption('B')">B</button>
-        <button class="option" onclick="selectOption('C')">C</button>
+    <div class="card" onclick="location.href='capitulo1.html'">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 1
     </div>
 
-    <br>
-    <button class="backBtn" onclick="nextLesson()">Next</button>
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 2
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 3
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 4
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 5
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 6
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 7
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 8
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 9
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 10
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 11
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 12
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 13
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 14
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 15
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 16
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 17
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 18
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 19
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 20
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 21
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 22
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 23
+    </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/60" alt="">
+        Lesson 24
+    </div>
+
 </div>
-
-<script>
-    // Base de dados simples das lições
-    const lessons = {
-        1: {
-            title: "Introducing Yourself",
-            text: "Look and answer: What does this show?\nA. A name tag\nB. A job interview\nC. A passport"
-        },
-        2: {
-            title: "Greetings",
-            text: "How do you greet someone politely?"
-        }
-        // Aqui você vai adicionando até a 24
-    };
-
-    let currentLesson = 1;
-
-    function openLesson(num) {
-        currentLesson = num;
-
-        document.getElementById("homeScreen").style.display = "none";
-        document.getElementById("lessonScreen").style.display = "block";
-
-        loadLesson(num);
-    }
-
-    function loadLesson(num) {
-        let data = lessons[num] || { title: "Lesson " + num, text: "Content not added yet." };
-
-        document.getElementById("lessonTitle").innerText = data.title;
-        document.getElementById("lessonContent").innerText = data.text;
-    }
-
-    function goHome() {
-        document.getElementById("lessonScreen").style.display = "none";
-        document.getElementById("homeScreen").style.display = "block";
-    }
-
-    function nextLesson() {
-        currentLesson++;
-        if (currentLesson > 24) currentLesson = 1;
-        loadLesson(currentLesson);
-    }
-
-    function selectOption(opt) {
-        alert("You selected option " + opt);
-    }
-</script>
 
 </body>
 </html>
