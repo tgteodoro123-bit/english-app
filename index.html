@@ -355,7 +355,7 @@
     #pronunciation-list li { padding: 10px; border-bottom: 1px dotted #e0e0e0; display: flex; justify-content: space-between; align-items: center; font-size: 1.1em; }
     .play-button { background: none; border: none; font-size: 1.5em; cursor: pointer; color: #007bff; margin-left: 10px; transition: color 0.1s; }
 
-    /* Tópico 3 e 5 - Table Styles */
+    /* Topic 3 and 5 - Table Styles */
     .info-table {
         width: 100%;
         border-collapse: collapse;
@@ -365,20 +365,24 @@
         overflow: hidden; 
     }
     
-    /* MODIFICAÇÃO Tópico 3: Tabela de Vocabulário menor e ajustes de cor */
+    /* MODIFICAÇÃO Tópico 3: Tabela de Vocabulário - NOVO ESTILO */
+    .lesson-vocabulary {
+        max-width: 600px; /* Largura máxima do contêiner */
+        margin: 0 auto;
+    }
     .lesson-vocabulary .info-table {
-        margin: 10px auto; 
-        max-width: 400px; 
+        margin: 20px auto; 
+        max-width: 100%; 
         border-radius: 6px;
-        box-shadow: none; 
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05); 
+        border: 1px solid #ddd; 
+        width: 100%;
+        table-layout: fixed; 
+        border-collapse: separate; 
+        border-spacing: 0;
     }
     
     .lesson-vocabulary .info-table tr {
-        border: 1px solid #e0e0e0; 
-        margin-bottom: 8px;
-        display: block; 
-        border-radius: 4px;
-        overflow: hidden;
         transition: background-color 0.2s;
     }
     
@@ -387,15 +391,31 @@
     }
     
     .lesson-vocabulary .info-table th, .lesson-vocabulary .info-table td {
-        padding: 10px 12px; /* Padding reduzido */
+        padding: 15px 18px; 
         text-align: left;
-        border: none; 
+        border-bottom: 1px solid #eee; 
+    }
+    
+    /* Remove a borda inferior da última linha */
+    .lesson-vocabulary .info-table tr:last-child td {
+        border-bottom: none;
     }
     
     .lesson-vocabulary h3 {
-        color: #333 !important; /* NOVO: Cinza Escuro */
-        text-align: center; /* NOVO: Centralizado */
+        color: #333 !important; 
+        text-align: center; 
     }
+    
+    /* Estilo para a coluna de palavras (Topic 3) */
+    .info-table td.sentence-cell {
+        font-weight: 400;
+        color: #333; 
+    }
+    .info-table td.sentence-cell .highlight {
+        font-weight: bold;
+        color: #007bff; 
+    }
+
 
     /* MODIFICAÇÃO Tópico 5: Modal de Números com escrita e número separados */
     .modal-content .info-table {
@@ -419,17 +439,6 @@
     .modal-content .info-table td:first-child {
         font-weight: 700; /* Letras mais grossas */
         border-right: 1px solid #eee; /* Linha de separação */
-    }
-
-
-    /* Estilo para a coluna de palavras (Topic 3) */
-    .info-table td.sentence-cell {
-        font-weight: 400;
-        color: #333; 
-    }
-    .info-table td.sentence-cell .highlight {
-        font-weight: bold;
-        color: #007bff; 
     }
 
 
@@ -781,7 +790,7 @@
         <div class="hotspot" id="hotspot-4" style="top: 70%; left: 70%;" onclick="openNumberModal('combined')">+</div>
     </div>
 
-    <p id="question-text" style="display: none;"></p> 
+    <p id="question-text"></p> 
     
     <div id="options-container" style="display: none;"></div>
     
@@ -883,9 +892,9 @@
         { id: 1, question: "What do you see in the image?", image: "numeros.jpg", options: { A: "The Alphabet", B: "Colors", C: "Numbers" }, correctAnswer: 'C', correctWord: 'Numbers', chapter: 1, title: "1. Numbers Overview" },
         { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', correctWord: 'I am', chapter: 1, title: "2. Verb 'To Be' (I am)" },
         
-        // Tópico 3 - Vocabulary (Tabela menor e cor do título)
+        // Tópico 3 - Vocabulary (NOVO: Limpeza e título)
         { id: 3, 
-            question: `<h3 style="color: #333; font-size: 2em; margin-bottom: 20px; text-align: center;">Vocabulary</h3>`, 
+            question: `Review the essential vocabulary for this lesson.`, // Título limpo
             options: [ 
                 { word: 'address number', example: 'My <span class="highlight">address number</span> is 34.' },
                 { word: 'student', example: 'I am a <span class="highlight">student</span>.' },
@@ -1125,7 +1134,7 @@
                 loadDragAndDrop(q);
                 questionImage.style.display = 'none';
                 break;
-            default: // Múltipla Escolha (REMOVIDA a mensagem de "Select an option or click Next")
+            default: // Múltipla Escolha
                 loadQuizSlide(q);
                 break;
         }
@@ -1148,23 +1157,22 @@
         // Highlight the current question in the side menu
         renderSideMenu();
     }
-
+    
+    // --- NOVO goNext REESCRITO PARA CORRIGIR O BUG DO TÓPICO 3 ---
     function goNext() {
         const q = lessonQuestions[currentQuestionIndex];
         
         if (!answerChecked) {
-            // Se for Múltipla Escolha e o usuário não selecionou uma opção, permite avançar (para não travar)
-            if (q.correctAnswer !== 'INFO_TABLE' && q.correctAnswer !== 'PRONUNCIATION_SET' && q.correctAnswer !== 'INTERACTIVE_BINGO' && !selectedOption && q.correctAnswer !== 'FILL_IN_BLANKS' && q.correctAnswer !== 'DRAG_AND_DROP') {
-                // Não faz nada, apenas avança.
-            } else {
-                // Para Múltipla Escolha, verifica se a resposta foi checada.
-                if (q.options) {
-                    checkAnswer();
-                    return; // Permanece no slide após a checagem
-                }
-            }
+            // 1. Múltipla Escolha (requer checagem)
+            // Verifica se o correctAnswer é uma letra (A, B, C...)
+            const isMultiChoiceQuiz = (q.correctAnswer && q.correctAnswer.length === 1 && 'ABC'.includes(q.correctAnswer.toUpperCase()));
             
-            // Para exercícios que requerem submissão
+            if (isMultiChoiceQuiz) {
+                checkAnswer();
+                return; // Permanece no slide para ver feedback
+            }
+
+            // 2. Exercícios interativos que exigem submissão
             if (q.correctAnswer === 'FILL_IN_BLANKS') {
                 checkFillInBlanks();
                 return;
@@ -1173,9 +1181,11 @@
                 checkDragAndDrop();
                 return;
             }
+            
+            // 3. Slides não interativos (INFO_TABLE, PRONUNCIATION_SET, INTERACTIVE_BINGO) caem para o avanço abaixo.
         }
         
-        // Avança para a próxima questão
+        // Final logic: Advance to the next question (alcançado por slides não interativos OU slides já checados)
         if (currentQuestionIndex < lessonQuestions.length - 1) {
             currentQuestionIndex++;
             renderQuestion();
@@ -1183,6 +1193,7 @@
             goBackToHome();
         }
     }
+    // --- FIM NOVO goNext ---
 
     function backQuestion() {
         if (currentQuestionIndex > 0) {
@@ -1254,22 +1265,24 @@
         nextBtn.onclick = goNext;
     }
 
-    // --- TÓPICO 3: INFO TABLE ---
+    // --- TÓPICO 3: INFO TABLE (REFORMULADO) ---
     function loadInfoTable(q) {
         optionsContainer.style.display = 'block';
         optionsContainer.innerHTML = `
             <div class="lesson-vocabulary">
-                ${q.question}
+                <h3 style="color: #333; font-size: 1.5em; margin-bottom: 15px; text-align: center;">Vocabulary in Context</h3>
                 <table class="info-table">
+                    <tbody>
                     ${q.options.map(item => `
                         <tr>
-                            <td>${item.word}</td>
                             <td class="sentence-cell">${item.example}</td>
                         </tr>
                     `).join('')}
+                    </tbody>
                 </table>
             </div>
         `;
+        // OBS: O título principal (q.question) já é setado no questionText, evitando a duplicação.
         feedback.innerHTML = '';
         nextBtn.textContent = 'Next';
         nextBtn.onclick = goNext;
