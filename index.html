@@ -3,96 +3,137 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>English Course - Essential Basics</title>
+    <title>Chapter 1 - Introducing Yourself</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #f5f7fa;
         }
+
         header {
-            background: #0d6efd;
-            color: #fff;
+            background-color: #0d6efd;
+            color: white;
             padding: 20px;
             text-align: center;
-            font-size: 26px;
+            font-size: 28px;
             font-weight: bold;
         }
-        .container {
+
+        .content {
             width: 90%;
             margin: auto;
             margin-top: 30px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            grid-gap: 20px;
         }
-        .card {
-            background: #fff;
+
+        h2 {
+            text-align: center;
+            margin-top: 10px;
+            color: #0d6efd;
+            font-size: 26px;
+        }
+
+        h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 20px;
+        }
+
+        .lesson-box {
+            background: white;
+            padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            overflow: hidden;
-            transition: 0.2s;
-            cursor: pointer;
-            text-decoration: none;
-            color: #000;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
         }
-        .card:hover {
-            transform: scale(1.03);
-        }
-        .card img {
+
+        .image-box {
             width: 100%;
-            height: 150px;
-            object-fit: cover;
+            text-align: center;
+            margin-bottom: 20px;
         }
-        .card-content {
-            padding: 15px;
+
+        .image-box img {
+            width: 300px;
+            max-width: 90%;
+            border-radius: 12px;
+            border: 4px solid #0d6efd;
         }
-        .card-title {
+
+        .question {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        .option {
+            background: white;
+            padding: 12px 18px;
+            border: 2px solid #d1d1d1;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .option:hover {
+            background-color: #eef4ff;
+            border-color: #0d6efd;
+        }
+
+        .bottom-nav {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .next-btn {
+            background-color: #0d6efd;
+            padding: 12px 22px;
+            color: white;
             font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .card-info {
-            font-size: 14px;
-            color: #555;
+            border-radius: 8px;
+            text-decoration: none;
         }
     </style>
 </head>
+
 <body>
-    <header>Essential Basics</header>
 
-    <div class="container">
+<header>Introducing Yourself</header>
 
-        <!-- CARD 1 – LINK PARA O CAPÍTULO 1 -->
-        <a class="card" href="capitulo1.html">
-            <img src="img/card1.jpg" alt="Introducing Yourself" />
-            <div class="card-content">
-                <div class="card-title">Introducing Yourself</div>
-                <div class="card-info">2 Lessons • 30m</div>
-            </div>
-        </a>
+<div class="content">
 
-        <!-- OS OUTROS 23 CARDS AQUI -->
-        <div class="card">
-            <img src="img/card2.jpg" />
-            <div class="card-content">
-                <div class="card-title">Talking About Work</div>
-                <div class="card-info">2 Lessons • 30m</div>
-            </div>
+    <div class="lesson-box">
+        <h2>Look and Answer</h2>
+        <h3>Lesson 1</h3>
+
+        <div class="image-box">
+            <img src="img/cap1_img1.jpg" alt="Image for lesson" />
         </div>
 
-        <div class="card">
-            <img src="img/card3.jpg" />
-            <div class="card-content">
-                <div class="card-title">Sharing Personal Details</div>
-                <div class="card-info">2 Lessons • 30m</div>
-            </div>
+        <div class="question">What does this show?</div>
+
+        <div class="options">
+            <div class="option">A. A name tag</div>
+            <div class="option">B. A job interview</div>
+            <div class="option">C. A passport</div>
         </div>
 
-        <!-- Adicione mais cards até completar 24 -->
-
+        <div class="bottom-nav">
+            <a href="#" class="next-btn">Next</a>
+        </div>
     </div>
+
+</div>
 
 </body>
 </html>
