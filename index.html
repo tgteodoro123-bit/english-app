@@ -19,6 +19,7 @@
         max-width: 1200px; 
         margin: 60px auto 50px; 
         padding: 0 30px;
+        display: block; /* Garante que está visível por padrão */
     }
     
     h2 {
@@ -157,7 +158,7 @@
         background-color: #FFFFFF; 
         border-radius: 12px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); 
-        display: none; 
+        display: none; /* CORRIGIDO: Esconde por padrão */
         position: relative; 
     }
     
@@ -193,7 +194,7 @@
         top: 20px; 
         right: 20px; 
         z-index: 1000; 
-        display: none; 
+        display: none; /* CORRIGIDO: Esconde por padrão */
         gap: 10px; 
         align-items: center; 
     }
@@ -224,7 +225,7 @@
 
     /* Hamburger Menu Button (Top Left) */
     .menu-toggle {
-        display: none; 
+        display: none; /* CORRIGIDO: Esconde por padrão (só aparece na lição) */
         position: fixed; 
         top: 20px;
         left: 20px; 
@@ -282,6 +283,13 @@
         color: #007bff; 
     }
 
+    .side-menu a.active { /* NOVO: Indica o tópico atual no menu lateral */
+        background-color: #e0f0ff;
+        border-left: 5px solid #007bff;
+        padding-left: 20px;
+        font-weight: 600;
+    }
+
     .side-menu .close-btn {
         position: absolute;
         top: 0;
@@ -326,6 +334,9 @@
         cursor: pointer;
         transition: background-color 0.2s, border-color 0.2s;
         text-align: left;
+    }
+    .option:hover {
+        background-color: #f9f9f9;
     }
     
     /* NOVO ESTILO: Bordas elegantes para Múltipla Escolha */
@@ -461,9 +472,9 @@
     /* Topic 7 (FILL_IN_BLANKS) Styles */
     .fill-in-blanks-container {
         display: flex;
-        flex-direction: column; 
-        align-items: center; 
-        gap: 4px; 
+        flex-wrap: wrap; /* CORRIGIDO: Permite quebra de linha para melhor layout */
+        justify-content: center; /* NOVO: Centraliza os blocos */
+        gap: 15px; /* NOVO: Espaço entre os blocos */
         padding: 5px 0; 
     }
 
@@ -472,9 +483,9 @@
         flex-direction: column; 
         align-items: flex-start;
         gap: 2px; 
-        width: 80%; 
+        width: 45%; /* NOVO: Ajusta a largura para caber dois por linha (no desktop) */
         max-width: 200px; 
-        padding: 3px; 
+        padding: 8px; /* NOVO: Aumenta o padding do bloco */
         border: 1px solid #eee;
         border-radius: 6px;
         background-color: #f9f9f9;
@@ -767,44 +778,47 @@
 <div id="home-screen">
     <h2>BEGINNER</h2>
     <div class="chapter-grid">
-    </div>
+            </div>
 </div>
 
 <div id="lesson-screen">
+        <h3 id="lesson-title" style="text-align: center; margin-bottom: 25px;"></h3> 
     
-    <div class="quiz-question">
-        <img id="question-image" src="" alt="Lesson Image"> 
+    <div class="quiz-question" id="quiz-question-main">
+        <img id="question-image" src="" alt="Lesson Image" style="display: none;"> 
         
-                <div class="hotspot" id="hotspot-1" style="top: 20%; left: 20%;" onclick="openNumberModal('one-to-ten')">+</div>
-        <div class="hotspot" id="hotspot-2" style="top: 20%; left: 70%;" onclick="openNumberModal('tens')">+</div>
-        <div class="hotspot" id="hotspot-3" style="top: 70%; left: 20%;" onclick="openNumberModal('teens')">+</div>
-        <div class="hotspot" id="hotspot-4" style="top: 70%; left: 70%;" onclick="openNumberModal('combined')">+</div>
+                <div id="hotspot-container" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;">
+            <div class="hotspot" id="hotspot-1" style="top: 20%; left: 20%;" onclick="openNumberModal('one-to-ten')">+</div>
+            <div class="hotspot" id="hotspot-2" style="top: 20%; left: 70%;" onclick="openNumberModal('tens')">+</div>
+            <div class="hotspot" id="hotspot-3" style="top: 70%; left: 20%;" onclick="openNumberModal('teens')">+</div>
+            <div class="hotspot" id="hotspot-4" style="top: 70%; left: 70%;" onclick="openNumberModal('combined')">+</div>
+        </div>
     </div>
 
-    <p id="question-text" style="display: none;"></p> 
+    <p id="question-text"></p> 
     
-    <div id="options-container" style="display: none;"></div>
+    <div id="options-container"></div>
     
-    <div id="pronunciation-container" style="display: none;">
+        <div id="info-table-container"></div>     <div id="pronunciation-container" style="display: none;">
         <p class="word-to-practice" id="current-instruction"></p> 
         <audio id="audio-player-controls" controls preload="auto"></audio> 
         <div id="comparison-table-container"></div>
         <ul id="pronunciation-list"></ul>
     </div>
-    
+    <div id="fill-in-blanks-container"></div>     <div id="drag-drop-container"></div>     
     <p id="feedback" style="font-weight: bold; margin-top: 15px; text-align: center;"></p>
-
+    
 </div>
 
 <button class="menu-toggle" onclick="openNav()">☰</button>
 
 <div id="side-menu" class="side-menu">
     <a href="javascript:void(0)" class="close-btn" onclick="closeNav()">&times;</a>
-</div>
+    </div>
 
 <div class="nav-buttons">
     <span id="progress-indicator"></span> 
-    <button id="back-btn" onclick="goBack()">Back</button>
+    <button id="back-btn" onclick="backQuestion()">Back</button>
     <button id="next-btn" onclick="goNext()">Next</button>
 </div>
 
@@ -831,7 +845,7 @@
         "https://images.pexels.com/photos/3401403/pexels-photo-3401403.jpeg?auto=compress&cs=tinysrgb&w=800",
     ];
     
-    // --- TOPIC 8 DRAG AND DROP DATA ---
+    // --- TOPIC 8 DATA ---
     const DRAG_AND_DROP_WORDS = [
         { id: 'word-1', text: 'friend', correctTarget: 'drop-1' },
         { id: 'word-2', text: 'phone number', correctTarget: 'drop-2' },
@@ -839,7 +853,7 @@
         { id: 'word-4', text: 'address number', correctTarget: 'drop-4' }
     ];
     
-    let dragAndDropState = [
+    const DRAG_AND_DROP_SENTENCES = [
         { 
             id: 'sent-1', 
             text: '1. This is my best ____.', 
@@ -877,15 +891,13 @@
             isCorrect: false
         }
     ];
-    // Estado global para o Drag and Drop. Isso é necessário para persistir os drops.
-    let currentDragAndDropAnswers = {}; 
 
     const QUESTIONS = [
         // Topics 1 to 4 
         { id: 1, question: "What do you see in the image?", image: "numeros.jpg", options: { A: "The Alphabet", B: "Colors", C: "Numbers" }, correctAnswer: 'C', correctWord: 'Numbers', chapter: 1, title: "1. Numbers Overview" },
         { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', correctWord: 'I am', chapter: 1, title: "2. Verb 'To Be' (I am)" },
         
-        // Tópico 3 - Vocabulary
+        // Tópico 3 - Vocabulary (Tabela menor e cor do título)
         { id: 3, 
             question: `<h3 style="color: #333; font-size: 2em; margin-bottom: 20px; text-align: center;">Vocabulary</h3>`, 
             options: [ 
@@ -903,7 +915,7 @@
             correctAnswer: 'INFO_TABLE', chapter: 1, title: "3. Lesson Vocabulary" 
         },
         
-        // Tópico 4 - Pronúncia
+        // Tópico 4 - Pronúncia (Remove instrução repetida)
         { id: 4, 
             question: "Click the play button (▶️) next to each word to listen and practice.", 
             options: { "Address number": "addressnumber.mp3", "American": "American.mp3", "Friend": "friend.mp3", "Great": "great.mp3", "Nationality": "nationality.mp3", "New": "new.mp3", "Phone number": "phonenumber.mp3", "Student": "student.mp3", "Teacher": "teacher.mp3", "Years old": "yearsold.mp3" }, 
@@ -915,7 +927,7 @@
         // Topic 5 
         { id: 5, question: "Click on the '+' signs to review the number groups.", image: "topico5.jpg", options: {}, correctAnswer: 'INTERACTIVE_BINGO', chapter: 1, title: "5. Interactive Bingo Review" },
         
-        // Topic 6
+        // Topic 6 (Remove instrução repetida)
         { id: 6, 
             question: "Listen and notice the difference between -teen and -ty.", 
             options: { "13: (Thirteen) – 30 (Thirty)": "teenety.mp3" }, 
@@ -952,7 +964,7 @@
             title: "8. Drag & Drop: Vocabulary",
             data: {
                 words: DRAG_AND_DROP_WORDS,
-                sentences: dragAndDropState // Usando o estado mutável
+                sentences: DRAG_AND_DROP_SENTENCES
             }
         },
         
@@ -968,8 +980,7 @@
     let lessonQuestions = []; 
     let currentChapter = 1; 
     let selectedOption = null; // Armazena a opção selecionada
-    let answerChecked = false; // Estado para Múltipla Escolha/Drag&Drop
-
+    
     // Variáveis que você já definiu (DOM elements)
     const homeScreen = document.getElementById('home-screen');
     const lessonScreen = document.getElementById('lesson-screen');
@@ -980,641 +991,617 @@
     const questionText = document.getElementById('question-text');
     const questionImage = document.getElementById('question-image');
     const progressIndicator = document.getElementById('progress-indicator');
+    const lessonTitle = document.getElementById('lesson-title');
     
     const sideMenu = document.getElementById('side-menu'); 
     const navButtonsContainer = document.querySelector('.nav-buttons'); 
     const menuToggle = document.querySelector('.menu-toggle'); 
-    
-    
-    // RENDER CHAPTER CARDS ON HOME SCREEN
-    const chapterGrid = document.querySelector('.chapter-grid');
-    for (let i = 1; i <= 24; i++) {
-        const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
-        let cardTopicName = i === 1 ? 'Basic Foundations (13 Topics Ready!)' : `Module ${i} Content`; 
-        chapterGrid.innerHTML += `
-            <div class="chapter-card" id="card-${i}">
-                <div class="card-background-image" style="background-image: url('${bgUrl}');"></div>
-                <div class="card-text-area">
-                    <div class="text-content-wrapper">
-                        <h3>Beginner ${i}</h3>
-                        <p>${cardTopicName}</p> 
-                    </div>
-                    <button class="start-button" onclick="startLesson(${i}); event.stopPropagation();">Start</button>
-                </div>
-            </div>
-        `;
-    }
 
-    // --- GENERAL NAVIGATION AND LOADING FUNCTIONS ---
-    function openNav() { sideMenu.classList.add('open'); }
-    function closeNav() { sideMenu.classList.remove('open'); }
+    // Containers de Conteúdo Específico
+    const infoTableContainer = document.getElementById('info-table-container');
+    const pronunciationContainer = document.getElementById('pronunciation-container');
+    const fillInBlanksContainer = document.getElementById('fill-in-blanks-container');
+    const dragDropContainer = document.getElementById('drag-drop-container');
+    const hotspotContainer = document.getElementById('hotspot-container');
     
-    window.onclick = function(event) {
-        if (sideMenu.classList.contains('open') && !event.target.closest('.side-menu') && !event.target.closest('.menu-toggle')) {
-            closeNav();
-        }
-        const modal = document.getElementById('numberModal');
-        // Se o clique foi no background do modal, feche-o.
-        if (event.target === modal) {
-            closeNumberModal();
-        }
-    };
-
-    function startLesson(chapterId) {
-        currentChapter = chapterId;
-        lessonQuestions = QUESTIONS.filter(q => q.chapter === chapterId);
-        currentQuestionIndex = 0;
-        
-        // Esconde a tela inicial e mostra a tela de lição
+    let answerChecked = false; // Controla se a resposta (ou check) já foi processada
+    
+    // Funções de Navegação de Tela
+    function showScreen(screenId) {
         homeScreen.style.display = 'none';
-        lessonScreen.style.display = 'block';
-        navButtonsContainer.style.display = 'flex';
-        menuToggle.style.display = 'block';
-        
-        // Monta o menu lateral dinamicamente
-        renderSideMenu();
-        
-        renderQuestion();
-    }
+        lessonScreen.style.display = 'none';
+        navButtonsContainer.style.display = 'none';
+        menuToggle.style.display = 'none';
+        closeNav();
 
-    function renderSideMenu() {
-        const menu = document.getElementById('side-menu');
-        let menuHtml = `<a href="javascript:void(0)" class="close-btn" onclick="closeNav()">&times;</a>`;
-        lessonQuestions.forEach((q, index) => {
-            // Adiciona a classe 'active' se for a questão atual
-            const activeClass = index === currentQuestionIndex ? 'active-lesson' : '';
-            menuHtml += `<a href="#" class="${activeClass}" onclick="loadQuestion(${index}); closeNav();">${q.title}</a>`;
-        });
-        menu.innerHTML = menuHtml;
-    }
-
-    function loadQuestion(index) {
-        currentQuestionIndex = index;
-        renderQuestion();
-        // Atualiza a classe ativa no menu
-        renderSideMenu();
-    }
-
-    // Funções de Navegação
-    function goBack() {
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex--;
-            renderQuestion();
-        } else {
-            // Voltar para a tela Home
+        if (screenId === 'home') {
             homeScreen.style.display = 'block';
-            lessonScreen.style.display = 'none';
-            navButtonsContainer.style.display = 'none';
-            menuToggle.style.display = 'none';
+        } else if (screenId === 'lesson') {
+            lessonScreen.style.display = 'block';
+            navButtonsContainer.style.display = 'flex';
+            menuToggle.style.display = 'block';
         }
-        renderSideMenu();
     }
 
-    // **Função goNext MELHORADA para permitir o 'Skip' sem feedback indesejado**
-    function goNext() {
-        const currentQuestion = lessonQuestions[currentQuestionIndex];
-        
-        // Lógica para forçar checagem nos exercícios interativos antes de avançar
-        if (currentQuestion.correctAnswer === 'FILL_IN_BLANKS') {
-            if (!answerChecked) {
-                checkFillInBlanks();
-                // Mantém no mesmo tópico para o usuário ver a correção
-                return;
-            }
-        } else if (currentQuestion.correctAnswer === 'DRAG_AND_DROP') {
-            if (!answerChecked) {
-                checkDragAndDrop();
-                return;
-            }
-        }
-        
-        // Limpa o feedback e o estado de resposta (após a checagem obrigatória)
-        feedback.innerHTML = '';
-        selectedOption = null;
-        answerChecked = false; // Reset para o próximo tópico
+    // RENDER CHAPTER CARDS ON HOME SCREEN
+    function renderChapterCards() {
+        const chapterGrid = document.querySelector('.chapter-grid');
+        chapterGrid.innerHTML = ''; // Limpa antes de renderizar
 
-        if (currentQuestionIndex < lessonQuestions.length - 1) {
-            currentQuestionIndex++;
-            renderQuestion();
-        } else {
-            // Fim da lição, volta para a Home
-            alert('Lesson finished!');
-            goBack();
+        for (let i = 1; i <= 24; i++) {
+            const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
+            let cardTopicName = i === 1 ? 'Basic Foundations (13 Topics Ready!)' : `Module ${i} Content`; 
+            chapterGrid.innerHTML += `
+                <div class="chapter-card" id="card-${i}">
+                    <div class="card-background-image" style="background-image: url('${bgUrl}');"></div>
+                    <div class="card-text-area">
+                        <div class="text-content-wrapper">
+                            <h3>Beginner ${i}</h3>
+                            <p>${cardTopicName}</p> 
+                        </div>
+                        <button class="start-button" onclick="startLesson(${i}); event.stopPropagation();">Start</button>
+                    </div>
+                </div>
+            `;
         }
-        renderSideMenu();
     }
     
-    function updateProgress() {
-        const total = lessonQuestions.length;
-        progressIndicator.textContent = `Topic ${currentQuestionIndex + 1} of ${total}`;
+    function populateSideMenu(chapterNumber) {
+        sideMenu.innerHTML = `<a href="javascript:void(0)" class="close-btn" onclick="closeNav()">&times;</a>`;
+        
+        // Adicionar link para a Home
+        sideMenu.innerHTML += `<a href="#" onclick="showScreen('home'); closeNav();">🏠 Home (Chapters)</a>`;
+
+        lessonQuestions.forEach((q, index) => {
+            // Usamos o ID do array (index + 1) para o link, não o ID global do tópico
+            const linkIndex = index; 
+            sideMenu.innerHTML += `
+                <a href="#" onclick="navigateToQuestion(${linkIndex}); closeNav();" id="menu-link-${linkIndex}">${q.title}</a>
+            `;
+        });
     }
 
-    // --- RENDERIZADORES DE CONTEÚDO ---
-    function resetScreen() {
+    function startLesson(chapter) {
+        currentChapter = chapter;
+        lessonQuestions = QUESTIONS.filter(q => q.chapter === chapter);
+        currentQuestionIndex = 0;
+        
+        // Navega para a tela da lição
+        showScreen('lesson'); 
+        
+        // Preenche o menu lateral
+        populateSideMenu(chapter);
+        
+        // Carrega a primeira lição
+        loadQuestion(currentQuestionIndex);
+    }
+
+    // --- Função para carregar o conteúdo da lição ---
+    function loadQuestion(index) {
+        if (index < 0 || index >= lessonQuestions.length) return;
+
+        currentQuestionIndex = index;
+        const questionData = lessonQuestions[index];
+        
+        // 1. Limpa os containers de conteúdo
         optionsContainer.innerHTML = '';
-        optionsContainer.style.display = 'none';
-        feedback.innerHTML = '';
-        questionText.style.display = 'block';
+        infoTableContainer.innerHTML = '';
+        fillInBlanksContainer.innerHTML = '';
+        dragDropContainer.innerHTML = '';
+        feedback.textContent = '';
+        
         questionImage.style.display = 'none';
-        document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'none');
-        document.getElementById('pronunciation-container').style.display = 'none';
-        document.getElementById('comparison-table-container').innerHTML = '';
-        selectedOption = null;
-    }
+        pronunciationContainer.style.display = 'none';
+        hotspotContainer.style.display = 'none';
+        optionsContainer.style.display = 'block';
 
-    function renderQuestion() {
-        resetScreen();
-        updateProgress();
-        
-        const q = lessonQuestions[currentQuestionIndex];
-        document.title = q.title;
-        questionText.innerHTML = `<h3 style="margin-bottom: 25px;">${q.title}</h3>` + q.question;
-
-        // Trata a imagem
-        if (q.image) {
-            questionImage.src = `${GITHUB_RAW_BASE_URL}${q.image}`;
+        // 2. Atualiza o título e o texto da pergunta
+        lessonTitle.textContent = questionData.title;
+        questionText.innerHTML = questionData.question;
+        
+        // 3. Carrega a Imagem (se houver)
+        if (questionData.image) {
+            questionImage.src = GITHUB_RAW_BASE_URL + questionData.image;
             questionImage.style.display = 'block';
         }
-
-        // Renderiza o conteúdo específico
-        switch (q.correctAnswer) {
-            case 'A':
-            case 'B':
-            case 'C':
-                renderMultipleChoice(q);
-                break;
+        
+        // 4. Carrega o conteúdo específico
+        switch(questionData.correctAnswer) {
             case 'INFO_TABLE':
-                renderInfoTable(q);
+                renderInfoTable(questionData);
+                optionsContainer.style.display = 'none'; // Não tem opções de quiz
                 break;
             case 'PRONUNCIATION_SET':
-                renderPronunciation(q);
+                renderPronunciation(questionData);
+                optionsContainer.style.display = 'none';
                 break;
             case 'INTERACTIVE_BINGO':
-                renderHotspots(q);
+                hotspotContainer.style.display = 'block'; // Mostra os hotspots
+                optionsContainer.style.display = 'none';
                 break;
             case 'FILL_IN_BLANKS':
-                renderFillInBlanks(q);
+                renderFillInBlanks(questionData);
+                optionsContainer.style.display = 'none';
                 break;
             case 'DRAG_AND_DROP':
-                renderDragAndDrop(q);
+                renderDragAndDrop(questionData);
+                optionsContainer.style.display = 'none';
+                break;
+            default:
+                renderMultipleChoice(questionData); // Padrão
                 break;
         }
+
+        // 5. Atualiza a navegação e o progresso
+        updateNavButtons();
+        updateProgress();
+        updateSideMenuHighlight();
     }
     
-    // --- MULTIPLE CHOICE ---
-    function renderMultipleChoice(q) {
-        optionsContainer.style.display = 'block';
-        let optionsHtml = '';
-        for (const key in q.options) {
-            optionsHtml += `<div class="option" data-answer="${key}" onclick="selectOption('${key}')">${key}. ${q.options[key]}</div>`;
-        }
-        optionsContainer.innerHTML = optionsHtml;
+    // --- Funções de Renderização Específicas ---
+    
+    function renderMultipleChoice(questionData) {
+        optionsContainer.innerHTML = Object.entries(questionData.options).map(([key, value]) => 
+            `<div class="option" data-answer="${key}" onclick="checkAnswer(this, '${key}')">${key}: ${value}</div>`
+        ).join('');
+        answerChecked = false;
+        nextBtn.textContent = 'Check Answer';
     }
 
-    function selectOption(key) {
-        if (answerChecked) return; // Não permite clicar se já checou
-
-        selectedOption = key;
-        // Remove a classe 'selected' de todas e adiciona à selecionada
-        document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
-        document.querySelector(`.option[data-answer="${key}"]`).classList.add('selected');
-
-        checkMultipleChoice();
-    }
-
-    function checkMultipleChoice() {
-        if (!selectedOption) return;
-        
-        answerChecked = true;
-        const q = lessonQuestions[currentQuestionIndex];
-        
-        document.querySelectorAll('.option').forEach(opt => {
-            const answer = opt.getAttribute('data-answer');
-            opt.style.cursor = 'default';
-            opt.classList.remove('selected');
-
-            if (answer === q.correctAnswer) {
-                opt.classList.add('correct');
-            } else if (answer === selectedOption) {
-                opt.classList.add('incorrect');
-            }
-        });
-
-        if (selectedOption === q.correctAnswer) {
-            feedback.innerHTML = `<span style="color: #28a745;">Correct!</span> Click Next to continue.`;
-        } else {
-            feedback.innerHTML = `<span style="color: #dc3545;">Incorrect!</span> The correct answer is: **${q.correctWord}**. Click Next to continue.`;
-        }
-    }
-
-
-    // --- INFO TABLE (TOPIC 3) ---
-    function renderInfoTable(q) {
-        optionsContainer.style.display = 'block';
-        optionsContainer.classList.add('lesson-vocabulary');
-        
-        let tableHtml = '<table class="info-table"><tbody>';
-        q.options.forEach(item => {
-            tableHtml += `
+    function renderInfoTable(questionData) {
+        infoTableContainer.classList.add('lesson-vocabulary');
+        let tableHTML = `
+            ${questionData.question}
+            <table class="info-table">
+                <thead><tr><th>Word/Expression</th><th>Example Sentence</th></tr></thead>
+                <tbody>
+        `;
+        questionData.options.forEach(item => {
+            tableHTML += `
                 <tr>
-                    <td>**${item.word}**</td>
+                    <td>${item.word}</td>
                     <td class="sentence-cell">${item.example}</td>
                 </tr>
             `;
         });
-        tableHtml += '</tbody></table>';
-        optionsContainer.innerHTML = tableHtml;
-        
-        // Não há feedback ou checagem, apenas avança.
-        answerChecked = true;
+        tableHTML += `
+                </tbody>
+            </table>
+        `;
+        infoTableContainer.innerHTML = tableHTML;
+        nextBtn.textContent = 'Next';
     }
 
+    function renderPronunciation(questionData) {
+        pronunciationContainer.style.display = 'flex';
+        document.getElementById('current-instruction').textContent = questionData.question;
+        
+        const list = document.getElementById('pronunciation-list');
+        list.innerHTML = '';
 
-    // --- PRONUNCIATION (TOPIC 4 & 6) ---
-    function renderPronunciation(q) {
-        const pronContainer = document.getElementById('pronunciation-container');
-        pronContainer.style.display = 'flex';
-        document.getElementById('question-text').style.display = 'block';
-
-        // Para o Tópico 6, adiciona a tabela de comparação
-        if (q.id === 6) {
-            const tableContainer = document.getElementById('comparison-table-container');
-            tableContainer.innerHTML = `
+        Object.entries(questionData.options).forEach(([word, audioFile]) => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                <span>${word}</span>
+                <button class="play-button" onclick="playAudio('${GITHUB_RAW_BASE_URL + audioFile}')">▶️</button>
+            `;
+            list.appendChild(listItem);
+        });
+        
+        // Conteúdo do Tópico 6: Tabela de comparação
+        if (questionData.id === 6) {
+            document.getElementById('comparison-table-container').innerHTML = `
                 <table class="comparison-table">
                     <thead>
-                        <tr><th>Teen (Long Stress)</th><th>Ty (Short Stress)</th></tr>
+                        <tr><th>-teen (long vowel)</th><th>-ty (short vowel)</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>Thirteen (13)</td><td>Thirty (30)</td></tr>
-                        <tr><td>Fourteen (14)</td><td>Forty (40)</td></tr>
-                        <tr><td>Fifteen (15)</td><td>Fifty (50)</td></tr>
-                        <tr><td>Sixteen (16)</td><td>Sixty (60)</td></tr>
-                        <tr><td>Seventeen (17)</td><td>Seventy (70)</td></tr>
-                        <tr><td>Eighteen (18)</td><td>Eighty (80)</td></tr>
-                        <tr><td>Nineteen (19)</td><td>Ninety (90)</td></tr>
+                        <tr><td>13 (Thir**teen**)</td><td>30 (Thir**ty**)</td></tr>
+                        <tr><td>14 (Four**teen**)</td><td>40 (Four**ty**)</td></tr>
+                        <tr><td>15 (Fif**teen**)</td><td>50 (Fif**ty**)</td></tr>
+                        <tr><td>16 (Six**teen**)</td><td>60 (Six**ty**)</td></tr>
+                        <tr><td>17 (Seven**teen**)</td><td>70 (Seven**ty**)</td></tr>
+                        <tr><td>18 (Eigh**teen**)</td><td>80 (Eigh**ty**)</td></tr>
+                        <tr><td>19 (Nine**teen**)</td><td>90 (Nine**ty**)</td></tr>
                     </tbody>
                 </table>
             `;
+        } else {
+            document.getElementById('comparison-table-container').innerHTML = '';
         }
-
-        const audioList = document.getElementById('pronunciation-list');
-        audioList.innerHTML = '';
-        
-        for (const word in q.options) {
-            const li = document.createElement('li');
-            const fileName = q.options[word];
-            const audioUrl = `${GITHUB_RAW_BASE_URL}audio/${fileName}`;
-            
-            li.innerHTML = `
-                <span>${word}</span>
-                <button class="play-button" onclick="playAudio('${audioUrl}')">▶️</button>
-            `;
-            audioList.appendChild(li);
-        }
-
-        // Não há feedback ou checagem, apenas avança.
-        answerChecked = true;
+        nextBtn.textContent = 'Next';
     }
 
-    function playAudio(url) {
-        const audio = new Audio(url);
+    function renderFillInBlanks(questionData) {
+        let html = '<div class="fill-in-blanks-container">';
+        questionData.data.forEach((item, index) => {
+            html += `
+                <div class="number-input-group">
+                    <span>${item.num}</span>
+                    <input type="text" id="input-${index}" placeholder="Write the word" onchange="checkFillInBlanksAnswer(${index})" data-correct="${item.correct.toLowerCase()}">
+                    <div id="result-${index}" class="number-result"></div>
+                </div>
+            `;
+        });
+        html += '</div>';
+        fillInBlanksContainer.innerHTML = html;
+        nextBtn.textContent = 'Check All';
+        nextBtn.onclick = checkAllFillInBlanks;
+    }
+
+    function renderDragAndDrop(questionData) {
+        let html = '<div class="drag-drop-overall-container">';
+        
+        // Imagens
+        html += '<div class="image-gallery-container">';
+        questionData.data.sentences.forEach((sent, index) => {
+            html += `
+                <div class="gallery-image-wrapper">
+                    <img src="${GITHUB_RAW_BASE_URL + sent.image}" alt="Image for question ${sent.id}">
+                    <span class="image-number-label">${index + 1}</span>
+                </div>
+            `;
+        });
+        html += '</div>';
+
+        // Palavras Arrastáveis
+        html += '<div class="draggable-words-container">';
+        questionData.data.words.forEach(word => {
+            html += `<div class="draggable-word" id="${word.id}" draggable="true" data-correct-target="${word.correctTarget}" ondragstart="dragStart(event)">${word.text}</div>`;
+        });
+        html += '</div>';
+
+        // Frases com Drop Zones
+        html += '<div class="sentence-list-container">';
+        questionData.data.sentences.forEach(sent => {
+            // Procura pelo placeholder ____ e o substitui pelo drop zone
+            const parts = sent.text.split('____');
+            const sentenceHTML = `
+                <div class="sentence-item">
+                    <span class="sentence-text-before">${parts[0].trim()}</span>
+                    <div class="drop-zone" id="${sent.dropId}" ondragover="dragOver(event)" ondrop="drop(event)" ondragleave="dragLeave(event)"></div>
+                    <span class="sentence-text-after">${parts[1] ? parts[1].trim() : ''}</span>
+                </div>
+            `;
+            html += sentenceHTML;
+        });
+        html += '</div>';
+        
+        html += '</div>';
+        dragDropContainer.innerHTML = html;
+        nextBtn.textContent = 'Check Answers';
+        nextBtn.onclick = checkDragAndDrop;
+    }
+
+    // --- Funções de Lógica de Navegação e Correção ---
+
+    function updateNavButtons() {
+        backBtn.disabled = currentQuestionIndex === 0;
+        
+        // O botão "Next" agora tem a função determinada por cada loadQuestion
+        const questionType = lessonQuestions[currentQuestionIndex].correctAnswer;
+        
+        if (questionType === 'INFO_TABLE' || questionType === 'PRONUNCIATION_SET' || questionType === 'INTERACTIVE_BINGO') {
+            // Para tópicos informativos ou interativos sem "checar", o botão "Next" avança
+            nextBtn.textContent = 'Next';
+            nextBtn.onclick = goNext;
+        } else if (questionType === 'FILL_IN_BLANKS') {
+            // Já definido em renderFillInBlanks
+        } else if (questionType === 'DRAG_AND_DROP') {
+            // Já definido em renderDragAndDrop
+        } else {
+            // Padrão: Multiple Choice
+            nextBtn.textContent = answerChecked ? 'Next' : 'Check Answer';
+            nextBtn.onclick = answerChecked ? goNext : checkMultipleChoiceAnswer;
+            nextBtn.disabled = !selectedOption && !answerChecked; // Desabilita se não selecionou e não checou
+        }
+
+        // Desabilita o Next na última pergunta (a menos que seja um quiz que precise ser checado)
+        if (currentQuestionIndex === lessonQuestions.length - 1 && nextBtn.textContent === 'Next') {
+            nextBtn.disabled = true;
+            nextBtn.textContent = 'Finish';
+        }
+    }
+    
+    function updateProgress() {
+        const total = lessonQuestions.length;
+        const current = currentQuestionIndex + 1;
+        progressIndicator.textContent = `Tópico ${current} de ${total}`;
+    }
+
+    function updateSideMenuHighlight() {
+        document.querySelectorAll('.side-menu a').forEach((link, index) => {
+            link.classList.remove('active');
+            if (index === currentQuestionIndex + 1) { // +1 porque o primeiro link é a Home
+                link.classList.add('active');
+            }
+        });
+    }
+
+    function navigateToQuestion(index) {
+        selectedOption = null;
+        answerChecked = false;
+        loadQuestion(index);
+    }
+
+    function goNext() {
+        if (currentQuestionIndex < lessonQuestions.length - 1) {
+            navigateToQuestion(currentQuestionIndex + 1);
+        } else {
+            alert('Parabéns! Você concluiu o Módulo Beginner ' + currentChapter + '!');
+            showScreen('home'); // Volta para a tela inicial
+        }
+    }
+
+    function backQuestion() {
+        if (currentQuestionIndex > 0) {
+            navigateToQuestion(currentQuestionIndex - 1);
+        }
+    }
+
+    // --- Lógica de Correção para Múltipla Escolha (Padrão) ---
+    function selectOption(element, key) {
+        if (answerChecked) return;
+        
+        // Remove a seleção anterior
+        document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+        
+        // Adiciona a nova seleção
+        element.classList.add('selected');
+        selectedOption = key;
+        updateNavButtons();
+    }
+
+    function checkMultipleChoiceAnswer() {
+        if (!selectedOption || answerChecked) return;
+
+        const correct = lessonQuestions[currentQuestionIndex].correctAnswer;
+        answerChecked = true;
+        
+        document.querySelectorAll('.option').forEach(opt => {
+            const optionKey = opt.getAttribute('data-answer');
+            opt.classList.remove('selected');
+
+            if (optionKey === correct) {
+                opt.classList.add('correct');
+            } else if (optionKey === selectedOption) {
+                opt.classList.add('incorrect');
+            }
+            opt.style.pointerEvents = 'none'; // Desabilita cliques após a checagem
+        });
+
+        if (selectedOption === correct) {
+            feedback.textContent = 'Correct! ✅';
+            feedback.style.color = '#28a745';
+        } else {
+            feedback.textContent = `Incorrect. The correct answer is ${correct}. ❌`;
+            feedback.style.color = '#dc3545';
+        }
+        updateNavButtons();
+    }
+    
+    // --- Lógica de Correção para Preencher Lacunas (Topic 7) ---
+
+    function checkFillInBlanksAnswer(index) {
+        const input = document.getElementById(`input-${index}`);
+        const resultDiv = document.getElementById(`result-${index}`);
+        const userAnswer = input.value.trim().toLowerCase().replace(/-| /g, ''); // Remove traços e espaços
+        const correct = input.getAttribute('data-correct').replace(/-| /g, '');
+        const originalCorrect = input.getAttribute('data-correct');
+
+        if (userAnswer === correct) {
+            resultDiv.textContent = '✅ Correct';
+            resultDiv.className = 'number-result result-correct';
+            input.disabled = true;
+        } else if (userAnswer.length > 0) {
+            resultDiv.textContent = `❌ Correct: ${originalCorrect}`;
+            resultDiv.className = 'number-result result-incorrect';
+        } else {
+            resultDiv.textContent = '';
+            resultDiv.className = 'number-result';
+        }
+    }
+
+    function checkAllFillInBlanks() {
+        const inputs = fillInBlanksContainer.querySelectorAll('input');
+        let allCorrect = true;
+        inputs.forEach((input, index) => {
+            checkFillInBlanksAnswer(index); // Força a verificação de todos
+            if (!input.disabled) {
+                allCorrect = false;
+            }
+        });
+        
+        if (allCorrect) {
+            feedback.textContent = 'All answers are correct! ✅';
+            feedback.style.color = '#28a745';
+            nextBtn.textContent = 'Next';
+            nextBtn.onclick = goNext;
+        } else {
+            feedback.textContent = 'Keep trying! See the correct answers highlighted in red. ❌';
+            feedback.style.color = '#dc3545';
+        }
+    }
+
+    // --- Lógica de Drag & Drop (Topic 8) ---
+    
+    function dragStart(event) {
+        event.dataTransfer.setData("text/plain", event.target.id);
+        event.target.classList.add('dragging');
+    }
+
+    function dragOver(event) {
+        event.preventDefault();
+        if (event.target.classList.contains('drop-zone') && event.target.children.length === 0) {
+            event.target.classList.add('drag-over');
+        }
+    }
+    
+    function dragLeave(event) {
+        event.target.classList.remove('drag-over');
+    }
+
+    function drop(event) {
+        event.preventDefault();
+        event.target.classList.remove('drag-over');
+        
+        const data = event.dataTransfer.getData("text/plain");
+        const draggableElement = document.getElementById(data);
+        
+        // Verifica se é uma zona de drop e está vazia
+        if (event.target.classList.contains('drop-zone') && event.target.children.length === 0) {
+            // Remove a palavra arrastada de onde ela estava (volta para o container principal)
+            if (draggableElement.parentElement.classList.contains('drop-zone')) {
+                const originalContainer = document.querySelector('.draggable-words-container');
+                originalContainer.appendChild(draggableElement);
+            }
+            
+            // Adiciona a palavra ao drop zone
+            event.target.appendChild(draggableElement);
+            draggableElement.classList.remove('dragging');
+        } else if (event.target.classList.contains('draggable-words-container')) {
+            // Permite arrastar de volta para o container principal
+            event.target.appendChild(draggableElement);
+            draggableElement.classList.remove('dragging');
+        }
+    }
+
+    function checkDragAndDrop() {
+        const dropZones = document.querySelectorAll('.drop-zone');
+        let allCorrect = true;
+
+        dropZones.forEach(dropZone => {
+            dropZone.classList.remove('correct-drop', 'incorrect-drop');
+            const droppedWord = dropZone.querySelector('.draggable-word');
+
+            if (droppedWord) {
+                const correctTargetId = droppedWord.getAttribute('data-correct-target');
+                
+                if (dropZone.id === correctTargetId) {
+                    dropZone.classList.add('correct-drop');
+                    droppedWord.style.pointerEvents = 'none'; // Trava a palavra correta
+                } else {
+                    dropZone.classList.add('incorrect-drop');
+                    allCorrect = false;
+                    
+                    // Mostra a palavra correta abaixo
+                    const correctWordData = DRAG_AND_DROP_WORDS.find(w => w.correctTarget === dropZone.id);
+                    if (correctWordData) {
+                        const correctSpan = document.createElement('span');
+                        correctSpan.className = 'correct-word-display';
+                        correctSpan.textContent = `Correct: ${correctWordData.text}`;
+                        dropZone.appendChild(correctSpan);
+                    }
+                }
+            } else {
+                allCorrect = false;
+            }
+        });
+
+        if (allCorrect) {
+            feedback.textContent = 'All correct! ✅';
+            feedback.style.color = '#28a745';
+            nextBtn.textContent = 'Next';
+            nextBtn.onclick = goNext;
+            // Trava todas as palavras
+            document.querySelectorAll('.draggable-word').forEach(w => w.style.pointerEvents = 'none');
+        } else {
+            feedback.textContent = 'Some answers are incorrect. Try again! ❌';
+            feedback.style.color = '#dc3545';
+            // Limpa os indicadores de correção incorreta para permitir nova tentativa
+            dropZones.forEach(dropZone => {
+                const correctSpans = dropZone.querySelectorAll('.correct-word-display');
+                correctSpans.forEach(span => span.remove());
+            });
+        }
+    }
+
+
+    // --- Funções de Áudio e Modal (Topic 5) ---
+
+    function playAudio(src) {
+        const audio = document.getElementById('audio-player-controls');
+        audio.src = src;
         audio.play();
     }
 
-
-    // --- INTERACTIVE HOTSPOTS (TOPIC 5) ---
-    function renderHotspots(q) {
-        // Mostra os hotspots na tela
-        document.querySelectorAll('.hotspot').forEach(h => h.style.display = 'flex');
-        // Não há feedback ou checagem, apenas avança.
-        answerChecked = true;
-    }
-
-    function openNumberModal(group) {
+    function openNumberModal(type) {
         const modal = document.getElementById('numberModal');
-        const modalTitle = document.getElementById('modal-title');
         const modalBody = document.getElementById('modal-body');
+        let title = 'Numbers';
+        let tableBody = '';
 
-        let title = '';
-        let tableData = [];
+        const numberData = {
+            'one-to-ten': { title: 'Numbers 1-10', data: [['1', 'One'], ['2', 'Two'], ['3', 'Three'], ['4', 'Four'], ['5', 'Five'], ['6', 'Six'], ['7', 'Seven'], ['8', 'Eight'], ['9', 'Nine'], ['10', 'Ten']] },
+            'teens': { title: 'Teens (11-19)', data: [['11', 'Eleven'], ['12', 'Twelve'], ['13', 'Thirteen'], ['14', 'Fourteen'], ['15', 'Fifteen'], ['16', 'Sixteen'], ['17', 'Seventeen'], ['18', 'Eighteen'], ['19', 'Nineteen']] },
+            'tens': { title: 'Tens (20, 30, ...)', data: [['20', 'Twenty'], ['30', 'Thirty'], ['40', 'Forty'], ['50', 'Fifty'], ['60', 'Sixty'], ['70', 'Seventy'], ['80', 'Eighty'], ['90', 'Ninety'], ['100', 'One Hundred']] },
+            'combined': { title: 'Combined Examples', data: [['21', 'Twenty-one'], ['45', 'Forty-five'], ['73', 'Seventy-three'], ['99', 'Ninety-nine']] }
+        };
 
-        switch (group) {
-            case 'one-to-ten':
-                title = 'Numbers 1 to 10';
-                tableData = [
-                    [1, 'One'], [2, 'Two'], [3, 'Three'], [4, 'Four'], [5, 'Five'],
-                    [6, 'Six'], [7, 'Seven'], [8, 'Eight'], [9, 'Nine'], [10, 'Ten']
-                ];
-                break;
-            case 'teens':
-                title = 'Numbers 11 to 19';
-                tableData = [
-                    [11, 'Eleven'], [12, 'Twelve'], [13, 'Thirteen'], [14, 'Fourteen'], [15, 'Fifteen'],
-                    [16, 'Sixteen'], [17, 'Seventeen'], [18, 'Eighteen'], [19, 'Nineteen']
-                ];
-                break;
-            case 'tens':
-                title = 'Tens (20, 30, 40, etc.)';
-                tableData = [
-                    [20, 'Twenty'], [30, 'Thirty'], [40, 'Forty'], [50, 'Fifty'],
-                    [60, 'Sixty'], [70, 'Seventy'], [80, 'Eighty'], [90, 'Ninety']
-                ];
-                break;
-            case 'combined':
-                title = 'Combined (Examples)';
-                tableData = [
-                    [21, 'Twenty-one'], [35, 'Thirty-five'], [48, 'Forty-eight'], [99, 'Ninety-nine']
-                ];
-                break;
+        if (numberData[type]) {
+            title = numberData[type].title;
+            numberData[type].data.forEach(([num, word]) => {
+                tableBody += `<tr><td>${num}</td><td>${word}</td></tr>`;
+            });
         }
 
-        modalTitle.textContent = title;
-        let tableHtml = '<table class="info-table"><thead><tr><th>Number</th><th>English Word</th></tr></thead><tbody>';
-        tableData.forEach(([num, word]) => {
-            tableHtml += `<tr><td>${num}</td><td>${word}</td></tr>`;
-        });
-        tableHtml += '</tbody></table>';
-        modalBody.innerHTML = tableHtml;
-
+        document.getElementById('modal-title').textContent = title;
+        modalBody.innerHTML = `
+            <table class="info-table">
+                <thead><tr><th>Number</th><th>In English</th></tr></thead>
+                <tbody>${tableBody}</tbody>
+            </table>
+        `;
+        
         modal.classList.add('show-modal');
     }
 
     function closeNumberModal() {
         const modal = document.getElementById('numberModal');
         modal.classList.remove('show-modal');
-        // Adiciona um pequeno atraso antes de esconder completamente
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 300);
-        modal.style.display = 'flex'; // Garante que o display seja flexível para a transição
     }
+    window.closeNumberModal = closeNumberModal; // Torna global para o onclick no HTML
 
-
-    // --- FILL IN BLANKS (TOPIC 7) ---
-    function renderFillInBlanks(q) {
-        optionsContainer.style.display = 'flex';
-        optionsContainer.style.flexDirection = 'row';
-        optionsContainer.style.flexWrap = 'wrap';
-        optionsContainer.style.justifyContent = 'center';
-        optionsContainer.style.gap = '20px';
-        optionsContainer.style.padding = '10px 0';
-
-        let inputsHtml = '';
-        q.data.forEach(item => {
-            inputsHtml += `
-                <div class="number-input-group">
-                    <span>${item.num}</span>
-                    <input type="text" id="input-${item.num}" data-correct="${item.correct}" placeholder="Write the word" onkeyup="clearFeedback(this)">
-                    <p class="number-result" id="result-${item.num}"></p>
-                </div>
-            `;
-        });
-        optionsContainer.innerHTML = inputsHtml;
-        
-        feedback.innerHTML = 'Click **Next** to check your answers.';
-        answerChecked = false;
-    }
-
-    function clearFeedback(inputElement) {
-        // Limpa o feedback de resultado enquanto o usuário digita
-        const resultElement = document.getElementById(`result-${inputElement.id.split('-')[1]}`);
-        if (resultElement) resultElement.innerHTML = '';
-        answerChecked = false;
-        feedback.innerHTML = 'Click **Next** to check your answers.';
-    }
-
-    function checkFillInBlanks() {
-        let allCorrect = true;
-        const inputs = document.querySelectorAll('.number-input-group input');
-
-        inputs.forEach(input => {
-            const correctValue = input.getAttribute('data-correct').toLowerCase().trim();
-            const userAnswer = input.value.toLowerCase().trim();
-            const num = input.id.split('-')[1];
-            const resultElement = document.getElementById(`result-${num}`);
-
-            if (userAnswer === correctValue) {
-                resultElement.className = 'number-result result-correct';
-                resultElement.textContent = 'Correct!';
-            } else {
-                allCorrect = false;
-                resultElement.className = 'number-result result-incorrect';
-                resultElement.textContent = `Correction: ${correctValue}`;
-            }
-        });
-
-        answerChecked = true;
-        feedback.innerHTML = allCorrect 
-            ? `<span style="color: #28a745; font-size: 1.1em;">Well done! All answers are correct. Click Next to continue.</span>`
-            : `Review the corrections (in red). Click **Next** again to advance.`;
-    }
-
-
-    // --- DRAG AND DROP (TOPIC 8) ---
-    function renderDragAndDrop(q) {
-        // Remove elementos não necessários
-        questionImage.style.display = 'none';
-        
-        // Container principal
-        optionsContainer.style.display = 'block';
-        optionsContainer.innerHTML = '<div class="drag-drop-overall-container"></div>';
-        const overallContainer = optionsContainer.querySelector('.drag-drop-overall-container');
-
-        // 1. Galeria de Imagens
-        let galleryHtml = '<div class="image-gallery-container">';
-        q.data.sentences.forEach((sent, index) => {
-            galleryHtml += `
-                <div class="gallery-image-wrapper">
-                    <div class="image-number-label">${index + 1}</div>
-                    <img src="${GITHUB_RAW_BASE_URL}images/${sent.image}" alt="Image for sentence ${index + 1}">
-                </div>
-            `;
-        });
-        galleryHtml += '</div>';
-        overallContainer.innerHTML = galleryHtml;
-
-        // 2. Lista de Sentenças (Drop Zones)
-        let sentenceListHtml = '<div class="sentence-list-container">';
-        q.data.sentences.forEach(sent => {
-            // Preenche a drop zone com a resposta atual, se existir
-            const droppedWord = currentDragAndDropAnswers[sent.dropId];
-            const wordContent = droppedWord ? `<div class="draggable-word" draggable="true" id="${droppedWord.id}" data-correct-target="${sent.dropId}" ondragstart="dragStart(event)">${droppedWord.text}</div>` : '';
-
-            // Divide a sentença no underline para colocar a zona de drop no meio
-            const parts = sent.text.split('____');
-            
-            sentenceListHtml += `
-                <div class="sentence-item">
-                    <span class="sentence-text-before">${parts[0]}</span>
-                    <div class="drop-zone" id="${sent.dropId}" 
-                        ondragover="dragOver(event)" 
-                        ondragleave="dragLeave(event)" 
-                        ondrop="drop(event)" 
-                        data-correct-word="${sent.correct}">
-                        ${wordContent}
-                    </div>
-                    <span class="sentence-text-after">${parts.length > 1 ? parts[1] : ''}</span>
-                </div>
-            `;
-        });
-        sentenceListHtml += '</div>';
-        overallContainer.innerHTML += sentenceListHtml;
-
-        // 3. Palavras Arrastáveis
-        let draggableWordsHtml = '<div class="draggable-words-container">';
-        q.data.words.forEach(word => {
-            // Renderiza a palavra apenas se ela não estiver em uso em nenhuma drop zone
-            const isDropped = Object.values(currentDragAndDropAnswers).some(item => item.id === word.id);
-            if (!isDropped) {
-                draggableWordsHtml += `<div class="draggable-word" draggable="true" id="${word.id}" data-text="${word.text}" data-correct-target="${word.correctTarget}" ondragstart="dragStart(event)">${word.text}</div>`;
-            }
-        });
-        draggableWordsHtml += '</div>';
-        overallContainer.innerHTML += draggableWordsHtml;
-
-        feedback.innerHTML = 'Drag the words to the blanks. Click **Next** to check your answers.';
-        answerChecked = false;
-    }
-
-    // --- DRAG AND DROP LOGIC ---
-    let draggedElement = null;
-
-    function dragStart(event) {
-        // Se a palavra estiver dentro de um drop-zone (já dropada), não permite arrastar.
-        if (event.target.closest('.drop-zone')) {
-            draggedElement = event.target;
-            event.dataTransfer.setData('text/plain', draggedElement.id);
-            setTimeout(() => {
-                draggedElement.classList.add('dragging');
-                // Remove a palavra da drop zone antes de começar o arrasto
-                const dropZoneId = draggedElement.parentElement.id;
-                if (dropZoneId) {
-                    delete currentDragAndDropAnswers[dropZoneId];
-                }
-                draggedElement.remove();
-            }, 0);
-        } else {
-            draggedElement = event.target;
-            event.dataTransfer.setData('text/plain', draggedElement.id);
-            setTimeout(() => draggedElement.classList.add('dragging'), 0);
+    // --- Funções de Menu (Sidebar) ---
+    function openNav() { sideMenu.classList.add('open'); }
+    function closeNav() { sideMenu.classList.remove('open'); }
+    
+    // Fecha o menu lateral e o modal se clicar fora
+    window.onclick = function(event) {
+        if (sideMenu.classList.contains('open') && !event.target.closest('.side-menu') && !event.target.closest('.menu-toggle')) {
+            closeNav();
+        }
+        const modal = document.getElementById('numberModal');
+        if (modal.classList.contains('show-modal') && !event.target.closest('.modal-content-wrapper') && !event.target.closest('.hotspot')) {
+            closeNumberModal();
         }
     }
 
-    function dragOver(event) {
-        event.preventDefault();
-        // Só adiciona a classe se a zona de drop estiver vazia
-        if (event.currentTarget.children.length === 0) {
-            event.currentTarget.classList.add('drag-over');
-        }
-    }
-
-    function dragLeave(event) {
-        event.currentTarget.classList.remove('drag-over');
-    }
-
-    function drop(event) {
-        event.preventDefault();
-        const dropZone = event.currentTarget;
-        dropZone.classList.remove('drag-over');
-
-        // Se a zona de drop já tem um item, ou o item arrastado é o mesmo, não faz nada.
-        if (dropZone.children.length > 0) {
-            return;
-        }
-
-        const data = event.dataTransfer.getData('text/plain');
-        const draggedElement = document.getElementById(data);
-
-        if (draggedElement) {
-            draggedElement.classList.remove('dragging');
-
-            // Move a palavra para a drop zone
-            dropZone.appendChild(draggedElement);
-
-            // Adiciona ao estado (necessário para persistir quando re-renderiza)
-            const wordData = DRAG_AND_DROP_WORDS.find(w => w.id === data);
-            currentDragAndDropAnswers[dropZone.id] = wordData;
-
-            // Remove o dragStart handler (opcional) para evitar que a palavra seja arrastada
-            draggedElement.ondragstart = null;
-            draggedElement.style.cursor = 'default';
-            
-            // Limpa o feedback de correção se o usuário estiver movendo palavras
-            dropZone.classList.remove('correct-drop', 'incorrect-drop');
-            answerChecked = false;
-            feedback.innerHTML = 'Drag the words to the blanks. Click **Next** to check your answers.';
-        }
-    }
+    // Coloca as funções que o HTML precisa chamar no escopo global
+    window.startLesson = startLesson;
+    window.goNext = goNext;
+    window.backQuestion = backQuestion;
+    window.navigateToQuestion = navigateToQuestion;
+    window.checkAnswer = selectOption; // Muda o nome para 'selectOption' para refletir a ação
+    window.checkMultipleChoiceAnswer = checkMultipleChoiceAnswer; // Nova função para o botão "Check"
+    window.openNav = openNav;
+    window.closeNav = closeNav;
+    window.openNumberModal = openNumberModal;
+    window.checkFillInBlanksAnswer = checkFillInBlanksAnswer;
+    window.checkAllFillInBlanks = checkAllFillInBlanks;
+    window.playAudio = playAudio;
+    window.dragStart = dragStart;
+    window.dragOver = dragOver;
+    window.dragLeave = dragLeave;
+    window.drop = drop;
+    window.checkDragAndDrop = checkDragAndDrop;
     
-    function checkDragAndDrop() {
-        let allCorrect = true;
-        const dropZones = document.querySelectorAll('.drop-zone');
-        const originalWordsContainer = document.querySelector('.draggable-words-container');
-
-        dropZones.forEach(dropZone => {
-            const correctWord = dropZone.getAttribute('data-correct-word').toLowerCase().trim();
-            const droppedWord = dropZone.querySelector('.draggable-word');
-
-            dropZone.classList.remove('correct-drop', 'incorrect-drop');
-
-            if (!droppedWord) {
-                // Nenhuma palavra dropada - Incorreto
-                allCorrect = false;
-                dropZone.classList.add('incorrect-drop');
-                dropZone.innerHTML = `<span class="correct-word-display">${correctWord}</span>`;
-                
-                // Remove a palavra do estado para que ela volte ao container
-                delete currentDragAndDropAnswers[dropZone.id];
-                
-            } else {
-                const userAnswer = droppedWord.getAttribute('data-text').toLowerCase().trim();
-
-                if (userAnswer === correctWord) {
-                    // Correto
-                    dropZone.classList.add('correct-drop');
-                    droppedWord.style.background = '#e6ffed';
-                    droppedWord.style.borderColor = '#28a745';
-                    
-                } else {
-                    // Incorreto
-                    allCorrect = false;
-                    dropZone.classList.add('incorrect-drop');
-                    
-                    // Move o elemento dropado de volta para o container
-                    droppedWord.remove();
-                    originalWordsContainer.appendChild(droppedWord);
-                    
-                    // Mostra a resposta correta
-                    dropZone.innerHTML = `<span class="correct-word-display">${correctWord}</span>`;
-                    
-                    // Remove do estado
-                    delete currentDragAndDropAnswers[dropZone.id];
-                }
-            }
-        });
-        
-        // Re-renderiza o container de palavras para que as palavras incorretas voltem
-        renderDragAndDrop(lessonQuestions[currentQuestionIndex]);
-        
-        answerChecked = true;
-        feedback.innerHTML = allCorrect 
-            ? `<span style="color: #28a745; font-size: 1.1em;">All sentences are correct! Click Next to continue.</span>`
-            : `Review the corrections (in red). Click **Next** again to advance.`;
-    }
-
-
-    // INICIALIZAÇÃO
+    // --- Inicialização ---
     document.addEventListener('DOMContentLoaded', () => {
-        // Garante que a Home seja exibida primeiro
-        homeScreen.style.display = 'block';
-        lessonScreen.style.display = 'none';
-        navButtonsContainer.style.display = 'none';
-        menuToggle.style.display = 'none';
-        
-        // Adiciona manipulador para o botão Next na inicialização (segurança)
-        nextBtn.onclick = goNext;
+        renderChapterCards();
+        showScreen('home');
     });
-
 </script>
+
 </body>
 </html>
