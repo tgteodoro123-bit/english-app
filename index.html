@@ -1,806 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Course - Beginner</title>
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>English Course - Essential Basics</title>
     <style>
-        /* 1. Reset Básico e Fontes */
-        * {
-            box-sizing: border-box;
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
         }
-
-        body {
-            background-color: #f4f7f6; /* Fundo cinza claro */
-            color: #333;
-            line-height: 1.6;
-        }
-
-        /* 2. Layout Principal */
-        #app-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            min-height: 100vh; /* Altura total da tela */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            position: relative;
-            transition: margin-left .5s; /* Para o Menu Lateral */
-        }
-
-        /* 3. Cabeçalho e Progresso */
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-
-        h1 {
-            font-size: 1.5em;
-            color: #007bff; /* Azul primário */
-        }
-
-        #progress-bar {
-            margin: 15px 0;
-        }
-
-        #progress-line {
-            height: 8px;
-            background-color: #e9ecef;
-            border-radius: 4px;
-        }
-
-        /* 4. Área da Pergunta e Imagem */
-        #question-area {
-            padding: 20px 0;
-        }
-
-        #question-text {
-            font-size: 1.1em;
-            margin-bottom: 20px;
-        }
-
-        #question-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        /* 5. Opções de Resposta (Quiz / Exercícios) */
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr; /* Padrão: 1 coluna */
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .option-btn {
-            padding: 15px;
-            background-color: #f8f9fa;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            text-align: left;
-            cursor: pointer;
-            transition: background-color 0.2s, border-color 0.2s;
-        }
-
-        .option-btn:hover:not(.correct):not(.incorrect) {
-            background-color: #e9ecef;
-            border-color: #007bff;
-        }
-
-        .correct {
-            background-color: #d4edda;
-            border-color: #28a745;
-            color: #155724;
-        }
-
-        .incorrect {
-            background-color: #f8d7da;
-            border-color: #dc3545;
-            color: #721c24;
-        }
-
-        /* 6. Botões de Navegação e Feedback */
-        footer {
-            padding: 15px 0 0;
-            border-top: 1px solid #eee;
-        }
-
-        #feedback {
-            margin-bottom: 10px;
-            font-weight: bold;
-            min-height: 20px;
-        }
-
-        .navigation-btns {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        #back-btn, #next-btn, .menu-btn, .chapter-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.2s;
-        }
-
-        #next-btn {
-            background-color: #007bff;
-            color: white;
-        }
-
-        #next-btn:hover {
-            background-color: #0056b3;
-        }
-
-        #back-btn, .menu-btn {
-            background-color: #6c757d;
-            color: white;
-        }
-
-        #back-btn:hover, .menu-btn:hover {
-            background-color: #5a6268;
-        }
-
-        /* Estilo dos Cards na Home Screen */
-        #chapter-cards {
-            display: flex; 
-            flex-direction: column; 
-            gap: 15px; 
-            margin-top: 20px;
-        }
-        .chapter-btn {
-            font-size: 1.2em;
-            text-align: center;
-        }
-
-        /* 7. Drag and Drop */
-        #draggable-words-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            padding: 10px;
-            border: 2px dashed #ced4da;
-            min-height: 60px;
-            margin-top: 15px;
-        }
-
-        .draggable-word {
-            padding: 5px 10px;
-            background-color: #ffc107; /* Amarelo de destaque */
-            border-radius: 4px;
-            cursor: grab;
-            font-weight: bold;
-            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .drop-zone {
-            display: inline-block;
-            min-width: 80px; 
-            height: 30px;
-            border-bottom: 2px solid #007bff;
-            margin: 0 5px;
-            text-align: center;
-            vertical-align: middle;
-            line-height: 30px;
-            padding: 0 5px;
-        }
-
-        /* Palavra na zona de drop */
-        .drop-zone .draggable-word {
-            background-color: transparent;
-            border: none;
-            box-shadow: none;
-            color: #333; 
-            cursor: default;
-        }
-
-        .drag-over {
-            background-color: rgba(0, 123, 255, 0.1);
-        }
-
-        /* 8. Estilos de Fundo e Destaque */
-        .correct-highlight {
-            color: #28a745;
-            font-weight: bold;
-        }
-
-        /* 9. Estilo do Sidenav (Menu Lateral) */
-        .sidenav {
-            height: 100%;
-            width: 0; /* Correção: Inicia com 0 de largura */
-            position: fixed;
-            z-index: 10;
-            top: 0;
-            left: 0;
-            background-color: #111;
-            overflow-x: hidden; /* Oculta o conteúdo vazando */
-            padding-top: 60px;
-            transition: 0.5s;
-        }
-
-        .sidenav a {
-            padding: 8px 8px 8px 32px;
-            text-decoration: none;
-            font-size: 1.2em;
-            color: #818181;
-            display: block;
-            transition: 0.3s;
-        }
-
-        .sidenav a:hover {
-            color: #f1f1f1;
-        }
-
-        .sidenav .closebtn {
-            position: absolute;
-            top: 0;
-            right: 25px;
-            font-size: 36px;
-            margin-left: 50px;
-        }
-        
-        .divider {
-            height: 1px;
-            background-color: #333;
-            margin: 10px 30px;
-        }
-
-        /* 10. Telas e Responsividade */
-        .screen {
-            transition: opacity 0.5s;
-        }
-
-        /* Modal */
-        .modal {
-            display: none; 
-            position: fixed;
-            z-index: 100;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto; 
+            background: #0d6efd;
+            color: #fff;
             padding: 20px;
-            border: 1px solid #888;
-            width: 80%; 
-            border-radius: 8px;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
+            text-align: center;
+            font-size: 26px;
             font-weight: bold;
         }
-
-        .close:hover,
-        .close:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
+        .container {
+            width: 90%;
+            margin: auto;
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-gap: 20px;
         }
-
-        /* Media Query para telas menores */
-        @media (max-width: 600px) {
-            #app-container {
-                padding: 10px;
-            }
-            h1 {
-                font-size: 1.3em;
-            }
-            .navigation-btns button {
-                padding: 8px 15px;
-            }
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            color: #000;
+        }
+        .card:hover {
+            transform: scale(1.03);
+        }
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .card-content {
+            padding: 15px;
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .card-info {
+            font-size: 14px;
+            color: #555;
         }
     </style>
-    </head>
+</head>
 <body>
+    <header>Essential Basics</header>
 
-    <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#" onclick="goHome()">🏠 Home</a>
-        <div class="divider"></div>
-        <a href="#" class="lesson-link" onclick="startLesson(1, 'A')">Chapter 1: Greetings</a>
-        <a href="#" class="lesson-link" onclick="startLesson(2, 'B')">Chapter 2: Numbers</a>
-        <a href="#" class="lesson-link" onclick="startLesson(3, 'C')">Chapter 3: Verb To Be</a>
-    </div>
+    <div class="container">
 
-    <div id="app-container">
-        
-        <div id="home-screen" class="screen active">
-            <h1>Welcome to Your English Course!</h1>
-            <p>Ready to start your journey? Select a chapter below or use the menu (☰).</p>
-            
-            <div id="chapter-cards">
-                
-                <button class="chapter-btn" onclick="startLesson(1, 'A')" style="background-color: #28a745; color: white;">
-                    Chapter 1: Greetings 👋
-                </button>
-                
-                <button class="chapter-btn" onclick="startLesson(2, 'B')" style="background-color: #ffc107; color: #333;">
-                    Chapter 2: Numbers 🔢
-                </button>
-                
-                <button class="chapter-btn" onclick="startLesson(3, 'C')" style="background-color: #007bff; color: white;">
-                    Chapter 3: Verb To Be ✨
-                </button>
+        <!-- CARD 1 – LINK PARA O CAPÍTULO 1 -->
+        <a class="card" href="capitulo1.html">
+            <img src="img/card1.jpg" alt="Introducing Yourself" />
+            <div class="card-content">
+                <div class="card-title">Introducing Yourself</div>
+                <div class="card-info">2 Lessons • 30m</div>
+            </div>
+        </a>
 
-                <button class="chapter-btn" onclick="openNav()" style="background-color: #6c757d; color: white;">
-                    ☰ Open Chapter Menu
-                </button>
+        <!-- OS OUTROS 23 CARDS AQUI -->
+        <div class="card">
+            <img src="img/card2.jpg" />
+            <div class="card-content">
+                <div class="card-title">Talking About Work</div>
+                <div class="card-info">2 Lessons • 30m</div>
             </div>
         </div>
 
-        <div id="lesson-screen" class="screen" style="display: none;">
-            
-            <header>
-                <button class="menu-btn" onclick="openNav()">☰</button>
-                <h1 id="lesson-title">Beginner: Lesson Title</h1>
-            </header>
-
-            <div id="progress-bar">
-                <span id="progress-indicator">Topic 1/10</span>
-                <div id="progress-line" style="width: 0;"></div>
+        <div class="card">
+            <img src="img/card3.jpg" />
+            <div class="card-content">
+                <div class="card-title">Sharing Personal Details</div>
+                <div class="card-info">2 Lessons • 30m</div>
             </div>
-
-            <main id="question-area">
-                
-                <p id="question-text"></p>
-                <img id="question-image" style="display: none;" alt="Illustration for the question">
-
-                <div id="pronunciation-container" style="display: none;">
-                    </div>
-
-                <div id="options-container" class="options-grid">
-                    </div>
-
-                <div id="drag-drop-area">
-                    <div id="draggable-words-container" 
-                         ondragover="allowDrop(event)" 
-                         ondrop="returnWordToContainer(event)">
-                        </div>
-                </div>
-
-                <div id="number-modal" class="modal">
-                    <div class="modal-content">
-                        <span class="close" onclick="closeNumberModal()">&times;</span>
-                        <h2 id="number-modal-title">Interactive Number Practice</h2>
-                        <div id="number-content">
-                            </div>
-                    </div>
-                </div>
-
-            </main>
-
-            <footer>
-                <div id="feedback"></div>
-                <div class="navigation-btns">
-                    <button id="back-btn" onclick="backQuestion()">Home</button>
-                    <button id="next-btn" onclick="goNext()">Start</button>
-                </div>
-            </footer>
         </div>
+
+        <!-- Adicione mais cards até completar 24 -->
+
     </div>
 
-    <script>
-        // Variáveis de Estado Global
-        const GITHUB_RAW_BASE_URL = 'https://raw.githubusercontent.com/tgteodoro123-bit/english-course/main/assets/';
-        let currentChapter = 'A';
-        let currentQuestionIndex = 0;
-        let lessonQuestions = []; // AQUI VAI O CONTEÚDO REAL DO SEU CURSO
-        let answerChecked = false;
-
-        // SELETORES DE ELEMENTOS
-        const appContainer = document.getElementById('app-container');
-        const homeScreen = document.getElementById('home-screen');
-        const lessonScreen = document.getElementById('lesson-screen');
-        const questionText = document.getElementById('question-text');
-        const questionImage = document.getElementById('question-image');
-        const optionsContainer = document.getElementById('options-container');
-        const feedback = document.getElementById('feedback');
-        const nextBtn = document.getElementById('next-btn');
-        const backBtn = document.getElementById('back-btn');
-        const progressIndicator = document.getElementById('progress-indicator');
-        const progressLine = document.getElementById('progress-line');
-        const dragDropArea = document.getElementById('drag-drop-area');
-        const pronunciationContainer = document.getElementById('pronunciation-container');
-
-        // FUNÇÕES DE NAVEGAÇÃO E FLUXO PRINCIPAL
-        
-        function goHome() {
-            homeScreen.style.display = 'block';
-            lessonScreen.style.display = 'none';
-        }
-
-        function startLesson(chapter, chapterCode) {
-            currentChapter = chapterCode;
-            currentQuestionIndex = 0;
-            // Definindo dados de exemplo para o capítulo A:
-            if (chapterCode === 'A') {
-                lessonQuestions = [
-                    { id: 1, title: "Greetings", question: "Select the correct way to say 'Hi' in English:", options: ["Chao", "Hello", "Adios", "Merci"], correctAnswer: "Hello" },
-                    { id: 2, title: "Numbers", question: "This topic is an interactive exercise. Click the image to open the game.", correctAnswer: "INTERACTIVE_BINGO", image: "images/numbers_chart.png" },
-                    { 
-                        id: 3, title: "Drag & Drop", question: "Drag the words to complete the sentence:", correctAnswer: "DRAG_AND_DROP", 
-                        data: {
-                            sentences: [
-                                { id: "s1", textBefore: "My name ", blank: "is", textAfter: " Maria." },
-                                { id: "s2", textBefore: "I ", blank: "am", textAfter: " 25 years old." }
-                            ],
-                            wordsPool: ["am", "is", "are"]
-                        }
-                    },
-                    { id: 4, title: "Fill-in-Blanks", question: "Type the correct word: 'I ___ happy'.", correctAnswer: "am" }
-                    // Adicione mais perguntas aqui!
-                ];
-            } else {
-                lessonQuestions = []; // Limpa para outros capítulos
-            }
-            
-            homeScreen.style.display = 'none';
-            lessonScreen.style.display = 'block';
-            loadQuestion(lessonQuestions[currentQuestionIndex]);
-        }
-        
-        function updateProgressBar() {
-            const total = lessonQuestions.length;
-            const current = currentQuestionIndex + 1;
-            const percentage = (current / total) * 100;
-            progressLine.style.width = percentage + '%';
-            progressIndicator.textContent = `Topic ${current}/${total}`;
-        }
-        
-        function goNext() {
-            const currentQ = lessonQuestions[currentQuestionIndex];
-
-            // 1. Se for um exercício e a resposta ainda não foi checada
-            if (!answerChecked && (currentQ.correctAnswer !== 'INFO_TABLE' && currentQ.correctAnswer !== 'PRONUNCIATION_SET' && currentQ.correctAnswer !== 'INTERACTIVE_BINGO')) { 
-                checkAnswer(currentQ);
-                return;
-            }
-
-            // 2. Avança para a próxima pergunta
-            if (currentQuestionIndex < lessonQuestions.length - 1) {
-                currentQuestionIndex++;
-                loadQuestion(lessonQuestions[currentQuestionIndex]);
-                window.scrollTo(0, 0); // Rola para o topo
-            } else {
-                // Fim do capítulo
-                alert('Congratulations! Chapter finished!');
-                goHome();
-            }
-        }
-
-        function backQuestion() {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                loadQuestion(lessonQuestions[currentQuestionIndex]);
-                window.scrollTo(0, 0);
-            } else {
-                goHome();
-            }
-        }
-
-        // FUNÇÕES DE EXERCÍCIOS
-        
-        function checkAnswer(q) {
-            answerChecked = true;
-            nextBtn.textContent = 'Next';
-            let isCorrect = false;
-
-            if (q.correctAnswer === 'DRAG_AND_DROP') {
-                checkDragAndDrop(q);
-                isCorrect = true; 
-            } else if (q.correctAnswer === 'FILL_IN_BLANKS') {
-                const input = document.querySelector('.fill-in-input');
-                if (input && input.value.trim().toLowerCase() === q.correctAnswer.toLowerCase()) {
-                    isCorrect = true;
-                    input.classList.add('correct');
-                    feedback.innerHTML = '<span class="correct-highlight">Correct! Click Next.</span>';
-                } else {
-                    input.classList.add('incorrect');
-                    feedback.innerHTML = `Incorrect. The correct answer is: <span class="correct-highlight">${q.correctAnswer}</span>. Click Next.`;
-                }
-                input.readOnly = true;
-            } else { // Múltipla escolha (Quiz)
-                document.querySelectorAll('.option-btn').forEach(btn => {
-                    btn.style.pointerEvents = 'none'; 
-                    if (btn.textContent === q.correctAnswer) {
-                        btn.classList.add('correct');
-                    }
-                    if (btn.classList.contains('selected') && btn.textContent === q.correctAnswer) {
-                        isCorrect = true;
-                    }
-                    if (btn.classList.contains('selected') && btn.textContent !== q.correctAnswer) {
-                        btn.classList.add('incorrect');
-                    }
-                });
-
-                if (isCorrect) {
-                    feedback.innerHTML = '<span class="correct-highlight">Correct! Click Next.</span>';
-                } else {
-                    feedback.innerHTML = `Incorrect. The correct answer is: <span class="correct-highlight">${q.correctAnswer}</span>. Click Next.`;
-                }
-            }
-        }
-        
-        // FUNÇÕES ESPECÍFICAS DE CARREGAMENTO
-        
-        function loadQuizSlide(q) {
-            optionsContainer.innerHTML = '';
-            dragDropArea.innerHTML = '';
-            q.options.forEach(option => {
-                const btn = document.createElement('button');
-                btn.classList.add('option-btn');
-                btn.textContent = option;
-                btn.onclick = () => {
-                    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-                    btn.classList.add('selected');
-                };
-                optionsContainer.appendChild(btn);
-            });
-            optionsContainer.style.display = 'grid';
-        }
-
-        function loadFillInBlanks(q) {
-            optionsContainer.style.display = 'block';
-            dragDropArea.innerHTML = '';
-            optionsContainer.innerHTML = `
-                <div style="font-size: 1.1em; margin-bottom: 20px;">
-                    Type your answer:
-                    <input type="text" class="fill-in-input" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100%; margin-top: 5px;">
-                </div>
-            `;
-        }
-        
-        function loadDragAndDrop(q) {
-            optionsContainer.style.display = 'block';
-            optionsContainer.innerHTML = '';
-            
-            let sentenceHTML = q.data.sentences.map((s, index) => {
-                const dropZoneId = `drop-${s.id}`;
-                return `
-                    <div class="sentence-part">
-                        ${s.textBefore} 
-                        <span class="drop-zone" 
-                              id="${dropZoneId}" 
-                              data-sentence-id="${s.id}" 
-                              data-correct-word="${s.blank}"
-                              ondragover="allowDrop(event)" 
-                              ondrop="drop(event)"
-                              ondragleave="dragLeave(event)"></span> 
-                        ${s.textAfter}
-                    </div>
-                `;
-            }).join('');
-            
-            optionsContainer.innerHTML = sentenceHTML;
-
-            const wordsContainer = document.getElementById('draggable-words-container');
-            wordsContainer.innerHTML = ''; 
-            
-            // Cria as palavras arrastáveis
-            q.data.wordsPool.forEach((word, index) => {
-                const wordElement = document.createElement('span');
-                wordElement.classList.add('draggable-word');
-                wordElement.id = `word-${currentQuestionIndex}-${index}`;
-                wordElement.textContent = word;
-                wordElement.draggable = true;
-                wordElement.style.cursor = 'grab';
-                wordElement.ondragstart = dragStart;
-                wordsContainer.appendChild(wordElement);
-            });
-            dragDropArea.style.display = 'block';
-        }
-
-        // FUNÇÕES DRAG AND DROP
-        function dragStart(e) {
-            e.dataTransfer.setData('text/plain', e.target.id);
-        }
-
-        function allowDrop(e) {
-            e.preventDefault();
-            if (e.target.classList.contains('drop-zone') || e.target.classList.contains('draggable-words-container')) {
-                 e.target.classList.add('drag-over');
-            }
-        }
-        
-        function dragLeave(e) {
-            e.target.classList.remove('drag-over');
-        }
-
-        function drop(e) {
-            e.preventDefault();
-            e.target.classList.remove('drag-over');
-            const data = e.dataTransfer.getData('text/plain');
-            const draggable = document.getElementById(data);
-
-            if (e.target.classList.contains('drop-zone')) {
-                // Se a zona de drop já tem uma palavra, move a existente de volta
-                if (e.target.children.length > 0) {
-                    const existingWord = e.target.children[0];
-                    document.getElementById('draggable-words-container').appendChild(existingWord);
-                }
-                e.target.appendChild(draggable); // Coloca a nova palavra
-                draggable.style.cursor = 'default';
-            }
-        }
-
-        function returnWordToContainer(e) {
-            e.preventDefault();
-            e.target.classList.remove('drag-over');
-            const data = e.dataTransfer.getData('text/plain');
-            const draggable = document.getElementById(data);
-
-            if (e.target.classList.contains('draggable-words-container') && draggable && draggable.parentElement.classList.contains('drop-zone')) {
-                e.target.appendChild(draggable); // Move a palavra de volta
-                draggable.style.cursor = 'grab'; // Restaura o cursor
-            }
-        }
-
-        function checkDragAndDrop(q) {
-            let allCorrect = true;
-            document.querySelectorAll('.drop-zone').forEach(dropZone => {
-                const sentenceId = dropZone.getAttribute('data-sentence-id');
-                const correctWord = dropZone.getAttribute('data-correct-word');
-                
-                dropZone.classList.remove('correct', 'incorrect');
-                dropZone.style.pointerEvents = 'none'; 
-
-                if (dropZone.children.length === 0) {
-                    dropZone.classList.add('incorrect');
-                    dropZone.innerHTML = `<span class="correct-highlight">${correctWord}</span>`;
-                    allCorrect = false;
-                    return;
-                }
-
-                const placedWord = dropZone.children[0];
-                placedWord.draggable = false;
-                
-                if (placedWord.textContent === correctWord) {
-                    dropZone.classList.add('correct');
-                } else {
-                    dropZone.classList.add('incorrect');
-                    allCorrect = false;
-                    dropZone.innerHTML += `<span class="correct-highlight"> (${correctWord})</span>`;
-                    document.querySelector('.draggable-words-container').appendChild(placedWord);
-                    placedWord.style.cursor = 'grab';
-                }
-            });
-
-            document.querySelectorAll('.draggable-word').forEach(word => word.draggable = false); 
-            
-            if (allCorrect) {
-                feedback.innerHTML = '<span style="color: #28a745; font-size: 1.2em;">All answers are correct! Click Next.</span>';
-            } else {
-                feedback.innerHTML = '<span style="color: #dc3545; font-size: 1.2em;">Review the incorrect answers and click Next.</span>';
-            }
-        }
-
-        // FUNÇÃO PRINCIPAL DE CARREGAMENTO
-        function loadQuestion(q) {
-            answerChecked = false; 
-            feedback.innerHTML = '';
-            questionText.style.display = 'block'; 
-            pronunciationContainer.style.display = 'none';
-            optionsContainer.style.justifyContent = 'initial';
-            dragDropArea.style.display = 'none';
-            document.getElementById('number-modal').style.display = 'none';
-            questionImage.onclick = null; // Reseta o onclick da imagem
-            questionImage.style.cursor = 'default';
-
-            questionText.innerHTML = q.question;
-            document.querySelector('h1').textContent = `Beginner ${currentChapter}: ${q.title}`;
-            updateProgressBar();
-
-            if (q.image) {
-                questionImage.src = GITHUB_RAW_BASE_URL + q.image;
-                questionImage.style.display = 'block';
-            } else {
-                questionImage.style.display = 'none';
-            }
-            
-            switch (q.correctAnswer) {
-                case 'INFO_TABLE':
-                    optionsContainer.innerHTML = '<h2>Informational Slide</h2><p>This is where your content table would go.</p>';
-                    optionsContainer.style.display = 'block';
-                    break;
-                case 'PRONUNCIATION_SET':
-                    pronunciationContainer.innerHTML = '<h2>Pronunciation Practice</h2><p>Use the audio buttons here.</p>';
-                    pronunciationContainer.style.display = 'block';
-                    optionsContainer.style.display = 'none';
-                    break;
-                case 'INTERACTIVE_BINGO':
-                    questionText.innerHTML = q.question;
-                    optionsContainer.innerHTML = '';
-                    optionsContainer.style.display = 'none';
-                    questionImage.onclick = openNumberModal; 
-                    questionImage.style.cursor = 'pointer';
-                    break;
-                case 'FILL_IN_BLANKS':
-                    loadFillInBlanks(q);
-                    break;
-                case 'DRAG_AND_DROP':
-                    loadDragAndDrop(q);
-                    break;
-                default: // Múltipla escolha (Quiz)
-                    loadQuizSlide(q);
-                    break;
-            }
-
-            backBtn.textContent = currentQuestionIndex === 0 ? 'Home' : 'Back';
-            
-            if (['INFO_TABLE', 'PRONUNCIATION_SET', 'INTERACTIVE_BINGO'].includes(q.correctAnswer)) {
-                nextBtn.textContent = 'Next';
-            } else {
-                nextBtn.textContent = answerChecked ? 'Next' : 'Check';
-            }
-        }
-        
-        // FUNÇÕES DO MODAL/MENU
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "250px";
-        }
-
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-        }
-
-        function openNumberModal() {
-            const modal = document.getElementById('number-modal');
-            const content = document.getElementById('number-content');
-            content.innerHTML = '<p>Number game content goes here.</p><button onclick="playAudio(\'audio/one.mp3\')">Play 1</button>';
-            modal.style.display = 'block';
-        }
-
-        function closeNumberModal() {
-            document.getElementById('number-modal').style.display = 'none';
-        }
-        
-        function playAudio(url) {
-            const audio = new Audio(GITHUB_RAW_BASE_URL + url);
-            audio.play();
-        }
-
-        // Inicializa as funções globais e a tela inicial
-        document.addEventListener('DOMContentLoaded', () => {
-            // Define as funções globais para que possam ser chamadas pelo HTML (onclick)
-            window.startLesson = startLesson;
-            window.goHome = goHome;
-            window.openNav = openNav;
-            window.closeNav = closeNav;
-            window.goNext = goNext;
-            window.backQuestion = backQuestion;
-            window.checkAnswer = checkAnswer;
-            window.openNumberModal = openNumberModal;
-            window.closeNumberModal = closeNumberModal;
-            window.playAudio = playAudio;
-            window.dragStart = dragStart;
-            window.allowDrop = allowDrop;
-            window.dragLeave = dragLeave;
-            window.drop = drop;
-            window.returnWordToContainer = returnWordToContainer;
-            
-            goHome();
-        });
-    </script>
-    </body>
+</body>
 </html>
