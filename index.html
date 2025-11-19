@@ -1,130 +1,83 @@
-// Este é o final COMPLETO do script que foi cortado na parte 2.
-// Ele começa com o fechamento da função 'returnWordToContainer'.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Course - Beginner</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
 
-        if (e.target.classList.contains('draggable-words-container') && draggable && draggable.parentElement.classList.contains('drop-zone')) {
-            e.target.appendChild(draggable); // Move a palavra de volta
-            draggable.classList.remove('dragging');
-            draggable.style.cursor = 'grab'; // Restaura o cursor
-        }
-    } // <-- Fim da função returnWordToContainer
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#" onclick="goHome()">🏠 Home</a>
+        <div class="divider"></div>
+        <a href="#" class="lesson-link" onclick="startLesson(1, 'A')">Chapter 1: Greetings</a>
+        <a href="#" class="lesson-link" onclick="startLesson(2, 'B')">Chapter 2: Numbers</a>
+        <a href="#" class="lesson-link" onclick="startLesson(3, 'C')">Chapter 3: Verb To Be</a>
+        </div>
 
-    // FUNÇÃO QUE CHECA O TÓPICO 8
-    function checkDragAndDrop(q) {
-        let allCorrect = true;
-        document.querySelectorAll('.drop-zone').forEach(dropZone => {
-            const sentenceId = dropZone.getAttribute('data-sentence-id');
-            const correctWord = dropZone.getAttribute('data-correct-word');
-            const sentenceData = q.data.sentences.find(s => s.id === sentenceId);
-            
-            dropZone.classList.remove('correct', 'incorrect');
-            dropZone.style.pointerEvents = 'none'; // Desativa interação após a checagem
+    <div id="app-container">
+        
+        <div id="home-screen" class="screen active">
+            <h1>Welcome to Your English Course!</h1>
+            <p>Ready to start your journey? Select a chapter from the menu to begin.</p>
+            <div id="chapter-cards">
+                <button class="chapter-btn" onclick="openNav()">☰ Select Chapter</button>
+            </div>
+        </div>
 
-            if (dropZone.children.length === 0) {
-                // Resposta vazia
-                dropZone.classList.add('incorrect');
-                dropZone.innerHTML = `<span class="correct-highlight">${correctWord}</span>`;
-                allCorrect = false;
-                return;
-            }
+        <div id="lesson-screen" class="screen" style="display: none;">
+            
+            <header>
+                <button class="menu-btn" onclick="openNav()">☰</button>
+                <h1 id="lesson-title">Beginner: Lesson Title</h1>
+            </header>
 
-            const placedWord = dropZone.children[0];
-            placedWord.draggable = false;
-            
-            if (placedWord.textContent === correctWord) {
-                dropZone.classList.add('correct');
-                sentenceData.isCorrect = true;
-            } else {
-                dropZone.classList.add('incorrect');
-                allCorrect = false;
-                // Mostra a resposta correta e move a palavra incorreta de volta
-                dropZone.innerHTML += `<span class="correct-highlight"> (${correctWord})</span>`;
-                // Move a palavra incorreta de volta para o pool
-                document.querySelector('.draggable-words-container').appendChild(placedWord);
-                placedWord.style.cursor = 'grab';
-            }
-        });
+            <div id="progress-bar">
+                <span id="progress-indicator">Topic 1/10</span>
+                <div id="progress-line"></div>
+            </div>
 
-        document.querySelectorAll('.draggable-word').forEach(word => word.draggable = false); // Desativa as palavras restantes
-        
-        if (allCorrect) {
-            feedback.innerHTML = '<span style="color: #28a745; font-size: 1.2em;">All answers are correct! Click Next.</span>';
-        } else {
-            feedback.innerHTML = '<span style="color: #dc3545; font-size: 1.2em;">Review the incorrect answers and click Next.</span>';
-        }
-    } // <-- Fim da função checkDragAndDrop
+            <main id="question-area">
+                
+                <p id="question-text"></p>
+                <img id="question-image" style="display: none;" alt="Illustration for the question">
 
-    // --- FUNÇÃO PRINCIPAL DE CARREGAMENTO ---
-    function loadQuestion(q) {
-        answerChecked = false; // Reseta o estado para a nova pergunta
-        feedback.innerHTML = '';
-        questionText.style.display = 'block'; // Garante que o texto da pergunta esteja visível por padrão
-        document.getElementById('pronunciation-container').style.display = 'none'; // Esconde containers de exercícios
-        optionsContainer.style.justifyContent = 'initial'; // Reseta o alinhamento
-        
-        questionText.innerHTML = q.question;
-        progressIndicator.textContent = `Topic ${currentQuestionIndex + 1}/${lessonQuestions.length}`;
-        document.querySelector('h1').textContent = `Beginner ${currentChapter}: ${q.title}`; // Atualiza o título
+                <div id="pronunciation-container" style="display: none;">
+                    </div>
 
-        if (q.image) {
-            questionImage.src = GITHUB_RAW_BASE_URL + q.image;
-            questionImage.style.display = 'block';
-        } else {
-            questionImage.style.display = 'none';
-        }
-        
-        switch (q.correctAnswer) {
-            case 'INFO_TABLE':
-                loadInfoTable(q);
-                break;
-            case 'PRONUNCIATION_SET':
-                loadPronunciationSlide(q);
-                break;
-            case 'INTERACTIVE_BINGO':
-                // Tópico 5: Interactive Bingo usa a imagem para acionar o modal
-                questionText.innerHTML = q.question;
-                optionsContainer.innerHTML = '';
-                optionsContainer.style.display = 'none';
-                break;
-            case 'FILL_IN_BLANKS':
-                loadFillInBlanks(q);
-                break;
-            case 'DRAG_AND_DROP':
-                loadDragAndDrop(q);
-                break;
-            default: // Múltipla escolha (Quiz)
-                loadQuizSlide(q);
-                break;
-        }
-        // Lida com a visibilidade dos botões
-        backBtn.textContent = currentQuestionIndex === 0 ? 'Home' : 'Back';
-        
-        // Para slides de informação, 'Next' é o comportamento padrão. Para exercícios, é 'Check'
-        if (['INFO_TABLE', 'PRONUNCIATION_SET', 'INTERACTIVE_BINGO'].includes(q.correctAnswer)) {
-            nextBtn.textContent = 'Next';
-        } else {
-            // Se for um exercício (Drag/Fill-in/Quiz), ele checa primeiro, depois avança
-            nextBtn.textContent = answerChecked ? 'Next' : 'Check';
-        }
-    } // <-- Fim da função loadQuestion
+                <div id="options-container" class="options-grid">
+                    </div>
 
-    // Inicializa as funções globais e a tela inicial
-    document.addEventListener('DOMContentLoaded', () => {
-        // Define as funções globais (necessário para onclicks em elementos HTML)
-        window.startLesson = startLesson;
-        window.goHome = goHome;
-        window.openNav = openNav;
-        window.closeNav = closeNav;
-        window.goNext = goNext;
-        window.backQuestion = backQuestion;
-        window.checkAnswer = checkAnswer;
-        window.openNumberModal = openNumberModal;
-        window.closeNumberModal = closeNumberModal;
-        window.playAudio = playAudio;
-        window.dragStart = dragStart; // Certifica que dragStart está disponível se for usado no HTML
-        window.drop = drop; // Certifica que drop está disponível
-        window.returnWordToContainer = returnWordToContainer; // Certifica que o retorno está disponível
-    });
-    // Garante que a tela inicial é mostrada
-    goHome();
-    
-</script>
+                <div id="drag-drop-area">
+                    <div id="draggable-words-container" 
+                         ondragover="allowDrop(event)" 
+                         ondrop="returnWordToContainer(event)">
+                        </div>
+                </div>
+
+                <div id="number-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeNumberModal()">&times;</span>
+                        <h2 id="number-modal-title">Interactive Number Practice</h2>
+                        <div id="number-content">
+                            </div>
+                    </div>
+                </div>
+
+            </main>
+
+            <footer>
+                <div id="feedback"></div>
+                <div class="navigation-btns">
+                    <button id="back-btn" onclick="backQuestion()">Home</button>
+                    <button id="next-btn" onclick="goNext()">Start</button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="script.js"></script> 
+    </body>
+</html>
