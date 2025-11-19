@@ -29,6 +29,7 @@
             min-height: 100vh; /* Altura total da tela */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             position: relative;
+            transition: margin-left .5s; /* Para o Menu Lateral */
         }
 
         /* 3. Cabeçalho e Progresso */
@@ -133,12 +134,12 @@
             transition: background-color 0.2s;
         }
 
-        #next-btn, .chapter-btn {
+        #next-btn {
             background-color: #007bff;
             color: white;
         }
 
-        #next-btn:hover, .chapter-btn:hover {
+        #next-btn:hover {
             background-color: #0056b3;
         }
 
@@ -149,6 +150,18 @@
 
         #back-btn:hover, .menu-btn:hover {
             background-color: #5a6268;
+        }
+
+        /* Estilo dos Cards na Home Screen */
+        #chapter-cards {
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            margin-top: 20px;
+        }
+        .chapter-btn {
+            font-size: 1.2em;
+            text-align: center;
         }
 
         /* 7. Drag and Drop */
@@ -173,7 +186,7 @@
 
         .drop-zone {
             display: inline-block;
-            min-width: 80px; /* Garante que o espaço seja visível */
+            min-width: 80px; 
             height: 30px;
             border-bottom: 2px solid #007bff;
             margin: 0 5px;
@@ -188,7 +201,7 @@
             background-color: transparent;
             border: none;
             box-shadow: none;
-            color: #333; /* Cor do texto normal */
+            color: #333; 
             cursor: default;
         }
 
@@ -205,13 +218,13 @@
         /* 9. Estilo do Sidenav (Menu Lateral) */
         .sidenav {
             height: 100%;
-            width: 0;
+            width: 0; /* Correção: Inicia com 0 de largura */
             position: fixed;
             z-index: 10;
             top: 0;
             left: 0;
             background-color: #111;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Oculta o conteúdo vazando */
             padding-top: 60px;
             transition: 0.5s;
         }
@@ -250,7 +263,7 @@
 
         /* Modal */
         .modal {
-            display: none; /* Hidden by default */
+            display: none; 
             position: fixed;
             z-index: 100;
             left: 0;
@@ -308,15 +321,31 @@
         <a href="#" class="lesson-link" onclick="startLesson(1, 'A')">Chapter 1: Greetings</a>
         <a href="#" class="lesson-link" onclick="startLesson(2, 'B')">Chapter 2: Numbers</a>
         <a href="#" class="lesson-link" onclick="startLesson(3, 'C')">Chapter 3: Verb To Be</a>
-        </div>
+    </div>
 
     <div id="app-container">
         
         <div id="home-screen" class="screen active">
             <h1>Welcome to Your English Course!</h1>
-            <p>Ready to start your journey? Select a chapter from the menu to begin.</p>
+            <p>Ready to start your journey? Select a chapter below or use the menu (☰).</p>
+            
             <div id="chapter-cards">
-                <button class="chapter-btn" onclick="openNav()">☰ Select Chapter</button>
+                
+                <button class="chapter-btn" onclick="startLesson(1, 'A')" style="background-color: #28a745; color: white;">
+                    Chapter 1: Greetings 👋
+                </button>
+                
+                <button class="chapter-btn" onclick="startLesson(2, 'B')" style="background-color: #ffc107; color: #333;">
+                    Chapter 2: Numbers 🔢
+                </button>
+                
+                <button class="chapter-btn" onclick="startLesson(3, 'C')" style="background-color: #007bff; color: white;">
+                    Chapter 3: Verb To Be ✨
+                </button>
+
+                <button class="chapter-btn" onclick="openNav()" style="background-color: #6c757d; color: white;">
+                    ☰ Open Chapter Menu
+                </button>
             </div>
         </div>
 
@@ -408,7 +437,7 @@
             if (chapterCode === 'A') {
                 lessonQuestions = [
                     { id: 1, title: "Greetings", question: "Select the correct way to say 'Hi' in English:", options: ["Chao", "Hello", "Adios", "Merci"], correctAnswer: "Hello" },
-                    { id: 2, title: "Numbers", question: "This topic is an interactive exercise.", correctAnswer: "INTERACTIVE_BINGO", image: "images/numbers_chart.png" },
+                    { id: 2, title: "Numbers", question: "This topic is an interactive exercise. Click the image to open the game.", correctAnswer: "INTERACTIVE_BINGO", image: "images/numbers_chart.png" },
                     { 
                         id: 3, title: "Drag & Drop", question: "Drag the words to complete the sentence:", correctAnswer: "DRAG_AND_DROP", 
                         data: {
@@ -443,7 +472,7 @@
             const currentQ = lessonQuestions[currentQuestionIndex];
 
             // 1. Se for um exercício e a resposta ainda não foi checada
-            if (!answerChecked && ['Hello', 'DRAG_AND_DROP', 'am', 'FILL_IN_BLANKS'].includes(currentQ.correctAnswer)) { 
+            if (!answerChecked && (currentQ.correctAnswer !== 'INFO_TABLE' && currentQ.correctAnswer !== 'PRONUNCIATION_SET' && currentQ.correctAnswer !== 'INTERACTIVE_BINGO')) { 
                 checkAnswer(currentQ);
                 return;
             }
@@ -479,7 +508,7 @@
 
             if (q.correctAnswer === 'DRAG_AND_DROP') {
                 checkDragAndDrop(q);
-                isCorrect = true; // O feedback já é dado por checkDragAndDrop
+                isCorrect = true; 
             } else if (q.correctAnswer === 'FILL_IN_BLANKS') {
                 const input = document.querySelector('.fill-in-input');
                 if (input && input.value.trim().toLowerCase() === q.correctAnswer.toLowerCase()) {
@@ -493,7 +522,7 @@
                 input.readOnly = true;
             } else { // Múltipla escolha (Quiz)
                 document.querySelectorAll('.option-btn').forEach(btn => {
-                    btn.style.pointerEvents = 'none'; // Desativa os botões
+                    btn.style.pointerEvents = 'none'; 
                     if (btn.textContent === q.correctAnswer) {
                         btn.classList.add('correct');
                     }
@@ -556,7 +585,8 @@
                               data-sentence-id="${s.id}" 
                               data-correct-word="${s.blank}"
                               ondragover="allowDrop(event)" 
-                              ondrop="drop(event)"></span> 
+                              ondrop="drop(event)"
+                              ondragleave="dragLeave(event)"></span> 
                         ${s.textAfter}
                     </div>
                 `;
@@ -565,7 +595,7 @@
             optionsContainer.innerHTML = sentenceHTML;
 
             const wordsContainer = document.getElementById('draggable-words-container');
-            wordsContainer.innerHTML = ''; // Limpa o container de palavras
+            wordsContainer.innerHTML = ''; 
             
             // Cria as palavras arrastáveis
             q.data.wordsPool.forEach((word, index) => {
@@ -584,7 +614,6 @@
         // FUNÇÕES DRAG AND DROP
         function dragStart(e) {
             e.dataTransfer.setData('text/plain', e.target.id);
-            // e.target.classList.add('dragging'); // Estilo opcional para feedback
         }
 
         function allowDrop(e) {
@@ -611,7 +640,6 @@
                     document.getElementById('draggable-words-container').appendChild(existingWord);
                 }
                 e.target.appendChild(draggable); // Coloca a nova palavra
-                draggable.classList.remove('dragging');
                 draggable.style.cursor = 'default';
             }
         }
@@ -622,10 +650,8 @@
             const data = e.dataTransfer.getData('text/plain');
             const draggable = document.getElementById(data);
 
-            // CORREÇÃO: Verifica se o drop-zone é o container de palavras E se a palavra veio de uma zona de drop.
             if (e.target.classList.contains('draggable-words-container') && draggable && draggable.parentElement.classList.contains('drop-zone')) {
                 e.target.appendChild(draggable); // Move a palavra de volta
-                draggable.classList.remove('dragging');
                 draggable.style.cursor = 'grab'; // Restaura o cursor
             }
         }
@@ -637,10 +663,9 @@
                 const correctWord = dropZone.getAttribute('data-correct-word');
                 
                 dropZone.classList.remove('correct', 'incorrect');
-                dropZone.style.pointerEvents = 'none'; // Desativa interação após a checagem
+                dropZone.style.pointerEvents = 'none'; 
 
                 if (dropZone.children.length === 0) {
-                    // Resposta vazia
                     dropZone.classList.add('incorrect');
                     dropZone.innerHTML = `<span class="correct-highlight">${correctWord}</span>`;
                     allCorrect = false;
@@ -655,15 +680,13 @@
                 } else {
                     dropZone.classList.add('incorrect');
                     allCorrect = false;
-                    // Mostra a resposta correta e move a palavra incorreta de volta
                     dropZone.innerHTML += `<span class="correct-highlight"> (${correctWord})</span>`;
-                    // Move a palavra incorreta de volta para o pool
                     document.querySelector('.draggable-words-container').appendChild(placedWord);
                     placedWord.style.cursor = 'grab';
                 }
             });
 
-            document.querySelectorAll('.draggable-word').forEach(word => word.draggable = false); // Desativa as palavras restantes
+            document.querySelectorAll('.draggable-word').forEach(word => word.draggable = false); 
             
             if (allCorrect) {
                 feedback.innerHTML = '<span style="color: #28a745; font-size: 1.2em;">All answers are correct! Click Next.</span>';
@@ -674,13 +697,15 @@
 
         // FUNÇÃO PRINCIPAL DE CARREGAMENTO
         function loadQuestion(q) {
-            answerChecked = false; // Reseta o estado para a nova pergunta
+            answerChecked = false; 
             feedback.innerHTML = '';
             questionText.style.display = 'block'; 
             pronunciationContainer.style.display = 'none';
             optionsContainer.style.justifyContent = 'initial';
             dragDropArea.style.display = 'none';
             document.getElementById('number-modal').style.display = 'none';
+            questionImage.onclick = null; // Reseta o onclick da imagem
+            questionImage.style.cursor = 'default';
 
             questionText.innerHTML = q.question;
             document.querySelector('h1').textContent = `Beginner ${currentChapter}: ${q.title}`;
@@ -695,21 +720,18 @@
             
             switch (q.correctAnswer) {
                 case 'INFO_TABLE':
-                    // loadInfoTable(q); // Função não implementada aqui, mas usaria optionsContainer para uma tabela
                     optionsContainer.innerHTML = '<h2>Informational Slide</h2><p>This is where your content table would go.</p>';
                     optionsContainer.style.display = 'block';
                     break;
                 case 'PRONUNCIATION_SET':
-                    // loadPronunciationSlide(q); // Função não implementada, mas usaria pronunciationContainer
                     pronunciationContainer.innerHTML = '<h2>Pronunciation Practice</h2><p>Use the audio buttons here.</p>';
                     pronunciationContainer.style.display = 'block';
                     optionsContainer.style.display = 'none';
                     break;
                 case 'INTERACTIVE_BINGO':
-                    questionText.innerHTML = q.question + " (Click image/button to start the game)";
+                    questionText.innerHTML = q.question;
                     optionsContainer.innerHTML = '';
                     optionsContainer.style.display = 'none';
-                    // Chama o modal de exemplo para números interativos
                     questionImage.onclick = openNumberModal; 
                     questionImage.style.cursor = 'pointer';
                     break;
@@ -726,7 +748,6 @@
 
             backBtn.textContent = currentQuestionIndex === 0 ? 'Home' : 'Back';
             
-            // Para slides de informação, 'Next' é o comportamento padrão. Para exercícios, é 'Check'
             if (['INFO_TABLE', 'PRONUNCIATION_SET', 'INTERACTIVE_BINGO'].includes(q.correctAnswer)) {
                 nextBtn.textContent = 'Next';
             } else {
@@ -734,7 +755,7 @@
             }
         }
         
-        // FUNÇÕES DO MODAL/MENU (Não essenciais para a lógica principal, mas importantes para o layout)
+        // FUNÇÕES DO MODAL/MENU
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";
         }
@@ -778,7 +799,6 @@
             window.drop = drop;
             window.returnWordToContainer = returnWordToContainer;
             
-            // Garante que a tela inicial é mostrada
             goHome();
         });
     </script>
