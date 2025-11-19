@@ -890,7 +890,7 @@
     const QUESTIONS = [
         // Topics 1 to 4 
         { id: 1, question: "What do you see in the image?", image: "numeros.jpg", options: { A: "The Alphabet", B: "Colors", C: "Numbers" }, correctAnswer: 'C', correctWord: 'Numbers', chapter: 1, title: "1. Numbers Overview" },
-        { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', correctWord: 'I am', chapter: 1, title: "2. Verb 'To Be' (I am)" },
+        { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', correctWord: "I am", chapter: 1, title: "2. Verb 'To Be' (I am)" },
         
         // Tópico 3 - Vocabulary (Título Único: Vocabulary)
         { id: 3, 
@@ -1062,7 +1062,7 @@
     function renderSideMenu() {
         const menu = document.getElementById('side-menu');
         menu.innerHTML = `<a href="javascript:void(0)" class="close-btn" onclick="closeNav()">&times;</a>`;
-        menu.innerHTML += `<a href="#" onclick="goBackToHome(); closeNav();" style="font-weight: 700; color: #007bff; border-bottom: 2px solid #007bff; margin-bottom: 15px;">⬅️ Home</a>`;
+        // REMOVIDO: O link "Home" foi removido. O botão "Back" no primeiro tópico faz essa função.
         
         lessonQuestions.forEach((q, index) => {
             const isActive = index === currentQuestionIndex ? 'background-color: #e0f7ff; font-weight: 700;' : '';
@@ -1112,14 +1112,14 @@
         switch (q.correctAnswer) {
             case 'INFO_TABLE': 
                 loadInfoTable(q);
-                feedback.innerHTML = '<span style="color: #007bff; font-size: 1.1em;">Click Next to continue.</span>';
+                // REMOVIDO: feedback.innerHTML = '<span style="color: #007bff; font-size: 1.1em;">Click Next to continue.</span>';
                 break;
             case 'PRONUNCIATION_SET':
                 loadPronunciationSlide(q);
                 if (q.id === 6) { // Special case for Topic 6 table (Teen vs Ty)
                     loadComparisonTable();
                 }
-                feedback.innerHTML = '<span style="color: #007bff; font-size: 1.1em;">Click Next to continue.</span>';
+                // REMOVIDO: feedback.innerHTML = '<span style="color: #007bff; font-size: 1.1em;">Click Next to continue.</span>';
                 break;
             case 'INTERACTIVE_BINGO':
                 questionImage.style.display = 'block';
@@ -1129,19 +1129,19 @@
                 document.getElementById('hotspot-4').style.display = 'flex';
                 optionsContainer.innerHTML = '';
                 optionsContainer.style.display = 'none';
-                feedback.innerHTML = 'Click on the "+" signs for details.'; 
+                feedback.innerHTML = 'Click on the "+" signs for details.'; // MANTIDO: Instrução específica essencial.
                 break;
             case 'FILL_IN_BLANKS':
                 loadFillInBlanks(q);
-                feedback.innerHTML = '<span style="color: #007bff; font-size: 1.1em;">Click Next to check your answers.</span>';
+                // REMOVIDO: feedback.innerHTML = '<span style="color: #007bff; font-size: 1.1em;">Click Next to check your answers.</span>';
                 break;
             case 'DRAG_AND_DROP':
                 loadDragAndDrop(q);
-                feedback.innerHTML = '<span style="color: #007bff; font-size: 1.1em;">Click Next to check your answers.</span>';
+                // REMOVIDO: feedback.innerHTML = '<span style="color: #007bff; font-size: 1.1em;">Click Next to check your answers.</span>';
                 break;
             default: // Múltipla Escolha
                 loadQuizSlide(q);
-                feedback.innerHTML = '<span style="color: #007bff; font-size: 1.1em;">Select an option and click Next to check, or click Next to skip.</span>';
+                // REMOVIDO: Frase instrutiva.
                 break;
         }
 
@@ -1149,7 +1149,7 @@
         nextBtn.textContent = "Next"; 
         
         progressIndicator.textContent = `Topic ${currentQuestionIndex + 1}/${lessonQuestions.length}`;
-        backBtn.disabled = currentQuestionIndex === 0;
+        backBtn.disabled = currentQuestionIndex === 0 && currentChapter === 1; // back button is only disabled if we are on Topic 1 of Chapter 1 (simulating the actual home button)
         renderSideMenu();
     }
     
@@ -1211,6 +1211,7 @@
             currentQuestionIndex--;
             renderQuestion();
         } else {
+            // MODIFICADO: Se estiver no primeiro tópico (index 0), volta para a tela de cards (Home).
             goBackToHome();
         }
     }
@@ -1262,9 +1263,11 @@
         });
         
         if (selectedDiv && selectedDiv.getAttribute('data-key') === correctAnswerKey) {
-            feedback.innerHTML = `<span style="color: #28a745;">Correct! The answer is **${correctWord}**. Click Next to continue.</span>`;
+            // MODIFICADO: Removida a frase "Click Next to continue."
+            feedback.innerHTML = `<span style="color: #28a745;">Correct! The answer is **${correctWord}**.</span>`;
         } else { 
-            feedback.innerHTML = `<span style="color: #dc3545;">Incorrect.</span> The correct answer is: **${correctWord}**. Click Next to continue.`;
+            // MODIFICADO: Removida a frase "Click Next to continue."
+            feedback.innerHTML = `<span style="color: #dc3545;">Incorrect.</span> The correct answer is: **${correctWord}**.`;
             // Garante que a correta seja marcada
             Array.from(optionsContainer.children).forEach(div => {
                 const optionKey = div.getAttribute('data-key');
@@ -1453,9 +1456,11 @@
         });
 
         if (allCorrect) {
-            feedback.innerHTML = '<span style="color: #28a745; font-size: 1.2em;">All answers are correct! Click Next to continue.</span>';
+            // MODIFICADO: Removida a frase "Click Next to continue."
+            feedback.innerHTML = '<span style="color: #28a745; font-size: 1.2em;">All answers are correct!</span>';
         } else {
-            feedback.innerHTML = '<span style="color: #dc3545; font-size: 1.2em;">Some answers are incorrect. Review the corrections and click Next to continue.</span>';
+            // MODIFICADO: Removida a frase "and click Next to continue."
+            feedback.innerHTML = '<span style="color: #dc3545; font-size: 1.2em;">Some answers are incorrect. Review the corrections.</span>';
         }
     }
 
@@ -1636,9 +1641,11 @@
         document.querySelectorAll('.draggable-word').forEach(word => word.style.pointerEvents = 'none');
 
         if (allCorrect) {
-            feedback.innerHTML = '<span style="color: #28a745; font-size: 1.2em;">All sentences are correct! Click Next to continue.</span>';
+            // MODIFICADO: Removida a frase "Click Next to continue."
+            feedback.innerHTML = '<span style="color: #28a745; font-size: 1.2em;">All sentences are correct!</span>';
         } else {
-            feedback.innerHTML = '<span style="color: #dc3545; font-size: 1.2em;">Some sentences are incorrect. Review the corrections and click Next to continue.</span>';
+            // MODIFICADO: Removida a frase "and click Next to continue."
+            feedback.innerHTML = '<span style="color: #dc3545; font-size: 1.2em;">Some sentences are incorrect. Review the corrections.</span>';
         }
     }
 
