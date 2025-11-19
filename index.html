@@ -892,9 +892,9 @@
         { id: 1, question: "What do you see in the image?", image: "numeros.jpg", options: { A: "The Alphabet", B: "Colors", C: "Numbers" }, correctAnswer: 'C', correctWord: 'Numbers', chapter: 1, title: "1. Numbers Overview" },
         { id: 2, question: "Complete the self-introduction: 'Hello, ____ Marcus.'", image: "cumprimento.jpg", options: { A: "I is", B: "I am", C: "I are" }, correctAnswer: 'B', correctWord: 'I am', chapter: 1, title: "2. Verb 'To Be' (I am)" },
         
-        // Tópico 3 - Vocabulary (NOVO: Limpeza e título)
+        // Tópico 3 - Vocabulary (NOVO: Título Principal: Vocabulary)
         { id: 3, 
-            question: `Review the essential vocabulary for this lesson.`, // Título limpo
+            question: `Vocabulary`, // Título limpo: Apenas "Vocabulary"
             options: [ 
                 { word: 'address number', example: 'My <span class="highlight">address number</span> is 34.' },
                 { word: 'student', example: 'I am a <span class="highlight">student</span>.' },
@@ -1136,6 +1136,10 @@
                 break;
             default: // Múltipla Escolha
                 loadQuizSlide(q);
+                // Adiciona a instrução inicial para quiz
+                if (!answerChecked) {
+                    feedback.innerHTML = '<span style="color: #007bff; font-size: 1.1em;">Select an option or click Next to check your answer.</span>';
+                }
                 break;
         }
 
@@ -1158,7 +1162,7 @@
         renderSideMenu();
     }
     
-    // --- NOVO goNext REESCRITO PARA CORRIGIR O BUG DO TÓPICO 3 ---
+    // --- NOVO goNext REESCRITO PARA CORRIGIR O BUG DO TÓPICO 2/3 E 3/4 ---
     function goNext() {
         const q = lessonQuestions[currentQuestionIndex];
         
@@ -1227,8 +1231,6 @@
                 optionDiv.classList.add('selected');
                 selectedOption = key;
                 
-                // Opções: Você pode checar a resposta automaticamente aqui, ou esperar pelo botão Next.
-                // Usaremos o botão Next/Check para manter a consistência, exceto se houver uma opção selecionada.
                 checkAnswer(); // Checagem automática ao selecionar.
             };
             
@@ -1282,7 +1284,8 @@
                 </table>
             </div>
         `;
-        // OBS: O título principal (q.question) já é setado no questionText, evitando a duplicação.
+        // O título principal (q.question = "Vocabulary") é setado no questionText em renderQuestion(), 
+        // e o subtítulo "Vocabulary in Context" é adicionado dentro do optionsContainer.
         feedback.innerHTML = '';
         nextBtn.textContent = 'Next';
         nextBtn.onclick = goNext;
