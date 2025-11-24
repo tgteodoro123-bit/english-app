@@ -786,6 +786,94 @@
 <div id="home-screen">
     <h2>BEGINNER</h2>
     <div class="chapter-grid">
+        <div class="chapter-card" id="card-1" onclick="startLesson(1);">
+            <div class="card-background-image" style="background-color: #007bff;"></div>
+            <div class="card-text-area">
+                <div class="text-content-wrapper">
+                    <h3>Beginner 1</h3>
+                    <p>Basic Foundations (13 Topics Ready!)</p>
+                </div>
+                <button class="start-button" onclick="startLesson(1); event.stopPropagation();">Start</button>
+            </div>
+        </div>
+        
+        <div class="chapter-card" id="card-2" onclick="startLesson(2);">
+            <div class="card-background-image" style="background-color: #28a745;"></div>
+            <div class="card-text-area">
+                <div class="text-content-wrapper">
+                    <h3>Beginner 2</h3>
+                    <p>Module 2 Content</p>
+                </div>
+                <button class="start-button" onclick="startLesson(2); event.stopPropagation();">Start</button>
+            </div>
+        </div>
+        
+        <div class="chapter-card" id="card-3" onclick="startLesson(3);">
+            <div class="card-background-image" style="background-color: #ffc107;"></div>
+            <div class="card-text-area">
+                <div class="text-content-wrapper">
+                    <h3>Beginner 3</h3>
+                    <p>Module 3 Content</p>
+                </div>
+                <button class="start-button" onclick="startLesson(3); event.stopPropagation();">Start</button>
+            </div>
+        </div>
+        
+        <div class="chapter-card" id="card-4" onclick="startLesson(4);">
+            <div class="card-background-image" style="background-color: #dc3545;"></div>
+            <div class="card-text-area">
+                <div class="text-content-wrapper">
+                    <h3>Beginner 4</h3>
+                    <p>Module 4 Content</p>
+                </div>
+                <button class="start-button" onclick="startLesson(4); event.stopPropagation();">Start</button>
+            </div>
+        </div>
+        
+        <div class="chapter-card" id="card-5" onclick="startLesson(5);">
+            <div class="card-background-image" style="background-color: #6f42c1;"></div>
+            <div class="card-text-area">
+                <div class="text-content-wrapper">
+                    <h3>Beginner 5</h3>
+                    <p>Module 5 Content</p>
+                </div>
+                <button class="start-button" onclick="startLesson(5); event.stopPropagation();">Start</button>
+            </div>
+        </div>
+        
+        <div class="chapter-card" id="card-6" onclick="startLesson(6);">
+            <div class="card-background-image" style="background-color: #17a2b8;"></div>
+            <div class="card-text-area">
+                <div class="text-content-wrapper">
+                    <h3>Beginner 6</h3>
+                    <p>Module 6 Content</p>
+                </div>
+                <button class="start-button" onclick="startLesson(6); event.stopPropagation();">Start</button>
+            </div>
+        </div>
+
+        <div class="chapter-card" id="card-7" onclick="startLesson(7);">
+            <div class="card-background-image" style="background-color: #007bff;"></div>
+            <div class="card-text-area">
+                <div class="text-content-wrapper">
+                    <h3>Beginner 7</h3>
+                    <p>Module 7 Content</p>
+                </div>
+                <button class="start-button" onclick="startLesson(7); event.stopPropagation();">Start</button>
+            </div>
+        </div>
+
+        <div class="chapter-card" id="card-8" onclick="startLesson(8);">
+            <div class="card-background-image" style="background-color: #28a745;"></div>
+            <div class="card-text-area">
+                <div class="text-content-wrapper">
+                    <h3>Beginner 8</h3>
+                    <p>Module 8 Content</p>
+                </div>
+                <button class="start-button" onclick="startLesson(8); event.stopPropagation();">Start</button>
+            </div>
+        </div>
+        
         </div>
 </div>
 
@@ -1090,31 +1178,6 @@ const sideMenu = document.getElementById('side-menu');
 const navButtonsContainer = document.querySelector('.nav-buttons');
 const menuToggle = document.querySelector('.menu-toggle');
 let answerChecked = false; // Controla se a resposta (ou check) já foi processada
-
-// RENDER CHAPTER CARDS ON HOME SCREEN (Usando cores sólidas para garantir o carregamento)
-const chapterGrid = document.querySelector('.chapter-grid');
-chapterGrid.innerHTML = ''; // Limpa antes de começar
-
-for (let i = 1; i <= 24; i++) {
-    // Usando cores sólidas para teste
-    const bgColor = CARD_COLORS[(i - 1) % CARD_COLORS.length];
-    let cardTopicName = i === 1 ? 'Basic Foundations (13 Topics Ready!)' : `Module ${i} Content`;
-    
-    const cardHTML = `
-        <div class="chapter-card" id="card-${i}">
-            <div class="card-background-image" style="background-color: ${bgColor};"></div>
-            <div class="card-text-area">
-                <div class="text-content-wrapper">
-                    <h3>Beginner ${i}</h3>
-                    <p>${cardTopicName}</p>
-                </div>
-                <button class="start-button" onclick="startLesson(${i}); event.stopPropagation();">Start</button>
-            </div>
-        </div>
-    `;
-    // Usa o método mais seguro para injetar HTML no loop
-    chapterGrid.insertAdjacentHTML('beforeend', cardHTML);
-}
 
 
 // --- GENERAL NAVIGATION AND LOADING FUNCTIONS ---
