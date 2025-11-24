@@ -927,9 +927,9 @@
 
 <script>
 // --- GLOBAL CONSTANTS ---
-// Alterado para cores sólidas para garantir o carregamento do card
 const CARD_COLORS = ['#007bff', '#28a745', '#ffc107', '#dc3545', '#6f42c1', '#17a2b8']; 
-const GITHUB_RAW_BASE_URL = 'https://raw.githubusercontent.com/YourUsername/YourRepo/main/';
+// MUDANÇA CRUCIAL: A URL BASE AGORA É VAZIA para buscar arquivos LOCALMENTE (ex: 'img/numeros.jpg')
+const GITHUB_RAW_BASE_URL = ''; 
 
 
 // Data for Drag & Drop (Tópico 8)
@@ -940,11 +940,12 @@ const DRAG_AND_DROP_WORDS = [
     { id: 'word-4', text: 'Student' }
 ];
 
+// O caminho da imagem foi simplificado para apontar para a pasta 'img' no seu computador
 const DRAG_AND_DROP_SENTENCES = [
-    { id: 1, dropId: 'drop-1', text: 'This is my ____ John.', correct: 'Friend', image: GITHUB_RAW_BASE_URL + 'img/drag-friend.jpg' },
-    { id: 2, dropId: 'drop-2', text: 'She is a great ____.', correct: 'Teacher', image: GITHUB_RAW_BASE_URL + 'img/drag-teacher.jpg' },
-    { id: 3, dropId: 'drop-3', text: 'I am an ____ student.', correct: 'American', image: GITHUB_RAW_BASE_URL + 'img/drag-american.jpg' },
-    { id: 4, dropId: 'drop-4', text: 'Are you a ____?', correct: 'Student', image: GITHUB_RAW_BASE_URL + 'img/drag-student.jpg' }
+    { id: 1, dropId: 'drop-1', text: 'This is my ____ John.', correct: 'Friend', image: 'img/drag-friend.jpg' },
+    { id: 2, dropId: 'drop-2', text: 'She is a great ____.', correct: 'Teacher', image: 'img/drag-teacher.jpg' },
+    { id: 3, dropId: 'drop-3', text: 'I am an ____ student.', correct: 'American', image: 'img/drag-american.jpg' },
+    { id: 4, dropId: 'drop-4', text: 'Are you a ____?', correct: 'Student', image: 'img/drag-student.jpg' }
 ];
 
 // --- LESSON DATA ---
@@ -953,7 +954,7 @@ const QUESTIONS = [
     {
         id: 1,
         question: "What do you see in the image?",
-        image: "numeros.jpg",
+        image: "numeros.jpg", // Apenas o nome do arquivo local
         options: {
             A: "The Alphabet",
             B: "Colors",
@@ -968,7 +969,7 @@ const QUESTIONS = [
     {
         id: 2,
         question: "Complete the self-introduction: 'Hello, ____ Marcus.'",
-        image: "cumprimento.jpg",
+        image: "cumprimento.jpg", // Apenas o nome do arquivo local
         options: {
             A: "I is",
             B: "I am",
@@ -1029,7 +1030,7 @@ const QUESTIONS = [
     {
         id: 5,
         question: "Review the numbers categories by clicking on the hotspots.",
-        image: "bingo.jpg",
+        image: "bingo.jpg", // Apenas o nome do arquivo local
         correctAnswer: 'INTERACTIVE_BINGO',
         chapter: 1,
         title: "5. Interactive Bingo Review",
@@ -1116,7 +1117,7 @@ const QUESTIONS = [
     {
         id: 11,
         question: "Identify the color of the object in the image:",
-        image: "apple.jpg",
+        image: "apple.jpg", // Apenas o nome do arquivo local
         options: {
             A: "Green",
             B: "Red",
@@ -1219,6 +1220,10 @@ function populateMenu() {
 }
 
 function startLesson(chapterNumber) {
+    // TESTE TEMPORÁRIO: Se você vir esta caixa, o JS está funcionando.
+    alert("Starting Lesson " + chapterNumber + ". If the screen doesn't change, check the file path instructions below.");
+    // FIM TESTE TEMPORÁRIO
+    
     currentChapter = chapterNumber;
     lessonQuestions = QUESTIONS.filter(q => q.chapter === chapterNumber);
     currentQuestionIndex = 0;
@@ -1265,7 +1270,7 @@ function loadQuestion(q) {
     questionText.style.display = 'block';
     questionText.innerHTML = q.question;
 
-    // Load image if available (using the GITHUB_RAW_BASE_URL prefix for the image path)
+    // Load image if available (usando a constante GITHUB_RAW_BASE_URL que agora é vazia, resultando em 'img/numeros.jpg')
     if (q.image) {
         questionImage.src = GITHUB_RAW_BASE_URL + 'img/' + q.image;
         questionImage.style.display = 'block';
@@ -1436,11 +1441,11 @@ function loadPronunciationSlide(q) {
                         <tr>
                             <td>
                                 <span>${item.word}</span> 
-                                <button class="play-button" onclick="playAudio('${GITHUB_RAW_BASE_URL}${item.audio}')">▶️</button>
+                                <button class="play-button" onclick="playAudio('audio/${item.audio}')">▶️</button>
                             </td>
                             <td>
                                 <span>${item.comparison}</span> 
-                                <button class="play-button" onclick="playAudio('${GITHUB_RAW_BASE_URL}${item.comparisonAudio}')">▶️</button>
+                                <button class="play-button" onclick="playAudio('audio/${item.comparisonAudio}')">▶️</button>
                             </td>
                         </tr>
                     `).join('')}
@@ -1453,7 +1458,7 @@ function loadPronunciationSlide(q) {
             const li = document.createElement('li');
             li.innerHTML = `
                 <span>${item.word}</span>
-                <button class="play-button" onclick="playAudio('${GITHUB_RAW_BASE_URL}${item.audio}')">▶️</button>
+                <button class="play-button" onclick="playAudio('audio/${item.audio}')">▶️</button>
             `;
             list.appendChild(li);
         });
@@ -1461,6 +1466,7 @@ function loadPronunciationSlide(q) {
 }
 
 // Função para tocar áudio individual (usado no Tópico 4)
+// O caminho do áudio foi ajustado para apontar para a pasta 'audio'
 function playAudio(src) {
     const tempAudio = new Audio(src);
     tempAudio.play();
