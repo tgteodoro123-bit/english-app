@@ -839,14 +839,10 @@
 
 <script>
 // --- GLOBAL CONSTANTS ---
+// Alterado para cores sólidas para garantir o carregamento do card
+const CARD_COLORS = ['#007bff', '#28a745', '#ffc107', '#dc3545', '#6f42c1', '#17a2b8']; 
 const GITHUB_RAW_BASE_URL = 'https://raw.githubusercontent.com/YourUsername/YourRepo/main/';
-const BACKGROUND_IMAGES = [
-    GITHUB_RAW_BASE_URL + 'cards.jpg',
-    GITHUB_RAW_BASE_URL + 'bg2.jpg',
-    GITHUB_RAW_BASE_URL + 'bg3.jpg',
-    GITHUB_RAW_BASE_URL + 'bg4.jpg',
-    GITHUB_RAW_BASE_URL + 'bg5.jpg'
-];
+
 
 // Data for Drag & Drop (Tópico 8)
 const DRAG_AND_DROP_WORDS = [
@@ -857,10 +853,10 @@ const DRAG_AND_DROP_WORDS = [
 ];
 
 const DRAG_AND_DROP_SENTENCES = [
-    { id: 1, text: 'This is my ____ John.', correct: 'Friend', image: GITHUB_RAW_BASE_URL + 'img/drag-friend.jpg' },
-    { id: 2, text: 'She is a great ____.', correct: 'Teacher', image: GITHUB_RAW_BASE_URL + 'img/drag-teacher.jpg' },
-    { id: 3, text: 'I am an ____ student.', correct: 'American', image: GITHUB_RAW_BASE_URL + 'img/drag-american.jpg' },
-    { id: 4, text: 'Are you a ____?', correct: 'Student', image: GITHUB_RAW_BASE_URL + 'img/drag-student.jpg' }
+    { id: 1, dropId: 'drop-1', text: 'This is my ____ John.', correct: 'Friend', image: GITHUB_RAW_BASE_URL + 'img/drag-friend.jpg' },
+    { id: 2, dropId: 'drop-2', text: 'She is a great ____.', correct: 'Teacher', image: GITHUB_RAW_BASE_URL + 'img/drag-teacher.jpg' },
+    { id: 3, dropId: 'drop-3', text: 'I am an ____ student.', correct: 'American', image: GITHUB_RAW_BASE_URL + 'img/drag-american.jpg' },
+    { id: 4, dropId: 'drop-4', text: 'Are you a ____?', correct: 'Student', image: GITHUB_RAW_BASE_URL + 'img/drag-student.jpg' }
 ];
 
 // --- LESSON DATA ---
@@ -1095,15 +1091,18 @@ const navButtonsContainer = document.querySelector('.nav-buttons');
 const menuToggle = document.querySelector('.menu-toggle');
 let answerChecked = false; // Controla se a resposta (ou check) já foi processada
 
-// RENDER CHAPTER CARDS ON HOME SCREEN
+// RENDER CHAPTER CARDS ON HOME SCREEN (Usando cores sólidas para garantir o carregamento)
 const chapterGrid = document.querySelector('.chapter-grid');
+chapterGrid.innerHTML = ''; // Limpa antes de começar
+
 for (let i = 1; i <= 24; i++) {
-    // FIX APLICADO: Agora a variável bgUrl é usada corretamente na URL da imagem de fundo.
-    const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
+    // Usando cores sólidas para teste
+    const bgColor = CARD_COLORS[(i - 1) % CARD_COLORS.length];
     let cardTopicName = i === 1 ? 'Basic Foundations (13 Topics Ready!)' : `Module ${i} Content`;
-    chapterGrid.innerHTML += `
+    
+    const cardHTML = `
         <div class="chapter-card" id="card-${i}">
-            <div class="card-background-image" style="background-image: url('${bgUrl}');"></div>
+            <div class="card-background-image" style="background-color: ${bgColor};"></div>
             <div class="card-text-area">
                 <div class="text-content-wrapper">
                     <h3>Beginner ${i}</h3>
@@ -1113,7 +1112,10 @@ for (let i = 1; i <= 24; i++) {
             </div>
         </div>
     `;
+    // Usa o método mais seguro para injetar HTML no loop
+    chapterGrid.insertAdjacentHTML('beforeend', cardHTML);
 }
+
 
 // --- GENERAL NAVIGATION AND LOADING FUNCTIONS ---
 function openNav() {
@@ -1124,7 +1126,6 @@ function closeNav() {
     sideMenu.classList.remove('open');
 }
 
-// ATUALIZADO: Usando closeNumberModal para fechar o modal.
 window.onclick = function(event) {
     if (sideMenu.classList.contains('open') && !event.target.closest('.side-menu') && !event.target.closest('.menu-toggle')) {
         closeNav();
@@ -1143,7 +1144,7 @@ function loadQuestionFromMenu(index) {
 }
 
 function populateMenu() {
-    sideMenu.querySelectorAll('a:not(.close-btn)').forEach(a => a.remove());
+    sideMenu.querySelectorAll('a:not(.close-btn, [onclick="goHome()"])').forEach(a => a.remove());
 
     lessonQuestions.forEach((q, index) => {
         const link = document.createElement('a');
@@ -1201,7 +1202,7 @@ function loadQuestion(q) {
     questionText.style.display = 'block';
     questionText.innerHTML = q.question;
 
-    // Load image if available
+    // Load image if available (using the GITHUB_RAW_BASE_URL prefix for the image path)
     if (q.image) {
         questionImage.src = GITHUB_RAW_BASE_URL + 'img/' + q.image;
         questionImage.style.display = 'block';
@@ -1235,7 +1236,8 @@ function loadQuestion(q) {
             break;
         default: // Múltipla Escolha
             loadQuizSlide(q);
-            // ALTERAÇÃO SOLICITADA APLICADA: Frase de feedback removida
+            // ALERTA: Frase de feedback para o quiz
+            feedback.innerHTML = '<span style="color: #007bff; font-size: 1.1em;">Select an option or click Next to see the answer.</span>';
             break;
     }
 
