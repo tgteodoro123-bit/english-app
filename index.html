@@ -1098,11 +1098,12 @@ let answerChecked = false; // Controla se a resposta (ou check) já foi processa
 // RENDER CHAPTER CARDS ON HOME SCREEN
 const chapterGrid = document.querySelector('.chapter-grid');
 for (let i = 1; i <= 24; i++) {
+    // FIX APLICADO: Agora a variável bgUrl é usada corretamente na URL da imagem de fundo.
     const bgUrl = BACKGROUND_IMAGES[(i - 1) % BACKGROUND_IMAGES.length];
     let cardTopicName = i === 1 ? 'Basic Foundations (13 Topics Ready!)' : `Module ${i} Content`;
     chapterGrid.innerHTML += `
         <div class="chapter-card" id="card-${i}">
-            <div class="card-background-image" style="background-image: url('url_para_imagem_do_modulo_${i}.jpg');"></div>
+            <div class="card-background-image" style="background-image: url('${bgUrl}');"></div>
             <div class="card-text-area">
                 <div class="text-content-wrapper">
                     <h3>Beginner ${i}</h3>
@@ -1234,7 +1235,7 @@ function loadQuestion(q) {
             break;
         default: // Múltipla Escolha
             loadQuizSlide(q);
-            // REMOVIDO POR SOLICITAÇÃO: feedback.innerHTML = '<span style="color: #007bff; font-size: 1.1em;">Select an option or click Next to continue.</span>';
+            // ALTERAÇÃO SOLICITADA APLICADA: Frase de feedback removida
             break;
     }
 
