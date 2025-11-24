@@ -853,6 +853,17 @@
             </div>
         </div>
 
+        <div class="chapter-card" onclick="startLesson(9)">
+            <div class="card-background-image" style="background-image: url('img/numbers.jpg');"></div>
+            <div class="card-text-area">
+                <div class="text-content-wrapper">
+                    <h3>Beginner 9</h3>
+                    <p>Numbers 21-99: Combined Examples.</p>
+                </div>
+                <button class="start-button">Start</button>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -1110,7 +1121,32 @@
                     draggableWords: ["Brother", "Mother", "Father", "Sister"] 
                 }
             ]
+        },
+        // NOVO MÓDULO ADICIONADO AQUI
+        {
+            id: 9,
+            lessonTitle: "Beginner 9: Numbers 21-99",
+            topics: [
+                {
+                    id: 15,
+                    title: "Combined Numbers (21-99) - Examples",
+                    type: "INFO_TABLE",
+                    question: "Review the examples of combined numbers (21-99):",
+                    tableData: [
+                        { sentence: "21", translation: "Twenty-one" },
+                        { sentence: "32", translation: "Thirty-two" },
+                        { sentence: "43", translation: "Forty-three" }, // Corrigido
+                        { sentence: "54", translation: "Fifty-four" },
+                        { sentence: "65", translation: "Sixty-five" },
+                        { sentence: "76", translation: "Seventy-six" },
+                        { sentence: "87", translation: "Eighty-seven" },
+                        { sentence: "98", translation: "Ninety-eight" }
+                    ],
+                    tableType: "number-modal" // Reusa o estilo de tabela clicável para números
+                }
+            ]
         }
+        // FIM DO NOVO MÓDULO
     ];
 
     // --- VARIÁVEIS DE ESTADO ---
@@ -1303,7 +1339,7 @@
             feedback.innerHTML = '';
         }
         
-        // Tabela de Números (Tópico 7) - Usa modal no click
+        // Tabela de Números (Tópico 7 e 9) - Usa modal no click
         else if (q.tableType === 'number-modal') {
              tableHTML = `<div class="chapter-grid" style="grid-template-columns: repeat(3, 1fr); max-width: 400px; margin: 0 auto; gap: 8px;">`;
             q.tableData.forEach(item => {
